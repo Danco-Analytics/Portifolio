@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Wanjala - Portfolio | Data Scientist | ML Engineer | Innovator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* --- Theme Definitions --- */
+
+        /* NEW Default Colorful Theme */
+        body.theme-colorful {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Purple/Indigo gradient */
+            color: #f9fafb; /* Light text for contrast */
+        }
+        .theme-colorful .section-bg-alt { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); } /* Semi-transparent white */
+        .theme-colorful .card-bg { background-color: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); } /* Slightly more opaque */
+        .theme-colorful .subtle-text { color: #d1d5db; } /* Lighter gray */
+        .theme-colorful .heading-text { color: #ffffff; } /* White */
+        .theme-colorful .link-text { color: #a78bfa; } /* Lighter purple */
+        .theme-colorful .link-text:hover { color: #c4b5fd; } /* Even lighter purple */
+        .theme-colorful .border-color { border-color: rgba(255, 255, 255, 0.2); }
+        .theme-colorful .timeline::before { background: rgba(255, 255, 255, 0.3); }
+        .theme-colorful .timeline-dot { background-color: #a78bfa; border-color: #667eea; box-shadow: 0 0 0 3px #a78bfa66; }
+        .theme-colorful .timeline-content { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
+        .theme-colorful .placeholder-bg { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
+        .theme-colorful .placeholder-text { color: #d1d5db; }
+        .theme-colorful .navbar-bg { background-color: rgba(102, 126, 234, 0.8); backdrop-filter: blur(10px); } /* Match gradient start color */
+        .theme-colorful .mobile-menu-bg { background-color: #764ba2; } /* Match gradient end color */
+        .theme-colorful .prose-invert { color: #e5e7eb; } /* Adjust prose for colorful */
+        .theme-colorful .prose-invert h4 { color: #ffffff; }
+        .theme-colorful .prose-invert a { color: #c4b5fd; }
+        .theme-colorful .prose-invert a:hover { color: #a78bfa; }
+        .theme-colorful ::-webkit-scrollbar-thumb { background-color: #a78bfa; border-radius: 10px; border: 2px solid #667eea; }
+        .theme-colorful ::-webkit-scrollbar-thumb:hover { background-color: #c4b5fd; }
+        .theme-colorful #ai-chat-widget { background-color: rgba(102, 126, 234, 0.85); backdrop-filter: blur(10px); border-color: rgba(255, 255, 255, 0.3); }
+        .theme-colorful #ai-chat-header { background-color: rgba(118, 75, 162, 0.8); color: #f9fafb; border-color: rgba(255, 255, 255, 0.2); }
+        .theme-colorful #ai-chat-body { color: #f3f4f6; scrollbar-color: #a78bfa #667eea; }
+        .theme-colorful #ai-chat-input-area { border-color: rgba(255, 255, 255, 0.2); background-color: rgba(102, 126, 234, 0.8); }
+        .theme-colorful #ai-chat-input { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); color: #f9fafb; }
+        .theme-colorful #ai-chat-send-btn { background-color: #c4b5fd; color: #3730a3; }
+        .theme-colorful #ai-chat-send-btn:hover { background-color: #ddd6fe; }
+        .theme-colorful #voice-input-btn { color: #d1d5db; }
+        .theme-colorful #voice-input-btn:hover { color: #ffffff; }
+        .theme-colorful #ai-chat-close-btn { color: #d1d5db; }
+        .theme-colorful #ai-chat-close-btn:hover { color: #ffffff; }
+
+        /* Dark Theme (Night Owl) - Kept for theme switcher */
+        body.theme-dark { background-color: #111827; color: #e5e7eb; }
+        .theme-dark .section-bg-alt { background-color: #1f2937; }
+        .theme-dark .card-bg { background-color: #374151; }
+        .theme-dark .subtle-text { color: #9ca3af; }
+        .theme-dark .heading-text { color: #f9fafb; }
+        .theme-dark .link-text { color: #60a5fa; }
+        .theme-dark .link-text:hover { color: #93c5fd; }
+        .theme-dark .border-color { border-color: #4b5563; }
+        .theme-dark .timeline::before { background: #4b5563; }
+        .theme-dark .timeline-dot { background-color: #3b82f6; border-color: #1f2937; box-shadow: 0 0 0 3px #3b82f644; }
+        .theme-dark .timeline-content { background-color: #374151; }
+        .theme-dark .placeholder-bg { background-color: #374151; border-color: #4b5563; }
+        .theme-dark .placeholder-text { color: #9ca3af; }
+        .theme-dark .navbar-bg { background-color: rgba(17, 24, 39, 0.85); }
+        .theme-dark .mobile-menu-bg { background-color: #1f2937; }
+        .theme-dark .prose-invert { color: #d1d5db; }
+        .theme-dark .prose-invert h4 { color: #f3f4f6; }
+        .theme-dark .prose-invert a { color: #93c5fd; }
+        .theme-dark .prose-invert a:hover { color: #60a5fa; }
+        .theme-dark ::-webkit-scrollbar-thumb { background-color: #4b5563; border-color: #111827; }
+        .theme-dark ::-webkit-scrollbar-thumb:hover { background-color: #6b7280; }
+        .theme-dark #ai-chat-widget { background-color: rgba(31, 41, 55, 0.9); backdrop-filter: blur(10px); border-color: #4b5563; }
+        .theme-dark #ai-chat-header { background-color: rgba(55, 65, 81, 0.8); color: #d1d5db; border-color: #4b5563; }
+        .theme-dark #ai-chat-body { color: #d1d5db; scrollbar-color: #4b5563 #1f2937; }
+        .theme-dark #ai-chat-input-area { border-color: #4b5563; background-color: rgba(31, 41, 55, 0.9); }
+        .theme-dark #ai-chat-input { background-color: #374151; border-color: #4b5563; color: #e5e7eb; }
+        .theme-dark #ai-chat-send-btn { background-color: #3b82f6; color: white; }
+        .theme-dark #ai-chat-send-btn:hover { background-color: #2563eb; }
+        .theme-dark #voice-input-btn { color: #9ca3af; }
+        .theme-dark #voice-input-btn:hover { color: #e5e7eb; }
+        .theme-dark #ai-chat-close-btn { color: #9ca3af; }
+        .theme-dark #ai-chat-close-btn:hover { color: #e5e7eb; }
+
+        /* Add .theme-light, .theme-creative, .theme-retro definitions here... */
+        /* Light Theme (Professional) - Conceptual */
+        body.theme-light { background-color: #f9fafb; color: #374151; }
+        .theme-light .section-bg-alt { background-color: #f3f4f6; }
+        .theme-light .card-bg { background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,.05),0 2px 4px -2px rgba(0,0,0,.05); }
+        .theme-light .subtle-text { color: #6b7280; }
+        .theme-light .heading-text { color: #111827; }
+        .theme-light .link-text { color: #2563eb; }
+        .theme-light .link-text:hover { color: #1d4ed8; }
+        .theme-light .border-color { border-color: #e5e7eb; }
+        .theme-light .timeline::before { background: #d1d5db; }
+        .theme-light .timeline-dot { background-color: #3b82f6; border-color: #f3f4f6; box-shadow: 0 0 0 3px #3b82f644; }
+        .theme-light .timeline-content { background-color: #ffffff; }
+        .theme-light .placeholder-bg { background-color: #e5e7eb; border-color: #d1d5db; }
+        .theme-light .placeholder-text { color: #6b7280; }
+        .theme-light .navbar-bg { background-color: rgba(255, 255, 255, 0.85); }
+        .theme-light .mobile-menu-bg { background-color: #f3f4f6; }
+        .theme-light .prose { color: #374151; }
+        .theme-light .prose h4 { color: #111827; }
+        .theme-light .prose a { color: #2563eb; }
+        .theme-light .prose a:hover { color: #1d4ed8; }
+        .theme-light ::-webkit-scrollbar-thumb { background-color: #9ca3af; border-color: #f9fafb; }
+        .theme-light ::-webkit-scrollbar-thumb:hover { background-color: #6b7280; }
+        .theme-light #ai-chat-widget { background-color: rgba(243, 244, 246, 0.9); backdrop-filter: blur(10px); border-color: #d1d5db; }
+        .theme-light #ai-chat-header { background-color: rgba(229, 231, 235, 0.8); color: #1f2937; border-color: #d1d5db; }
+        .theme-light #ai-chat-body { color: #374151; scrollbar-color: #9ca3af #f3f4f6; }
+        .theme-light #ai-chat-input-area { border-color: #d1d5db; background-color: rgba(243, 244, 246, 0.9); }
+        .theme-light #ai-chat-input { background-color: #ffffff; border-color: #d1d5db; color: #1f2937; }
+        .theme-light #ai-chat-send-btn { background-color: #3b82f6; color: white; }
+        .theme-light #ai-chat-send-btn:hover { background-color: #2563eb; }
+        .theme-light #voice-input-btn { color: #6b7280; }
+        .theme-light #voice-input-btn:hover { color: #374151; }
+        .theme-light #ai-chat-close-btn { color: #6b7280; }
+        .theme-light #ai-chat-close-btn:hover { color: #374151; }
+
+
+        /* Particle canvas styling */
+        #particles-js {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 0;
+            /* Add a very subtle background color to help debug if particles aren't showing */
+            /* background-color: rgba(255, 255, 255, 0.01); */
+        }
+        .content-above { position: relative; z-index: 1; }
+
+        /* Navbar underline animation */
+        .nav-link::after { content: ''; display: block; width: 0; height: 2px; background: linear-gradient(90deg, #a78bfa, #f472b6); transition: width .3s ease-out; margin-top: 2px; } /* Adjusted gradient for colorful theme */
+        .nav-link:hover::after { width: 100%; }
+
+        /* Project card tilt effect */
+        .project-card { transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: transform; }
+        .project-card:hover { transform: perspective(1200px) rotateY(3deg) scale(1.04); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); } /* Enhanced hover */
+
+        /* Section fade-in transition (Enhanced) */
+        .section-container { opacity: 0; transform: translateY(50px) scale(0.98); transition: opacity 0.9s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1); will-change: opacity, transform; }
+        .section-container.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* Section Header Animation (Enhanced) */
+        .section-header-line { opacity: 0; transform: translateY(15px); animation: fadeInUp 0.8s 0.2s ease-out forwards; }
+        .section-header-title { opacity: 0; transform: translateY(15px); animation: fadeInUp 0.8s 0.3s ease-out forwards; }
+        .section-header-subtitle { opacity: 0; transform: translateY(15px); animation: fadeInUp 0.8s 0.4s ease-out forwards; }
+        /* Only apply animation when section is visible */
+        .section-container:not(.visible) .section-header-line,
+        .section-container:not(.visible) .section-header-title,
+        .section-container:not(.visible) .section-header-subtitle { animation: none; opacity: 0; } /* Reset if not visible */
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        /* Thumb styles handled by theme classes */
+
+
+        /* Timeline styles */
+        .timeline { position: relative; padding: 2rem 0; margin-left: 20px; }
+        .timeline::before { content: ''; position: absolute; top: 0; left: 0px; height: 100%; width: 4px; border-radius: 2px; }
+        .timeline-item { margin-bottom: 2.5rem; position: relative; padding-left: 35px; }
+        .timeline-dot { position: absolute; left: 0; top: 5px; transform: translateX(-50%) translateX(2px); width: 18px; height: 18px; border-radius: 50%; border-width: 4px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .timeline-item:hover .timeline-dot { transform: translateX(-50%) translateX(2px) scale(1.2); box-shadow: 0 0 15px #a78bfa88; } /* Glow effect */
+        .timeline-content { padding: 1.25rem; border-radius: 8px; transition: box-shadow 0.3s ease, transform 0.3s ease; border: 1px solid; }
+        .timeline-item:hover .timeline-content { box-shadow: 0 8px 25px rgba(0,0,0,0.15); transform: translateX(5px); }
+
+        /* Lottie Placeholder */
+        .lottie-animation-placeholder { width: 180px; height: 180px; margin: 1.5rem auto; border: 2px dashed; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.8rem; text-align: center; padding: 1rem; }
+        .lottie-animation-placeholder i { margin-bottom: 0.5rem; }
+
+        /* 3D Canvas Placeholder */
+        .webgl-canvas-placeholder { border: 1px solid; border-radius: 12px; min-height: 300px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 1rem; }
+
+        /* AI Chat Widget styles */
+        #ai-chat-widget { position: fixed; bottom: 20px; right: 20px; width: 320px; max-height: calc(100vh - 40px); border-radius: 16px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease, transform 0.4s ease, height 0.3s ease, width 0.3s ease; }
+        #ai-chat-widget.visible { opacity: 1; transform: translateY(0); }
+        #ai-chat-widget.minimized { height: 50px; /* Adjust height when minimized */ width: 200px; /* Adjust width when minimized */ bottom: 10px; right: 10px; }
+        #ai-chat-widget.minimized #ai-chat-body,
+        #ai-chat-widget.minimized #ai-chat-input-area { display: none; } /* Hide body and input when minimized */
+        #ai-chat-header { padding: 0.75rem 1rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: grab; border-bottom: 1px solid; }
+        #ai-chat-body { flex-grow: 1; padding: 1rem; overflow-y: auto; font-size: 0.875rem; scrollbar-width: thin; min-height: 100px; /* Ensure body has some height */ }
+        #ai-chat-input-area { border-top: 1px solid; padding: 0.75rem; display: flex; }
+        #ai-chat-input { flex-grow: 1; border: 1px solid; border-radius: 8px; padding: 0.6rem 0.85rem; outline: none; margin-right: 0.5rem; }
+        #ai-chat-send-btn, #voice-input-btn { border: none; border-radius: 8px; padding: 0.6rem 0.85rem; cursor: pointer; transition: background-color 0.2s, transform 0.1s; }
+        #ai-chat-send-btn:active, #voice-input-btn:active { transform: scale(0.95); }
+        #voice-input-btn { background: none; padding: 0.6rem; margin-left: 0.5rem; }
+        #ai-chat-controls { display: flex; align-items: center; } /* Group minimize/close */
+        #ai-chat-minimize-btn, #ai-chat-close-btn { background: none; border: none; cursor: pointer; padding: 0.25rem; transition: color 0.2s; margin-left: 0.5rem; }
+
+        /* Pulsing animation */
+        .pulsate { animation: pulsate-animation 1.5s infinite ease-in-out; }
+        @keyframes pulsate-animation { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.7; } }
+
+        /* GitHub Feed Placeholder */
+        #github-feed p { margin-bottom: 0.5rem; border-bottom: 1px solid; padding-bottom: 0.5rem; }
+        #github-feed p:last-child { border-bottom: none; margin-bottom: 0; }
+
+        /* Prose styling adjustments needed per theme */
+
+    </style>
+</head>
+<body class="theme-colorful"> <div id="ai-chat-widget">
+        <div id="ai-chat-header">
+            <span>AI Assistant</span>
+            <div id="ai-chat-controls">
+                <button id="ai-chat-minimize-btn" aria-label="Minimize chat widget">
+                    <i data-lucide="minus" class="minimize-icon"></i> <i data-lucide="square" class="maximize-icon hidden"></i>
+                </button>
+                <button id="ai-chat-close-btn" aria-label="Close chat widget">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+        </div>
+        <div id="ai-chat-body">
+            <p>Greetings! I'm your AI guide to Daniel's work. Feel free to inquire about specific projects, skills, or experiences for elaborated insights.</p>
+            <p class="mt-4 text-xs subtle-text"> (Note: This AI interaction is conceptual and requires backend integration with services like OpenAI for full conversational intelligence.)</p>
+            <div id="ai-recommendation" class="mt-4 p-3 bg-blue-900/50 rounded-lg border border-blue-700 text-xs text-blue-200 hidden transition-all duration-300">
+                <p class="flex items-start"><i data-lucide="lightbulb" class="inline h-4 w-4 mr-2 flex-shrink-0 mt-0.5"></i> <span id="recommendation-text">Recommendation placeholder...</span></p>
+            </div>
+        </div>
+        <div id="ai-chat-input-area">
+            <input type="text" id="ai-chat-input" placeholder="e.g., 'Tell me more about the GDP model'" aria-label="Chat input">
+             <button id="voice-input-btn" title="Use Voice Input (Conceptual)" aria-label="Use voice input">
+                <i data-lucide="mic"></i>
+            </button>
+            <button id="ai-chat-send-btn" aria-label="Send chat message">
+                <i data-lucide="send"></i>
+            </button>
+        </div>
+    </div>
+
+
+    <nav class="sticky top-0 z-50 navbar-bg backdrop-blur-md shadow-lg border-b border-color">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#home" class="flex items-center space-x-2" aria-label="Home">
+                 <img src="https://placehold.co/100x40/FFFFFF/764BA2?text=DW" alt="Daniel Wanjala Logo Placeholder" class="h-8 w-auto rounded"> <span class="text-xl font-bold heading-text font-space-grotesk hidden sm:inline">Daniel Wanjala</span>
+            </a>
+            <div class="hidden lg:flex space-x-5 items-center">
+                <a href="#about" class="nav-link text-sm font-medium subtle-text hover:heading-text transition duration-200">About</a>
+                <a href="#experience" class="nav-link text-sm font-medium subtle-text hover:heading-text transition duration-200">Experience</a>
+                <a href="#skills" class="nav-link text-sm font-medium subtle-text hover:heading-text transition duration-200">Skills</a>
+                <a href="#projects" class="nav-link text-sm font-medium subtle-text hover:heading-text transition duration-200">Projects</a>
+                <a href="#education" class="nav-link text-sm font-medium subtle-text hover:heading-text transition duration-200">Education</a>
+                <a href="#certifications" class="nav-link text-sm font-medium subtle-text hover:heading-text transition duration-200">Certifications</a>
+                <a href="#blog" class="nav-link text-sm font-medium subtle-text hover:heading-text transition duration-200">Blog</a>
+                <a href="#contact" class="nav-link text-sm font-medium subtle-text hover:heading-text transition duration-200">Contact</a>
+                <div class="relative inline-block text-left">
+                     <button id="theme-toggle" title="Change Theme" class="subtle-text hover:heading-text transition-colors duration-200" aria-label="Change theme">
+                        <i data-lucide="palette"></i>
+                    </button>
+                    <div id="theme-menu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg card-bg ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50" role="menu" aria-orientation="vertical" aria-labelledby="theme-toggle">
+                        <div class="py-1" role="none">
+                             <button data-theme="colorful" class="theme-option block w-full text-left px-4 py-2 text-sm subtle-text hover:heading-text hover:bg-purple-600/50" role="menuitem">Colorful (Default)</button>
+                            <button data-theme="dark" class="theme-option block w-full text-left px-4 py-2 text-sm subtle-text hover:heading-text hover:bg-gray-600/50" role="menuitem">Night Owl</button>
+                            <button data-theme="light" class="theme-option block w-full text-left px-4 py-2 text-sm subtle-text hover:heading-text hover:bg-gray-200/50" role="menuitem">Professional</button>
+                            <button data-theme="creative" class="theme-option block w-full text-left px-4 py-2 text-sm subtle-text hover:heading-text hover:bg-pink-600/50" role="menuitem">Creative</button>
+                            <button data-theme="retro" class="theme-option block w-full text-left px-4 py-2 text-sm subtle-text hover:heading-text hover:bg-green-600/50" role="menuitem">Retro</button>
+                        </div>
+                    </div>
+                </div>
+                 <button id="mute-audio-btn" title="Toggle Ambient Sound (Conceptual)" class="subtle-text hover:heading-text transition-colors duration-200 ml-2" aria-label="Toggle audio">
+                     <i data-lucide="volume-2" class="audio-icon-unmuted"></i>
+                     <i data-lucide="volume-x" class="audio-icon-muted hidden"></i>
+                 </button>
+            </div>
+            <div class="lg:hidden">
+                <button id="mobile-menu-button" class="subtle-text hover:heading-text focus:outline-none" aria-label="Open mobile menu" aria-expanded="false">
+                    <i data-lucide="menu" class="h-6 w-6"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="lg:hidden hidden mobile-menu-bg p-4 border-t border-color" role="dialog" aria-modal="true">
+            <a href="#about" class="block py-2 subtle-text hover:heading-text">About</a>
+            <a href="#experience" class="block py-2 subtle-text hover:heading-text">Experience</a>
+            <a href="#skills" class="block py-2 subtle-text hover:heading-text">Skills</a>
+            <a href="#projects" class="block py-2 subtle-text hover:heading-text">Projects</a>
+            <a href="#education" class="block py-2 subtle-text hover:heading-text">Education</a>
+            <a href="#certifications" class="block py-2 subtle-text hover:heading-text">Certifications</a>
+            <a href="#blog" class="block py-2 subtle-text hover:heading-text">Blog</a>
+            <a href="#contact" class="block py-2 subtle-text hover:heading-text">Contact</a>
+            <h4 class="text-sm font-semibold text-gray-400 uppercase mt-4 mb-2">Theme</h4>
+             <button data-theme="colorful" class="theme-option block w-full text-left py-2 subtle-text hover:heading-text">Colorful (Default)</button>
+             <button data-theme="dark" class="theme-option block w-full text-left py-2 subtle-text hover:heading-text">Night Owl</button>
+             <button data-theme="light" class="theme-option block w-full text-left py-2 subtle-text hover:heading-text">Professional</button>
+             <button data-theme="creative" class="theme-option block w-full text-left py-2 subtle-text hover:heading-text">Creative</button>
+             <button data-theme="retro" class="theme-option block w-full text-left py-2 subtle-text hover:heading-text">Retro</button>
+             <h4 class="text-sm font-semibold text-gray-400 uppercase mt-4 mb-2">Audio</h4>
+             <button id="mute-audio-btn-mobile" title="Toggle Ambient Sound (Conceptual)" class="flex items-center subtle-text hover:heading-text" aria-label="Toggle audio">
+                 <i data-lucide="volume-2" class="audio-icon-unmuted mr-2"></i>
+                 <span class="audio-text">Mute Audio</span>
+             </button>
+        </div>
+    </nav>
+
+    <section id="home" class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <div id="particles-js"></div> <div class="content-above px-6">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 animate-gradient"> Daniel Wanjala
+            </h1>
+            <p class="text-xl md:text-3xl heading-text mb-8 font-medium">
+                Data Scientist | Machine Learning Engineer | IT Strategist
+            </p>
+            <p class="text-md md:text-lg subtle-text max-w-3xl mx-auto mb-10 leading-relaxed">
+                Welcome to a showcase of innovation where data meets design. I engineer intelligent solutions, transform complex datasets into strategic assets, and drive technological progress. Rooted in Ruiru, Kenya, my focus is on creating measurable impact through cutting-edge IT strategies and sophisticated machine learning applications. Journey through my portfolio and witness the power of technology applied with purpose.
+            </p>
+            <a href="#projects" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 shadow-lg inline-block">
+                Discover My Work
+            </a>
+             <p id="welcome-back-message" class="mt-6 text-sm text-purple-300 font-medium"></p>
+             <div id="user-progress-bar" class="w-1/2 max-w-xs h-2 bg-white/20 rounded-full mx-auto mt-6 hidden">
+                 <div id="user-progress" class="h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full transition-width duration-500 ease-out" style="width: 0%;"></div>
+             </div>
+             <p id="user-progress-text" class="text-xs subtle-text mt-1"></p>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 content-above">
+             <a href="#about" aria-label="Scroll down to learn more">
+                <i data-lucide="arrow-down-circle" class="subtle-text hover:heading-text transition-colors animate-bounce h-8 w-8"></i>
+            </a>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 md:py-32 section-bg-alt section-container" data-section-name="About">
+        <div class="container mx-auto px-6 text-center mb-16">
+             <span class="section-header-line text-purple-300">Chapter I</span>
+            <h2 class="section-header-title text-4xl md:text-5xl font-bold heading-text">The Narrative Arc: Blending Technology & Impact</h2>
+            <p class="section-header-subtitle text-lg subtle-text leading-relaxed">
+                **Synopsis:** Uncover the journey behind the algorithms. This chapter follows my trajectory from rigorous academic training to impactful, real-world applications, emphasizing pivotal experiences where technology catalyzed improvements in Kenyan healthcare systems and fortified public sector digital infrastructure.
+            </p>
+            <div class="lottie-animation-placeholder placeholder-bg placeholder-text border-color">
+                <i data-lucide="bar-chart-3" class="w-10 h-10 text-purple-400"></i>
+                <span>Visualize: Hospital Efficiency Gains (Requires Lottie/JS)</span>
+                <span class="text-xs mt-1">Illustrating the 35% wait time reduction.</span>
+            </div>
+            <p class="text-xs subtle-text mt-4">(Conceptual: Section transitions could be animated like turning pages using Framer Motion/GSAP. Data visualizations require Lottie or Chart.js integration.)</p>
+             <button class="narration-trigger text-xs subtle-text mt-2 hover:heading-text transition-colors" data-narration-key="about" aria-label="Play audio narration for About section">
+                 <i data-lucide="play-circle" class="inline h-4 w-4 mr-1"></i> Hear My Story (Requires Web Speech Synthesis)
+             </button>
+        </div>
+
+        <div class="container mx-auto px-6">
+            <div class="max-w-xs mx-auto mb-16">
+                 <img src="https://placehold.co/200x200/FFFFFF/764BA2?text=DW" alt="Daniel Wanjala Profile Placeholder" class="rounded-full shadow-lg border-4 border-purple-300/50 mx-auto"> <p class="text-center text-sm subtle-text mt-4">Daniel Wanjala | Data Scientist & Innovator | Ruiru, Kenya.</p>
+            </div>
+
+            <div class="space-y-12 max-w-4xl mx-auto">
+                 <div class="p-6 card-bg rounded-lg shadow-lg border border-color transform transition duration-500 hover:scale-[1.02]">
+                    <h3 class="text-2xl font-semibold mb-3 text-purple-300 flex items-center">
+                        <i data-lucide="map-pin" class="mr-3 h-6 w-6"></i> Grounded in Kenya, Driven by Innovation
+                    </h3>
+                    <p class="subtle-text leading-relaxed">
+                        My professional journey is deeply rooted in the vibrant tech landscape of Kenya. It commenced with a solid academic foundation—a Bachelor of Science in Information Technology from Zetech University (2022)—further enriched by specialized, practical training in Data Science and Machine Learning at Moringa School. My pursuit of knowledge continues with a Master of Science in Data Science at Cooperative University Kenya (2024-Present). This path underscores my dedication to harnessing global technological advancements to devise solutions addressing local needs and contributing significantly to Kenya's innovation ecosystem.
+                    </p>
+                </div>
+                 <div id="experience" class="p-6 card-bg rounded-lg shadow-lg border border-color transform transition duration-500 hover:scale-[1.02]">
+                     <h3 class="text-2xl font-semibold mb-3 text-green-300 flex items-center">
+                        <i data-lucide="activity" class="mr-3 h-6 w-6"></i> Experience Highlight: Transforming Healthcare Operations
+                    </h3>
+                    <p class="subtle-text leading-relaxed mb-4">
+                        Serving as a volunteer Senior IT Manager and Data Scientist at Kingdom Hospital, Webuye (Jan 2023 - Present), has been a profoundly rewarding experience, allowing me to apply technology directly to enhance patient outcomes and operational effectiveness. In collaboration with a dedicated team of IT interns whom I mentored, we prioritized maintaining high standards of network security, ensuring consistent system uptime for critical hospital functions, and preserving the integrity of vital patient data.
+                    </p>
+                     <p class="subtle-text leading-relaxed mb-4">
+                        A cornerstone achievement was the development and deployment of predictive analytics models tailored for optimizing patient flow. Through meticulous analysis of historical data and identification of operational bottlenecks, these models led to a remarkable <strong class="text-green-300 pulsate">35% reduction in average patient waiting times</strong>. Concurrently, we automated essential hospital management tasks by integrating Frappe-based ERP solutions, substantially improving the accuracy of record-keeping and billing processes, thus fostering a more efficient administrative environment. My responsibilities also extended to enforcing rigorous cybersecurity protocols and implementing robust disaster recovery plans to safeguard sensitive patient information against potential threats.
+                    </p>
+                     <p class="mt-3 text-sm subtle-text">Explore the <strong class="link-text underline decoration-dotted cursor-help" title="This involved applying predictive modeling (like queuing theory simulations and regression analysis) and process mining techniques to analyze patient journeys, identify bottlenecks in scheduling and resource allocation, and suggest optimized workflows. (Dynamic insight via JS/API fetch)">methodologies behind patient flow optimization</strong>.</p>
+                     <blockquote class="mt-4 pl-4 border-l-4 border-green-400 italic text-sm subtle-text">
+                         "Daniel’s data-centric approach revolutionized our workflow. The 35% decrease in wait times demonstrates a profound impact on patient experience." (Conceptual AI-Generated Testimonial)
+                     </blockquote>
+                </div>
+                 <div class="p-6 card-bg rounded-lg shadow-lg border border-color transform transition duration-500 hover:scale-[1.02]">
+                     <h3 class="text-2xl font-semibold mb-3 text-red-400 flex items-center">
+                         <i data-lucide="shield-check" class="mr-3 h-6 w-6"></i> Experience Highlight: Enhancing Public Sector Digital Resilience
+                    </h3>
+                    <p class="subtle-text leading-relaxed">
+                        My volunteer role as an ICT Expert with the Webuye District (March 2024) focused on bolstering the public sector's digital capabilities. This involved spearheading the digitization of administrative records to improve accessibility and service efficiency. A critical aspect was strengthening the district's digital defenses by leading network maintenance upgrades and implementing comprehensive <strong class="text-red-400 hover:animate-pulse cursor-help" title="Securing critical infrastructure since 2023! (Conceptual Easter Egg)">cybersecurity</strong> frameworks to protect essential systems and data. Furthermore, I developed and delivered training programs for district staff, enhancing their proficiency in data management, system troubleshooting, and secure digital communication practices, fostering a more tech-aware workforce.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20 md:py-32 bg-gray-900 section-container gan-background" data-section-name="Skills">
+        <div class="container mx-auto px-6 text-center mb-16">
+            <span class="section-header-line text-purple-300">Chapter II</span>
+            <h2 class="section-header-title text-4xl md:text-5xl font-bold heading-text">The Skill Constellation: A Tapestry of Expertise</h2>
+            <p class="section-header-subtitle text-lg subtle-text leading-relaxed">
+                **Synopsis:** Embark on an interactive exploration of my technical and strategic skill set. This section visualizes core competencies across Data Science, IT Management, and Software Development through dynamic representations or invites you to test your understanding with the Skill Challenge. See the tools and methodologies I leverage.
+            </p>
+             <p class="text-xs subtle-text mt-4">(Conceptual: Interactive 3D skill map requires WebGL/Three.js. Generative backgrounds need image API integration. Gamification involves complex JS logic.)</p>
+              <p class="text-xs subtle-text mt-2">(Conceptual: An ambient, subtly futuristic soundscape could complement this section - Requires Web Audio API)</p>
+             <button class="narration-trigger text-xs subtle-text mt-2 hover:heading-text transition-colors" data-narration-key="skills" aria-label="Play audio narration for Skills section">
+                 <i data-lucide="play-circle" class="inline h-4 w-4 mr-1"></i> Hear About My Skills (Requires Web Speech Synthesis)
+             </button>
+        </div>
+
+        <div class="container mx-auto px-6">
+            <div class="mb-16 p-6 card-bg backdrop-blur-sm rounded-lg shadow-xl border border-color">
+                <h3 class="text-3xl font-semibold mb-6 text-center text-blue-300">Interactive Skill Galaxy</h3>
+                <div id="skill-galaxy-canvas" class="webgl-canvas-placeholder placeholder-bg placeholder-text border-color">
+                    <p class="max-w-md">Conceptual: Imagine navigating a 3D space where skills orbit like celestial bodies. Python, TensorFlow, Tableau, Network Security, Frappe connect via luminous pathways. Interacting with nodes reveals proficiency details and links to projects where the skill was applied.<br/>(Requires WebGL library like Three.js)</p>
+                </div>
+                 <p class="mt-4 text-center text-sm subtle-text">Hover over key technologies like <strong class="link-text underline decoration-dotted cursor-help" title="Including MLPs, CNNs (for image tasks like plant disease detection), RNNs & LSTMs (for sequential data like GDP forecasting). Expertise in model architecture, training, and evaluation. (Dynamic insight via JS/API)">Neural Networks</strong> for detailed context.</p>
+            </div>
+
+            <div class="mb-16 p-6 card-bg backdrop-blur-sm rounded-lg shadow-xl border border-color">
+                <h3 class="text-3xl font-semibold mb-6 text-center text-green-300">Skill Mastery Challenge (Conceptual)</h3>
+                <div class="text-center subtle-text">
+                    <p class="mb-4">Ready to test your knowledge? Answer correctly to unlock skill badges!</p>
+                    <p class="mb-2 text-lg">Challenge: <span id="skill-challenge-question" class="font-medium text-green-200">Which ML technique was central to the GDP prediction model?</span></p>
+                    <input type="text" id="skill-challenge-answer" class="bg-gray-800 border border-color rounded px-3 py-1 text-white mx-auto block my-3 placeholder-gray-500" placeholder="Enter your answer...">
+                    <button id="skill-challenge-submit" class="ml-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-1 px-3 rounded transition-colors">Validate Answer</button>
+                    <p id="skill-challenge-feedback" class="text-sm mt-2 h-4 font-medium"></p>
+                    <div id="skill-badges" class="mt-4 flex justify-center gap-3 flex-wrap">
+                         <span class="skill-badge inline-block p-1.5 px-3 bg-gray-600 rounded-full text-xs shadow" data-skill="python" title="Locked">Python <i data-lucide="lock" class="inline h-3 w-3 ml-1"></i></span>
+                         <span class="skill-badge inline-block p-1.5 px-3 bg-gray-600 rounded-full text-xs shadow" data-skill="tensorflow" title="Locked">TensorFlow <i data-lucide="lock" class="inline h-3 w-3 ml-1"></i></span>
+                         <span class="skill-badge inline-block p-1.5 px-3 bg-gray-600 rounded-full text-xs shadow" data-skill="timeseries" title="Locked">Time-Series <i data-lucide="lock" class="inline h-3 w-3 ml-1"></i></span>
+                         </div>
+                     <p class="text-xs subtle-text mt-4">(Full gamification requires JavaScript for question/answer logic, progress tracking, and dynamic SVG badge animations upon successful completion.)</p>
+                </div>
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="p-6 card-bg backdrop-blur-sm rounded-lg shadow-xl border border-color">
+                    <h4 class="text-2xl font-semibold mb-4 text-green-300 flex items-center"><i data-lucide="cpu" class="mr-3"></i>Technical Proficiency</h4>
+                    <ul class="space-y-3 subtle-text">
+                        <li class="flex items-center justify-between group">
+                            <span class="cursor-help" title="Core languages for data analysis (Pandas, NumPy), ML model building (Scikit-learn, TensorFlow/Keras), automation, and database interaction (SQL).">Python, SQL</span>
+                            <span class="skill-nebula text-xs text-green-300 opacity-0 group-hover:opacity-100 transition-opacity">[Visualize - Canvas/JS]</span>
+                        </li>
+                        <li class="flex items-center justify-between group"><span title="Expertise in creating compelling static (Matplotlib, Seaborn) and interactive (Tableau) visualizations to effectively communicate complex data insights and project results.">Tableau, Matplotlib, Seaborn</span> <span class="skill-nebula text-xs text-green-300 opacity-0 group-hover:opacity-100 transition-opacity">[Visualize]</span></li>
+                        <li class="flex items-center justify-between group"><span title="Proficient in designing, training, evaluating, and deploying various ML models for prediction, classification, clustering, and forecasting, including Deep Learning architectures (NNs, CNNs, RNNs).">ML: Predictive Modeling, NN, Deep Learning</span> <span class="skill-nebula text-xs text-green-300 opacity-0 group-hover:opacity-100 transition-opacity">[Visualize]</span></li>
+                        <li class="flex items-center justify-between group"><span title="Skilled in handling large datasets: cleaning, transforming, feature selection, and engineering relevant variables to optimize model performance and extract meaningful patterns.">Big Data: Wrangling, Feature Engineering</span> <span class="skill-nebula text-xs text-green-300 opacity-0 group-hover:opacity-100 transition-opacity">[Visualize]</span></li>
+                        <li class="flex items-center justify-between group"><span title="Competent in managing IT infrastructure, including network configuration, server maintenance, system administration tasks, and efficient troubleshooting of technical issues.">System Admin: Network Maint., IT Troubleshoot</span> <span class="skill-nebula text-xs text-green-300 opacity-0 group-hover:opacity-100 transition-opacity">[Visualize]</span></li>
+                         <li class="flex items-center justify-between group"><span title="Practical experience utilizing the Frappe framework for developing and customizing ERPNext-based applications, demonstrated in the hospital management system integration.">Frappe Framework</span> <span class="skill-nebula text-xs text-green-300 opacity-0 group-hover:opacity-100 transition-opacity">[Visualize]</span></li>
+                         <li class="flex items-center justify-between group"><span title="Knowledgeable in implementing security protocols, conducting vulnerability assessments, and devising disaster recovery strategies to ensure data protection and operational continuity.">Cybersecurity & Disaster Recovery</span> <span class="skill-nebula text-xs text-green-300 opacity-0 group-hover:opacity-100 transition-opacity">[Visualize]</span></li>
+                    </ul>
+                    <p class="text-xs subtle-text mt-3">(Conceptual 'Nebula' visualization requires Canvas/JS. Hover insights need dynamic JS.)</p>
+                </div>
+
+                <div class="p-6 card-bg backdrop-blur-sm rounded-lg shadow-xl border border-color">
+                    <h4 class="text-2xl font-semibold mb-4 text-yellow-300 flex items-center"><i data-lucide="users-2" class="mr-3"></i>Strategic & Collaborative Strengths</h4>
+                    <ul class="space-y-3 subtle-text">
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-yellow-300 mr-2 h-5 w-5 flex-shrink-0"></i>Rigorous Analytical Problem-Solving</li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-yellow-300 mr-2 h-5 w-5 flex-shrink-0"></i>Proactive & Effective Leadership</li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-yellow-300 mr-2 h-5 w-5 flex-shrink-0"></i>Meticulous Research & Clear Documentation</li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-yellow-300 mr-2 h-5 w-5 flex-shrink-0"></i>Exceptional Adaptability & Lifelong Learner</li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-yellow-300 mr-2 h-5 w-5 flex-shrink-0"></i>Transparent Communication & Team Synergy</li>
+                    </ul>
+                     <p class="text-xs subtle-text mt-3">(Conceptual: Subtle background effects could respond to user interaction - Requires JS)</p>
+                </div>
+
+                <div class="p-6 card-bg backdrop-blur-sm rounded-lg shadow-xl border border-color">
+                    <h4 class="text-2xl font-semibold mb-4 text-red-400 flex items-center"><i data-lucide="box" class="mr-3"></i>Technology & Platform Ecosystem</h4>
+                    <ul class="space-y-3 subtle-text">
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-red-300 mr-2 h-5 w-5 flex-shrink-0"></i>ML/DL: TensorFlow, Keras, Scikit-learn</li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-red-300 mr-2 h-5 w-5 flex-shrink-0"></i>DevOps: Git, GitHub, Docker (Basic)</li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-red-300 mr-2 h-5 w-5 flex-shrink-0"></i>Cloud Platforms: Google Cloud (Intro)</li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-red-300 mr-2 h-5 w-5 flex-shrink-0"></i>Data Env: Jupyter Notebooks, Google Colab</li>
+                         <li class="flex items-center"><i data-lucide="check-circle-2" class="text-red-300 mr-2 h-5 w-5 flex-shrink-0"></i>Operating Systems: Linux Proficiency</li>
+                         <li class="flex items-center"><i data-lucide="check-circle-2" class="text-red-300 mr-2 h-5 w-5 flex-shrink-0"></i>Business Intelligence: Tableau Desktop</li>
+                         <li class="flex items-center"><i data-lucide="check-circle-2" class="text-red-300 mr-2 h-5 w-5 flex-shrink-0"></i>Databases: SQL (PostgreSQL, MySQL)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 md:py-32 section-bg-alt section-container" data-section-name="Projects">
+        <div class="container mx-auto px-6 text-center mb-16">
+             <span class="section-header-line text-green-300">Chapter III</span>
+            <h2 class="section-header-title text-4xl md:text-5xl font-bold heading-text">The Innovation Lab: Featured Projects</h2>
+            <p class="section-header-subtitle text-lg subtle-text leading-relaxed">
+                **Synopsis:** Interact with the tangible results of my expertise. This curated collection highlights key projects, featuring conceptual code playgrounds, animated development timelines, and potential augmented reality previews for a truly immersive exploration of my work.
+            </p>
+             <p class="text-xs subtle-text mt-4">(Conceptual: Interactive elements require JS libraries like CodeMirror, Chart.js, AR.js, GSAP.)</p>
+             <button class="narration-trigger text-xs subtle-text mt-2 hover:heading-text transition-colors" data-narration-key="projects" aria-label="Play audio narration for Projects section">
+                 <i data-lucide="play-circle" class="inline h-4 w-4 mr-1"></i> Hear Project Overviews (Requires Web Speech Synthesis)
+             </button>
+        </div>
+
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="project-card card-bg rounded-lg shadow-lg overflow-hidden p-6 border border-color flex flex-col">
+                     <img src="https://placehold.co/600x300/FFFFFF/764BA2?text=GDP+Model" alt="GDP Growth Prediction Thumbnail Placeholder" class="rounded mb-4 aspect-video object-cover border border-color">
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-300 flex items-center">
+                        <i data-lucide="trending-up" class="mr-2"></i>GDP Growth Prediction Model
+                    </h3>
+                    <p class="text-sm subtle-text mb-4">Engineered a predictive model using machine learning to forecast national GDP growth, leveraging key economic indicators for enhanced accuracy.</p>
+                    <div class="project-timeline text-xs subtle-text mb-4 border-l-2 border-blue-400 pl-2 space-y-1">
+                        <p data-phase="1">Phase 1: Data Sourcing & Rigorous Preprocessing</p>
+                        <p data-phase="2">Phase 2: Time-Series Model Selection & Training</p>
+                        <p data-phase="3">Phase 3: Insight Extraction & Policy Recommendation</p>
+                        <p class="mt-1 italic">(Conceptual: Animate phases on scroll via JS)</p>
+                    </div>
+                    <p class="text-sm subtle-text mb-4 flex-grow"><strong>Outcome:</strong> Provided crucial data-driven insights supporting evidence-based economic policy formulation and strategic investment planning.</p>
+                    <div class="mt-auto pt-4">
+                        <div class="p-3 bg-black/20 rounded text-xs placeholder-text mb-4 border border-color">
+                            <p class="font-semibold mb-1 text-gray-200">Conceptual Playground:</p>
+                            Adjust Inflation Rate (%): <input type="range" min="1" max="15" value="5" class="w-full h-1 bg-gray-500/50 rounded-lg appearance-none cursor-pointer mt-1 accent-purple-400">
+                            <p class="mt-1">Predicted GDP Growth Visualization (Requires Chart.js/Plotly + JS)</p>
+                        </div>
+                        <a href="https://github.com/dmwanjala/Phase-3-Project-Modelling" target="_blank" rel="noopener noreferrer" class="inline-block link-text font-medium transition duration-200">
+                            Explore Repository <i data-lucide="github" class="inline h-4 w-4 ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card card-bg rounded-lg shadow-lg overflow-hidden p-6 border border-color flex flex-col">
+                     <img src="https://placehold.co/600x300/FFFFFF/764BA2?text=Plant+AI" alt="AI Plant Disease Detection Thumbnail Placeholder" class="rounded mb-4 aspect-video object-cover border border-color">
+                    <h3 class="text-2xl font-semibold mb-3 text-green-300 flex items-center">
+                         <i data-lucide="scan-search" class="mr-2"></i>AI-Driven Plant Disease Detection
+                    </h3>
+                     <p class="text-sm subtle-text mb-4">Developed an advanced agricultural technology solution using computer vision and deep learning to accurately identify plant diseases from images.</p>
+                     <div class="project-timeline text-xs subtle-text mb-4 border-l-2 border-green-400 pl-2 space-y-1">
+                        <p data-phase="1">Phase 1: Dataset Curation (10k+ Diverse Images)</p>
+                        <p data-phase="2">Phase 2: CNN Model Training (TensorFlow, ~92% Acc.)</p>
+                        <p data-phase="3">Phase 3: Proof-of-Concept Deployment & Testing</p>
+                         <p class="mt-1 italic">(Conceptual: Animate phases on scroll via JS)</p>
+                    </div>
+                    <p class="text-sm subtle-text mb-4 flex-grow"><strong>Outcome:</strong> Created a powerful tool for early disease detection, potentially boosting crop yields and contributing to regional food security efforts.</p>
+                     <div class="mt-auto pt-4">
+                        <div class="p-3 bg-black/20 rounded text-xs placeholder-text text-center mb-4 border border-color">
+                             <i data-lucide="scan-line" class="h-8 w-8 mx-auto mb-2 text-green-400"></i>
+                            <p>Scan QR for Augmented Reality Preview (Conceptual)</p>
+                            <p>(Requires AR.js/WebXR, 3D plant model, QR generation)</p>
+                        </div>
+                        <a href="https://github.com/dmwanjala/Capstone-Lazarus" target="_blank" rel="noopener noreferrer" class="inline-block link-text font-medium transition duration-200">
+                            Explore Repository <i data-lucide="github" class="inline h-4 w-4 ml-1"></i>
+                        </a>
+                        <p class="text-xs subtle-text mt-2">(Conceptual: AR interaction could trigger haptic feedback via Vibration API)</p>
+                    </div>
+                </div>
+
+                <div class="project-card card-bg rounded-lg shadow-lg overflow-hidden p-6 border border-color flex flex-col">
+                     <img src="https://placehold.co/600x300/FFFFFF/764BA2?text=GDP+Forecast" alt="Kenya GDP Forecasting Tool Thumbnail Placeholder" class="rounded mb-4 aspect-video object-cover border border-color">
+                    <h3 class="text-2xl font-semibold mb-3 text-purple-300 flex items-center">
+                         <i data-lucide="line-chart" class="mr-2"></i>Kenya GDP Forecasting Tool
+                    </h3>
+                     <p class="text-sm subtle-text mb-4">Constructed an analytical tool employing time-series analysis techniques to model and predict future trends in Kenya's Gross Domestic Product.</p>
+                      <div class="project-timeline text-xs subtle-text mb-4 border-l-2 border-purple-400 pl-2 space-y-1">
+                        <p data-phase="1">Phase 1: Indicator Analysis & Data Preparation</p>
+                        <p data-phase="2">Phase 2: Time-Series Modeling (e.g., ARIMA/LSTM)</p>
+                        <p data-phase="3">Phase 3: Results Visualization & Reporting</p>
+                         <p class="mt-1 italic">(Conceptual: Animate phases on scroll via JS)</p>
+                    </div>
+                    <p class="text-sm subtle-text mb-4 flex-grow"><strong>Outcome:</strong> Equipped stakeholders with a robust, data-informed perspective on economic trajectories, facilitating better strategic planning and policy decisions.</p>
+                    <div class="mt-auto pt-4">
+                        <a href="https://github.com/dmwanjala/GDP-Forecast-Sample" target="_blank" rel="noopener noreferrer" class="inline-block link-text font-medium transition duration-200">
+                            Explore Repository <i data-lucide="github" class="inline h-4 w-4 ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card card-bg rounded-lg shadow-lg overflow-hidden p-6 border border-color flex flex-col">
+                     <img src="https://placehold.co/600x300/FFFFFF/764BA2?text=InvestWise" alt="InvestWise Predictor Thumbnail Placeholder" class="rounded mb-4 aspect-video object-cover border border-color">
+                    <h3 class="text-2xl font-semibold mb-3 text-yellow-300 flex items-center">
+                         <i data-lucide="brain-circuit" class="mr-2"></i>InvestWise Predictor (In Development)
+                    </h3>
+                     <p class="text-sm subtle-text mb-4">Architecting an intelligent web platform using neural networks to synthesize diverse economic, trade, and demographic data for predicting regional investment viability within Kenya.</p>
+                      <div class="project-timeline text-xs subtle-text mb-4 border-l-2 border-yellow-400 pl-2 space-y-1">
+                         <p data-phase="1">Phase 1: Multi-Source Data Integration Pipeline</p>
+                         <p data-phase="2">Phase 2: Neural Network Design & Optimization</p>
+                         <p data-phase="3">Phase 3: Web Application & API Development (Ongoing)</p>
+                          <p class="mt-1 italic">(Conceptual: Animate phases on scroll via JS)</p>
+                    </div>
+                    <p class="text-sm subtle-text mb-4 flex-grow"><strong>Outcome:</strong> Aims to provide investors with sophisticated, data-driven evaluations and recommendations, promoting targeted economic development across Kenya's diverse regions.</p>
+                    <p class="text-xs subtle-text mb-4 font-semibold">(Status: Active Development)</p>
+                    <div class="mt-auto pt-4">
+                         <p class="text-xs subtle-text mb-2">(Ask the AI Assistant for the latest updates on this project!)</p>
+                        <a href="https://github.com/dmwanjala/InvestWise-Predictor-Project" target="_blank" rel="noopener noreferrer" class="inline-block link-text font-medium transition duration-200">
+                            Track Progress on GitHub <i data-lucide="github" class="inline h-4 w-4 ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                 <div class="project-card card-bg rounded-lg shadow-lg overflow-hidden p-6 border border-color flex flex-col">
+                    <img src="https://placehold.co/600x300/FFFFFF/764BA2?text=Netflix+Stocks" alt="Netflix Stock Analysis Thumbnail Placeholder" class="rounded mb-4 aspect-video object-cover border border-color">
+                    <h3 class="text-2xl font-semibold mb-3 text-red-400 flex items-center">
+                         <i data-lucide="candlestick-chart" class="mr-2"></i>Netflix Stock Performance Analysis
+                    </h3>
+                     <p class="text-sm subtle-text mb-4">Performed a quantitative examination of Netflix's historical stock market data to identify statistically significant trends, volatility patterns, and potential investment characteristics.</p>
+                      <div class="project-timeline text-xs subtle-text mb-4 border-l-2 border-red-400 pl-2 space-y-1">
+                         <p data-phase="1">Phase 1: Data Acquisition & Time-Series Preparation</p>
+                         <p data-phase="2">Phase 2: Statistical Analysis (Trends, Volatility)</p>
+                         <p data-phase="3">Phase 3: Visualization & Investment Insight Summary</p>
+                          <p class="mt-1 italic">(Conceptual: Animate phases on scroll via JS)</p>
+                    </div>
+                    <p class="text-sm subtle-text mb-4 flex-grow"><strong>Outcome:</strong> Delivered objective, data-supported insights regarding the historical performance and risk profile of Netflix stock, assisting investors in evaluating its suitability.</p>
+                     <div class="mt-auto pt-4">
+                         <div class="p-3 bg-black/20 rounded text-xs placeholder-text mb-4 border border-color">
+                             <p class="font-semibold mb-1 text-gray-200">Conceptual Visualization:</p>
+                             <p>(Embed interactive candlestick chart here - Requires TradingView API/Library)</p>
+                         </div>
+                        <a href="https://github.com/dmwanjala/Netflix-Analysis" target="_blank" rel="noopener noreferrer" class="inline-block link-text font-medium transition duration-200">
+                            Explore Repository <i data-lucide="github" class="inline h-4 w-4 ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                 <div class="flex flex-col items-center justify-center card-bg backdrop-blur-sm rounded-lg shadow-lg p-6 border border-color text-center">
+                     <h3 class="text-2xl font-semibold mb-3 heading-text">Discover More Innovations</h3>
+                     <p class="subtle-text mb-4">My GitHub profile is a hub for a broader range of projects, ongoing experiments, and open-source contributions. See what's currently under development.</p>
+                     <div id="github-feed" class="w-full text-left text-xs card-bg p-3 rounded mb-4 h-32 overflow-y-auto border border-color scrollbar-thin scrollbar-thumb-purple-400/50 scrollbar-track-transparent">
+                         <p class="subtle-text font-semibold mb-2">Recent GitHub Activity (Conceptual)</p>
+                         <p class="subtle-text">[Live feed requires JavaScript + GitHub API integration]</p>
+                         <p><span class="text-blue-300">commit:</span> Enhanced error handling in InvestWise API <span class="subtle-text">- 1h ago</span></p>
+                         <p><span class="text-green-300">pr merged:</span> Added data validation script for GDP tool <span class="subtle-text">- 4h ago</span></p>
+                         <p><span class="text-purple-300">issue closed:</span> Resolved image loading bug in plant detector <span class="subtle-text">- 1d ago</span></p>
+                     </div>
+                     <a href="https://github.com/MadScie254?tab=repositories" target="_blank" rel="noopener noreferrer" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center transform hover:scale-105">
+                         <i data-lucide="github" class="mr-2"></i> Visit GitHub Profile
+                     </a>
+                 </div>
+
+            </div> </div>
+    </section>
+
+     <section id="education" class="py-20 md:py-32 bg-gray-900 section-container" data-section-name="Education">
+        <div class="container mx-auto px-6 text-center mb-16">
+            <span class="section-header-line text-blue-300">Foundations</span>
+            <h2 class="section-header-title text-4xl md:text-5xl font-bold heading-text">Academic Pillars</h2>
+            <p class="section-header-subtitle text-lg subtle-text leading-relaxed">
+                **Synopsis:** Charting the educational milestones that shaped my technical expertise, from a comprehensive undergraduate degree in Information Technology to specialized Data Science training and current postgraduate studies driving deeper research.
+            </p>
+            <div class="lottie-animation-placeholder placeholder-bg placeholder-text border-color w-32 h-32">
+                <i data-lucide="graduation-cap" class="w-10 h-10 text-blue-300"></i>
+                <span>Education Path Visualization (Conceptual)</span>
+            </div>
+        </div>
+        <div class="container mx-auto px-6 max-w-4xl space-y-8">
+            <div class="p-6 card-bg rounded-lg shadow-lg border border-color transition-shadow hover:shadow-purple-500/20">
+                <h3 class="text-xl font-semibold mb-2 text-blue-300">Master of Science in Data Science (Pursuing)</h3>
+                <p class="font-medium subtle-text">Cooperative University Kenya (2024 - Present)</p>
+                <p class="text-sm subtle-text mt-2 leading-relaxed">Currently advancing my knowledge in sophisticated machine learning algorithms, scalable big data analytics techniques, advanced statistical modeling, and rigorous research methodologies. My admission, secured through direct engagement with the department, underscores my proactive approach and dedication to the field.</p>
+            </div>
+            <div class="p-6 card-bg rounded-lg shadow-lg border border-color transition-shadow hover:shadow-purple-500/20">
+                <h3 class="text-xl font-semibold mb-2 text-blue-300">Bachelor of Science in Information Technology</h3>
+                <p class="font-medium subtle-text">Zetech University (Graduated 2022)</p>
+                <p class="text-sm subtle-text mt-2 leading-relaxed">Completed a wide-ranging curriculum focused on core IT principles, including relational database management (SQL), object-oriented programming (Python), network architecture, systems analysis, and business intelligence concepts. Graduated with honors, equipped with both theoretical knowledge and practical project experience.</p>
+            </div>
+             <div class="p-6 card-bg rounded-lg shadow-lg border border-color transition-shadow hover:shadow-purple-500/20">
+                <h3 class="text-xl font-semibold mb-2 text-blue-300">Certificate in Data Science and Machine Learning</h3>
+                <p class="font-medium subtle-text">Moringa School</p>
+                <p class="text-sm subtle-text mt-2 leading-relaxed">Engaged in an immersive, project-based learning environment concentrating on practical data science workflows using Python (Pandas, NumPy, Scikit-learn), fundamentals of deep learning, effective data visualization strategies (Matplotlib, Seaborn), and culminating in the development of applied projects like predictive financial models.</p>
+            </div>
+        </div>
+    </section>
+
+     <section id="certifications" class="py-20 md:py-32 section-bg-alt section-container" data-section-name="Certifications">
+        <div class="container mx-auto px-6 text-center mb-16">
+            <span class="section-header-line text-yellow-300">Credentials</span>
+            <h2 class="section-header-title text-4xl md:text-5xl font-bold heading-text">Validated Expertise & Lifelong Learning</h2>
+            <p class="section-header-subtitle text-lg subtle-text leading-relaxed">
+                **Synopsis:** This collection highlights my commitment to continuous professional development and skill validation through certifications earned from respected industry platforms including Google, HackerRank, LinkedIn Learning, and Udemy, covering diverse areas from cloud administration to advanced problem-solving.
+            </p>
+             <p class="text-xs subtle-text mt-4">(Conceptual: Certification cards could animate into view sequentially as the user scrolls, using GSAP/ScrollTrigger for a dynamic reveal.)</p>
+        </div>
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">Google Cloud - Intro to Workspace Admin</h4>
+                        <p class="text-xs subtle-text">ID: VUAXGZW4DX9Y</p>
+                    </div>
+                </div>
+                 <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">HackerRank - Software Engineer Role Cert</h4>
+                        <p class="text-xs subtle-text">ID: 0A531F3CF6CB</p>
+                    </div>
+                </div>
+                 <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">HackerRank - Problem Solving (Intermediate)</h4>
+                        <p class="text-xs subtle-text">ID: 9D0D1B09D24E</p>
+                    </div>
+                </div>
+                 <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">Google - Foundations: Data, Data, Everywhere</h4>
+                        <p class="text-xs subtle-text">ID: ZYDCF6KNWSAX</p>
+                    </div>
+                </div>
+                 <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">HackerRank - Python (Basic)</h4>
+                        <p class="text-xs subtle-text">ID: E883F6B460CF</p>
+                    </div>
+                </div>
+                 <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">Udemy - Python for Data Science</h4>
+                        <p class="text-xs subtle-text">ID: UC-b80a...</p>
+                    </div>
+                </div>
+                 <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">LinkedIn - Non-Technical Skills of Data Scientists</h4>
+                        <p class="text-xs subtle-text">(Completion)</p>
+                    </div>
+                </div>
+                 <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">Udemy - Practical Password Cracking</h4>
+                         <p class="text-xs subtle-text">ID: UC-96f1...</p>
+                    </div>
+                </div>
+                 <div class="p-4 card-bg rounded-lg shadow border border-color flex items-center space-x-3 transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                    <i data-lucide="award" class="text-yellow-400 h-8 w-8 flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-semibold heading-text text-sm">And Numerous Others...</h4>
+                        <p class="text-xs subtle-text">Dedicated to ongoing skill enhancement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <section id="blog" class="py-20 md:py-32 bg-gray-900 section-container" data-section-name="Blog">
+        <div class="container mx-auto px-6 text-center mb-16">
+            <span class="section-header-line text-yellow-300">Insights & Articles</span>
+            <h2 class="section-header-title text-4xl md:text-5xl font-bold heading-text">From the Digital Desk: Musings on Tech</h2>
+            <p class="section-header-subtitle text-lg subtle-text leading-relaxed">
+                **Synopsis:** A curated collection of articles, reflections, and technical deep-dives. Explore my perspectives on the evolving landscape of artificial intelligence, practical data science applications, lessons learned from project development, and commentary on emerging technology trends.
+            </p>
+             <p class="text-xs subtle-text mt-4">(Conceptual: Blog posts could be dynamically rendered from Markdown files or a headless CMS using JavaScript frameworks or libraries like Marked.js.)</p>
+        </div>
+        <div class="container mx-auto px-6 max-w-4xl">
+             <div class="p-6 card-bg rounded-lg shadow-xl border border-color subtle-text">
+                 <h3 class="text-2xl font-semibold mb-4 text-yellow-300">Featured Post (Conceptual Example)</h3>
+                 <article class="prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none theme-prose"> <h4>Bridging the Gap: Implementing Advanced Analytics in Resource-Constrained Environments</h4>
+                     <p class="leading-relaxed">The successful application of predictive analytics at Kingdom Hospital underscores a critical point: advanced data science isn't solely the domain of large corporations with vast resources. However, deploying these techniques effectively in settings with limited infrastructure, potential data quality issues, or varying levels of digital literacy requires a nuanced approach. This involves prioritizing robust data preprocessing, selecting computationally efficient models, and focusing on solutions that provide clear, actionable insights without demanding extensive technical overhead...</p>
+                     <p class="leading-relaxed">[Imagine the full article here, perhaps discussing specific Python libraries used, challenges overcome, and future possibilities. Could include code snippets or simple charts rendered via JS.]</p>
+                     <a href="#" class="link-text hover:underline font-medium">Continue Reading (Conceptual Link)</a>
+                 </article>
+            </div>
+             <div class="mt-8 text-center">
+                 <a href="#" class="link-text hover:underline font-medium">View All Posts (Conceptual Link)</a>
+             </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 md:py-32 section-bg-alt section-container" data-section-name="Contact">
+         <div class="container mx-auto px-6 text-center mb-16">
+             <span class="section-header-line text-red-400">Chapter IV</span>
+            <h2 class="section-header-title text-4xl md:text-5xl font-bold heading-text">Initiate Dialogue: Connect & Collaborate</h2>
+            <p class="section-header-subtitle text-lg subtle-text leading-relaxed">
+                **Synopsis:** Let's connect and explore possibilities. Visualize key milestones on an interactive globe or use the streamlined contact methods below to discuss potential collaborations, data science challenges, or groundbreaking projects. Your inquiry is welcomed.
+            </p>
+             <p class="text-xs subtle-text mt-4">(Conceptual: Interactive globe requires Three.js/WebGL. AR card needs AR.js/WebXR. Direct messaging utilizes URI schemes.)</p>
+             <button class="narration-trigger text-xs subtle-text mt-2 hover:heading-text transition-colors" data-narration-key="contact" aria-label="Play audio narration for Contact section">
+                 <i data-lucide="play-circle" class="inline h-4 w-4 mr-1"></i> Hear Contact Details (Requires Web Speech Synthesis)
+             </button>
+        </div>
+
+        <div class="container mx-auto px-6 flex flex-col lg:flex-row gap-12 items-start">
+            <div class="w-full lg:w-1/2 p-6 card-bg backdrop-blur-sm rounded-lg shadow-xl border border-color">
+                <h3 class="text-3xl font-semibold mb-6 text-center text-blue-300">Mapping the Journey</h3>
+                 <div id="contact-globe-canvas" class="webgl-canvas-placeholder placeholder-bg placeholder-text border-color">
+                     <p class="max-w-md">Conceptual: Envision an interactive 3D globe elegantly rotating, highlighting significant locations like Ruiru, Webuye, and Zetech University. Clicking these points could unveil compelling narrative snippets or project highlights through smooth modal transitions.<br/>(Requires WebGL library like Three.js)</p>
+                     <div class="lottie-animation-placeholder placeholder-bg placeholder-text border-color w-40 h-40">
+                         <i data-lucide="globe-2" class="w-10 h-10 text-blue-300"></i>
+                         <span>Visualize: Animated World Map (Requires Lottie/JS)</span>
+                     </div>
+                 </div>
+                 <div class="mt-6 p-3 bg-black/20 rounded text-xs placeholder-text text-center border border-color">
+                     <i data-lucide="scan-line" class="h-8 w-8 mx-auto mb-2 text-purple-300"></i>
+                     <p>Scan for Augmented Reality vCard (Conceptual)</p>
+                     <p>(Requires AR library, vCard design, QR generation)</p>
+                 </div>
+            </div>
+
+            <div class="w-full lg:w-1/2">
+                 <h3 class="text-3xl font-semibold mb-6 text-purple-300">Let's Start a Conversation</h3>
+                 <p class="subtle-text mb-8 leading-relaxed">I welcome inquiries regarding collaborative ventures, data science consulting, speaking engagements, or discussions on leveraging technology for positive impact. Please use the form or select a direct contact method below.</p>
+
+                 <div class="space-y-4 mb-8">
+                     <p class="flex items-center text-lg"><i data-lucide="mail" class="mr-3 text-purple-300 flex-shrink-0"></i> <a href="mailto:dmwanjala254@gmail.com" class="link-text transition break-all">dmwanjala254@gmail.com</a></p>
+                     <p class="flex items-center text-lg"><i data-lucide="phone-call" class="mr-3 text-purple-300 flex-shrink-0"></i> <a href="tel:+254742007277" class="link-text transition">+254 742 007 277</a></p>
+                     <p class="flex items-center text-lg"><i data-lucide="map-pin" class="mr-3 text-purple-300 flex-shrink-0"></i> Ruiru, Kiambu, Kenya</p>
+                 </div>
+
+                 <div class="flex flex-wrap gap-4 mb-8">
+                     <a href="https://linkedin.com/in/daniel-wanjala-91" target="_blank" rel="noopener noreferrer" class="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow hover:shadow-lg transform hover:-translate-y-0.5" aria-label="Connect on LinkedIn">
+                         <i data-lucide="linkedin" class="mr-2"></i> LinkedIn
+                     </a>
+                      <a href="https://github.com/dmwanjala" target="_blank" rel="noopener noreferrer" class="flex items-center bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow hover:shadow-lg transform hover:-translate-y-0.5" aria-label="View GitHub profile">
+                         <i data-lucide="github" class="mr-2"></i> GitHub
+                     </a>
+                     <a href="https://wa.me/254742007277?text=Hi%20Daniel,%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss..." target="_blank" rel="noopener noreferrer" class="flex items-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow hover:shadow-lg transform hover:-translate-y-0.5" aria-label="Send WhatsApp message">
+                         <i data-lucide="message-circle" class="mr-2"></i> WhatsApp
+                     </a>
+                      <a href="sms:+254742007277?body=Hello%20Daniel,%20regarding%20your%20portfolio..." class="flex items-center bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition duration-300 shadow hover:shadow-lg transform hover:-translate-y-0.5" aria-label="Send SMS message">
+                         <i data-lucide="smartphone" class="mr-2"></i> SMS
+                     </a>
+                      <button id="copy-email-btn" class="flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow hover:shadow-lg transform hover:-translate-y-0.5" aria-label="Copy email address to clipboard" data-clipboard-text="dmwanjala254@gmail.com">
+                         <i data-lucide="clipboard-copy" class="mr-2"></i> Copy Email
+                     </button>
+                 </div>
+                 <div id="clipboard-toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg text-sm opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+                     Email address copied!
+                 </div>
+
+
+                <form id="contact-form" class="space-y-4" aria-labelledby="contact-heading">
+                     <h3 id="contact-heading" class="sr-only">Contact Form</h3>
+                    <div>
+                        <label for="name" class="block text-sm font-medium subtle-text mb-1">Your Name</label>
+                        <input type="text" id="name" name="name" required class="w-full px-4 py-2 card-bg border border-color rounded-md focus:ring-purple-400 focus:border-purple-400 outline-none placeholder-gray-400 heading-text" placeholder="e.g., Jane Doe" aria-required="true">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium subtle-text mb-1">Your Email</label>
+                        <input type="email" id="email" name="email" required class="w-full px-4 py-2 card-bg border border-color rounded-md focus:ring-purple-400 focus:border-purple-400 outline-none placeholder-gray-400 heading-text" placeholder="e.g., jane.doe@example.com" aria-required="true">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium subtle-text mb-1">Your Message</label>
+                        <textarea id="message" name="message" rows="5" required class="w-full px-4 py-2 card-bg border border-color rounded-md focus:ring-purple-400 focus:border-purple-400 outline-none placeholder-gray-400 heading-text" placeholder="Please share your thoughts, questions, or proposal here..." aria-required="true"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-[1.03] shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-purple-800 focus:ring-pink-500">
+                        Submit Message
+                    </button>
+                     <p id="form-status" class="text-sm mt-3 text-center" aria-live="polite"></p>
+                     <p class="text-xs subtle-text mt-2 text-center">(Form submission requires EmailJS or a backend service. Conceptual: Could trigger haptic feedback via Vibration API.)</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black/30 py-8 mt-16 border-t border-white/10"> <div class="container mx-auto px-6 text-center subtle-text">
+            <div class="mb-4 inline-block group">
+                 <span class="text-3xl transition duration-300 ease-in-out group-hover:animate-bounce cursor-pointer" title="A hint of personality!" aria-label="Rugby ball icon">🏉</span>
+                 <p class="text-xs subtle-text">(Curious about the rugby ball? Click it!)</p>
+            </div>
+            <p class="text-sm">&copy; <span id="current-year"></span> Daniel Wanjala. All Rights Reserved.</p>
+            <p class="text-xs mt-2">Crafting data-driven solutions & digital experiences from Ruiru, Kenya.</p>
+             <button id="konami-trigger" class="mt-4 text-xs text-gray-500 hover:subtle-text transition-colors" aria-label="Konami code hint">Retro Mode Hint: ↑↑↓↓←→←→BA</button>
+             <div class="mt-4">
+                 <button id="contrast-toggle" class="text-xs text-gray-500 hover:subtle-text transition-colors" aria-label="Toggle high contrast mode (Conceptual)">
+                     <i data-lucide="contrast" class="inline h-4 w-4 mr-1"></i> Contrast Mode (Conceptual)
+                 </button>
+             </div>
+        </div>
+    </footer>
+
+    <script>
+        // Wrap entire script in a try...catch for basic safety
+        try {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log("DOM fully loaded and parsing script.");
+
+                // --- Initialize Lucide Icons ---
+                if (typeof lucide !== 'undefined') {
+                    try {
+                        lucide.createIcons();
+                        console.log("Lucide icons initialized.");
+                    } catch (e) { console.error("Lucide icons initialization failed:", e); }
+                } else { console.warn("Lucide library not found."); }
+
+
+                // --- Mobile Menu Toggle ---
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton && mobileMenu) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        const isHidden = mobileMenu.classList.toggle('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', !isHidden);
+                        const icon = mobileMenuButton.querySelector('svg'); // Find SVG element
+                        if (icon) {
+                            // Replace the icon content directly for reliability
+                            icon.innerHTML = isHidden
+                                ? '<use href="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/menu.svg" />'
+                                : '<use href="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/x.svg" />';
+                        }
+                    });
+                    mobileMenu.querySelectorAll('a, button.theme-option, #mute-audio-btn-mobile').forEach(item => {
+                        item.addEventListener('click', () => {
+                            if (!mobileMenu.classList.contains('hidden')) {
+                                mobileMenu.classList.add('hidden');
+                                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                                const icon = mobileMenuButton.querySelector('svg');
+                                if (icon) {
+                                   icon.innerHTML = '<use href="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/menu.svg" />';
+                                }
+                            }
+                        });
+                    });
+                    console.log("Mobile menu setup complete.");
+                } else {
+                     console.warn("Mobile menu button or panel not found.");
+                }
+
+                // --- Particle.js Initialization ---
+                if (typeof particlesJS !== 'undefined' && document.getElementById('particles-js')) {
+                    try {
+                        // Slightly simplified and adjusted config for colorful theme
+                        particlesJS('particles-js', {
+                          "particles": {
+                            "number": { "value": 50, "density": { "enable": true, "value_area": 800 } }, // Fewer particles
+                            "color": { "value": "#ffffff" },
+                            "shape": { "type": "circle" },
+                            "opacity": { "value": 0.6, "random": true, "anim": { "enable": true, "speed": 0.8, "opacity_min": 0.1, "sync": false } }, // Slightly more opaque, subtle animation
+                            "size": { "value": 3, "random": true, "anim": { "enable": false } },
+                            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 }, // Lighter lines
+                            "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false } }
+                          },
+                          "interactivity": {
+                            "detect_on": "canvas",
+                            "events": { "onhover": { "enable": true, "mode": "bubble" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, // Bubble on hover
+                            "modes": {
+                              "grab": { "distance": 140, "line_linked": { "opacity": 0.7 } },
+                              "bubble": { "distance": 200, "size": 5, "duration": 2, "opacity": 0.8, "speed": 3 }, // Smaller bubble
+                              "repulse": { "distance": 100, "duration": 0.4 },
+                              "push": { "particles_nb": 4 },
+                              "remove": { "particles_nb": 2 }
+                            }
+                          },
+                          "retina_detect": true
+                        });
+                        console.log("particles.js initialized successfully.");
+                    } catch (e) {
+                        console.error("particles.js initialization failed:", e);
+                        const particlesCanvas = document.getElementById('particles-js');
+                        if(particlesCanvas) particlesCanvas.style.display = 'none';
+                    }
+                } else {
+                     console.warn("particles.js library or canvas element not found.");
+                     const particlesCanvas = document.getElementById('particles-js');
+                     if(particlesCanvas) particlesCanvas.style.display = 'none'; // Hide if library missing
+                }
+
+                // --- Section Fade-in Animation on Scroll ---
+                 let sectionsViewed = {};
+                 const totalSections = document.querySelectorAll('section[data-section-name]').length;
+
+                try {
+                    const sections = document.querySelectorAll('.section-container');
+                    if ('IntersectionObserver' in window) {
+                        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+                        const observer = new IntersectionObserver((entries, observer) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    entry.target.classList.add('visible');
+                                    updateProgress(entry.target.dataset.sectionName);
+                                    // observer.unobserve(entry.target); // Optional: Animate only once
+                                } else {
+                                    // entry.target.classList.remove('visible'); // Optional: Animate every time
+                                }
+                            });
+                        }, observerOptions);
+                        sections.forEach(section => {
+                            if (section) observer.observe(section);
+                        });
+                        console.log("Intersection Observer setup for section animations.");
+                    } else {
+                        console.warn("IntersectionObserver not supported, making all sections visible.");
+                        sections.forEach(section => section?.classList.add('visible'));
+                    }
+                } catch (e) {
+                    console.error("Intersection Observer setup failed:", e);
+                    document.querySelectorAll('.section-container').forEach(section => section?.classList.add('visible'));
+                }
+
+
+                // --- Footer Current Year ---
+                const yearSpan = document.getElementById('current-year');
+                if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+                // --- Contact Form Submission Placeholder ---
+                const contactForm = document.getElementById('contact-form');
+                const formStatus = document.getElementById('form-status');
+                if (contactForm && formStatus) {
+                    contactForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        formStatus.textContent = 'Processing... (Demo - Requires EmailJS/Backend)';
+                        formStatus.className = 'text-sm mt-3 text-center text-yellow-300'; // Adjusted color for colorful theme
+                        setTimeout(() => {
+                            if ('vibrate' in navigator) {
+                                try { navigator.vibrate(100); } catch(e){ console.warn("Vibration failed:", e); }
+                            }
+                            formStatus.textContent = 'Message Sent Successfully! (Demo)';
+                            formStatus.className = 'text-sm mt-3 text-center text-green-300'; // Adjusted color
+                            contactForm.reset();
+                        }, 1500);
+                    });
+                    console.log("Contact form handler setup.");
+                }
+
+                 // --- AI Chat Widget Logic (with Minimize) ---
+                 const aiChatWidget = document.getElementById('ai-chat-widget');
+                 const aiChatInput = document.getElementById('ai-chat-input');
+                 const aiChatSendBtn = document.getElementById('ai-chat-send-btn');
+                 const aiChatBody = document.getElementById('ai-chat-body');
+                 const voiceInputBtn = document.getElementById('voice-input-btn');
+                 const aiChatCloseBtn = document.getElementById('ai-chat-close-btn');
+                 const aiChatMinimizeBtn = document.getElementById('ai-chat-minimize-btn');
+                 const aiRecommendation = document.getElementById('ai-recommendation');
+                 const recommendationText = document.getElementById('recommendation-text');
+
+                 // Make chat visible after delay
+                 setTimeout(() => {
+                    if(aiChatWidget) aiChatWidget.classList.add('visible');
+                 }, 2500);
+
+                 // Close Button
+                 if (aiChatWidget && aiChatCloseBtn) {
+                     aiChatCloseBtn.addEventListener('click', () => aiChatWidget.classList.remove('visible'));
+                 }
+
+                 // Minimize/Maximize Button
+                 if (aiChatWidget && aiChatMinimizeBtn) {
+                     aiChatMinimizeBtn.addEventListener('click', () => {
+                         const isMinimized = aiChatWidget.classList.toggle('minimized');
+                         const minIcon = aiChatMinimizeBtn.querySelector('.minimize-icon');
+                         const maxIcon = aiChatMinimizeBtn.querySelector('.maximize-icon');
+                         if (minIcon && maxIcon) {
+                             minIcon.classList.toggle('hidden', isMinimized);
+                             maxIcon.classList.toggle('hidden', !isMinimized);
+                         }
+                         aiChatMinimizeBtn.setAttribute('aria-label', isMinimized ? 'Maximize chat widget' : 'Minimize chat widget');
+                     });
+                 }
+
+                 // Send Message Logic (remains largely the same)
+                 if (aiChatSendBtn && aiChatInput && aiChatBody) {
+                     const sendChatMessage = () => {
+                         const userMessage = aiChatInput.value.trim();
+                         if (userMessage) {
+                             const userMsgElement = document.createElement('p');
+                             userMsgElement.textContent = `You: ${userMessage}`;
+                             // Use theme-aware classes if needed, or rely on parent styles
+                             userMsgElement.className = 'mb-2 text-right break-words bg-black/10 p-2 rounded-lg ml-6 text-inherit';
+                             aiChatBody.appendChild(userMsgElement);
+
+                             let aiResponse = "That's insightful! As a conceptual AI, I can offer pre-defined details on projects like the 'GDP Model', 'Plant Disease Detector', or 'InvestWise'. How can I elaborate further for you?";
+                             let showRecommendation = false;
+                             let recText = "";
+                             const lowerUserMessage = userMessage.toLowerCase();
+
+                             // ... (AI response logic remains the same as previous version) ...
+                              if (lowerUserMessage.includes('gdp model') || lowerUserMessage.includes('economic forecast')) {
+                                 aiResponse = "The GDP Growth Prediction Model leveraged Python libraries like Pandas, Scikit-learn, and potentially Statsmodels for time-series analysis. It processed indicators such as inflation rates and historical exchange data to forecast annual GDP growth, aiming to provide clearer economic outlooks for policy decisions.";
+                                 showRecommendation = true;
+                                 recText = "If you're interested in economic indicators, the InvestWise Predictor project also analyzes financial metrics.";
+                             } else if (lowerUserMessage.includes('plant disease') || lowerUserMessage.includes('lazarus') || lowerUserMessage.includes('agriculture ai')) {
+                                  aiResponse = "The AI Plant Disease Detector utilized Convolutional Neural Networks (CNNs) via TensorFlow. Training involved a large dataset (10k+ images) to achieve high accuracy (around 92%) in identifying diseases like early blight from leaf images, critical for timely agricultural intervention.";
+                                   showRecommendation = true;
+                                   recText = "Check the Capstone-Lazarus repository on GitHub for potential code structure and methodology insights.";
+                             } else if (lowerUserMessage.includes('investwise') || lowerUserMessage.includes('investment predictor')) {
+                                 aiResponse = "InvestWise Predictor (currently conceptual/in development) aims to use neural networks (likely MLPs or RNNs) to process a diverse set of economic, trade, and demographic data. The goal is to generate region-specific investment suitability scores within Kenya.";
+                             } else if (lowerUserMessage.includes('skills') || lowerUserMessage.includes('technical abilities')) {
+                                 aiResponse = "Daniel's technical arsenal includes Python (Pandas, Scikit-learn, TensorFlow), SQL, Tableau for visualization, Frappe framework for ERP solutions, alongside robust skills in IT management, network security, and system administration. The 'Skills' section provides a comprehensive overview.";
+                             } else if (lowerUserMessage.includes('experience') || lowerUserMessage.includes('hospital') || lowerUserMessage.includes('webuye')) {
+                                 aiResponse = "Key experiences include optimizing patient flow by 35% at Kingdom Hospital using predictive analytics and enhancing cybersecurity for Webuye District's critical systems. The 'About' section details these roles and achievements.";
+                             }
+
+
+                             setTimeout(() => {
+                                const aiMsgElement = document.createElement('p');
+                                aiMsgElement.textContent = `AI: ${aiResponse}`;
+                                // Use theme-aware classes if needed
+                                aiMsgElement.className = 'mb-2 text-purple-100 break-words bg-black/20 p-2 rounded-lg mr-6';
+                                aiChatBody.appendChild(aiMsgElement);
+
+                                if (aiRecommendation && recommendationText) {
+                                    aiRecommendation.classList.toggle('hidden', !showRecommendation);
+                                    if(showRecommendation) recommendationText.textContent = recText;
+                                }
+                                 aiChatBody.scrollTop = aiChatBody.scrollHeight;
+                             }, 700);
+
+                             aiChatInput.value = '';
+                             aiChatBody.scrollTop = aiChatBody.scrollHeight;
+                         }
+                     };
+                     aiChatSendBtn.addEventListener('click', sendChatMessage);
+                     aiChatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChatMessage(); });
+                     console.log("AI Chat basic handlers setup.");
+                 }
+
+                 // --- Conceptual Web Speech API ---
+                 if (voiceInputBtn) {
+                    voiceInputBtn.addEventListener('click', () => {
+                        alert("Conceptual: Voice input requires Web Speech API integration & permissions.");
+                    });
+                 }
+
+                // --- Theme Toggling Logic ---
+                const themeToggleButton = document.getElementById('theme-toggle');
+                const themeMenu = document.getElementById('theme-menu');
+                const themeOptions = document.querySelectorAll('.theme-option');
+                const bodyEl = document.body;
+
+                const applyTheme = (theme) => {
+                    console.log("Applying theme:", theme);
+                    // Ensure theme is valid, default to colorful if not
+                    const validThemes = ['colorful', 'dark', 'light', 'creative', 'retro'];
+                    const themeToApply = validThemes.includes(theme) ? theme : 'colorful';
+
+                    bodyEl.className = bodyEl.className.replace(/theme-\w+/g, '');
+                    bodyEl.classList.add(`theme-${themeToApply}`);
+                    try { localStorage.setItem('portfolioTheme', themeToApply); } catch(e) { console.warn("localStorage not available for theme saving."); }
+                    console.log("Theme applied:", themeToApply);
+                    if (typeof lucide !== 'undefined') {
+                        try { lucide.createIcons(); } catch(e) { console.error("Icon rerender failed after theme change:", e); }
+                    }
+                };
+
+                if (themeToggleButton && themeMenu) {
+                    themeToggleButton.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        themeMenu.classList.toggle('hidden');
+                    });
+                    document.addEventListener('click', (e) => {
+                        if (!themeMenu.contains(e.target) && !themeToggleButton.contains(e.target)) {
+                            themeMenu.classList.add('hidden');
+                        }
+                    });
+                    console.log("Theme menu toggle setup.");
+                }
+
+                themeOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const selectedTheme = option.dataset.theme;
+                        if (selectedTheme) {
+                            applyTheme(selectedTheme);
+                        }
+                        if (themeMenu) themeMenu.classList.add('hidden');
+                    });
+                });
+
+                // Load saved theme or default to colorful
+                try {
+                    const savedTheme = localStorage.getItem('portfolioTheme') || 'colorful';
+                    applyTheme(savedTheme);
+                    console.log("Loaded theme from localStorage:", savedTheme);
+                } catch(e) {
+                    console.warn("localStorage not available for loading theme. Applying default.");
+                    applyTheme('colorful');
+                }
+
+
+                 // --- Welcome Back Ritual & Progress Tracking ---
+                 const welcomeMsgElement = document.getElementById('welcome-back-message');
+                 const progressBarContainer = document.getElementById('user-progress-bar');
+                 const progressBar = document.getElementById('user-progress');
+                 const progressText = document.getElementById('user-progress-text');
+
+                 const updateProgress = (sectionName) => {
+                     // Ensure sectionsViewed is initialized
+                     if (typeof sectionsViewed === 'undefined') sectionsViewed = {};
+                     if (!sectionName || sectionsViewed[sectionName]) return;
+
+                     sectionsViewed[sectionName] = true;
+                     const viewedCount = Object.keys(sectionsViewed).length;
+                     const progressPercent = totalSections > 0 ? Math.min(100, Math.round((viewedCount / totalSections) * 100)) : 0;
+
+                     if(progressBarContainer && progressBar && progressText && progressPercent > 0) {
+                         progressBarContainer.classList.remove('hidden');
+                         progressBar.style.width = `${progressPercent}%`;
+                         progressText.textContent = `Exploration progress: ${progressPercent}%`;
+                         if(progressPercent >= 100) {
+                             progressText.textContent += " You've explored the core sections!";
+                         }
+                     }
+                     try { localStorage.setItem('sectionsViewed', JSON.stringify(sectionsViewed)); } catch(e) { console.warn("localStorage not available for progress saving."); }
+                 };
+
+                 if (welcomeMsgElement && typeof localStorage !== 'undefined') {
+                     try {
+                         sectionsViewed = JSON.parse(localStorage.getItem('sectionsViewed') || '{}');
+                         updateProgress(); // Initial update
+
+                         let visitCount = parseInt(localStorage.getItem('visitCount') || '0');
+                         visitCount++;
+                         localStorage.setItem('visitCount', visitCount.toString());
+
+                         if (visitCount > 5) { welcomeMsgElement.textContent = "Welcome back, seasoned explorer!"; }
+                         else if (visitCount > 1) { welcomeMsgElement.textContent = "Welcome back to my digital space!"; }
+
+                     } catch(e) { console.warn("localStorage interaction failed for welcome/progress:", e); }
+                     console.log("Welcome message and progress tracking setup.");
+                 }
+
+                 // --- Konami Code Easter Egg ---
+                 const konamiTrigger = document.getElementById('konami-trigger');
+                 const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+                 let konamiIndex = 0;
+                 document.addEventListener('keydown', (e) => {
+                     if (e.key.toLowerCase() === konamiCode[konamiIndex]?.toLowerCase()) {
+                         konamiIndex++;
+                         if (konamiIndex === konamiCode.length) {
+                             alert('Konami Code Activated! Retro theme engaged!');
+                             applyTheme('retro');
+                             konamiIndex = 0;
+                         }
+                     } else { konamiIndex = 0; }
+                 });
+                 if(konamiTrigger) konamiTrigger.addEventListener('click', () => alert('Hint: Use your keyboard... ↑↑↓↓←→←→BA'));
+
+                 // --- Skill Mastery Game Placeholder Logic ---
+                 const skillChallengeSubmit = document.getElementById('skill-challenge-submit');
+                 const skillChallengeAnswer = document.getElementById('skill-challenge-answer');
+                 const skillChallengeFeedback = document.getElementById('skill-challenge-feedback');
+                 if(skillChallengeSubmit && skillChallengeAnswer && skillChallengeFeedback) {
+                     skillChallengeSubmit.addEventListener('click', () => {
+                         const answer = skillChallengeAnswer.value.toLowerCase();
+                         const questionEl = document.getElementById('skill-challenge-question');
+                         const question = questionEl ? questionEl.textContent.toLowerCase() : "";
+                         let correct = false;
+                         let skillToUnlock = '';
+
+                         if (question.includes("gdp") && (answer.includes("time-series") || answer.includes("time series") || answer.includes("arima"))) {
+                             correct = true; skillToUnlock = 'timeseries';
+                         } // Add more logic here
+
+                         if (correct) {
+                             skillChallengeFeedback.textContent = "Correct! Badge Unlocked! ✨";
+                             skillChallengeFeedback.className = 'text-sm mt-2 h-4 font-medium text-green-300'; // Adjusted color
+                             const badge = document.querySelector(`.skill-badge[data-skill="${skillToUnlock}"]`);
+                             if (badge && !badge.classList.contains('unlocked')) {
+                                 badge.classList.replace('bg-gray-600','bg-yellow-400'); // Use theme colors
+                                 badge.classList.add('text-black', 'font-bold', 'unlocked', 'pulsate');
+                                 badge.title = "Unlocked!";
+                                 const lockIcon = badge.querySelector('i');
+                                 if (lockIcon) lockIcon.setAttribute('data-lucide', 'check');
+                                 try { lucide.createIcons(); } catch(e) {}
+                             }
+                         } else {
+                             skillChallengeFeedback.textContent = "Not quite, perhaps another technique?";
+                             skillChallengeFeedback.className = 'text-sm mt-2 h-4 font-medium text-red-400'; // Adjusted color
+                         }
+                         skillChallengeAnswer.value = '';
+                     });
+                     console.log("Skill challenge handler setup.");
+                 }
+
+                 // --- Mute Audio Button Placeholder Logic ---
+                 const muteButtons = document.querySelectorAll('#mute-audio-btn, #mute-audio-btn-mobile');
+                 const audioIconsUnmuted = document.querySelectorAll('.audio-icon-unmuted');
+                 const audioIconsMuted = document.querySelectorAll('.audio-icon-muted');
+                 const audioText = document.querySelector('.audio-text');
+                 let isMuted = true;
+
+                 const toggleMute = () => {
+                     isMuted = !isMuted;
+                     console.log("Conceptual Audio Muted:", isMuted);
+                     alert(`Conceptual: Ambient audio ${isMuted ? 'muted' : 'unmuted'}. Requires Web Audio API implementation.`);
+                     audioIconsUnmuted.forEach(i => i?.classList.toggle('hidden', isMuted));
+                     audioIconsMuted.forEach(i => i?.classList.toggle('hidden', !isMuted));
+                     if(audioText) audioText.textContent = isMuted ? 'Unmute Audio' : 'Mute Audio';
+                     if (typeof lucide !== 'undefined') {
+                         try { lucide.createIcons(); } catch(e) { console.error("Icon rerender failed:", e); }
+                     }
+                 };
+                 muteButtons.forEach(btn => btn.addEventListener('click', toggleMute));
+                 // Initial state setup
+                 const initialMuteSetup = () => {
+                     audioIconsUnmuted.forEach(i => i?.classList.toggle('hidden', isMuted));
+                     audioIconsMuted.forEach(i => i?.classList.toggle('hidden', !isMuted));
+                     if(audioText) audioText.textContent = isMuted ? 'Unmute Audio' : 'Mute Audio';
+                 };
+                 initialMuteSetup();
+                 console.log("Mute button handlers setup.");
+
+                 // --- ClipboardJS Initialization ---
+                if (typeof ClipboardJS !== 'undefined') {
+                    const clipboard = new ClipboardJS('#copy-email-btn');
+                    const toast = document.getElementById('clipboard-toast');
+
+                    clipboard.on('success', function(e) {
+                        console.log('Email copied:', e.text);
+                        if (toast) {
+                            toast.textContent = 'Email copied successfully!';
+                            toast.classList.remove('opacity-0');
+                            toast.classList.replace('bg-red-500','bg-green-500'); // Ensure correct color
+                            setTimeout(() => { toast.classList.add('opacity-0'); }, 2500);
+                        }
+                        e.clearSelection();
+                    });
+                    clipboard.on('error', function(e) {
+                        console.error('Clipboard error:', e.action, e.trigger);
+                        if (toast) {
+                             toast.textContent = 'Failed to copy email!';
+                             toast.classList.remove('opacity-0','bg-green-500');
+                             toast.classList.add('bg-red-500');
+                             setTimeout(() => {
+                                 toast.classList.add('opacity-0');
+                                 setTimeout(()=> { toast.classList.replace('bg-red-500','bg-green-500'); }, 300);
+                             }, 2500);
+                        }
+                    });
+                     console.log("ClipboardJS setup complete.");
+                } else {
+                    console.warn("ClipboardJS library not found.");
+                    const copyBtn = document.getElementById('copy-email-btn');
+                    if(copyBtn) copyBtn.style.display = 'none';
+                }
+
+                // --- Rugby Ball Easter Egg ---
+                const rugbyBall = document.querySelector('footer .group span');
+                if(rugbyBall) {
+                    rugbyBall.addEventListener('click', () => {
+                        alert("Beyond the code and data, I have a strong passion for Rugby!");
+                    });
+                }
+
+                // --- Final Log ---
+                console.log("Initial script execution complete. All basic handlers attached.");
+
+            }); // End DOMContentLoaded
+        } catch (error) {
+            console.error("A critical error occurred during script execution:", error);
+        }
+    </script>
+</body>
+</html>
