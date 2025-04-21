@@ -4,36 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Wanjala - Data Scientist / ML Engineer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"> <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"> <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* Base body styles - applied before Tailwind potentially overrides */
+        /* Base body styles */
         body {
-          font-family: 'Inter', 'IBM Plex Sans', sans-serif; /* Updated default body font */
+          font-family: 'Inter', 'IBM Plex Sans', sans-serif;
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
+          /* Subtle Noise Texture */
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        }
+        html.dark body {
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
         }
 
         /* Font utility classes */
-        .font-heading { font-family: 'Satoshi', 'Space Grotesk', 'Neue Montreal', sans-serif; } /* Combine heading options */
+        .font-heading { font-family: 'Satoshi', 'Space Grotesk', 'Neue Montreal', sans-serif; }
         .font-body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', 'Source Code Pro', monospace; }
 
         /* Custom Scrollbar Styling */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #E0C097; } /* Sandstone light */
-        ::-webkit-scrollbar-thumb { background: #6C5CE7; border-radius: 4px; } /* Tech Purple */
-        ::-webkit-scrollbar-thumb:hover { background: #FF6B6B; } /* Red Coral */
-        html.dark ::-webkit-scrollbar-track { background: #1F2833; } /* Dark Grey */
-        html.dark ::-webkit-scrollbar-thumb { background: #45A29E; } /* Secondary Accent Dark */
-        html.dark ::-webkit-scrollbar-thumb:hover { background: #66FCF1; } /* Primary Accent Dark */
+        ::-webkit-scrollbar-track { background: #E0C097; }
+        ::-webkit-scrollbar-thumb { background: #6C5CE7; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF6B6B; }
+        html.dark ::-webkit-scrollbar-track { background: #1F2833; }
+        html.dark ::-webkit-scrollbar-thumb { background: #45A29E; }
+        html.dark ::-webkit-scrollbar-thumb:hover { background: #66FCF1; }
 
-        /* Basic shake animation for form errors */
+        /* Basic shake animation */
         @keyframes shake {
           0%, 100% { transform: translateX(0); }
           10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
@@ -44,137 +50,114 @@
         /* Smooth scrolling */
         html { scroll-behavior: smooth; }
 
-        /* Styles for hiding/showing elements */
-        .hidden-element { display: none; }
-        .visible-element { display: block; }
-
         /* Modal Styles */
         #projectModal { transition: opacity 0.3s ease-in-out; }
         #projectModal.hidden-modal { opacity: 0; pointer-events: none; }
         #projectModal.visible-modal { opacity: 1; pointer-events: auto; }
-        #projectModalContentWrapper { transition: transform 0.3s ease-in-out; } /* Apply transition to wrapper */
-        #projectModal.hidden-modal #projectModalContentWrapper { transform: scale(0.8); }
-        #projectModal.visible-modal #projectModalContentWrapper { transform: scale(1); }
-
+        #projectModalContentWrapper { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+        #projectModal.hidden-modal #projectModalContentWrapper { transform: scale(0.9) translateY(20px); opacity: 0; }
+        #projectModal.visible-modal #projectModalContentWrapper { transform: scale(1) translateY(0); opacity: 1; }
 
         /* Mobile Menu Transition */
         #mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-            opacity: 0;
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out; opacity: 0;
         }
-        #mobile-menu.open {
-            max-height: 500px; /* Adjust as needed */
-            opacity: 1;
-        }
+        #mobile-menu.open { max-height: 500px; opacity: 1; }
 
-        /* Tooltip Styles - Adjusted for theme */
+        /* Tooltip Styles */
         .tooltip-container { position: relative; display: inline-block; }
         .tooltip-text {
-            visibility: hidden;
-            width: max-content;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 10px;
-            position: absolute;
-            z-index: 10;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.75rem; /* text-xs */
-            background-color: #66FCF1; /* Signal Cyan */
-            color: #0B0C10; /* Jet Black */
+            visibility: hidden; width: max-content; text-align: center; border-radius: 6px;
+            padding: 5px 10px; position: absolute; z-index: 10; bottom: 125%; left: 50%;
+            transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 0.75rem;
+            background-color: #66FCF1; color: #0B0C10;
         }
-        html.dark .tooltip-text {
-             background-color: #6C5CE7; /* Tech Purple */
-             color: #F7F7F7; /* Ghost White */
-        }
-        .tooltip-container:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
+        html.dark .tooltip-text { background-color: #6C5CE7; color: #F7F7F7; }
+        .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
 
-        /* Scroll Reveal Animation Base */
-        .reveal-hidden {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
+        /* Scroll Reveal Animation Base (with stagger support) */
+        .reveal-hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .reveal-visible { opacity: 1; transform: translateY(0); }
         .reveal-slide-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .reveal-slide-right { opacity: 0; transform: translateX(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .reveal-visible.slide-in { opacity: 1; transform: translateX(0); }
+        /* Transition delay will be added by JS for staggering */
 
-        /* Active Nav Link Style - Theme Aware */
-        .nav-link.nav-active { color: #66FCF1 !important; } /* Signal Cyan */
-        html:not(.dark) .nav-link.nav-active { color: #6C5CE7 !important; } /* Tech Purple for light theme */
-
-        .nav-link .active-underline {
-            display: none;
-            width: 0%;
-            height: 2px;
-            background-color: #66FCF1; /* Signal Cyan */
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: width 0.3s ease;
+        /* Navbar Underline Animation */
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+            background-color: #6C5CE7; transition: width 0.3s ease-out, left 0.3s ease-out;
         }
-         html:not(.dark) .nav-link .active-underline {
-             background-color: #6C5CE7; /* Tech Purple for light theme */
-         }
-        .nav-link.nav-active .active-underline {
-            display: block !important;
-            width: 60%;
-        }
+        html.dark .nav-link::after { background-color: #66FCF1; }
+        .nav-link:hover::after { width: 100%; left: 0; }
+        .nav-link.nav-active::after { width: 100%; left: 0; }
+        .nav-link.nav-active { color: #6C5CE7 !important; }
+        html.dark .nav-link.nav-active { color: #66FCF1 !important; }
 
         /* Mobile active link */
-        .mobile-nav-link.nav-active {
-             background-color: rgba(108, 92, 231, 0.2); /* Tech Purple light theme */
-             color: #6C5CE7 !important; /* Tech Purple */
+        .mobile-nav-link.nav-active { background-color: rgba(108, 92, 231, 0.2); color: #6C5CE7 !important; }
+        html.dark .mobile-nav-link.nav-active { background-color: rgba(69, 162, 158, 0.5); color: #66FCF1 !important; }
+
+        /* --- Preloader Styles (Loading Bar) --- */
+        #preloader {
+            position: fixed; inset: 0; background-color: #F7F7F7; /* primary-bg */
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            opacity: 1; transition: opacity 0.5s ease-out 3.8s; /* Fade out after animation */
         }
-        html.dark .mobile-nav-link.nav-active {
-             background-color: rgba(69, 162, 158, 0.5); /* Secondary Accent Dark */
-             color: #66FCF1 !important; /* Signal Cyan */
+        html.dark #preloader { background-color: #0B0C10; /* dark-primary-bg */ }
+        #preloader.hidden { opacity: 0; pointer-events: none; }
+
+        #loading-bar-container {
+            width: 70%; max-width: 400px; height: 8px;
+            background-color: rgba(108, 92, 231, 0.2); /* tech-purple light */
+            border-radius: 4px; overflow: hidden;
+        }
+        html.dark #loading-bar-container { background-color: rgba(102, 252, 241, 0.2); /* signal-cyan light */ }
+
+        #loading-bar {
+            width: 100%; height: 100%;
+            background-color: #6C5CE7; /* tech-purple */
+            border-radius: 4px;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: load 4s ease-out forwards; /* 4 second animation */
+        }
+        html.dark #loading-bar { background-color: #66FCF1; /* signal-cyan */ }
+
+        @keyframes load {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
         }
 
+        /* --- Copy Toast Styles --- */
+        #copy-toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background-color: #2ECC71; /* emerald-green */ color: white;
+            padding: 10px 20px; border-radius: 20px; font-size: 0.9rem;
+            z-index: 10000; opacity: 0; transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            pointer-events: none;
+        }
+        #copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
 
     </style>
     <script>
+      // Tailwind Config
       tailwind.config = {
-        darkMode: 'class', // Enable class-based dark mode
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              // Style Guide Palette
-              'jet-black': '#0B0C10',
-              'ghost-white': '#F7F7F7',
-              'signal-cyan': '#66FCF1',       // Accent (Buttons, Hover) Dark
-              'tech-purple': '#6C5CE7',       // Secondary Accent Dark / Primary Light
-              'emerald-green': '#2ECC71',     // Success
-              'red-coral': '#FF6B6B',         // Danger
-              'sandstone': '#E0C097',         // Warm Highlight
-
-              // Theme specific aliases (adjust light theme as needed)
-              'primary-bg': '#F7F7F7',        // Light BG = Ghost White
-              'primary-text': '#0B0C10',      // Light Text = Jet Black
-              'secondary-bg': '#E0C097',      // Light Secondary BG = Sandstone (example)
-              'secondary-text': '#4A4A4A',    // Light Secondary Text (example)
-              'accent': '#6C5CE7',            // Light Accent = Tech Purple
-              'accent-secondary': '#FF6B6B',  // Light Secondary Accent = Red Coral (example)
-
-              'dark-primary-bg': '#0B0C10',       // Dark BG = Jet Black
-              'dark-primary-text': '#F7F7F7',     // Dark Text = Ghost White
-              'dark-secondary-bg': '#1F2833',     // Dark Secondary BG = Dark Grey (from prev)
-              'dark-secondary-text': '#C5C6C7',   // Dark Secondary Text = Light Grey (from prev)
-              'dark-accent': '#66FCF1',           // Dark Accent = Signal Cyan
-              'dark-accent-secondary': '#45A29E', // Dark Secondary Accent = Teal (from prev)
+              'jet-black': '#0B0C10', 'ghost-white': '#F7F7F7', 'signal-cyan': '#66FCF1',
+              'tech-purple': '#6C5CE7', 'emerald-green': '#2ECC71', 'red-coral': '#FF6B6B',
+              'sandstone': '#E0C097',
+              'primary-bg': '#F7F7F7', 'primary-text': '#0B0C10', 'secondary-bg': '#E0C097',
+              'secondary-text': '#4A4A4A', 'accent': '#6C5CE7', 'accent-secondary': '#FF6B6B',
+              'dark-primary-bg': '#0B0C10', 'dark-primary-text': '#F7F7F7', 'dark-secondary-bg': '#1F2833',
+              'dark-secondary-text': '#C5C6C7', 'dark-accent': '#66FCF1', 'dark-accent-secondary': '#45A29E',
             },
             fontFamily: {
-              // Combined options from style guide
               heading: ['Satoshi', 'Space Grotesk', 'Neue Montreal', 'sans-serif'],
               body: ['Inter', 'IBM Plex Sans', 'sans-serif'],
               mono: ['JetBrains Mono', 'Source Code Pro', 'monospace'],
@@ -194,11 +177,10 @@
       }
     </script>
     <script>
-        // Immediately set theme before rendering to avoid FOUC
+        // Immediately set theme
         (function() {
             const storedTheme = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            // Default to dark theme if no preference stored and OS prefers dark
             if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
                 document.documentElement.classList.add('dark');
             } else {
@@ -209,6 +191,12 @@
 </head>
 <body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
 
+    <div id="preloader">
+        <div id="loading-bar-container">
+            <div id="loading-bar"></div>
+        </div>
+    </div>
+
     <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-accent dark:bg-dark-accent origin-left z-50" style="transform: scaleX(0);"></div>
 
     <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-primary-bg/80 dark:bg-dark-primary-bg/80 border-b border-secondary-text/10 dark:border-dark-secondary-text/10">
@@ -216,32 +204,21 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex-shrink-0">
                     <a href="#hero" class="text-xl font-bold text-accent dark:text-dark-accent font-heading hover:opacity-80 transition-opacity">
-                        Daniel Wanjala.
+                        DW.
                     </a>
                 </div>
-
                 <nav class="hidden md:flex space-x-6" id="desktop-nav">
-                     <a href="#about" data-section="about" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
-                        About <span class="active-underline"></span>
-                    </a>
-                    <a href="#projects" data-section="projects" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
-                        Projects <span class="active-underline"></span>
-                    </a>
-                    <a href="#essays" data-section="essays" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
-                        Essays <span class="active-underline"></span>
-                    </a>
-                    <a href="#demos" data-section="demos" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
-                        Demos <span class="active-underline"></span>
-                    </a>
-                    <a href="#contact" data-section="contact" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
-                        Contact <span class="active-underline"></span>
-                    </a>
+                    <a href="#about" data-section="about" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">About</a>
+                    <a href="#projects" data-section="projects" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Projects</a>
+                    <a href="#essays" data-section="essays" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Essays</a>
+                    <a href="#demos" data-section="demos" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Demos</a>
+                    <a href="#contact" data-section="contact" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Contact</a>
                 </nav>
-
                 <div class="flex items-center space-x-2">
                      <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="p-2 rounded-full text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200">
-                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden"></i> <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5 hidden"></i> </button>
-
+                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden"></i>
+                        <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5 hidden"></i>
+                     </button>
                     <div class="md:hidden">
                         <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent dark:focus:ring-dark-accent" aria-controls="mobile-menu" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
@@ -252,7 +229,6 @@
                 </div>
             </div>
         </div>
-
         <div class="md:hidden bg-primary-bg dark:bg-dark-secondary-bg border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
              <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#hero" data-section="hero" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Hero</a>
@@ -267,7 +243,7 @@
 
     <main>
         <section id="hero" class="h-screen flex flex-col items-center justify-center text-center relative overflow-hidden px-4">
-            <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-secondary-bg to-primary-bg dark:from-dark-primary-bg dark:via-[#111a24] dark:to-dark-primary-bg opacity-80 z-0 transition-colors duration-300"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-[#111a24] dark:to-dark-primary-bg opacity-80 z-0 transition-colors duration-300"></div>
             <svg class="absolute bottom-0 left-0 w-full h-32 text-secondary-bg/30 dark:text-dark-secondary-bg/30 z-0 opacity-50 transition-colors duration-300" preserveAspectRatio="none" viewBox="0 0 1440 320">
                 <path fill="currentColor" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,133.3C960,107,1056,85,1152,96C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
             </svg>
@@ -303,11 +279,10 @@
             <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
                 <div class="md:col-span-2 flex justify-center relative group reveal-hidden">
                     <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-accent-secondary dark:border-dark-accent-secondary shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(108,92,231,0.3)] dark:hover:shadow-[0_0_25px_rgba(102,252,241,0.3)]">
-                        <img src="https://image-proxy.labnol.org/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocKz999-B81M89M5n0l6rW7-X9s7yV9z5H9f3Y1g6n8H%3Ds96-c" alt="Portrait of Daniel Wanjala" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/320x320/0B0C10/F7F7F7?text=Daniel+W.'">
+                        <img src="https://image-proxy.labnol.org/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocKz999-B81M89M5n0l6rW7-X9s7yV9z5H9f3Y1g6n8H%3Ds96-c" alt="Portrait of Daniel Wanjala" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/320x320/0B0C10/F7F7F7?text=Daniel+W.'">
                         <div class="absolute inset-0 rounded-full border-2 border-accent dark:border-dark-accent opacity-0 group-hover:opacity-50 animate-pulse"></div>
                     </div>
                 </div>
-
                 <div class="md:col-span-3 reveal-hidden">
                     <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text mb-6 leading-relaxed font-body">
                         Hi, I'm Daniel Wanjala, a passionate <strong class="text-accent dark:text-dark-accent">Data Scientist and ML Engineer</strong> based near Nairobi, Kenya. My journey spans IT management and deep dives into data, driven by a belief in technology's power to solve real-world problems.
@@ -315,40 +290,56 @@
                     <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text mb-8 leading-relaxed font-body">
                         Whether optimizing hospital operations with predictive analytics or building forecasting models, I focus on creating <strong class="text-accent dark:text-dark-accent">data systems that deliver tangible outcomes</strong>. I thrive on transforming complex data into actionable insights and robust applications. Currently pursuing an MSc in Data Science to further sharpen my expertise.
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <div class="tooltip-container reveal-hidden" style="transition-delay: 0.1s;">
-                             <div class="flex items-center bg-white/50 dark:bg-dark-secondary-bg/70 backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
+                    <div class="flex flex-wrap gap-4 mb-10"> <div class="tooltip-container reveal-hidden" data-reveal-delay="100"> <div class="flex items-center bg-white/60 dark:bg-dark-secondary-bg/70 backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
                                 <i data-lucide="briefcase" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent"></i>
                                 <span>Senior IT Manager</span>
                              </div>
                              <span class="tooltip-text">Kingdom Hospital, Webuye</span>
                         </div>
-                         <div class="tooltip-container reveal-hidden" style="transition-delay: 0.2s;">
-                             <div class="flex items-center bg-white/50 dark:bg-dark-secondary-bg/70 backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
+                         <div class="tooltip-container reveal-hidden" data-reveal-delay="200"> <div class="flex items-center bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-md text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
                                 <i data-lucide="brain-circuit" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent"></i>
                                 <span>Data Scientist</span>
                              </div>
                              <span class="tooltip-text">Volunteer @ Kingdom Hospital</span>
                         </div>
-                         <div class="tooltip-container reveal-hidden" style="transition-delay: 0.3s;">
-                             <div class="flex items-center bg-white/50 dark:bg-dark-secondary-bg/70 backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
+                         <div class="tooltip-container reveal-hidden" data-reveal-delay="300"> <div class="flex items-center bg-white/60 dark:bg-dark-secondary-bg/70 backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
                                 <i data-lucide="graduation-cap" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent"></i>
                                 <span>MSc. Student</span>
                              </div>
                               <span class="tooltip-text">Cooperative University Kenya</span>
                         </div>
                     </div>
+
+                    <div class="flex flex-wrap gap-6 text-center reveal-hidden" data-reveal-delay="400">
+                        <div class="stat-item">
+                            <span id="projects-counter" class="text-3xl font-bold text-accent dark:text-dark-accent font-heading" data-target="5">0</span>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono tracking-wide">Projects Completed</p>
+                        </div>
+                        <div class="stat-item">
+                            <span id="awards-counter" class="text-3xl font-bold text-accent dark:text-dark-accent font-heading" data-target="6">0</span>
+                             <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono tracking-wide">Recognitions/Awards</p>
+                        </div>
+                         <div class="stat-item">
+                            <span id="coffee-counter" class="text-3xl font-bold text-accent dark:text-dark-accent font-heading" data-target="99">0</span>
+                             <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono tracking-wide">Cups of Coffee</p>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="text-center mt-16 reveal-hidden" data-reveal-delay="500">
+                <a href="about.html" class="inline-block px-6 py-2 text-sm font-medium rounded-md border border-accent dark:border-dark-accent text-accent dark:text-dark-accent hover:bg-accent/10 dark:hover:bg-dark-accent/10 transition-colors">
+                    Learn More (About Page) &rarr;
+                </a>
             </div>
         </section>
 
         <section id="projects" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">Projects: Work That Talks Back</h2>
             <div class="columns-1 md:columns-2 lg:columns-3 gap-6">
-                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="1">
+                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/20 dark:bg-dark-secondary-bg/40 backdrop-blur-lg border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden" data-project-id="1" data-reveal-delay="0">
                     <div class="absolute top-0 left-0 h-1 w-full bg-blue-500 z-10"></div>
                     <div class="relative h-48 w-full">
-                        <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" alt="GDP Growth Prediction Model" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                        <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" alt="GDP Growth Prediction Model" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
                     <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">GDP Growth Prediction Model</h3>
@@ -365,12 +356,12 @@
                     </div>
                 </article>
 
-                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="2">
+                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden" data-project-id="2" data-reveal-delay="100">
                     <div class="absolute top-0 left-0 h-1 w-full bg-emerald-green z-10"></div>
                     <div class="relative h-48 w-full">
-                        <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" alt="AI-Driven Plant Disease Detection" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                        <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" alt="AI-Driven Plant Disease Detection" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
+                     <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">AI-Driven Plant Disease Detection</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Collaboratively developed an advanced plant disease detection system using image processing.</p>
                         <div class="flex flex-wrap gap-2">
@@ -385,11 +376,12 @@
                     </div>
                 </article>
 
-                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="3">
-                    <div class="absolute top-0 left-0 h-1 w-full bg-red-coral z-10"></div> <div class="relative h-48 w-full">
-                         <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" alt="Kenya's GDP Forecasting Tool" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/20 dark:bg-dark-secondary-bg/40 backdrop-blur-lg border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden" data-project-id="3" data-reveal-delay="200">
+                   <div class="absolute top-0 left-0 h-1 w-full bg-red-coral z-10"></div>
+                    <div class="relative h-48 w-full">
+                         <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" alt="Kenya's GDP Forecasting Tool" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
+                      <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">Kenya's GDP Forecasting Tool</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Developed a forecasting tool to analyze and predict Kenya's GDP trends.</p>
                         <div class="flex flex-wrap gap-2">
@@ -404,12 +396,11 @@
                     </div>
                 </article>
 
-                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="4">
-                    <div class="absolute top-0 left-0 h-1 w-full bg-tech-purple z-10"></div>
+                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden" data-project-id="4" data-reveal-delay="50"> <div class="absolute top-0 left-0 h-1 w-full bg-tech-purple z-10"></div>
                     <div class="relative h-48 w-full">
-                        <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" alt="InvestWise Predictor" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                        <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" alt="InvestWise Predictor" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
+                     <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">InvestWise Predictor</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Intelligent online tool using neural networks to predict investment opportunities in Kenya.</p>
                         <div class="flex flex-wrap gap-2">
@@ -424,12 +415,11 @@
                     </div>
                 </article>
 
-                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="5">
-                    <div class="absolute top-0 left-0 h-1 w-full bg-sandstone z-10"></div>
+                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/20 dark:bg-dark-secondary-bg/40 backdrop-blur-lg border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden" data-project-id="5" data-reveal-delay="150"> <div class="absolute top-0 left-0 h-1 w-full bg-sandstone z-10"></div>
                     <div class="relative h-48 w-full">
-                        <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" alt="Netflix Stock Profit Analysis" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                        <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" alt="Netflix Stock Profit Analysis" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
+                      <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">Netflix Stock Profit Analysis</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Analyzed Netflix's stock performance to identify profit trends and patterns.</p>
                         <div class="flex flex-wrap gap-2">
@@ -443,14 +433,19 @@
                         View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                     </div>
                 </article>
-                </div>
+            </div>
+             <div class="text-center mt-16 reveal-hidden" data-reveal-delay="300">
+                <a href="projects.html" class="inline-block px-6 py-2 text-sm font-medium rounded-md border border-accent dark:border-dark-accent text-accent dark:text-dark-accent hover:bg-accent/10 dark:hover:bg-dark-accent/10 transition-colors">
+                    See All Projects (Projects Page) &rarr;
+                </a>
+            </div>
         </section>
 
         <section id="essays" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">Essays: Thinking in Algorithms</h2>
             <div class="max-w-3xl mx-auto">
-                <article class="essay-card bg-primary-bg dark:bg-dark-secondary-bg border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-left">
-                    <span class="absolute top-4 right-4 text-xs bg-accent-secondary/20 dark:bg-dark-accent-secondary/70 text-accent-secondary dark:text-sandstone px-2 py-1 rounded-full font-mono uppercase tracking-widest">Ethics</span>
+                <article class="essay-card bg-primary-bg/80 dark:bg-dark-secondary-bg/70 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-left" data-reveal-delay="0">
+                     <span class="absolute top-4 right-4 text-xs bg-accent-secondary/20 dark:bg-dark-accent-secondary/70 text-accent-secondary dark:text-sandstone px-2 py-1 rounded-full font-mono uppercase tracking-widest">Ethics</span>
                     <h3 class="text-xl font-semibold mb-2 text-accent dark:text-dark-accent font-heading">The Ethics of Algorithmic Decision Making</h3>
                     <p class="text-secondary-text dark:text-dark-secondary-text text-sm mb-3 font-body">Exploring the biases and societal impacts...</p>
                     <div class="flex justify-between items-center text-xs text-secondary-text dark:text-dark-secondary-text/80">
@@ -459,8 +454,8 @@
                     </div>
                     <div class="essay-progress-bar absolute bottom-0 left-0 h-1 bg-accent dark:bg-dark-accent w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
                 </article>
-                <article class="essay-card bg-primary-bg dark:bg-dark-secondary-bg border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-right">
-                    <span class="absolute top-4 right-4 text-xs bg-accent-secondary/20 dark:bg-dark-accent-secondary/70 text-accent-secondary dark:text-sandstone px-2 py-1 rounded-full font-mono uppercase tracking-widest">Infrastructure</span>
+                <article class="essay-card bg-primary-bg/80 dark:bg-dark-secondary-bg/70 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-right" data-reveal-delay="150">
+                     <span class="absolute top-4 right-4 text-xs bg-accent-secondary/20 dark:bg-dark-accent-secondary/70 text-accent-secondary dark:text-sandstone px-2 py-1 rounded-full font-mono uppercase tracking-widest">Infrastructure</span>
                     <h3 class="text-xl font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Scaling Machine Learning Infrastructure</h3>
                     <p class="text-secondary-text dark:text-dark-secondary-text text-sm mb-3 font-body">Challenges and solutions for deploying ML models...</p>
                     <div class="flex justify-between items-center text-xs text-secondary-text dark:text-dark-secondary-text/80">
@@ -469,13 +464,18 @@
                     </div>
                      <div class="essay-progress-bar absolute bottom-0 left-0 h-1 bg-accent dark:bg-dark-accent w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
                 </article>
-                 </div>
+            </div>
+             <div class="text-center mt-16 reveal-hidden" data-reveal-delay="300">
+                <a href="essays.html" class="inline-block px-6 py-2 text-sm font-medium rounded-md border border-accent dark:border-dark-accent text-accent dark:text-dark-accent hover:bg-accent/10 dark:hover:bg-dark-accent/10 transition-colors">
+                    Read All Essays (Blog Page) &rarr;
+                </a>
+            </div>
         </section>
 
         <section id="demos" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">Live Demos: Try My Logic</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <article class="demo-card bg-white/10 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1">
+                <article class="demo-card bg-white/30 dark:bg-dark-secondary-bg/60 backdrop-blur-lg border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1" data-reveal-delay="0">
                     <i data-lucide="code" class="mb-3 text-accent dark:text-dark-accent h-6 w-6"></i>
                     <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">Plant Disease Detector</h3>
                     <p class="text-secondary-text dark:text-dark-secondary-text text-sm font-body">Upload an image to detect common plant diseases.</p>
@@ -483,7 +483,7 @@
                         Try Demo &rarr;
                     </div>
                 </article>
-                <article class="demo-card bg-white/10 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1" style="transition-delay: 0.1s;">
+                <article class="demo-card bg-white/30 dark:bg-dark-secondary-bg/60 backdrop-blur-lg border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1" data-reveal-delay="150">
                     <i data-lucide="code" class="mb-3 text-accent dark:text-dark-accent h-6 w-6"></i>
                     <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">GDP Forecast Interactive</h3>
                     <p class="text-secondary-text dark:text-dark-secondary-text text-sm font-body">Adjust parameters to see GDP forecast variations.</p>
@@ -491,10 +491,15 @@
                         Try Demo &rarr;
                     </div>
                 </article>
-                 </div>
+            </div>
             <p class="text-center text-secondary-text dark:text-dark-secondary-text mt-12 text-sm reveal-hidden font-body">
                 Note: Live demos may link to external platforms like Streamlit Cloud or JS playgrounds.
             </p>
+             <div class="text-center mt-16 reveal-hidden" data-reveal-delay="300">
+                <a href="demos.html" class="inline-block px-6 py-2 text-sm font-medium rounded-md border border-accent dark:border-dark-accent text-accent dark:text-dark-accent hover:bg-accent/10 dark:hover:bg-dark-accent/10 transition-colors">
+                    Explore All Demos (Demos Page) &rarr;
+                </a>
+            </div>
         </section>
 
         <section id="contact" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
@@ -503,26 +508,29 @@
                 <div class="reveal-slide-left">
                     <h3 class="text-2xl font-semibold mb-6 text-primary-text dark:text-dark-primary-text font-heading">Connect with me</h3>
                     <div class="space-y-4">
-                        <a href="https://www.linkedin.com/in/daniel-wanjala-912b8b17b/" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg">
-                            <i data-lucide="linkedin" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"></i>
+                        <a href="https://www.linkedin.com/in/daniel-wanjala-912b8b17b/" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/70 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg reveal-hidden" data-reveal-delay="0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                             <span class="font-medium font-body">LinkedIn</span>
                             <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                         </a>
-                        <a href="https://github.com/MadScie254" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.1s;">
-                            <i data-lucide="github" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"></i>
+                        <a href="https://github.com/MadScie254" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/70 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg reveal-hidden" data-reveal-delay="100">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-1.5 6-7A6.9 6.9 0 0 0 18.5 4c.1-.8.1-1.7-.1-2.5 0 0-1.1-.4-3.6 1.3A12.3 12.3 0 0 0 12 2.8c-1.1 0-2.3.1-3.4.4-2.5-1.7-3.6-1.3-3.6-1.3-.2.8-.2 1.7-.1 2.5A6.9 6.9 0 0 0 3 7.5c0 5.5 3 7 6 7a4.8 4.8 0 0 0-1 3.5v4"></path></svg>
                             <span class="font-medium font-body">GitHub</span>
                             <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                         </a>
-                         <a href="mailto:dmwanjala254@gmail.com" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.2s;">
-                            <i data-lucide="mail" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"></i>
-                            <span class="font-medium font-body">Email</span>
+                         <div class="social-card flex items-center p-4 bg-white/70 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text transition-all duration-300 group hover:border-accent/50 dark:hover:border-dark-accent/50 reveal-hidden" data-reveal-delay="200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                            <a href="mailto:dmwanjala254@gmail.com" class="font-medium font-body hover:text-accent dark:hover:text-dark-accent transition-colors break-all">dmwanjala254@gmail.com</a>
+                            <button class="copy-btn ml-auto flex-shrink-0 p-1 rounded hover:bg-accent/20 dark:hover:bg-dark-accent/20 text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition-colors" data-copy-text="dmwanjala254@gmail.com" aria-label="Copy email address">
+                                <i data-lucide="copy" class="h-4 w-4"></i>
+                            </button>
+                        </div>
+                         <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/70 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg reveal-hidden" data-reveal-delay="300">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"> <path d="M16.6 14c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.7-.3-1.4-.7-2-1.2-.5-.5-1-1.1-1.4-1.7-.1-.2 0-.4.1-.5.1-.1.2-.2.4-.4.1-.1.2-.3.3-.4.1-.2 0-.4-.1-.5-.1-.1-1.7-4-1.9-4.5-.3-.4-.5-.4-.7-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2 1 2.4.1.2 1.5 2.3 3.7 3.3.5.2.9.4 1.2.5.5.2 1 .1 1.4-.1.4-.2.6-.4.8-.8.2-.3.2-.6.1-.7zm4.9-1.5c-.3-1.2-1.8-2.2-3.4-2.5-.4-.1-.9.1-1.3.4l-.1.1c-.1.1-.2.1-.3.1-.3 0-.5-.1-.7-.2-.1-.1-.2-.2-.3-.3-.6-.4-1.1-.9-1.6-1.4-.1-.1-.3-.2-.4-.2-.1 0-.2 0-.3.1-.4.4-.8.8-1.1 1.3L12 10c-.1.1-.2.2-.3.2-.1.1-.3.1-.4.1h-.5c-1.1 0-2.1-.4-2.9-1.1-.2-.1-.4-.2-.6-.2-.4 0-.8.2-1.1.5-.3.3-.5.7-.6 1.1-.1.4-.1.9 0 1.3l.1.3c.1.1.1.3 0 .4-.3.4-.6.9-.8 1.4 0 .1-.1.2-.1.3-.2.7-.3 1.4-.3 2.1 0 1.9.8 3.6 2.2 4.9 1.4 1.3 3.1 2 5 2h.1c.5 0 1 0 1.4-.1.5-.1 1-.2 1.5-.4.5-.2 1-.5 1.4-.8.4-.3.8-.7 1.1-1.1.1-.1.2-.2.3-.3.1-.1.3-.1.4-.1.2 0 .4.1.6.2.2.1.4.3.6.4 1.2.6 2.6.9 4.1.8 1.4-.1 2.8-.6 3.9-1.5s1.9-2.3 2.3-3.8c.3-1.1.2-2.3-.1-3.4-.1-.4-.3-.8-.6-1.1zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path> </svg>
+                            <span class="font-medium font-body">WhatsApp</span>
                             <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                         </a>
-                         <a id="whatsapp-link" href="https://wa.me/254742007277" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
-                            <i data-lucide="phone" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"></i> <span class="font-medium font-body">WhatsApp</span>
-                            <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                        <a id="whatsapp-direct-link" href="https://wa.me/254742007277" target="_blank" rel="noopener noreferrer" class="mt-6 inline-block text-sm text-accent dark:text-dark-accent hover:underline reveal-hidden font-body" style="transition-delay: 0.5s;">
+                        <a id="whatsapp-direct-link" href="#" target="_blank" rel="noopener noreferrer" class="mt-6 inline-block text-sm text-accent dark:text-dark-accent hover:underline reveal-hidden font-body" data-reveal-delay="400">
                             👋🏽 Message me directly on WhatsApp
                         </a>
                     </div>
@@ -533,17 +541,17 @@
                     <form id="contactForm" class="space-y-6" novalidate>
                         <div>
                             <label for="name" class="block text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1 font-body">Name</label>
-                            <input type="text" name="name" id="name" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg dark:bg-dark-primary-bg border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="Your Name">
+                            <input type="text" name="name" id="name" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg/80 dark:bg-dark-primary-bg/80 backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="Your Name">
                             <p class="form-error mt-1 text-xs text-red-coral hidden font-mono"></p>
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1 font-body">Email</label>
-                            <input type="email" name="email" id="email" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg dark:bg-dark-primary-bg border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="your.email@example.com">
+                            <input type="email" name="email" id="email" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg/80 dark:bg-dark-primary-bg/80 backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="your.email@example.com">
                              <p class="form-error mt-1 text-xs text-red-coral hidden font-mono"></p>
                         </div>
                         <div>
                             <label for="message" class="block text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1 font-body">Message</label>
-                            <textarea name="message" id="message" rows="4" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg dark:bg-dark-primary-bg border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none resize-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="How can I help?"></textarea>
+                            <textarea name="message" id="message" rows="4" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg/80 dark:bg-dark-primary-bg/80 backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none resize-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="How can I help?"></textarea>
                              <p class="form-error mt-1 text-xs text-red-coral hidden font-mono"></p>
                         </div>
                         <div>
@@ -565,21 +573,23 @@
 
     <div id="projectModal" class="fixed inset-0 bg-black/80 dark:bg-jet-black/90 backdrop-blur-lg flex items-center justify-center z-50 p-4 hidden-modal">
         <div id="projectModalContentWrapper" class="bg-primary-bg dark:bg-dark-secondary-bg text-primary-text dark:text-dark-primary-text rounded-xl shadow-2xl overflow-hidden max-w-3xl w-full border border-secondary-text/20 dark:border-dark-accent-secondary/50">
-             <div id="projectModalContent"></div>
+             <div id="projectModalContent"> </div>
         </div>
     </div>
+
+    <div id="copy-toast">✅ Copied!</div>
 
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Lucide Icons
+            // --- Initialize Lucide Icons ---
+            // Still needed for icons not replaced by SVG (like menu, arrows, etc.)
             lucide.createIcons();
 
             // --- Constants and State ---
             const name = "Daniel Wanjala";
-            // Mock Data - Updated GitHub links
-            const projectsData = [
-              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" }, // Assuming this repo name is correct
+            const projectsData = [ // Ensure this data matches your actual projects
+              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
               { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
               { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-coral" },
               { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
@@ -590,6 +600,7 @@
 
             // --- DOM Element References ---
             const htmlEl = document.documentElement;
+            const preloader = document.getElementById('preloader');
             const themeToggleButton = document.getElementById('theme-toggle');
             const themeIconSun = document.getElementById('theme-icon-sun');
             const themeIconMoon = document.getElementById('theme-icon-moon');
@@ -601,7 +612,7 @@
             const projectCards = document.querySelectorAll('.project-card');
             const projectModal = document.getElementById('projectModal');
             const projectModalContent = document.getElementById('projectModalContent');
-            const projectModalContentWrapper = document.getElementById('projectModalContentWrapper'); // Get wrapper for transition
+            const projectModalContentWrapper = document.getElementById('projectModalContentWrapper');
             const contactForm = document.getElementById('contactForm');
             const submitButton = document.getElementById('submitButton');
             const buttonText = document.getElementById('buttonText');
@@ -609,26 +620,34 @@
             const formStatusEl = document.getElementById('formStatus');
             const currentYearEl = document.getElementById('currentYear');
             const scrollProgressBar = document.getElementById('scrollProgressBar');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+            const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
+            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link');
             const sections = document.querySelectorAll('main section[id]');
-            const whatsappLink = document.getElementById('whatsapp-link'); // Get WhatsApp link element
-            const whatsappDirectLink = document.getElementById('whatsapp-direct-link'); // Get direct WhatsApp link
+            const whatsappLink = document.getElementById('whatsapp-link');
+            const whatsappDirectLink = document.getElementById('whatsapp-direct-link');
+            const copyButtons = document.querySelectorAll('.copy-btn'); // Get all copy buttons
+            const copyToast = document.getElementById('copy-toast'); // Get toast element
+            const counterElements = document.querySelectorAll('[data-target]'); // Get all counter elements
 
-            // --- Update WhatsApp Link with Message ---
+            // --- Hide Preloader ---
+            // Hide slightly after the animation finishes to ensure it's seen
+            window.addEventListener('load', () => {
+                 setTimeout(() => {
+                    if (preloader) {
+                        preloader.classList.add('hidden');
+                    }
+                 }, 4000); // Match animation duration + slight buffer
+            });
+
+            // --- Update WhatsApp Link ---
             const encodedMessage = encodeURIComponent(whatsappMessage);
             const whatsappUrlWithMessage = `${whatsappBaseUrl}?text=${encodedMessage}`;
-            if (whatsappLink) {
-                whatsappLink.href = whatsappUrlWithMessage;
-            }
-            if (whatsappDirectLink) {
-                whatsappDirectLink.href = whatsappUrlWithMessage;
-            }
-
+            if (whatsappLink) whatsappLink.href = whatsappUrlWithMessage;
+            if (whatsappDirectLink) whatsappDirectLink.href = whatsappUrlWithMessage;
 
             // --- Theme Toggle ---
             function updateThemeUI(theme) {
-                if (!themeIconSun || !themeIconMoon) return; // Guard against missing elements
+                if (!themeIconSun || !themeIconMoon) return;
                 if (theme === 'dark') {
                     themeIconSun.classList.remove('hidden');
                     themeIconMoon.classList.add('hidden');
@@ -636,7 +655,7 @@
                     themeIconSun.classList.add('hidden');
                     themeIconMoon.classList.remove('hidden');
                 }
-                 lucide.createIcons(); // Re-render icons
+                 lucide.createIcons();
             }
 
             function setTheme(theme) {
@@ -679,18 +698,20 @@
              }
 
             // --- Hero Section Word Rotation ---
-             const words = ["forecast", "heal", "accelerate"];
+             const words = ["forecast", "heal", "accelerate", "optimize", "innovate"];
              let wordIndex = 0;
              if (rotatingWordEl) {
                  setInterval(() => {
                      wordIndex = (wordIndex + 1) % words.length;
                      rotatingWordEl.style.opacity = '0';
+                     rotatingWordEl.style.transform = 'translateY(10px)';
                      setTimeout(() => {
                          rotatingWordEl.textContent = words[wordIndex];
                          rotatingWordEl.style.opacity = '1';
+                         rotatingWordEl.style.transform = 'translateY(0)';
                      }, 300);
-                 }, 4000);
-                 rotatingWordEl.style.transition = 'opacity 0.3s ease-in-out';
+                 }, 3000);
+                 rotatingWordEl.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
              }
 
             // --- Project Card Hover Image Swap ---
@@ -707,16 +728,15 @@
             // --- Project Modal ---
             function openModal(projectId) {
                 const project = projectsData.find(p => p.id === parseInt(projectId));
-                if (!project || !projectModalContent || !projectModal) return;
+                if (!project || !projectModalContent || !projectModal || !projectModalContentWrapper) return;
 
                 const techStackHtml = project.techStack.map(tech => `<span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">${tech}</span>`).join(' ');
                 const githubButton = project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-secondary-text dark:bg-dark-accent-secondary text-primary-bg dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub </a>` : '';
                 const demoButton = project.liveDemoUrl ? `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-accent dark:bg-dark-accent text-white dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="code" class="mr-2 h-4 w-4"></i> Live Demo </a>` : '';
 
-                // Inject content into the inner div
                 projectModalContent.innerHTML = `
                     <div class="relative">
-                       <img src="${project.altImageUrl || project.imageUrl}" alt="${project.title}" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/800x400/0B0C10/F7F7F7?text=Image+Error'">
+                       <img src="${project.altImageUrl || project.imageUrl}" alt="${project.title}" class="w-full h-64 object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/800x400/0B0C10/F7F7F7?text=Image+Error'">
                        <button id="closeModalButton" class="absolute top-4 right-4 text-primary-text dark:text-dark-primary-text bg-primary-bg/50 dark:bg-dark-primary-bg/50 rounded-full p-2 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors duration-200 z-10" aria-label="Close project details">
                          <i data-lucide="x" class="h-5 w-5"></i>
                        </button>
@@ -747,7 +767,7 @@
             }
 
             function closeModal() {
-                 if (!projectModal || !projectModalContent) return;
+                if (!projectModal || !projectModalContent) return;
                 projectModal.classList.add('hidden-modal');
                 projectModal.classList.remove('visible-modal');
                 document.body.style.overflow = '';
@@ -785,18 +805,13 @@
                     if (!isValid) {
                         if(submitButton) submitButton.classList.add('animate-shake', '!bg-red-coral');
                         if(buttonText) buttonText.textContent = 'Please Check Errors';
-                        if(buttonIcon) buttonIcon.setAttribute('data-lucide', 'alert-circle');
-                        lucide.createIcons();
-                        if(formStatusEl) {
-                            formStatusEl.textContent = 'Please correct the errors above.';
-                            formStatusEl.classList.add('text-red-coral');
-                        }
+                        if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'alert-circle'); lucide.createIcons(); }
+                        if(formStatusEl) { formStatusEl.textContent = 'Please correct the errors above.'; formStatusEl.classList.add('text-red-coral'); }
                         if (firstErrorField) firstErrorField.focus();
                         setTimeout(() => {
                             if(submitButton) submitButton.classList.remove('animate-shake', '!bg-red-coral');
                             if(buttonText) buttonText.textContent = 'Send Message';
-                            if(buttonIcon) buttonIcon.setAttribute('data-lucide', 'arrow-right');
-                            lucide.createIcons();
+                            if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'arrow-right'); lucide.createIcons(); }
                         }, 1500);
                         return;
                     }
@@ -823,7 +838,7 @@
                             formStatusEl.classList.add('text-emerald-green');
                         }
                         contactForm.reset();
-                        contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-emerald-green'));
+                        contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-emerald-green', 'border-red-coral', 'ring-red-coral'));
 
                         setTimeout(() => {
                             if(submitButton) {
@@ -843,7 +858,6 @@
                 });
              }
 
-
             // --- Footer Current Year ---
             if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
 
@@ -855,52 +869,121 @@
                 if(scrollProgressBar) scrollProgressBar.style.transform = `scaleX(${progress})`;
             });
 
-            // --- Scroll Reveal Animations ---
+            // --- Scroll Reveal Animations (with Staggering) ---
             const revealObserverOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
             const revealCallback = (entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        const delay = entry.target.dataset.revealDelay || 0; // Get delay from data attribute
+                        entry.target.style.transitionDelay = `${delay}ms`; // Apply delay
+
                         entry.target.classList.add('reveal-visible');
                         if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
                             entry.target.classList.add('slide-in');
                         }
-                        observer.unobserve(entry.target);
+                        observer.unobserve(entry.target); // Unobserve after revealing
                     }
                 });
             };
             const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
-            document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right').forEach(el => revealObserver.observe(el));
-
+            // Observe all elements with reveal classes or data-reveal-delay
+            document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right, [data-reveal-delay]').forEach(el => {
+                // Ensure base class is present if only delay is set
+                if (!el.classList.contains('reveal-hidden') && !el.classList.contains('reveal-slide-left') && !el.classList.contains('reveal-slide-right')) {
+                   el.classList.add('reveal-hidden');
+                }
+                 revealObserver.observe(el);
+            });
 
             // --- Active Navigation Link Highlighting ---
+            let currentActiveSectionId = null;
             const navObserverOptions = { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 };
             const navObserverCallback = (entries) => {
-                let intersectingSectionId = null;
+                 let intersectingSectionId = currentActiveSectionId;
+
                  entries.forEach(entry => {
-                     if (entry.isIntersecting) {
+                     if (entry.isIntersecting && entry.intersectionRatio > 0) {
                          intersectingSectionId = entry.target.getAttribute('id');
                      }
                  });
 
-                 navLinks.forEach(link => {
-                     const sectionId = link.getAttribute('data-section');
-                     if (sectionId === intersectingSectionId) {
-                         link.classList.add('nav-active');
-                     } else {
-                         link.classList.remove('nav-active');
-                     }
-                 });
-                 mobileNavLinks.forEach(link => {
-                      const sectionId = link.getAttribute('data-section');
-                     if (sectionId === intersectingSectionId) {
-                         link.classList.add('nav-active');
-                     } else {
-                         link.classList.remove('nav-active');
-                     }
-                 });
+                 if (intersectingSectionId !== currentActiveSectionId) {
+                    currentActiveSectionId = intersectingSectionId;
+                    navLinks.forEach(link => {
+                        link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
+                    });
+                    mobileNavLinks.forEach(link => {
+                         link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
+                    });
+                 }
             };
             const navObserver = new IntersectionObserver(navObserverCallback, navObserverOptions);
             sections.forEach(section => { if(section) navObserver.observe(section); });
+            // --- Initial Nav Highlight on Load ---
+            const initialHash = window.location.hash.substring(1);
+            if (initialHash) {
+                currentActiveSectionId = initialHash;
+                 navLinks.forEach(link => {
+                     link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
+                 });
+                 mobileNavLinks.forEach(link => {
+                      link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
+                 });
+            }
+
+            // --- Clipboard Copy Functionality ---
+            let toastTimeout;
+            copyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const textToCopy = button.dataset.copyText;
+                    if (textToCopy && navigator.clipboard) {
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            if (copyToast) {
+                                copyToast.classList.add('show');
+                                clearTimeout(toastTimeout);
+                                toastTimeout = setTimeout(() => {
+                                    copyToast.classList.remove('show');
+                                }, 2000);
+                            }
+                        }).catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
+                    }
+                });
+            });
+
+            // --- Animated Counters ---
+            const animateCounter = (el) => {
+                const target = parseInt(el.dataset.target, 10);
+                if (isNaN(target)) return; // Skip if target is not a number
+                let current = 0;
+                const duration = 1500; // Animation duration in ms
+                const stepTime = 20; // Time between steps in ms
+                const totalSteps = duration / stepTime;
+                const increment = target / totalSteps;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        el.textContent = target; // Ensure final value is exact
+                        clearInterval(timer);
+                    } else {
+                        el.textContent = Math.ceil(current); // Display integer value
+                    }
+                }, stepTime);
+            };
+
+            const counterObserverOptions = { threshold: 0.5 }; // Trigger when 50% visible
+            const counterObserverCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target); // Animate only once
+                    }
+                });
+            };
+            const counterObserver = new IntersectionObserver(counterObserverCallback, counterObserverOptions);
+            counterElements.forEach(el => counterObserver.observe(el));
 
         }); // End DOMContentLoaded
     </script>
