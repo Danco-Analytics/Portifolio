@@ -14,7 +14,6 @@
         /* Base body styles - applied before Tailwind potentially overrides */
         body {
           font-family: 'Inter', 'IBM Plex Sans', sans-serif; /* Updated default body font */
-          /* Base colors set via JS/Tailwind classes */
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -26,16 +25,13 @@
         .font-mono { font-family: 'JetBrains Mono', 'Source Code Pro', monospace; }
 
         /* Custom Scrollbar Styling */
-        /* Light theme scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #E0C097; } /* Sandstone light */
         ::-webkit-scrollbar-thumb { background: #6C5CE7; border-radius: 4px; } /* Tech Purple */
         ::-webkit-scrollbar-thumb:hover { background: #FF6B6B; } /* Red Coral */
-        /* Dark theme scrollbar */
         html.dark ::-webkit-scrollbar-track { background: #1F2833; } /* Dark Grey */
         html.dark ::-webkit-scrollbar-thumb { background: #45A29E; } /* Secondary Accent Dark */
         html.dark ::-webkit-scrollbar-thumb:hover { background: #66FCF1; } /* Primary Accent Dark */
-
 
         /* Basic shake animation for form errors */
         @keyframes shake {
@@ -56,9 +52,10 @@
         #projectModal { transition: opacity 0.3s ease-in-out; }
         #projectModal.hidden-modal { opacity: 0; pointer-events: none; }
         #projectModal.visible-modal { opacity: 1; pointer-events: auto; }
-        #projectModalContent { transition: transform 0.3s ease-in-out; }
-        #projectModal.hidden-modal #projectModalContent { transform: scale(0.8); }
-        #projectModal.visible-modal #projectModalContent { transform: scale(1); }
+        #projectModalContentWrapper { transition: transform 0.3s ease-in-out; } /* Apply transition to wrapper */
+        #projectModal.hidden-modal #projectModalContentWrapper { transform: scale(0.8); }
+        #projectModal.visible-modal #projectModalContentWrapper { transform: scale(1); }
+
 
         /* Mobile Menu Transition */
         #mobile-menu {
@@ -88,7 +85,6 @@
             opacity: 0;
             transition: opacity 0.3s;
             font-size: 0.75rem; /* text-xs */
-            /* Theme specific colors */
             background-color: #66FCF1; /* Signal Cyan */
             color: #0B0C10; /* Jet Black */
         }
@@ -117,12 +113,12 @@
         html:not(.dark) .nav-link.nav-active { color: #6C5CE7 !important; } /* Tech Purple for light theme */
 
         .nav-link .active-underline {
-            display: none; /* Hidden by default */
+            display: none;
             width: 0%;
             height: 2px;
             background-color: #66FCF1; /* Signal Cyan */
             position: absolute;
-            bottom: -2px; /* Position slightly below text */
+            bottom: -2px;
             left: 50%;
             transform: translateX(-50%);
             transition: width 0.3s ease;
@@ -132,17 +128,17 @@
          }
         .nav-link.nav-active .active-underline {
             display: block !important;
-            width: 60%; /* Adjust width as needed */
+            width: 60%;
         }
 
         /* Mobile active link */
         .mobile-nav-link.nav-active {
              background-color: rgba(108, 92, 231, 0.2); /* Tech Purple light theme */
-             color: #6C5CE7; /* Tech Purple */
+             color: #6C5CE7 !important; /* Tech Purple */
         }
         html.dark .mobile-nav-link.nav-active {
              background-color: rgba(69, 162, 158, 0.5); /* Secondary Accent Dark */
-             color: #66FCF1; /* Signal Cyan */
+             color: #66FCF1 !important; /* Signal Cyan */
         }
 
 
@@ -202,6 +198,7 @@
         (function() {
             const storedTheme = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            // Default to dark theme if no preference stored and OS prefers dark
             if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
                 document.documentElement.classList.add('dark');
             } else {
@@ -258,12 +255,12 @@
 
         <div class="md:hidden bg-primary-bg dark:bg-dark-secondary-bg border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
              <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#hero" data-section="hero" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text">Hero</a>
-                <a href="#about" data-section="about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text">About</a>
-                <a href="#projects" data-section="projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text">Projects</a>
-                <a href="#essays" data-section="essays" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text">Essays</a>
-                <a href="#demos" data-section="demos" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text">Demos</a>
-                <a href="#contact" data-section="contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text">Contact</a>
+                <a href="#hero" data-section="hero" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Hero</a>
+                <a href="#about" data-section="about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">About</a>
+                <a href="#projects" data-section="projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Projects</a>
+                <a href="#essays" data-section="essays" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Essays</a>
+                <a href="#demos" data-section="demos" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Demos</a>
+                <a href="#contact" data-section="contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Contact</a>
             </div>
         </div>
     </header>
@@ -348,18 +345,18 @@
         <section id="projects" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
             <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">Projects: Work That Talks Back</h2>
             <div class="columns-1 md:columns-2 lg:columns-3 gap-6">
-                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1">
+                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="1">
                     <div class="absolute top-0 left-0 h-1 w-full bg-blue-500 z-10"></div>
                     <div class="relative h-48 w-full">
                         <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" alt="GDP Growth Prediction Model" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-4 text-primary-text dark:text-dark-primary-text">
+                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">GDP Growth Prediction Model</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Developed a machine learning model to predict annual GDP growth using economic indicators.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Finance</span>
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">AI</span>
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Python</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Finance</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">AI</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Python</span>
                         </div>
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-primary-bg/80 dark:from-dark-primary-bg/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -368,18 +365,18 @@
                     </div>
                 </article>
 
-                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1">
+                <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="2">
                     <div class="absolute top-0 left-0 h-1 w-full bg-emerald-green z-10"></div>
                     <div class="relative h-48 w-full">
                         <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" alt="AI-Driven Plant Disease Detection" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-4 text-primary-text dark:text-dark-primary-text">
+                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">AI-Driven Plant Disease Detection</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Collaboratively developed an advanced plant disease detection system using image processing.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Health</span>
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">AI</span>
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">CV</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Health</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">AI</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">CV</span>
                         </div>
                     </div>
                      <div class="absolute inset-0 bg-gradient-to-t from-primary-bg/80 dark:from-dark-primary-bg/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -388,18 +385,17 @@
                     </div>
                 </article>
 
-                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1">
-                    <div class="absolute top-0 left-0 h-1 w-full bg-red-500 z-10"></div>
-                    <div class="relative h-48 w-full">
+                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="3">
+                    <div class="absolute top-0 left-0 h-1 w-full bg-red-coral z-10"></div> <div class="relative h-48 w-full">
                          <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" alt="Kenya's GDP Forecasting Tool" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-4 text-primary-text dark:text-dark-primary-text">
+                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">Kenya's GDP Forecasting Tool</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Developed a forecasting tool to analyze and predict Kenya's GDP trends.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Finance</span>
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">TimeSeries</span>
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Python</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Finance</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">TimeSeries</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Python</span>
                         </div>
                     </div>
                      <div class="absolute inset-0 bg-gradient-to-t from-primary-bg/80 dark:from-dark-primary-bg/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -408,18 +404,18 @@
                     </div>
                 </article>
 
-                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1">
+                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="4">
                     <div class="absolute top-0 left-0 h-1 w-full bg-tech-purple z-10"></div>
                     <div class="relative h-48 w-full">
                         <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" alt="InvestWise Predictor" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-4 text-primary-text dark:text-dark-primary-text">
+                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">InvestWise Predictor</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Intelligent online tool using neural networks to predict investment opportunities in Kenya.</p>
                         <div class="flex flex-wrap gap-2">
-                             <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Finance</span>
-                             <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">AI</span>
-                             <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Web</span>
+                             <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Finance</span>
+                             <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">AI</span>
+                             <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Web</span>
                         </div>
                     </div>
                      <div class="absolute inset-0 bg-gradient-to-t from-primary-bg/80 dark:from-dark-primary-bg/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -428,17 +424,18 @@
                     </div>
                 </article>
 
-                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1">
-                    <div class="absolute top-0 left-0 h-1 w-full bg-sandstone z-10"></div> <div class="relative h-48 w-full">
+                 <article class="project-card relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="5">
+                    <div class="absolute top-0 left-0 h-1 w-full bg-sandstone z-10"></div>
+                    <div class="relative h-48 w-full">
                         <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" alt="Netflix Stock Profit Analysis" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                     </div>
-                    <div class="p-4 text-primary-text dark:text-dark-primary-text">
+                    <div class="p-6 text-primary-text dark:text-dark-primary-text">
                         <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">Netflix Stock Profit Analysis</h3>
                         <p class="text-sm mb-3 text-secondary-text dark:text-dark-secondary-text font-body">Analyzed Netflix's stock performance to identify profit trends and patterns.</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Finance</span>
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Analysis</span>
-                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full">Python</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Finance</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Analysis</span>
+                            <span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">Python</span>
                         </div>
                     </div>
                      <div class="absolute inset-0 bg-gradient-to-t from-primary-bg/80 dark:from-dark-primary-bg/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -506,12 +503,12 @@
                 <div class="reveal-slide-left">
                     <h3 class="text-2xl font-semibold mb-6 text-primary-text dark:text-dark-primary-text font-heading">Connect with me</h3>
                     <div class="space-y-4">
-                        <a href="https://linkedin.com/in/daniel-wanjala-91" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg">
+                        <a href="https://www.linkedin.com/in/daniel-wanjala-912b8b17b/" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg">
                             <i data-lucide="linkedin" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"></i>
                             <span class="font-medium font-body">LinkedIn</span>
                             <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                         </a>
-                        <a href="https://github.com/dmwanjala" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.1s;">
+                        <a href="https://github.com/MadScie254" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.1s;">
                             <i data-lucide="github" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"></i>
                             <span class="font-medium font-body">GitHub</span>
                             <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
@@ -521,11 +518,11 @@
                             <span class="font-medium font-body">Email</span>
                             <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                         </a>
-                         <a href="https://wa.me/254742007277" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
+                         <a id="whatsapp-link" href="https://wa.me/254742007277" target="_blank" rel="noopener noreferrer" class="social-card flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
                             <i data-lucide="phone" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"></i> <span class="font-medium font-body">WhatsApp</span>
                             <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                         </a>
-                        <a href="https://wa.me/254742007277" target="_blank" rel="noopener noreferrer" class="mt-6 inline-block text-sm text-accent dark:text-dark-accent hover:underline reveal-hidden font-body" style="transition-delay: 0.5s;">
+                        <a id="whatsapp-direct-link" href="https://wa.me/254742007277" target="_blank" rel="noopener noreferrer" class="mt-6 inline-block text-sm text-accent dark:text-dark-accent hover:underline reveal-hidden font-body" style="transition-delay: 0.5s;">
                             👋🏽 Message me directly on WhatsApp
                         </a>
                     </div>
@@ -562,9 +559,9 @@
         </section>
     </main>
 
-    <footer class="bg-secondary-bg/10 dark:bg-dark-secondary-bg text-secondary-text dark:text-dark-secondary-text py-6 px-4 md:px-8 text-center text-sm reveal-hidden border-t border-secondary-text/10 dark:border-dark-secondary-text/10">
+    <footer class="bg-secondary-bg/10 dark:bg-dark-secondary-bg text-secondary-text dark:text-dark-secondary-text py-6 px-4 md:px-8 text-center text-sm reveal-hidden border-t border-secondary-text/10 dark:border-dark-secondary-text/10 font-body">
          © <span id="currentYear"></span> Daniel Wanjala. All rights reserved. | Predicting Progress. Designing Resilience.
-         </footer>
+    </footer>
 
     <div id="projectModal" class="fixed inset-0 bg-black/80 dark:bg-jet-black/90 backdrop-blur-lg flex items-center justify-center z-50 p-4 hidden-modal">
         <div id="projectModalContentWrapper" class="bg-primary-bg dark:bg-dark-secondary-bg text-primary-text dark:text-dark-primary-text rounded-xl shadow-2xl overflow-hidden max-w-3xl w-full border border-secondary-text/20 dark:border-dark-accent-secondary/50">
@@ -580,14 +577,16 @@
 
             // --- Constants and State ---
             const name = "Daniel Wanjala";
-            // Mock Data (same as before)
+            // Mock Data - Updated GitHub links
             const projectsData = [
-              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
-              { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" }, // Updated color
-              { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-500" }, // Consider red-coral
-              { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" }, // Updated color
-              { id: 5, title: "Netflix Stock Profit Analysis", description: "Analyzed Netflix's stock performance...", tags: ["Finance", "Analysis", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz", problem: "Understanding historical performance...", dataUsed: "Historical Netflix stock data.", results: "Provided insights into profitability...", techStack: ["Python", "Pandas", "Matplotlib"], githubUrl: "https://github.com/MadScie254/Netflix-Analysis", liveDemoUrl: null, accentColor: "sandstone" } // Updated color
+              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" }, // Assuming this repo name is correct
+              { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
+              { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-coral" },
+              { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
+              { id: 5, title: "Netflix Stock Profit Analysis", description: "Analyzed Netflix's stock performance...", tags: ["Finance", "Analysis", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz", problem: "Understanding historical performance...", dataUsed: "Historical Netflix stock data.", results: "Provided insights into profitability...", techStack: ["Python", "Pandas", "Matplotlib"], githubUrl: "https://github.com/MadScie254/Netflix-Analysis", liveDemoUrl: null, accentColor: "sandstone" }
             ];
+            const whatsappBaseUrl = "https://wa.me/254742007277";
+            const whatsappMessage = "Hello Daniel, I visited your portfolio and would like to connect.";
 
             // --- DOM Element References ---
             const htmlEl = document.documentElement;
@@ -602,6 +601,7 @@
             const projectCards = document.querySelectorAll('.project-card');
             const projectModal = document.getElementById('projectModal');
             const projectModalContent = document.getElementById('projectModalContent');
+            const projectModalContentWrapper = document.getElementById('projectModalContentWrapper'); // Get wrapper for transition
             const contactForm = document.getElementById('contactForm');
             const submitButton = document.getElementById('submitButton');
             const buttonText = document.getElementById('buttonText');
@@ -612,9 +612,23 @@
             const navLinks = document.querySelectorAll('.nav-link');
             const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
             const sections = document.querySelectorAll('main section[id]');
+            const whatsappLink = document.getElementById('whatsapp-link'); // Get WhatsApp link element
+            const whatsappDirectLink = document.getElementById('whatsapp-direct-link'); // Get direct WhatsApp link
+
+            // --- Update WhatsApp Link with Message ---
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            const whatsappUrlWithMessage = `${whatsappBaseUrl}?text=${encodedMessage}`;
+            if (whatsappLink) {
+                whatsappLink.href = whatsappUrlWithMessage;
+            }
+            if (whatsappDirectLink) {
+                whatsappDirectLink.href = whatsappUrlWithMessage;
+            }
+
 
             // --- Theme Toggle ---
             function updateThemeUI(theme) {
+                if (!themeIconSun || !themeIconMoon) return; // Guard against missing elements
                 if (theme === 'dark') {
                     themeIconSun.classList.remove('hidden');
                     themeIconMoon.classList.add('hidden');
@@ -622,8 +636,7 @@
                     themeIconSun.classList.add('hidden');
                     themeIconMoon.classList.remove('hidden');
                 }
-                 // Re-render icons after changing visibility
-                 lucide.createIcons();
+                 lucide.createIcons(); // Re-render icons
             }
 
             function setTheme(theme) {
@@ -636,31 +649,34 @@
                 updateThemeUI(theme);
             }
 
-            // Set initial theme based on saved preference or OS setting
             const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            setTheme(currentTheme); // Apply theme and update UI on load
+            setTheme(currentTheme);
 
-            themeToggleButton.addEventListener('click', () => {
-                const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
-                setTheme(newTheme);
-            });
+            if (themeToggleButton) {
+                themeToggleButton.addEventListener('click', () => {
+                    const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
+                    setTheme(newTheme);
+                });
+            }
 
             // --- Mobile Menu Toggle ---
-             mobileMenuButton.addEventListener('click', () => {
-                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-                mobileMenu.classList.toggle('open');
-                menuIconOpen.classList.toggle('hidden');
-                menuIconClose.classList.toggle('hidden');
-            });
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                     mobileMenuButton.setAttribute('aria-expanded', 'false');
-                     mobileMenu.classList.remove('open');
-                     menuIconOpen.classList.remove('hidden');
-                     menuIconClose.classList.add('hidden');
-                });
-            });
+             if (mobileMenuButton && mobileMenu && menuIconOpen && menuIconClose) {
+                 mobileMenuButton.addEventListener('click', () => {
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                    mobileMenu.classList.toggle('open');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                 });
+                 mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                         mobileMenuButton.setAttribute('aria-expanded', 'false');
+                         mobileMenu.classList.remove('open');
+                         menuIconOpen.classList.remove('hidden');
+                         menuIconClose.classList.add('hidden');
+                    });
+                 });
+             }
 
             // --- Hero Section Word Rotation ---
              const words = ["forecast", "heal", "accelerate"];
@@ -677,7 +693,6 @@
                  rotatingWordEl.style.transition = 'opacity 0.3s ease-in-out';
              }
 
-
             // --- Project Card Hover Image Swap ---
             projectCards.forEach(card => {
                 const img = card.querySelector('.project-image');
@@ -692,12 +707,13 @@
             // --- Project Modal ---
             function openModal(projectId) {
                 const project = projectsData.find(p => p.id === parseInt(projectId));
-                if (!project) return;
+                if (!project || !projectModalContent || !projectModal) return;
 
                 const techStackHtml = project.techStack.map(tech => `<span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">${tech}</span>`).join(' ');
                 const githubButton = project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-secondary-text dark:bg-dark-accent-secondary text-primary-bg dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub </a>` : '';
                 const demoButton = project.liveDemoUrl ? `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-accent dark:bg-dark-accent text-white dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="code" class="mr-2 h-4 w-4"></i> Live Demo </a>` : '';
 
+                // Inject content into the inner div
                 projectModalContent.innerHTML = `
                     <div class="relative">
                        <img src="${project.altImageUrl || project.imageUrl}" alt="${project.title}" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/800x400/0B0C10/F7F7F7?text=Image+Error'">
@@ -721,7 +737,9 @@
                       <div class="flex gap-4">${githubButton}${demoButton}</div>
                     </div>`;
 
-                projectModalContent.querySelector('#closeModalButton').addEventListener('click', closeModal);
+                const closeButton = projectModalContent.querySelector('#closeModalButton');
+                if(closeButton) closeButton.addEventListener('click', closeModal);
+
                 projectModal.classList.remove('hidden-modal');
                 projectModal.classList.add('visible-modal');
                 document.body.style.overflow = 'hidden';
@@ -729,6 +747,7 @@
             }
 
             function closeModal() {
+                 if (!projectModal || !projectModalContent) return;
                 projectModal.classList.add('hidden-modal');
                 projectModal.classList.remove('visible-modal');
                 document.body.style.overflow = '';
@@ -736,86 +755,93 @@
             }
 
             projectCards.forEach(card => card.addEventListener('click', () => openModal(card.getAttribute('data-project-id'))));
-            projectModal.addEventListener('click', (event) => { if (event.target === projectModal) closeModal(); });
-            document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && projectModal.classList.contains('visible-modal')) closeModal(); });
+            if(projectModal) projectModal.addEventListener('click', (event) => { if (event.target === projectModal) closeModal(); });
+            document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && projectModal && projectModal.classList.contains('visible-modal')) closeModal(); });
 
             // --- Contact Form Handling ---
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                let isValid = true;
-                let firstErrorField = null;
+             if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    let isValid = true;
+                    let firstErrorField = null;
 
-                formStatusEl.textContent = '';
-                formStatusEl.className = 'mt-2 text-center text-sm font-body';
-                contactForm.querySelectorAll('.form-error').forEach(el => el.classList.add('hidden'));
-                contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-red-coral', 'ring-red-coral', 'border-emerald-green')); // Use style guide colors
-
-                const nameField = contactForm.querySelector('#name');
-                const emailField = contactForm.querySelector('#email');
-                const messageField = contactForm.querySelector('#message');
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-                // Validation logic... (similar to before, using red-coral for errors)
-                if (!nameField.value.trim()) { isValid = false; nameField.classList.add('border-red-coral', 'ring-red-coral'); nameField.nextElementSibling.textContent = 'Name is required.'; nameField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = nameField; }
-                if (!emailField.value.trim()) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Email is required.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
-                else if (!emailRegex.test(emailField.value)) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Valid email required.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
-                if (!messageField.value.trim()) { isValid = false; messageField.classList.add('border-red-coral', 'ring-red-coral'); messageField.nextElementSibling.textContent = 'Message is required.'; messageField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = messageField; }
-
-
-                if (!isValid) {
-                    submitButton.classList.add('animate-shake', '!bg-red-coral'); // Use !important if needed to override base bg
-                    buttonText.textContent = 'Please Check Errors';
-                    buttonIcon.setAttribute('data-lucide', 'alert-circle');
-                    lucide.createIcons();
-                    formStatusEl.textContent = 'Please correct the errors above.';
-                    formStatusEl.classList.add('text-red-coral');
-                    if (firstErrorField) firstErrorField.focus();
-                    setTimeout(() => {
-                         submitButton.classList.remove('animate-shake', '!bg-red-coral');
-                         buttonText.textContent = 'Send Message';
-                         buttonIcon.setAttribute('data-lucide', 'arrow-right');
-                         lucide.createIcons();
-                    }, 1500);
-                    return;
-                }
-
-                // Mark valid fields (optional)
-                 contactForm.querySelectorAll('.form-input').forEach(el => {
-                    if (!el.classList.contains('border-red-coral')) {
-                        el.classList.add('border-emerald-green');
-                    }
-                 });
-
-
-                // --- Submission Simulation ---
-                submitButton.disabled = true;
-                buttonText.textContent = 'Sending...';
-                buttonIcon.classList.add('hidden');
-                formStatusEl.textContent = '';
-
-                setTimeout(() => {
-                    // Success:
-                    submitButton.classList.remove('bg-accent', 'dark:bg-dark-accent');
-                    submitButton.classList.add('!bg-emerald-green', 'text-white'); // Success color
-                    buttonText.textContent = 'Message Sent!';
-                    formStatusEl.textContent = 'Thank you for your message!';
-                    formStatusEl.classList.add('text-emerald-green');
-                    contactForm.reset();
-                     contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-emerald-green'));
-
-
-                    setTimeout(() => {
-                        submitButton.disabled = false;
-                        submitButton.classList.remove('!bg-emerald-green', 'text-white');
-                        submitButton.classList.add('bg-accent', 'dark:bg-dark-accent');
-                        buttonText.textContent = 'Send Message';
-                        buttonIcon.classList.remove('hidden');
+                    if(formStatusEl) {
                         formStatusEl.textContent = '';
                         formStatusEl.className = 'mt-2 text-center text-sm font-body';
-                    }, 3000);
+                    }
+                    contactForm.querySelectorAll('.form-error').forEach(el => el.classList.add('hidden'));
+                    contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-red-coral', 'ring-red-coral', 'border-emerald-green'));
 
-                }, 1500);
-            });
+                    const nameField = contactForm.querySelector('#name');
+                    const emailField = contactForm.querySelector('#email');
+                    const messageField = contactForm.querySelector('#message');
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    if (nameField && !nameField.value.trim()) { isValid = false; nameField.classList.add('border-red-coral', 'ring-red-coral'); nameField.nextElementSibling.textContent = 'Name is required.'; nameField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = nameField; }
+                    if (emailField && !emailField.value.trim()) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Email is required.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
+                    else if (emailField && !emailRegex.test(emailField.value)) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Valid email required.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
+                    if (messageField && !messageField.value.trim()) { isValid = false; messageField.classList.add('border-red-coral', 'ring-red-coral'); messageField.nextElementSibling.textContent = 'Message is required.'; messageField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = messageField; }
+
+                    if (!isValid) {
+                        if(submitButton) submitButton.classList.add('animate-shake', '!bg-red-coral');
+                        if(buttonText) buttonText.textContent = 'Please Check Errors';
+                        if(buttonIcon) buttonIcon.setAttribute('data-lucide', 'alert-circle');
+                        lucide.createIcons();
+                        if(formStatusEl) {
+                            formStatusEl.textContent = 'Please correct the errors above.';
+                            formStatusEl.classList.add('text-red-coral');
+                        }
+                        if (firstErrorField) firstErrorField.focus();
+                        setTimeout(() => {
+                            if(submitButton) submitButton.classList.remove('animate-shake', '!bg-red-coral');
+                            if(buttonText) buttonText.textContent = 'Send Message';
+                            if(buttonIcon) buttonIcon.setAttribute('data-lucide', 'arrow-right');
+                            lucide.createIcons();
+                        }, 1500);
+                        return;
+                    }
+
+                    contactForm.querySelectorAll('.form-input').forEach(el => {
+                        if (!el.classList.contains('border-red-coral')) {
+                            el.classList.add('border-emerald-green');
+                        }
+                    });
+
+                    if(submitButton) submitButton.disabled = true;
+                    if(buttonText) buttonText.textContent = 'Sending...';
+                    if(buttonIcon) buttonIcon.classList.add('hidden');
+                    if(formStatusEl) formStatusEl.textContent = '';
+
+                    setTimeout(() => {
+                        if(submitButton) {
+                            submitButton.classList.remove('bg-accent', 'dark:bg-dark-accent');
+                            submitButton.classList.add('!bg-emerald-green', 'text-white');
+                        }
+                        if(buttonText) buttonText.textContent = 'Message Sent!';
+                        if(formStatusEl) {
+                            formStatusEl.textContent = 'Thank you for your message!';
+                            formStatusEl.classList.add('text-emerald-green');
+                        }
+                        contactForm.reset();
+                        contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-emerald-green'));
+
+                        setTimeout(() => {
+                            if(submitButton) {
+                                submitButton.disabled = false;
+                                submitButton.classList.remove('!bg-emerald-green', 'text-white');
+                                submitButton.classList.add('bg-accent', 'dark:bg-dark-accent');
+                            }
+                            if(buttonText) buttonText.textContent = 'Send Message';
+                            if(buttonIcon) buttonIcon.classList.remove('hidden');
+                            if(formStatusEl) {
+                                formStatusEl.textContent = '';
+                                formStatusEl.className = 'mt-2 text-center text-sm font-body';
+                            }
+                        }, 3000);
+
+                    }, 1500);
+                });
+             }
 
 
             // --- Footer Current Year ---
@@ -867,7 +893,7 @@
                  mobileNavLinks.forEach(link => {
                       const sectionId = link.getAttribute('data-section');
                      if (sectionId === intersectingSectionId) {
-                         link.classList.add('nav-active'); // Use the CSS class for mobile active state
+                         link.classList.add('nav-active');
                      } else {
                          link.classList.remove('nav-active');
                      }
