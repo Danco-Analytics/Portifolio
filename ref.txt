@@ -30,14 +30,14 @@
         .font-body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', 'Source Code Pro', monospace; }
 
-        /* Custom Scrollbar Styling */
+        /* Custom Scrollbar Styling (Keeping solid accents for simplicity) */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #E0C097; } /* Sandstone light */
-        ::-webkit-scrollbar-thumb { background: #6C5CE7; border-radius: 4px; } /* Tech Purple */
-        ::-webkit-scrollbar-thumb:hover { background: #FF6B6B; } /* Red Coral */
-        html.dark ::-webkit-scrollbar-track { background: #1F2833; } /* Dark Grey */
-        html.dark ::-webkit-scrollbar-thumb { background: #45A29E; } /* Secondary Accent Dark */
-        html.dark ::-webkit-scrollbar-thumb:hover { background: #66FCF1; } /* Primary Accent Dark */
+        ::-webkit-scrollbar-track { background: theme('colors.sandstone'); } /* Updated to use theme color */
+        ::-webkit-scrollbar-thumb { background: theme('colors.accent'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.accent-secondary'); }
+        html.dark ::-webkit-scrollbar-track { background: theme('colors.dark-secondary-bg'); }
+        html.dark ::-webkit-scrollbar-thumb { background: theme('colors.dark-accent'); }
+        html.dark ::-webkit-scrollbar-thumb:hover { background: theme('colors.dark-accent-secondary'); }
 
         /* Basic shake animation */
         @keyframes shake {
@@ -65,15 +65,19 @@
         }
         #mobile-menu.open { max-height: 500px; opacity: 1; }
 
-        /* Tooltip Styles */
+        /* Tooltip Styles - Using Tertiary Accent */
         .tooltip-container { position: relative; display: inline-block; }
         .tooltip-text {
             visibility: hidden; width: max-content; text-align: center; border-radius: 6px;
             padding: 5px 10px; position: absolute; z-index: 10; bottom: 125%; left: 50%;
             transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 0.75rem;
-            background-color: #66FCF1; color: #0B0C10;
+            background-color: theme('colors.tertiary-light');
+            color: theme('colors.primary-text');
         }
-        html.dark .tooltip-text { background-color: #6C5CE7; color: #F7F7F7; }
+        html.dark .tooltip-text {
+            background-color: theme('colors.tertiary-dark');
+            color: theme('colors.dark-primary-text');
+        }
         .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
 
         /* Scroll Reveal Animation Base */
@@ -84,16 +88,29 @@
         .reveal-visible.slide-in { opacity: 1; transform: translateX(0); }
         /* Staggering delay added via JS */
 
-        /* Navbar Underline (Original simple version from ref.txt base) */
-        .nav-link.nav-active { color: #66FCF1 !important; } /* Signal Cyan */
-        html:not(.dark) .nav-link.nav-active { color: #6C5CE7 !important; } /* Tech Purple for light theme */
-        .nav-link .active-underline { display: none; width: 0%; height: 2px; background-color: #66FCF1; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); transition: width 0.3s ease; }
-        html:not(.dark) .nav-link .active-underline { background-color: #6C5CE7; }
+        /* Navbar Underline - Updated to use gradient */
+        .nav-link.nav-active {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
+        }
+        .nav-link .active-underline {
+             display: none; width: 0%; height: 2px;
+             background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary'));
+             position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); transition: width 0.3s ease;
+        }
+        html.dark .nav-link .active-underline {
+             background-image: linear-gradient(to right, theme('colors.dark-accent'), theme('colors.dark-accent-secondary'));
+        }
         .nav-link.nav-active .active-underline { display: block !important; width: 60%; }
 
         /* Mobile active link */
-        .mobile-nav-link.nav-active { background-color: rgba(108, 92, 231, 0.2); color: #6C5CE7 !important; }
-        html.dark .mobile-nav-link.nav-active { background-color: rgba(69, 162, 158, 0.5); color: #66FCF1 !important; }
+        .mobile-nav-link.nav-active {
+            background-image: linear-gradient(to right, theme('colors.accent/10'), theme('colors.accent-secondary/20'));
+            color: theme('colors.accent') !important;
+        }
+        html.dark .mobile-nav-link.nav-active {
+             background-image: linear-gradient(to right, theme('colors.dark-accent/10'), theme('colors.dark-accent-secondary/20'));
+             color: theme('colors.dark-accent') !important;
+        }
 
         /* --- Canvas Background --- */
         #particle-canvas {
@@ -102,8 +119,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Behind everything */
-            pointer-events: none; /* Allow clicks through */
+            z-index: -1;
+            pointer-events: none;
         }
 
          /* --- Main Content Container for Tilt --- */
@@ -114,30 +131,31 @@
 
         /* --- Preloader Styles (Loading Bar) --- */
         #preloader {
-            position: fixed; inset: 0; background-color: #F7F7F7; /* primary-bg */
+            position: fixed; inset: 0; background-color: #F7F7F7;
             z-index: 9999; display: flex; align-items: center; justify-content: center;
-            opacity: 1; transition: opacity 0.5s ease-out 3.8s; /* Fade out after animation */
+            opacity: 1; transition: opacity 0.5s ease-out 3.8s;
         }
-        html.dark #preloader { background-color: #0B0C10; /* dark-primary-bg */ }
+        html.dark #preloader { background-color: #0B0C10; }
         #preloader.hidden { opacity: 0; pointer-events: none; }
 
         #loading-bar-container {
             width: 70%; max-width: 400px; height: 8px;
-            background-color: rgba(108, 92, 231, 0.2); /* tech-purple light */
+            background-color: rgba(108, 92, 231, 0.2);
             border-radius: 4px; overflow: hidden;
         }
-        html.dark #loading-bar-container { background-color: rgba(102, 252, 241, 0.2); /* signal-cyan light */ }
+        html.dark #loading-bar-container { background-color: rgba(102, 252, 241, 0.2); }
 
         #loading-bar {
             width: 100%; height: 100%;
-            background-color: #6C5CE7; /* tech-purple */
+            background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary'));
             border-radius: 4px;
             transform: scaleX(0);
             transform-origin: left;
-            animation: load 4s ease-out forwards; /* 4 second animation */
+            animation: load 4s ease-out forwards;
         }
-        html.dark #loading-bar { background-color: #66FCF1; /* signal-cyan */ }
-
+        html.dark #loading-bar {
+             background-image: linear-gradient(to right, theme('colors.dark-accent'), theme('colors.dark-accent-secondary'));
+        }
         @keyframes load {
             0% { transform: scaleX(0); }
             100% { transform: scaleX(1); }
@@ -146,7 +164,7 @@
          /* --- Copy Toast Styles --- */
          #copy-toast {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background-color: #2ECC71; /* emerald-green */ color: white;
+            background-color: theme('colors.emerald-green'); color: white;
             padding: 10px 20px; border-radius: 20px; font-size: 0.9rem;
             z-index: 10000; opacity: 0; transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             pointer-events: none;
@@ -155,7 +173,7 @@
 
     </style>
     <script>
-      // Tailwind Config
+      // Tailwind Config - Extended with new theme colors
       tailwind.config = {
         darkMode: 'class',
         theme: {
@@ -164,10 +182,19 @@
               'jet-black': '#0B0C10', 'ghost-white': '#F7F7F7', 'signal-cyan': '#66FCF1',
               'tech-purple': '#6C5CE7', 'emerald-green': '#2ECC71', 'red-coral': '#FF6B6B',
               'sandstone': '#E0C097',
+              // Base Theme
               'primary-bg': '#F7F7F7', 'primary-text': '#0B0C10', 'secondary-bg': '#E0C097',
               'secondary-text': '#4A4A4A', 'accent': '#6C5CE7', 'accent-secondary': '#FF6B6B',
+              // Dark Theme
               'dark-primary-bg': '#0B0C10', 'dark-primary-text': '#F7F7F7', 'dark-secondary-bg': '#1F2833',
               'dark-secondary-text': '#C5C6C7', 'dark-accent': '#66FCF1', 'dark-accent-secondary': '#45A29E',
+              // Tertiary Accents
+              'tertiary-light': '#F5B041',
+              'tertiary-dark': '#F39C12',
+              // Tinted Glass Backgrounds
+              'glass-light': 'rgba(225, 229, 255, 0.1)',
+              'glass-dark': 'rgba(17, 24, 39, 0.2)',
+              'glass-darker': 'rgba(17, 24, 39, 0.3)',
             },
             fontFamily: {
               heading: ['Satoshi', 'Space Grotesk', 'Neue Montreal', 'sans-serif'],
@@ -189,20 +216,30 @@
       }
     </script>
     <script>
-        // Immediately set theme
+        // Immediately set theme and background noise
         (function() {
             const storedTheme = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+            const isDark = storedTheme === 'dark' || (!storedTheme && prefersDark);
+
+            if (isDark) {
                 document.documentElement.classList.add('dark');
             } else {
-                 document.documentElement.classList.remove('dark');
+                document.documentElement.classList.remove('dark');
             }
-            // Set background noise pattern based on initial theme
-             const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-             const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-             document.body.style.backgroundImage = document.documentElement.classList.contains('dark') ? noiseDark : noiseLight;
 
+            const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+            const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+
+             const setBgNoise = () => {
+                document.body.style.backgroundImage = document.documentElement.classList.contains('dark') ? noiseDark : noiseLight;
+             };
+
+             if (document.body) {
+                 setBgNoise();
+             } else {
+                 document.addEventListener('DOMContentLoaded', setBgNoise);
+             }
         })();
     </script>
 </head>
@@ -216,13 +253,13 @@
 
     <canvas id="particle-canvas"></canvas>
 
-    <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-accent dark:bg-dark-accent origin-left z-50" style="transform: scaleX(0);"></div>
+    <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary origin-left z-50" style="transform: scaleX(0);"></div>
 
-    <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-primary-bg/80 dark:bg-dark-primary-bg/80 border-b border-secondary-text/10 dark:border-dark-secondary-text/10">
+    <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-glass-light dark:bg-glass-dark border-b border-secondary-text/10 dark:border-dark-secondary-text/10">
        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex-shrink-0">
-                    <a href="#hero" class="text-xl font-bold text-accent dark:text-dark-accent font-heading hover:opacity-80 transition-opacity">
+                    <a href="#hero" class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading hover:opacity-80 transition-opacity">
                         Daniel Wanjala.
                     </a>
                 </div>
@@ -235,6 +272,9 @@
                     </a>
                     <a href="#essays" data-section="essays" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
                         Essays <span class="active-underline"></span>
+                    </a>
+                    <a href="#publications" data-section="publications" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
+                        Publications <span class="active-underline"></span>
                     </a>
                     <a href="#demos" data-section="demos" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
                         Demos <span class="active-underline"></span>
@@ -258,12 +298,13 @@
                 </div>
             </div>
         </div>
-        <div class="md:hidden bg-primary-bg dark:bg-dark-secondary-bg border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
+        <div class="md:hidden bg-glass-light dark:bg-glass-darker border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
              <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#hero" data-section="hero" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Hero</a>
                 <a href="#about" data-section="about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">About</a>
                 <a href="#projects" data-section="projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Projects</a>
                 <a href="#essays" data-section="essays" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Essays</a>
+                <a href="#publications" data-section="publications" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Publications</a>
                 <a href="#demos" data-section="demos" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Demos</a>
                 <a href="#contact" data-section="contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Contact</a>
             </div>
@@ -273,7 +314,7 @@
     <div id="main-content-container">
         <main>
             <section id="hero" class="h-screen flex flex-col items-center justify-center text-center relative overflow-hidden px-4">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-[#111a24] dark:to-dark-primary-bg opacity-80 z-0 transition-colors duration-300"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg opacity-80 z-0 transition-colors duration-300"></div>
                 <svg class="absolute bottom-0 left-0 w-full h-32 text-secondary-bg/30 dark:text-dark-secondary-bg/30 z-0 opacity-50 transition-colors duration-300" preserveAspectRatio="none" viewBox="0 0 1440 320">
                     <path fill="currentColor" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,133.3C960,107,1056,85,1152,96C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
                 </svg>
@@ -282,14 +323,14 @@
                     <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-primary-text dark:text-dark-primary-text font-heading leading-tight tracking-tight">
                         I build data systems that <br class="hidden md:block" />
                         <span id="rotating-word-container" class="relative inline-block h-[1.2em] overflow-hidden align-bottom">
-                            <span id="rotating-word" class="text-accent dark:text-dark-accent inline-block">forecast</span>
+                            <span id="rotating-word" class="bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent inline-block">forecast</span>
                         </span>.
                     </h1>
                     <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text mb-8 max-w-2xl mx-auto font-body leading-relaxed">
                         Machine learning meets real-world outcomes. From predictive insights to automated solutions.
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <a href="#projects" class="interactive-element group relative inline-flex items-center justify-center px-8 py-3 bg-accent dark:bg-dark-accent text-white dark:text-jet-black font-semibold rounded-lg shadow-lg hover:shadow-accent/30 dark:hover:shadow-dark-accent/30 transition-all duration-300 ease-out overflow-hidden transform hover:-translate-y-1 hover:scale-103">
+                        <a href="#projects" class="interactive-element group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black font-semibold rounded-lg shadow-lg hover:shadow-accent/30 dark:hover:shadow-dark-accent/30 transition-all duration-300 ease-out overflow-hidden transform hover:-translate-y-1 hover:scale-103">
                             View My Work
                             <i data-lucide="arrow-right" class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1"></i>
                         </a>
@@ -305,10 +346,10 @@
             </section>
 
             <section id="about" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
-                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">About Me: Data With A Pulse</h2>
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">About Me: Data With A Pulse</h2>
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
                     <div class="md:col-span-2 flex justify-center relative group reveal-hidden">
-                        <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-accent-secondary dark:border-dark-accent-secondary shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(108,92,231,0.3)] dark:hover:shadow-[0_0_25px_rgba(102,252,241,0.3)]">
+                         <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-accent-secondary dark:border-dark-accent-secondary shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(108,92,231,0.3)] dark:hover:shadow-[0_0_25px_rgba(102,252,241,0.3)]">
                             <img src="https://image-proxy.labnol.org/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocKz999-B81M89M5n0l6rW7-X9s7yV9z5H9f3Y1g6n8H%3Ds96-c" alt="Portrait of Daniel Wanjala" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/320x320/0B0C10/F7F7F7?text=Daniel+W.'">
                             <div class="absolute inset-0 rounded-full border-2 border-accent dark:border-dark-accent opacity-0 group-hover:opacity-50 animate-pulse"></div>
                         </div>
@@ -322,21 +363,21 @@
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <div class="tooltip-container reveal-hidden" style="transition-delay: 0.1s;">
-                                 <div class="flex items-center bg-white/50 dark:bg-dark-secondary-bg/70 backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
+                                 <div class="flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/10 dark:border-dark-secondary-text/20">
                                     <i data-lucide="briefcase" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent"></i>
                                     <span>Senior IT Manager</span>
                                  </div>
                                  <span class="tooltip-text">Kingdom Hospital, Webuye</span>
                             </div>
                              <div class="tooltip-container reveal-hidden" style="transition-delay: 0.2s;">
-                                 <div class="flex items-center bg-white/50 dark:bg-dark-secondary-bg/70 backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
+                                 <div class="flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/10 dark:border-dark-secondary-text/20">
                                     <i data-lucide="brain-circuit" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent"></i>
                                     <span>Data Scientist</span>
                                  </div>
                                  <span class="tooltip-text">Volunteer @ Kingdom Hospital</span>
                             </div>
                              <div class="tooltip-container reveal-hidden" style="transition-delay: 0.3s;">
-                                 <div class="flex items-center bg-white/50 dark:bg-dark-secondary-bg/70 backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/20 dark:border-dark-accent-secondary/50">
+                                 <div class="flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm text-primary-text dark:text-dark-primary-text px-4 py-2 rounded-lg shadow-md border border-secondary-text/10 dark:border-dark-secondary-text/20">
                                     <i data-lucide="graduation-cap" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent"></i>
                                     <span>MSc. Student</span>
                                  </div>
@@ -348,10 +389,10 @@
             </section>
 
             <section id="projects" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
-                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">Projects: Work That Talks Back</h2>
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Projects: Work That Talks Back</h2>
                 <div class="columns-1 md:columns-2 lg:columns-3 gap-6">
-                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="1">
-                        <div class="absolute top-0 left-0 h-1 w-full bg-blue-500 z-10"></div>
+                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="1">
+                         <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-500 to-blue-400 z-10"></div>
                         <div class="relative h-48 w-full">
                             <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" alt="GDP Growth Prediction Model" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                         </div>
@@ -369,8 +410,8 @@
                             View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                         </div>
                     </article>
-                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="2">
-                        <div class="absolute top-0 left-0 h-1 w-full bg-emerald-green z-10"></div>
+                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="2">
+                        <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-emerald-500 to-emerald-400 z-10"></div>
                         <div class="relative h-48 w-full">
                             <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" alt="AI-Driven Plant Disease Detection" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                         </div>
@@ -388,8 +429,8 @@
                             View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                         </div>
                     </article>
-                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="3">
-                       <div class="absolute top-0 left-0 h-1 w-full bg-red-coral z-10"></div>
+                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="3">
+                       <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-red-500 to-red-400 z-10"></div>
                         <div class="relative h-48 w-full">
                              <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" alt="Kenya's GDP Forecasting Tool" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                         </div>
@@ -407,8 +448,8 @@
                             View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                         </div>
                     </article>
-                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="4">
-                       <div class="absolute top-0 left-0 h-1 w-full bg-tech-purple z-10"></div>
+                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="4">
+                       <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-purple-500 to-purple-400 z-10"></div>
                         <div class="relative h-48 w-full">
                             <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" alt="InvestWise Predictor" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                         </div>
@@ -426,8 +467,8 @@
                             View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                         </div>
                     </article>
-                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-white/10 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/10 dark:border-dark-accent-secondary/30 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="5">
-                       <div class="absolute top-0 left-0 h-1 w-full bg-sandstone z-10"></div>
+                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="5">
+                       <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-yellow-500 to-yellow-400 z-10"></div>
                         <div class="relative h-48 w-full">
                             <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" alt="Netflix Stock Profit Analysis" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
                         </div>
@@ -449,9 +490,9 @@
             </section>
 
             <section id="essays" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
-                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">Essays: Thinking in Algorithms</h2>
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Essays: Thinking in Algorithms</h2>
                 <div class="max-w-3xl mx-auto">
-                    <article class="essay-card interactive-element bg-primary-bg dark:bg-dark-secondary-bg border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-left">
+                    <article class="essay-card interactive-element bg-glass-light dark:bg-glass-dark border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-left">
                          <span class="absolute top-4 right-4 text-xs bg-accent-secondary/20 dark:bg-dark-accent-secondary/70 text-accent-secondary dark:text-sandstone px-2 py-1 rounded-full font-mono uppercase tracking-widest">Ethics</span>
                         <h3 class="text-xl font-semibold mb-2 text-accent dark:text-dark-accent font-heading">The Ethics of Algorithmic Decision Making</h3>
                         <p class="text-secondary-text dark:text-dark-secondary-text text-sm mb-3 font-body">Exploring the biases and societal impacts...</p>
@@ -459,9 +500,9 @@
                             <span class="font-mono">7 min read</span>
                             <p class="text-accent dark:text-sandstone italic opacity-0 group-hover:opacity-100 transition-opacity duration-300">"Bias in, bias out."</p>
                         </div>
-                        <div class="essay-progress-bar absolute bottom-0 left-0 h-1 bg-accent dark:bg-dark-accent w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
+                        <div class="essay-progress-bar absolute bottom-0 left-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
                     </article>
-                    <article class="essay-card interactive-element bg-primary-bg dark:bg-dark-secondary-bg border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-right">
+                    <article class="essay-card interactive-element bg-glass-light dark:bg-glass-dark border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-right">
                          <span class="absolute top-4 right-4 text-xs bg-accent-secondary/20 dark:bg-dark-accent-secondary/70 text-accent-secondary dark:text-sandstone px-2 py-1 rounded-full font-mono uppercase tracking-widest">Infrastructure</span>
                         <h3 class="text-xl font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Scaling Machine Learning Infrastructure</h3>
                         <p class="text-secondary-text dark:text-dark-secondary-text text-sm mb-3 font-body">Challenges and solutions for deploying ML models...</p>
@@ -469,15 +510,93 @@
                             <span class="font-mono">10 min read</span>
                              <p class="text-accent dark:text-sandstone italic opacity-0 group-hover:opacity-100 transition-opacity duration-300">"MLOps is key."</p>
                         </div>
-                         <div class="essay-progress-bar absolute bottom-0 left-0 h-1 bg-accent dark:bg-dark-accent w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
+                         <div class="essay-progress-bar absolute bottom-0 left-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
                     </article>
                  </div>
             </section>
 
+             <section id="publications" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Publications & Articles</h2>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                    <a href="https://www.linkedin.com/pulse/logarithms-algorithms-invisible-engines-ai-data-science-wanjala-u9qgf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Logarithms & Algorithms: The Invisible Engines of AI, Data Science, and Beyond</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Ever wondered how Google finds exactly what you’re looking for in a fraction of a second? Or how does Spotify...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~10 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/from-excel-neural-networks-my-journey-data-science-daniel-wanjala-s6vjf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">From Excel to Neural Networks: My Journey in Data Science</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">First off, let me start by saying: that it’s been a while. My LinkedIn feed probably thought I disappeared into the data abyss...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~12 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/why-ai-bots-leave-customers-frustrated-improving-zuriand-wanjala-9kbhf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Why AI Bots Leave Customers Frustrated: Improving Safaricom's Zuri (And Others)</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">If you call Safaricom or Airtel, you might feel frustrated because you're only interacting with an AI bot. While these bots, such as Safaricom's Zuri...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~6 min read</span>
+                        </div>
+                    </a>
+                    <a href="https://www.linkedin.com/pulse/frappe-framework-concepts-beginners-intermediate-daniel-wanjala-wki5f/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Frappe Framework Concepts for Beginners and Intermediate</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Frappe Introduction to Frappe Framework Overview of Frappe Framework Frappe is an open-source web application framework built on Python and JavaScript...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~8 min read</span>
+                        </div>
+                    </a>
+                    <a href="https://www.linkedin.com/pulse/lets-talk-kenya-finance-bill-2024-how-machine-learning-daniel-wanjala-fapjf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Let's Talk about the Kenya Finance Bill 2024 😪 and how Machine Learning will help...</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Introduction The Kenya Finance Bill 2024 introduces a series of new tax measures and adjustments aimed at increasing government revenue...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~10 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/how-machine-learning-transportation-can-transform-africas-wanjala-163gf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">How Machine Learning in Transportation Can Transform Africa’s Transit Systems</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Highway Design Highway SafeBoda Twiga Foods Africa’s transportation sector is undergoing a radical transformation, thanks to the infusion of machine...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~14 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/machine-learning-blockchain-crypto-financial-analysis-daniel-wanjala-bf0mf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Machine Learning, Blockchain, and Crypto in Financial Analysis</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Introduction: In the financial world, machine learning, blockchain, and cryptocurrencies are three emerging technologies reshaping how we analyze...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~13 min read</span>
+                        </div>
+                    </a>
+                    <a href="https://www.linkedin.com/pulse/oracle-machine-learning-algorithms-daniel-wanjala-fqo5f/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">The Oracle of Machine Learning Algorithms</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">The field of technology has been revolutionized by machine learning algorithms, which provide unparalleled insights and efficiency...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~3 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/importance-diversity-inclusion-data-science-ml-daniel-wanjala-lw3if/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">The Importance of Diversity and Inclusion in Data Science and ML</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">I. Introduction Diversity and inclusion are crucial elements in any field, and data science and machine learning (ML) are no exception...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~15 min read</span>
+                        </div>
+                    </a>
+                    </div>
+            </section>
+
             <section id="demos" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
-                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">Live Demos: Try My Logic</h2>
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Live Demos: Try My Logic</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    <article class="demo-card interactive-element bg-white/10 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1">
+                    <article class="demo-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1">
                         <i data-lucide="code" class="mb-3 text-accent dark:text-dark-accent h-6 w-6"></i>
                         <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">Plant Disease Detector</h3>
                         <p class="text-secondary-text dark:text-dark-secondary-text text-sm font-body">Upload an image to detect common plant diseases.</p>
@@ -485,7 +604,7 @@
                             Try Demo &rarr;
                         </div>
                     </article>
-                    <article class="demo-card interactive-element bg-white/10 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/10 dark:border-dark-accent-secondary/40 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1" style="transition-delay: 0.1s;">
+                    <article class="demo-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1" style="transition-delay: 0.1s;">
                         <i data-lucide="code" class="mb-3 text-accent dark:text-dark-accent h-6 w-6"></i>
                         <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">GDP Forecast Interactive</h3>
                         <p class="text-secondary-text dark:text-dark-secondary-text text-sm font-body">Adjust parameters to see GDP forecast variations.</p>
@@ -500,29 +619,29 @@
             </section>
 
             <section id="contact" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
-                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center text-accent dark:text-dark-accent font-heading tracking-tight reveal-hidden">Contact: Let's Collaborate</h2>
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Contact: Let's Collaborate</h2>
                 <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
                     <div class="reveal-slide-left">
                         <h3 class="text-2xl font-semibold mb-6 text-primary-text dark:text-dark-primary-text font-heading">Connect with me</h3>
                         <div class="space-y-4">
-                            <a href="https://www.linkedin.com/in/daniel-wanjala-912b8b17b/" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg">
+                             <a href="https://www.linkedin.com/in/daniel-wanjala-912b8b17b/" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                                 <span class="font-medium font-body">LinkedIn</span>
                                 <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                             </a>
-                             <a href="https://github.com/MadScie254" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.1s;">
+                             <a href="https://github.com/MadScie254" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.1s;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-1.5 6-7A6.9 6.9 0 0 0 18.5 4c.1-.8.1-1.7-.1-2.5 0 0-1.1-.4-3.6 1.3A12.3 12.3 0 0 0 12 2.8c-1.1 0-2.3.1-3.4.4-2.5-1.7-3.6-1.3-3.6-1.3-.2.8-.2 1.7-.1 2.5A6.9 6.9 0 0 0 3 7.5c0 5.5 3 7 6 7a4.8 4.8 0 0 0-1 3.5v4"></path></svg>
                                 <span class="font-medium font-body">GitHub</span>
                                 <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                             </a>
-                             <div class="social-card flex items-center p-4 bg-white/70 dark:bg-dark-secondary-bg/50 backdrop-blur-md border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text transition-all duration-300 group hover:border-accent/50 dark:hover:border-dark-accent/50 reveal-hidden" data-reveal-delay="200">
+                             <div class="social-card flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-md border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text transition-all duration-300 group hover:border-accent/50 dark:hover:border-dark-accent/50 reveal-hidden" data-reveal-delay="200">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
                                 <a href="mailto:dmwanjala254@gmail.com" class="font-medium font-body hover:text-accent dark:hover:text-dark-accent transition-colors break-all">dmwanjala254@gmail.com</a>
                                 <button class="copy-btn ml-auto flex-shrink-0 p-1 rounded hover:bg-accent/20 dark:hover:bg-dark-accent/20 text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition-colors" data-copy-text="dmwanjala254@gmail.com" aria-label="Copy email address">
                                     <i data-lucide="copy" class="h-4 w-4"></i>
                                 </button>
                             </div>
-                             <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-white/50 dark:bg-dark-secondary-bg/60 backdrop-blur-sm border border-secondary-text/20 dark:border-dark-accent-secondary/40 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
+                             <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"> <path d="M16.6 14c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.7-.3-1.4-.7-2-1.2-.5-.5-1-1.1-1.4-1.7-.1-.2 0-.4.1-.5.1-.1.2-.2.4-.4.1-.1.2-.3.3-.4.1-.2 0-.4-.1-.5-.1-.1-1.7-4-1.9-4.5-.3-.4-.5-.4-.7-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2 1 2.4.1.2 1.5 2.3 3.7 3.3.5.2.9.4 1.2.5.5.2 1 .1 1.4-.1.4-.2.6-.4.8-.8.2-.3.2-.6.1-.7zm4.9-1.5c-.3-1.2-1.8-2.2-3.4-2.5-.4-.1-.9.1-1.3.4l-.1.1c-.1.1-.2.1-.3.1-.3 0-.5-.1-.7-.2-.1-.1-.2-.2-.3-.3-.6-.4-1.1-.9-1.6-1.4-.1-.1-.3-.2-.4-.2-.1 0-.2 0-.3.1-.4.4-.8.8-1.1 1.3L12 10c-.1.1-.2.2-.3.2-.1.1-.3.1-.4.1h-.5c-1.1 0-2.1-.4-2.9-1.1-.2-.1-.4-.2-.6-.2-.4 0-.8.2-1.1.5-.3.3-.5.7-.6 1.1-.1.4-.1.9 0 1.3l.1.3c.1.1.1.3 0 .4-.3.4-.6.9-.8 1.4 0 .1-.1.2-.1.3-.2.7-.3 1.4-.3 2.1 0 1.9.8 3.6 2.2 4.9 1.4 1.3 3.1 2 5 2h.1c.5 0 1 0 1.4-.1.5-.1 1-.2 1.5-.4.5-.2 1-.5 1.4-.8.4-.3.8-.7 1.1-1.1.1-.1.2-.2.3-.3.1-.1.3-.1.4-.1.2 0 .4.1.6.2.2.1.4.3.6.4 1.2.6 2.6.9 4.1.8 1.4-.1 2.8-.6 3.9-1.5s1.9-2.3 2.3-3.8c.3-1.1.2-2.3-.1-3.4-.1-.4-.3-.8-.6-1.1zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path> </svg>
                                 <span class="font-medium font-body">WhatsApp</span>
                                 <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
@@ -537,21 +656,21 @@
                         <form id="contactForm" class="space-y-6" novalidate>
                             <div>
                                 <label for="name" class="block text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1 font-body">Name</label>
-                                <input type="text" name="name" id="name" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg/80 dark:bg-dark-primary-bg/80 backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="Your Name">
+                                <input type="text" name="name" id="name" required class="form-input w-full px-4 py-2 rounded-lg bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="Your Name">
                                 <p class="form-error mt-1 text-xs text-red-coral hidden font-mono"></p>
                             </div>
                             <div>
                                 <label for="email" class="block text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1 font-body">Email</label>
-                                <input type="email" name="email" id="email" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg/80 dark:bg-dark-primary-bg/80 backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="your.email@example.com">
+                                <input type="email" name="email" id="email" required class="form-input w-full px-4 py-2 rounded-lg bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="your.email@example.com">
                                  <p class="form-error mt-1 text-xs text-red-coral hidden font-mono"></p>
                             </div>
                             <div>
                                 <label for="message" class="block text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1 font-body">Message</label>
-                                <textarea name="message" id="message" rows="4" required class="form-input w-full px-4 py-2 rounded-lg bg-primary-bg/80 dark:bg-dark-primary-bg/80 backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none resize-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="How can I help?"></textarea>
+                                <textarea name="message" id="message" rows="4" required class="form-input w-full px-4 py-2 rounded-lg bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/30 dark:border-dark-secondary-text/30 focus:border-accent dark:focus:border-dark-accent focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent text-primary-text dark:text-dark-primary-text transition duration-200 outline-none resize-none ring-1 ring-transparent placeholder:text-secondary-text/50 dark:placeholder:text-dark-secondary-text/50" placeholder="How can I help?"></textarea>
                                  <p class="form-error mt-1 text-xs text-red-coral hidden font-mono"></p>
                             </div>
                             <div>
-                                <button type="submit" id="submitButton" class="interactive-element w-full px-6 py-3 rounded-lg font-semibold transition-all duration-300 ease-out flex items-center justify-center shadow-md hover:shadow-lg bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:opacity-90 transform hover:-translate-y-0.5 hover:scale-103">
+                                <button type="submit" id="submitButton" class="interactive-element w-full px-6 py-3 rounded-lg font-semibold transition-all duration-300 ease-out flex items-center justify-center shadow-md hover:shadow-lg bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black hover:opacity-90 transform hover:-translate-y-0.5 hover:scale-103">
                                     <span id="buttonText">Send Message</span>
                                     <i data-lucide="arrow-right" id="buttonIcon" class="ml-2 h-5 w-5"></i>
                                 </button>
@@ -568,7 +687,7 @@
         </footer>
 
         <div id="projectModal" class="fixed inset-0 bg-black/80 dark:bg-jet-black/90 backdrop-blur-lg flex items-center justify-center z-50 p-4 hidden-modal">
-            <div id="projectModalContentWrapper" class="bg-primary-bg dark:bg-dark-secondary-bg text-primary-text dark:text-dark-primary-text rounded-xl shadow-2xl overflow-hidden max-w-3xl w-full border border-secondary-text/20 dark:border-dark-accent-secondary/50">
+            <div id="projectModalContentWrapper" class="bg-glass-light dark:bg-glass-darker backdrop-blur-lg text-primary-text dark:text-dark-primary-text rounded-xl shadow-2xl overflow-hidden max-w-3xl w-full border border-secondary-text/10 dark:border-dark-secondary-text/20">
                  <div id="projectModalContent"> </div>
             </div>
         </div>
@@ -582,7 +701,7 @@
 
             // --- Constants and State ---
             const name = "Daniel Wanjala";
-             const projectsData = [ // Ensure this data matches your actual projects
+             const projectsData = [
               { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
               { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
               { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-coral" },
@@ -591,13 +710,13 @@
             ];
             const whatsappBaseUrl = "https://wa.me/254742007277";
             const whatsappMessage = "Hello Daniel, I visited your portfolio and would like to connect.";
-            let toneJsStarted = false; // Flag to start Tone.js on first interaction
-            let synth, clickSynth; // Declare synth variables
-            let particleAnimationId; // For canvas animation frame
+            let toneJsStarted = false;
+            let synth, clickSynth;
+            let particleAnimationId;
 
             // --- DOM Element References ---
             const htmlEl = document.documentElement;
-            const preloader = document.getElementById('preloader'); // Added preloader ref
+            const preloader = document.getElementById('preloader');
             const themeToggleButton = document.getElementById('theme-toggle');
             const themeIconSun = document.getElementById('theme-icon-sun');
             const themeIconMoon = document.getElementById('theme-icon-moon');
@@ -617,27 +736,26 @@
             const formStatusEl = document.getElementById('formStatus');
             const currentYearEl = document.getElementById('currentYear');
             const scrollProgressBar = document.getElementById('scrollProgressBar');
-            const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
-            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link');
-            const sections = document.querySelectorAll('main section[id]');
+            const navLinks = document.querySelectorAll('#desktop-nav .nav-link'); // Select all desktop links
+            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link'); // Select all mobile links
+            const sections = document.querySelectorAll('main section[id]'); // Select all sections with an ID in main
             const whatsappLink = document.getElementById('whatsapp-link');
             const whatsappDirectLink = document.getElementById('whatsapp-direct-link');
-            const copyButtons = document.querySelectorAll('.copy-btn'); // Get all copy buttons
-            const copyToast = document.getElementById('copy-toast'); // Get toast element
-            const counterElements = document.querySelectorAll('[data-target]'); // Get all counter elements
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            const copyToast = document.getElementById('copy-toast');
+            const counterElements = document.querySelectorAll('[data-target]');
             const mainContentContainer = document.getElementById('main-content-container');
             const particleCanvas = document.getElementById('particle-canvas');
-            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle');
+            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card'); // Added publication-card
 
 
-            // --- Hide Preloader --- (Re-added)
+            // --- Hide Preloader ---
             window.addEventListener('load', () => {
-                 // Set timeout to match the animation duration + small buffer
                  setTimeout(() => {
                     if (preloader) {
                         preloader.classList.add('hidden');
                     }
-                 }, 4000); // Corresponds to 4s animation in CSS
+                 }, 4000);
             });
 
             // --- Update WhatsApp Link ---
@@ -649,31 +767,28 @@
             // --- Tone.js Initialization ---
             function startTone() {
                 if (toneJsStarted || typeof Tone === 'undefined') return;
-                Tone.start(); // Start audio context on user interaction
-                // Simple synth for hover sounds
+                Tone.start();
                 synth = new Tone.Synth({
                     oscillator: { type: 'sine' },
                     envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }
                 }).toDestination();
-                 synth.volume.value = -25; // Very quiet
+                 synth.volume.value = -25;
 
-                // Slightly different synth for clicks
                 clickSynth = new Tone.Synth({
                     oscillator: { type: 'triangle' },
                     envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }
                 }).toDestination();
-                clickSynth.volume.value = -20; // Slightly louder click
+                clickSynth.volume.value = -20;
 
                 toneJsStarted = true;
                 console.log("Tone.js AudioContext started.");
             }
-            // Add listeners to start Tone.js on first interaction
             document.body.addEventListener('click', startTone, { once: true });
             document.body.addEventListener('keydown', startTone, { once: true });
 
             // --- Sound Feedback ---
             interactiveElements.forEach(el => {
-                el.addEventListener('mouseenter', () => {
+                 el.addEventListener('mouseenter', () => {
                     if (toneJsStarted && synth) {
                         synth.triggerAttackRelease('C5', '16n', Tone.now());
                     }
@@ -685,7 +800,6 @@
                 });
             });
 
-
             // --- Theme Toggle ---
             function updateThemeUI(theme) {
                 if (!themeIconSun || !themeIconMoon) return;
@@ -696,7 +810,7 @@
                     themeIconSun.classList.add('hidden');
                     themeIconMoon.classList.remove('hidden');
                 }
-                 lucide.createIcons(); // Re-render icons
+                 lucide.createIcons();
                  // Update body background noise
                  const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                  const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
@@ -711,16 +825,13 @@
                 }
                 localStorage.setItem('theme', theme);
                 updateThemeUI(theme);
-                 // Play theme change sound
                  if (toneJsStarted && clickSynth) {
                      clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now());
                  }
-                 // Re-initialize particles for new theme color
-                 if (particleCanvas) initParticles();
+                 if (particleCanvas) initParticles(); // Re-init particles for new theme color
             }
 
             const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            // Set initial theme UI without playing sound
             updateThemeUI(currentTheme);
 
             if (themeToggleButton) {
@@ -768,7 +879,7 @@
 
             // --- Project Card Hover Image Swap ---
             projectCards.forEach(card => {
-                const img = card.querySelector('.project-image');
+                 const img = card.querySelector('.project-image');
                 if (img) {
                     const originalSrc = img.getAttribute('data-original-src');
                     const altSrc = img.getAttribute('data-alt-src');
@@ -784,7 +895,7 @@
 
                 const techStackHtml = project.techStack.map(tech => `<span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">${tech}</span>`).join(' ');
                 const githubButton = project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-secondary-text dark:bg-dark-accent-secondary text-primary-bg dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub </a>` : '';
-                const demoButton = project.liveDemoUrl ? `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-accent dark:bg-dark-accent text-white dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="code" class="mr-2 h-4 w-4"></i> Live Demo </a>` : '';
+                const demoButton = project.liveDemoUrl ? `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="code" class="mr-2 h-4 w-4"></i> Live Demo </a>` : '';
 
                 // Initial modal content with placeholders for stats
                 projectModalContent.innerHTML = `
@@ -793,10 +904,10 @@
                        <button id="closeModalButton" class="absolute top-4 right-4 text-primary-text dark:text-dark-primary-text bg-primary-bg/50 dark:bg-dark-primary-bg/50 rounded-full p-2 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors duration-200 z-10" aria-label="Close project details">
                          <i data-lucide="x" class="h-5 w-5"></i>
                        </button>
-                       <div class="absolute bottom-0 left-0 h-1.5 w-full bg-${project.accentColor || 'blue-500'}"></div>
+                       <div class="absolute bottom-0 left-0 h-1.5 w-full bg-gradient-to-r from-${project.accentColor || 'accent'} to-${project.accentColor ? project.accentColor.replace('-500','-400') : 'accent-secondary'}"></div>
                     </div>
                     <div class="p-6 md:p-8 max-h-[60vh] overflow-y-auto">
-                      <h2 class="text-3xl font-bold mb-4 text-accent dark:text-dark-accent font-heading">${project.title}</h2>
+                      <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">${project.title}</h2>
                       <div>
                         <h4 class="font-semibold text-lg mb-1 text-accent dark:text-dark-accent font-heading">Problem Statement</h4>
                         <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">${project.problem}</p>
@@ -939,9 +1050,10 @@
                     if(buttonIcon) buttonIcon.classList.add('hidden');
                     if(formStatusEl) formStatusEl.textContent = '';
 
+                    // Simulate form submission
                     setTimeout(() => {
                         if(submitButton) {
-                            submitButton.classList.remove('bg-accent', 'dark:bg-dark-accent');
+                            submitButton.classList.remove('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
                             submitButton.classList.add('!bg-emerald-green', 'text-white');
                         }
                         if(buttonText) buttonText.textContent = 'Message Sent!';
@@ -956,7 +1068,8 @@
                             if(submitButton) {
                                 submitButton.disabled = false;
                                 submitButton.classList.remove('!bg-emerald-green', 'text-white');
-                                submitButton.classList.add('bg-accent', 'dark:bg-dark-accent');
+                                submitButton.classList.add('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
+
                             }
                             if(buttonText) buttonText.textContent = 'Send Message';
                             if(buttonIcon) buttonIcon.classList.remove('hidden');
@@ -984,12 +1097,10 @@
             // --- Scroll Reveal Animations (with Staggering) ---
             const revealObserverOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
             const revealCallback = (entries, observer) => {
-                entries.forEach((entry, index) => { // Add index for staggering
+                entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
-                        // Basic stagger: delay based on index within observed elements (can be refined)
-                        const delay = (entry.target.dataset.revealDelay || (index * 100)); // Use data-attribute or index*100ms
+                        const delay = (entry.target.dataset.revealDelay || (index * 100));
                         entry.target.style.transitionDelay = `${delay}ms`;
-
                         entry.target.classList.add('reveal-visible');
                         if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
                             entry.target.classList.add('slide-in');
@@ -1001,20 +1112,17 @@
             const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
             document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right').forEach(el => revealObserver.observe(el));
 
-
             // --- Active Navigation Link Highlighting ---
             let currentActiveSectionId = null;
             const navObserverOptions = { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 };
-            const navObserverCallback = (entries) => {
-                let intersectingSectionId = currentActiveSectionId; // Keep track of current
+             const navObserverCallback = (entries) => {
+                let intersectingSectionId = currentActiveSectionId;
                  entries.forEach(entry => {
-                     // Prioritize the one currently entering/intersecting most
                      if (entry.isIntersecting && entry.intersectionRatio > 0) {
                          intersectingSectionId = entry.target.getAttribute('id');
                      }
                  });
 
-                 // Only update if the active section has changed
                  if (intersectingSectionId !== currentActiveSectionId) {
                     currentActiveSectionId = intersectingSectionId;
                     navLinks.forEach(link => {
@@ -1029,7 +1137,7 @@
             sections.forEach(section => { if(section) navObserver.observe(section); });
             // Initial check on load
             const initialHash = window.location.hash.substring(1);
-            if (initialHash) {
+             if (initialHash) {
                  currentActiveSectionId = initialHash;
                  navLinks.forEach(link => {
                      link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
@@ -1039,10 +1147,10 @@
                  });
              }
 
-            // --- Clipboard Copy Functionality --- (Added back from previous version)
+            // --- Clipboard Copy Functionality ---
             let toastTimeout;
             copyButtons.forEach(button => {
-                button.addEventListener('click', () => {
+                 button.addEventListener('click', () => {
                     const textToCopy = button.dataset.copyText;
                     if (textToCopy && navigator.clipboard) {
                         navigator.clipboard.writeText(textToCopy).then(() => {
@@ -1060,68 +1168,58 @@
                 });
             });
 
-            // --- Animated Counters --- (Added back from previous version)
+            // --- Animated Counters ---
             const animateCounter = (el) => {
-                const target = parseInt(el.dataset.target, 10);
-                if (isNaN(target)) return; // Skip if target is not a number
+                 const target = parseInt(el.dataset.target, 10);
+                if (isNaN(target)) return;
                 let current = 0;
-                const duration = 1500; // Animation duration in ms
-                const stepTime = 20; // Time between steps in ms
+                const duration = 1500;
+                const stepTime = 20;
                 const totalSteps = duration / stepTime;
                 const increment = target / totalSteps;
 
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
-                        el.textContent = target; // Ensure final value is exact
+                        el.textContent = target;
                         clearInterval(timer);
                     } else {
-                        el.textContent = Math.ceil(current); // Display integer value
+                        el.textContent = Math.ceil(current);
                     }
                 }, stepTime);
             };
-
-            const counterObserverOptions = { threshold: 0.5 }; // Trigger when 50% visible
+            const counterObserverOptions = { threshold: 0.5 };
             const counterObserverCallback = (entries, observer) => {
-                entries.forEach(entry => {
+                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         animateCounter(entry.target);
-                        observer.unobserve(entry.target); // Animate only once
+                        observer.unobserve(entry.target);
                     }
                 });
             };
             const counterObserver = new IntersectionObserver(counterObserverCallback, counterObserverOptions);
             counterElements.forEach(el => counterObserver.observe(el));
 
-
             // --- Device Orientation Tilt Effect ---
             function handleOrientation(event) {
-                if (!mainContentContainer) return;
-                // Reduce sensitivity significantly and limit max tilt
-                const beta = Math.max(-30, Math.min(30, event.beta || 0)); // Clamp beta
-                const gamma = Math.max(-30, Math.min(30, event.gamma || 0)); // Clamp gamma
-
-                const maxTilt = 1.0; // Max degrees of tilt - kept very subtle
-                const tiltY = (beta / 30 * maxTilt).toFixed(2); // Normalize clamped value
-                const tiltX = (gamma / 30 * -maxTilt).toFixed(2); // Normalize and invert
-
-                // Apply subtle perspective and rotation
+                 if (!mainContentContainer) return;
+                const beta = Math.max(-30, Math.min(30, event.beta || 0));
+                const gamma = Math.max(-30, Math.min(30, event.gamma || 0));
+                const maxTilt = 1.0;
+                const tiltY = (beta / 30 * maxTilt).toFixed(2);
+                const tiltX = (gamma / 30 * -maxTilt).toFixed(2);
                 mainContentContainer.style.transform = `perspective(1500px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`;
             }
-
             if (window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function') {
-                 // iOS 13+ requires permission
                  console.log("DeviceOrientation requires permission request on this device.");
-                 // Add listener, may need user gesture to activate on iOS
                  window.addEventListener('deviceorientation', handleOrientation, true);
             } else if (window.DeviceOrientationEvent) {
-                 // Non-iOS 13+ devices
                  window.addEventListener('deviceorientation', handleOrientation, true);
             } else {
                 console.log("DeviceOrientation not supported.");
             }
 
-             // --- Particle Background Animation ---
+             // --- Particle Background Animation (Theme Aware) ---
             if (particleCanvas) {
                 const ctx = particleCanvas.getContext('2d');
                 let particles = [];
@@ -1129,29 +1227,40 @@
                 function resizeCanvas() {
                     particleCanvas.width = window.innerWidth;
                     particleCanvas.height = window.innerHeight;
-                }
+                 }
 
                 function createParticles() {
                     particles = [];
-                    const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 25000); // Adjusted density
+                    const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 25000);
                     for (let i = 0; i < particleCount; i++) {
                         particles.push({
                             x: Math.random() * particleCanvas.width,
                             y: Math.random() * particleCanvas.height,
-                            vx: (Math.random() - 0.5) * 0.25, // Very slow velocity
+                            vx: (Math.random() - 0.5) * 0.25,
                             vy: (Math.random() - 0.5) * 0.25,
-                            radius: Math.random() * 1.2 + 0.4 // Small radius
+                            radius: Math.random() * 1.2 + 0.4,
+                            color: null // Color will be assigned in drawParticles
                         });
                     }
                 }
 
                 function drawParticles() {
-                    if (!ctx) return; // Ensure context exists
+                    if (!ctx) return;
                     ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
                     const isDark = document.documentElement.classList.contains('dark');
-                    ctx.fillStyle = isDark ? 'rgba(102, 252, 241, 0.15)' : 'rgba(108, 92, 231, 0.15)'; // Adjusted alpha
+                    // Theme-aware particle colors using Tailwind config values
+                    const twConfig = tailwind.config.theme.extend.colors;
+                    const lightColors = [`${twConfig.accent}33`, `${twConfig['accent-secondary']}33`]; // Append alpha hex
+                    const darkColors = [`${twConfig['dark-accent']}33`, `${twConfig['dark-accent-secondary']}33`];
+                    const themeColors = isDark ? darkColors : lightColors;
+
 
                     particles.forEach(p => {
+                        // Assign color if needed (e.g., on first draw or theme change)
+                         if (!p.color) {
+                             p.color = themeColors[Math.floor(Math.random() * themeColors.length)];
+                         }
+                        ctx.fillStyle = p.color;
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                         ctx.fill();
@@ -1159,7 +1268,7 @@
                         p.x += p.vx;
                         p.y += p.vy;
 
-                        // Wrap particles around edges
+                        // Wrap particles
                         if (p.x < -p.radius) p.x = particleCanvas.width + p.radius;
                         if (p.x > particleCanvas.width + p.radius) p.x = -p.radius;
                         if (p.y < -p.radius) p.y = particleCanvas.height + p.radius;
@@ -1171,34 +1280,30 @@
 
                 function initParticles() {
                     resizeCanvas();
-                    createParticles();
-                    if (particleAnimationId) cancelAnimationFrame(particleAnimationId); // Cancel previous frame
-                    // Only start animation if page is visible
-                    if (!document.hidden) {
-                       drawParticles();
-                    }
+                    // Reset particle colors so they get reassigned based on current theme
+                    particles.forEach(p => p.color = null);
+                    createParticles(); // Create particles (they will get colors in drawParticles)
+                    if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
+                    if (!document.hidden) { drawParticles(); }
                 }
 
-                // Initial setup
-                initParticles();
+                initParticles(); // Initial setup
 
-                // Re-initialize on resize (debounced)
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(initParticles, 250);
+                    resizeTimeout = setTimeout(initParticles, 250); // Debounce resize
                 });
 
-                 // --- Page Visibility API Integration ---
+                 // Page Visibility API Integration
                  document.addEventListener('visibilitychange', () => {
                     if (document.hidden) {
                         if (particleAnimationId) {
                             cancelAnimationFrame(particleAnimationId);
-                            particleAnimationId = null; // Clear the ID
+                            particleAnimationId = null;
                             console.log("Particle animation paused.");
                         }
                     } else {
-                        // Only restart if it wasn't already running
                         if (!particleAnimationId) {
                             drawParticles();
                             console.log("Particle animation resumed.");

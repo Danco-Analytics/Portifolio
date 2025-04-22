@@ -71,7 +71,6 @@
             visibility: hidden; width: max-content; text-align: center; border-radius: 6px;
             padding: 5px 10px; position: absolute; z-index: 10; bottom: 125%; left: 50%;
             transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 0.75rem;
-            /* Using new tertiary colors */
             background-color: theme('colors.tertiary-light');
             color: theme('colors.primary-text');
         }
@@ -91,12 +90,10 @@
 
         /* Navbar Underline - Updated to use gradient */
         .nav-link.nav-active {
-             /* Use gradient text for active link */
             @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
         }
         .nav-link .active-underline {
              display: none; width: 0%; height: 2px;
-             /* Apply gradient to underline */
              background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary'));
              position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); transition: width 0.3s ease;
         }
@@ -107,7 +104,6 @@
 
         /* Mobile active link */
         .mobile-nav-link.nav-active {
-            /* Use subtle gradient background for active mobile link */
             background-image: linear-gradient(to right, theme('colors.accent/10'), theme('colors.accent-secondary/20'));
             color: theme('colors.accent') !important;
         }
@@ -123,8 +119,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Behind everything */
-            pointer-events: none; /* Allow clicks through */
+            z-index: -1;
+            pointer-events: none;
         }
 
          /* --- Main Content Container for Tilt --- */
@@ -135,28 +131,27 @@
 
         /* --- Preloader Styles (Loading Bar) --- */
         #preloader {
-            position: fixed; inset: 0; background-color: #F7F7F7; /* primary-bg */
+            position: fixed; inset: 0; background-color: #F7F7F7;
             z-index: 9999; display: flex; align-items: center; justify-content: center;
-            opacity: 1; transition: opacity 0.5s ease-out 3.8s; /* Fade out after animation */
+            opacity: 1; transition: opacity 0.5s ease-out 3.8s;
         }
-        html.dark #preloader { background-color: #0B0C10; /* dark-primary-bg */ }
+        html.dark #preloader { background-color: #0B0C10; }
         #preloader.hidden { opacity: 0; pointer-events: none; }
 
         #loading-bar-container {
             width: 70%; max-width: 400px; height: 8px;
-            background-color: rgba(108, 92, 231, 0.2); /* tech-purple light */
+            background-color: rgba(108, 92, 231, 0.2);
             border-radius: 4px; overflow: hidden;
         }
-        html.dark #loading-bar-container { background-color: rgba(102, 252, 241, 0.2); /* signal-cyan light */ }
+        html.dark #loading-bar-container { background-color: rgba(102, 252, 241, 0.2); }
 
         #loading-bar {
             width: 100%; height: 100%;
-             /* Apply gradient to loading bar */
             background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary'));
             border-radius: 4px;
             transform: scaleX(0);
             transform-origin: left;
-            animation: load 4s ease-out forwards; /* 4 second animation */
+            animation: load 4s ease-out forwards;
         }
         html.dark #loading-bar {
              background-image: linear-gradient(to right, theme('colors.dark-accent'), theme('colors.dark-accent-secondary'));
@@ -189,17 +184,17 @@
               'sandstone': '#E0C097',
               // Base Theme
               'primary-bg': '#F7F7F7', 'primary-text': '#0B0C10', 'secondary-bg': '#E0C097',
-              'secondary-text': '#4A4A4A', 'accent': '#6C5CE7', 'accent-secondary': '#FF6B6B', // Using red-coral as secondary accent
+              'secondary-text': '#4A4A4A', 'accent': '#6C5CE7', 'accent-secondary': '#FF6B6B',
               // Dark Theme
               'dark-primary-bg': '#0B0C10', 'dark-primary-text': '#F7F7F7', 'dark-secondary-bg': '#1F2833',
-              'dark-secondary-text': '#C5C6C7', 'dark-accent': '#66FCF1', 'dark-accent-secondary': '#45A29E', // Using tealish as secondary accent
-              // Tertiary Accents (Example: Gold/Amber Tones)
-              'tertiary-light': '#F5B041', // Example Amber
-              'tertiary-dark': '#F39C12', // Example slightly darker Amber
-              // Tinted Glass Backgrounds (Example)
-              'glass-light': 'rgba(225, 229, 255, 0.1)', // Very light purple tint + opacity
-              'glass-dark': 'rgba(17, 24, 39, 0.2)', // Very dark blue/indigo tint + opacity
-              'glass-darker': 'rgba(17, 24, 39, 0.3)', // Slightly darker version for contrast (e.g., mobile menu)
+              'dark-secondary-text': '#C5C6C7', 'dark-accent': '#66FCF1', 'dark-accent-secondary': '#45A29E',
+              // Tertiary Accents
+              'tertiary-light': '#F5B041',
+              'tertiary-dark': '#F39C12',
+              // Tinted Glass Backgrounds
+              'glass-light': 'rgba(225, 229, 255, 0.1)',
+              'glass-dark': 'rgba(17, 24, 39, 0.2)',
+              'glass-darker': 'rgba(17, 24, 39, 0.3)',
             },
             fontFamily: {
               heading: ['Satoshi', 'Space Grotesk', 'Neue Montreal', 'sans-serif'],
@@ -233,9 +228,8 @@
                 document.documentElement.classList.remove('dark');
             }
 
-            // Set background noise pattern based on initial theme
-             const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-             const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+            const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+            const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
 
              const setBgNoise = () => {
                 document.body.style.backgroundImage = document.documentElement.classList.contains('dark') ? noiseDark : noiseLight;
@@ -279,6 +273,9 @@
                     <a href="#essays" data-section="essays" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
                         Essays <span class="active-underline"></span>
                     </a>
+                    <a href="#publications" data-section="publications" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
+                        Publications <span class="active-underline"></span>
+                    </a>
                     <a href="#demos" data-section="demos" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
                         Demos <span class="active-underline"></span>
                     </a>
@@ -307,6 +304,7 @@
                 <a href="#about" data-section="about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">About</a>
                 <a href="#projects" data-section="projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Projects</a>
                 <a href="#essays" data-section="essays" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Essays</a>
+                <a href="#publications" data-section="publications" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Publications</a>
                 <a href="#demos" data-section="demos" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Demos</a>
                 <a href="#contact" data-section="contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Contact</a>
             </div>
@@ -517,6 +515,84 @@
                  </div>
             </section>
 
+             <section id="publications" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Publications & Articles</h2>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                    <a href="https://www.linkedin.com/pulse/logarithms-algorithms-invisible-engines-ai-data-science-wanjala-u9qgf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Logarithms & Algorithms: The Invisible Engines of AI, Data Science, and Beyond</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Ever wondered how Google finds exactly what you’re looking for in a fraction of a second? Or how does Spotify...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~10 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/from-excel-neural-networks-my-journey-data-science-daniel-wanjala-s6vjf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">From Excel to Neural Networks: My Journey in Data Science</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">First off, let me start by saying: that it’s been a while. My LinkedIn feed probably thought I disappeared into the data abyss...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~12 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/why-ai-bots-leave-customers-frustrated-improving-zuriand-wanjala-9kbhf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Why AI Bots Leave Customers Frustrated: Improving Safaricom's Zuri (And Others)</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">If you call Safaricom or Airtel, you might feel frustrated because you're only interacting with an AI bot. While these bots, such as Safaricom's Zuri...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~6 min read</span>
+                        </div>
+                    </a>
+                    <a href="https://www.linkedin.com/pulse/frappe-framework-concepts-beginners-intermediate-daniel-wanjala-wki5f/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Frappe Framework Concepts for Beginners and Intermediate</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Frappe Introduction to Frappe Framework Overview of Frappe Framework Frappe is an open-source web application framework built on Python and JavaScript...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~8 min read</span>
+                        </div>
+                    </a>
+                    <a href="https://www.linkedin.com/pulse/lets-talk-kenya-finance-bill-2024-how-machine-learning-daniel-wanjala-fapjf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Let's Talk about the Kenya Finance Bill 2024 😪 and how Machine Learning will help...</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Introduction The Kenya Finance Bill 2024 introduces a series of new tax measures and adjustments aimed at increasing government revenue...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~10 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/how-machine-learning-transportation-can-transform-africas-wanjala-163gf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">How Machine Learning in Transportation Can Transform Africa’s Transit Systems</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Highway Design Highway SafeBoda Twiga Foods Africa’s transportation sector is undergoing a radical transformation, thanks to the infusion of machine...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~14 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/machine-learning-blockchain-crypto-financial-analysis-daniel-wanjala-bf0mf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Machine Learning, Blockchain, and Crypto in Financial Analysis</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Introduction: In the financial world, machine learning, blockchain, and cryptocurrencies are three emerging technologies reshaping how we analyze...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~13 min read</span>
+                        </div>
+                    </a>
+                    <a href="https://www.linkedin.com/pulse/oracle-machine-learning-algorithms-daniel-wanjala-fqo5f/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">The Oracle of Machine Learning Algorithms</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">The field of technology has been revolutionized by machine learning algorithms, which provide unparalleled insights and efficiency...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~3 min read</span>
+                        </div>
+                    </a>
+                     <a href="https://www.linkedin.com/pulse/importance-diversity-inclusion-data-science-ml-daniel-wanjala-lw3if/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">The Importance of Diversity and Inclusion in Data Science and ML</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">I. Introduction Diversity and inclusion are crucial elements in any field, and data science and machine learning (ML) are no exception...</p>
+                        <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
+                            <span>by Daniel Wanjala</span>
+                            <span>~15 min read</span>
+                        </div>
+                    </a>
+                    </div>
+            </section>
+
             <section id="demos" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
                 <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Live Demos: Try My Logic</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -660,9 +736,9 @@
             const formStatusEl = document.getElementById('formStatus');
             const currentYearEl = document.getElementById('currentYear');
             const scrollProgressBar = document.getElementById('scrollProgressBar');
-            const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
-            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link');
-            const sections = document.querySelectorAll('main section[id]');
+            const navLinks = document.querySelectorAll('#desktop-nav .nav-link'); // Select all desktop links
+            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link'); // Select all mobile links
+            const sections = document.querySelectorAll('main section[id]'); // Select all sections with an ID in main
             const whatsappLink = document.getElementById('whatsapp-link');
             const whatsappDirectLink = document.getElementById('whatsapp-direct-link');
             const copyButtons = document.querySelectorAll('.copy-btn');
@@ -670,7 +746,7 @@
             const counterElements = document.querySelectorAll('[data-target]');
             const mainContentContainer = document.getElementById('main-content-container');
             const particleCanvas = document.getElementById('particle-canvas');
-            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle');
+            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card'); // Added publication-card
 
 
             // --- Hide Preloader ---
@@ -691,20 +767,18 @@
             // --- Tone.js Initialization ---
             function startTone() {
                 if (toneJsStarted || typeof Tone === 'undefined') return;
-                Tone.start(); // Start audio context on user interaction
-                // Simple synth for hover sounds
+                Tone.start();
                 synth = new Tone.Synth({
                     oscillator: { type: 'sine' },
                     envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }
                 }).toDestination();
-                 synth.volume.value = -25; // Very quiet
+                 synth.volume.value = -25;
 
-                // Slightly different synth for clicks
                 clickSynth = new Tone.Synth({
                     oscillator: { type: 'triangle' },
                     envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }
                 }).toDestination();
-                clickSynth.volume.value = -20; // Slightly louder click
+                clickSynth.volume.value = -20;
 
                 toneJsStarted = true;
                 console.log("Tone.js AudioContext started.");
@@ -754,12 +828,11 @@
                  if (toneJsStarted && clickSynth) {
                      clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now());
                  }
-                 // Re-initialize particles for new theme color
-                 if (particleCanvas) initParticles();
+                 if (particleCanvas) initParticles(); // Re-init particles for new theme color
             }
 
             const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            updateThemeUI(currentTheme); // Set initial UI based on theme
+            updateThemeUI(currentTheme);
 
             if (themeToggleButton) {
                 themeToggleButton.addEventListener('click', () => {
@@ -980,7 +1053,6 @@
                     // Simulate form submission
                     setTimeout(() => {
                         if(submitButton) {
-                            // Use solid color for success state for better visibility
                             submitButton.classList.remove('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
                             submitButton.classList.add('!bg-emerald-green', 'text-white');
                         }
@@ -996,7 +1068,6 @@
                             if(submitButton) {
                                 submitButton.disabled = false;
                                 submitButton.classList.remove('!bg-emerald-green', 'text-white');
-                                // Re-apply gradient
                                 submitButton.classList.add('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
 
                             }
@@ -1045,15 +1116,13 @@
             let currentActiveSectionId = null;
             const navObserverOptions = { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 };
              const navObserverCallback = (entries) => {
-                let intersectingSectionId = currentActiveSectionId; // Keep track of current
+                let intersectingSectionId = currentActiveSectionId;
                  entries.forEach(entry => {
-                     // Prioritize the one currently entering/intersecting most
                      if (entry.isIntersecting && entry.intersectionRatio > 0) {
                          intersectingSectionId = entry.target.getAttribute('id');
                      }
                  });
 
-                 // Only update if the active section has changed
                  if (intersectingSectionId !== currentActiveSectionId) {
                     currentActiveSectionId = intersectingSectionId;
                     navLinks.forEach(link => {
