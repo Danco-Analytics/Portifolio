@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Wanjala - Data Scientist / ML Engineer</title>
-    <link rel="icon" href="assets/favicon.ico" sizes="32x32">
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png"> <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="shortcut icon" href="assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -131,38 +132,40 @@
             transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* --- Preloader Styles (Loading Bar) --- */
+        /* --- Futuristic Preloader Styles --- */
         #preloader {
-            position: fixed; inset: 0; background-color: #F7F7F7; /* Default to light bg */
+            position: fixed; inset: 0; background-color: #F7F7F7; /* Default light bg */
             z-index: 9999; display: flex; align-items: center; justify-content: center;
-            opacity: 1; transition: opacity 0.5s ease-out 3.8s;
+            opacity: 1; transition: opacity 0.5s ease-out 1.8s; /* Faster fade out */
         }
         /* Dark preloader style (applied if dark mode is activated later) */
         html.dark #preloader { background-color: #0B0C10; }
         #preloader.hidden { opacity: 0; pointer-events: none; }
 
-        #loading-bar-container {
-            width: 70%; max-width: 400px; height: 8px;
-            background-color: rgba(108, 92, 231, 0.2); /* Light theme accent */
-            border-radius: 4px; overflow: hidden;
+        .preloader-pulse {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background-color: theme('colors.accent');
+            box-shadow: 0 0 0 0 theme('colors.accent/50');
+            animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
         }
-        html.dark #loading-bar-container { background-color: rgba(102, 252, 241, 0.2); } /* Dark theme accent */
+        html.dark .preloader-pulse {
+            background-color: theme('colors.dark-accent');
+            box-shadow: 0 0 0 0 theme('colors.dark-accent/50');
+        }
 
-        #loading-bar {
-            width: 100%; height: 100%;
-            background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary')); /* Light theme gradient */
-            border-radius: 4px;
-            transform: scaleX(0);
-            transform-origin: left;
-            animation: load 4s ease-out forwards;
+        @keyframes pulse {
+            to {
+                box-shadow: 0 0 0 45px rgba(232, 76, 61, 0); /* Use accent color alpha 0 */
+            }
         }
-        html.dark #loading-bar {
-             background-image: linear-gradient(to right, theme('colors.dark-accent'), theme('colors.dark-accent-secondary')); /* Dark theme gradient */
+        html.dark @keyframes pulse {
+             to {
+                box-shadow: 0 0 0 45px rgba(102, 252, 241, 0); /* Use dark accent color alpha 0 */
+             }
         }
-        @keyframes load {
-            0% { transform: scaleX(0); }
-            100% { transform: scaleX(1); }
-        }
+        /* --- End Futuristic Preloader Styles --- */
+
 
          /* --- Copy Toast Styles --- */
          #copy-toast {
@@ -242,10 +245,16 @@
                  '0%, 100%': { transform: 'translateX(0)' },
                  '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
                  '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' },
+               },
+               // Added pulse keyframes here for Tailwind integration if needed,
+               // but currently using direct @keyframes in <style>
+               pulse: {
+                    'to': { boxShadow: '0 0 0 45px rgba(108, 92, 231, 0)' } // Light theme pulse end state
                }
              },
              animation: {
                shake: 'shake 0.5s ease-in-out',
+               pulse: 'pulse 2s infinite cubic-bezier(0.66, 0, 0, 1)'
              }
           }
         }
@@ -266,21 +275,25 @@
             if (initialTheme === 'dark') {
                 document.documentElement.classList.add('dark');
             } else {
-                document.documentElement.classList.remove('dark'); // Ensure light mode if not dark
+                // Explicitly remove 'dark' if it's not the initial theme or no theme is stored
+                document.documentElement.classList.remove('dark');
             }
 
             // Function to apply background noise based on the current theme
             const applyBgNoise = () => {
                 const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                 const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-                document.body.style.backgroundImage = document.documentElement.classList.contains('dark') ? noiseDark : noiseLight;
+                // Ensure body exists before styling
+                if (document.body) {
+                    document.body.style.backgroundImage = document.documentElement.classList.contains('dark') ? noiseDark : noiseLight;
+                }
             };
 
             // Apply noise pattern once DOM is ready or immediately if already loaded
              if (document.readyState === 'loading') {
                  document.addEventListener('DOMContentLoaded', applyBgNoise);
              } else {
-                 applyBgNoise();
+                 applyBgNoise(); // Apply if DOM is already loaded
              }
         })();
     </script>
@@ -288,9 +301,7 @@
 <body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
 
     <div id="preloader">
-        <div id="loading-bar-container">
-            <div id="loading-bar"></div>
-        </div>
+        <div class="preloader-pulse"></div>
     </div>
 
     <canvas id="particle-canvas"></canvas>
@@ -300,11 +311,11 @@
     <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-glass-light dark:bg-glass-dark border-b border-secondary-text/10 dark:border-dark-secondary-text/10">
        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0">
-                    <a href="#hero" class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading hover:opacity-80 transition-opacity">
+                <a href="#hero" class="flex items-center space-x-2 group">
+                     <img src="assets/logo.png" alt="Daniel Wanjala Logo" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110" onerror="this.style.display='none'; console.error('Logo image failed to load')"> <span class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading group-hover:opacity-80 transition-opacity">
                         Daniel Wanjala.
-                    </a>
-                </div>
+                    </span>
+                </a>
                 <nav class="hidden md:flex space-x-6" id="desktop-nav">
                      <a href="#about" data-section="about" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
                         About <span class="active-underline"></span>
@@ -398,7 +409,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center max-w-6xl mx-auto">
                     <div class="md:col-span-2 flex justify-center relative group reveal-hidden">
                          <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-accent-secondary dark:border-dark-accent-secondary shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(108,92,231,0.3)] dark:hover:shadow-[0_0_25px_rgba(102,252,241,0.3)]">
-                            <img src="https://image-proxy.labnol.org/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocKz999-B81M89M5n0l6rW7-X9s7yV9z5H9f3Y1g6n8H%3Ds96-c" alt="Portrait of Daniel Wanjala" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/320x320/0B0C10/F7F7F7?text=Daniel+W.'">
+                            <img src="assets/profile.jpg" alt="Portrait of Daniel Wanjala" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/320x320/0B0C10/F7F7F7?text=Daniel+W.'">
                             <div class="absolute inset-0 rounded-full border-2 border-accent dark:border-dark-accent opacity-0 group-hover:opacity-50 animate-pulse"></div>
                         </div>
                     </div>
@@ -547,7 +558,7 @@
                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="1">
                          <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-500 to-blue-400 z-10"></div>
                         <div class="relative h-48 w-full">
-                            <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" alt="GDP Growth Prediction Model" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                             <img src="assets/project1_main.png" alt="GDP Growth Prediction Model" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="assets/project1_main.png" data-alt-src="assets/project1_alt.png" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model'">
                         </div>
                         <div class="p-6 text-primary-text dark:text-dark-primary-text">
                             <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">GDP Growth Prediction Model</h3>
@@ -563,10 +574,10 @@
                             View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                         </div>
                     </article>
-                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="2">
+                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="2">
                         <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-emerald-500 to-emerald-400 z-10"></div>
                         <div class="relative h-48 w-full">
-                            <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" alt="AI-Driven Plant Disease Detection" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                             <img src="assets/project2_main.png" alt="AI-Driven Plant Disease Detection" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="assets/project2_main.png" data-alt-src="assets/project2_alt.png" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI'">
                         </div>
                          <div class="p-6 text-primary-text dark:text-dark-primary-text">
                             <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">AI-Driven Plant Disease Detection</h3>
@@ -585,7 +596,7 @@
                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="3">
                        <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-red-500 to-red-400 z-10"></div>
                         <div class="relative h-48 w-full">
-                             <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" alt="Kenya's GDP Forecasting Tool" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                             <img src="assets/project3_main.png" alt="Kenya's GDP Forecasting Tool" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="assets/project3_main.png" data-alt-src="assets/project3_alt.png" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP'">
                         </div>
                           <div class="p-6 text-primary-text dark:text-dark-primary-text">
                             <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">Kenya's GDP Forecasting Tool</h3>
@@ -604,7 +615,7 @@
                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="4">
                        <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-purple-500 to-purple-400 z-10"></div>
                         <div class="relative h-48 w-full">
-                            <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" alt="InvestWise Predictor" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                            <img src="assets/project4_main.png" alt="InvestWise Predictor" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="assets/project4_main.png" data-alt-src="assets/project4_alt.png" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise'">
                         </div>
                          <div class="p-6 text-primary-text dark:text-dark-primary-text">
                             <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">InvestWise Predictor</h3>
@@ -623,7 +634,7 @@
                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="5">
                        <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-yellow-500 to-yellow-400 z-10"></div>
                         <div class="relative h-48 w-full">
-                            <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" alt="Netflix Stock Profit Analysis" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
+                            <img src="assets/project5_main.png" alt="Netflix Stock Profit Analysis" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="assets/project5_main.png" data-alt-src="assets/project5_alt.png" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock'">
                         </div>
                           <div class="p-6 text-primary-text dark:text-dark-primary-text">
                             <h3 class="text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent">Netflix Stock Profit Analysis</h3>
@@ -888,20 +899,20 @@
 
             // --- Constants and State ---
             const name = "Daniel Wanjala";
-            // Project data (unchanged)
+            // Project data (assuming image paths are now relative to assets/)
              const projectsData = [
-              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
-              { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
-              { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-coral" },
-              { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
-              { id: 5, title: "Netflix Stock Profit Analysis", description: "Analyzed Netflix's stock performance...", tags: ["Finance", "Analysis", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz", problem: "Understanding historical performance...", dataUsed: "Historical Netflix stock data.", results: "Provided insights into profitability...", techStack: ["Python", "Pandas", "Matplotlib"], githubUrl: "https://github.com/MadScie254/Netflix-Analysis", liveDemoUrl: null, accentColor: "sandstone" }
+              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "assets/project1_main.png", altImageUrl: "assets/project1_alt.png", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
+              { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "assets/project2_main.png", altImageUrl: "assets/project2_alt.png", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
+              { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "assets/project3_main.png", altImageUrl: "assets/project3_alt.png", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-coral" },
+              { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "assets/project4_main.png", altImageUrl: "assets/project4_alt.png", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
+              { id: 5, title: "Netflix Stock Profit Analysis", description: "Analyzed Netflix's stock performance...", tags: ["Finance", "Analysis", "Python"], imageUrl: "assets/project5_main.png", altImageUrl: "assets/project5_alt.png", problem: "Understanding historical performance...", dataUsed: "Historical Netflix stock data.", results: "Provided insights into profitability...", techStack: ["Python", "Pandas", "Matplotlib"], githubUrl: "https://github.com/MadScie254/Netflix-Analysis", liveDemoUrl: null, accentColor: "sandstone" }
             ];
             const whatsappBaseUrl = "https://wa.me/254742007277";
             const whatsappMessage = "Hello Daniel, I visited your portfolio and would like to connect.";
             let toneJsStarted = false;
             let synth, clickSynth;
             let particleAnimationId;
-            let mouse = { x: null, y: null, radius: 100 };
+            let mouse = { x: null, y: null, radius: 100 }; // Mouse interaction radius for particles
 
             // --- DOM Element References ---
             const htmlEl = document.documentElement;
@@ -935,17 +946,18 @@
             const counterElements = document.querySelectorAll('[data-target]');
             const mainContentContainer = document.getElementById('main-content-container');
             const particleCanvas = document.getElementById('particle-canvas');
-            const backToTopButton = document.getElementById('back-to-top'); // NEW: Back to top button
-            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card, .skill-card, .education-item, #back-to-top'); // Added back-to-top
+            const backToTopButton = document.getElementById('back-to-top');
+            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card, .skill-card, .education-item, #back-to-top');
 
 
             // --- Hide Preloader ---
             window.addEventListener('load', () => {
+                 // Shortened delay for the new preloader
                  setTimeout(() => {
                     if (preloader) {
                         preloader.classList.add('hidden');
                     }
-                 }, 4000);
+                 }, 2000); // Reduced from 4000ms
             });
 
             // --- Update WhatsApp Link ---
@@ -963,13 +975,13 @@
                         oscillator: { type: 'sine' },
                         envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }
                     }).toDestination();
-                    synth.volume.value = -25;
+                    synth.volume.value = -25; // Reduced volume
 
                     clickSynth = new Tone.Synth({
                         oscillator: { type: 'triangle' },
                         envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }
                     }).toDestination();
-                    clickSynth.volume.value = -20;
+                    clickSynth.volume.value = -20; // Reduced volume
 
                     toneJsStarted = true;
                     console.log("Tone.js AudioContext started.");
@@ -977,19 +989,21 @@
                     console.error("Tone.js initialization failed:", e);
                 }
             }
+            // Start audio context on user interaction
             document.body.addEventListener('click', startTone, { once: true });
             document.body.addEventListener('keydown', startTone, { once: true });
+            document.body.addEventListener('touchstart', startTone, { once: true }); // Added touch start
 
             // --- Sound Feedback ---
             interactiveElements.forEach(el => {
                  el.addEventListener('mouseenter', () => {
                     if (toneJsStarted && synth) {
-                        try { synth.triggerAttackRelease('C5', '16n', Tone.now()); } catch(e) { console.warn("Synth sound error:", e); }
+                        try { synth.triggerAttackRelease('C5', '16n', Tone.now()); } catch(e) { /* console.warn("Synth sound error:", e); */ } // Silenced console warning
                     }
                 });
                  el.addEventListener('click', () => {
                     if (toneJsStarted && clickSynth) {
-                         try { clickSynth.triggerAttackRelease('E4', '16n', Tone.now()); } catch(e) { console.warn("Click sound error:", e); }
+                         try { clickSynth.triggerAttackRelease('E4', '16n', Tone.now()); } catch(e) { /* console.warn("Click sound error:", e); */ } // Silenced console warning
                     }
                 });
             });
@@ -1010,7 +1024,9 @@
                  // Update body background noise
                  const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                  const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-                 document.body.style.backgroundImage = isDark ? noiseDark : noiseLight;
+                 if (document.body) { // Check if body exists
+                    document.body.style.backgroundImage = isDark ? noiseDark : noiseLight;
+                 }
             }
 
             function setTheme(theme) {
@@ -1024,7 +1040,7 @@
                 updateThemeUI();
                  // Play sound feedback for theme change
                  if (toneJsStarted && clickSynth) {
-                     try { clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now()); } catch(e) { console.warn("Theme change sound error:", e); }
+                     try { clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now()); } catch(e) { /* console.warn("Theme change sound error:", e); */ } // Silenced console warning
                  }
                  // Re-initialize particles with new theme colors
                  if (particleCanvas) initParticles();
@@ -1084,8 +1100,8 @@
                 if (img) {
                     const originalSrc = img.getAttribute('data-original-src');
                     const altSrc = img.getAttribute('data-alt-src');
-                    card.addEventListener('mouseenter', () => { if (altSrc) img.src = altSrc; });
-                    card.addEventListener('mouseleave', () => { if (originalSrc) img.src = originalSrc; });
+                    card.addEventListener('mouseenter', () => { if (altSrc && altSrc !== 'null') img.src = altSrc; }); // Check if altSrc exists
+                    card.addEventListener('mouseleave', () => { if (originalSrc && originalSrc !== 'null') img.src = originalSrc; }); // Check if originalSrc exists
                 }
             });
 
@@ -1098,9 +1114,12 @@
                 const githubButton = project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-secondary-text dark:bg-dark-accent-secondary text-primary-bg dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub </a>` : '';
                 const demoButton = project.liveDemoUrl ? `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="code" class="mr-2 h-4 w-4"></i> Live Demo </a>` : '';
 
+                // Use altImageUrl if available, otherwise fallback to imageUrl, then placeholder
+                const modalImageUrl = project.altImageUrl && project.altImageUrl !== 'null' ? project.altImageUrl : (project.imageUrl && project.imageUrl !== 'null' ? project.imageUrl : 'https://placehold.co/800x400/0B0C10/F7F7F7?text=Project+Image');
+
                 projectModalContent.innerHTML = `
                     <div class="relative">
-                       <img src="${project.altImageUrl || project.imageUrl}" alt="${project.title}" class="w-full h-64 object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/800x400/0B0C10/F7F7F7?text=Image+Error'">
+                       <img src="${modalImageUrl}" alt="${project.title}" class="w-full h-64 object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/800x400/0B0C10/F7F7F7?text=Image+Error'">
                        <button id="closeModalButton" class="absolute top-4 right-4 text-primary-text dark:text-dark-primary-text bg-primary-bg/50 dark:bg-dark-primary-bg/50 rounded-full p-2 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors duration-200 z-10" aria-label="Close project details">
                          <i data-lucide="x" class="h-5 w-5"></i>
                        </button>
@@ -1110,13 +1129,13 @@
                       <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">${project.title}</h2>
                       <div>
                         <h4 class="font-semibold text-lg mb-1 text-accent dark:text-dark-accent font-heading">Problem Statement</h4>
-                        <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">${project.problem}</p>
+                        <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">${project.problem || 'Details not available.'}</p>
                         <h4 class="font-semibold text-lg mb-1 text-accent dark:text-dark-accent font-heading">Data Used</h4>
-                        <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">${project.dataUsed}</p>
+                        <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">${project.dataUsed || 'Details not available.'}</p>
                         <h4 class="font-semibold text-lg mb-1 text-accent dark:text-dark-accent font-heading">Results</h4>
-                        <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">${project.results}</p>
+                        <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">${project.results || 'Details not available.'}</p>
                         <h4 class="font-semibold text-lg mb-2 text-accent dark:text-dark-accent font-heading">Tech Stack</h4>
-                        <div class="flex flex-wrap gap-2 mb-6">${techStackHtml}</div>
+                        <div class="flex flex-wrap gap-2 mb-6">${techStackHtml || 'N/A'}</div>
                       </div>
 
                       <div id="github-stats-container" class="mt-6 pt-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/20 ${!project.githubUrl ? 'hidden' : ''}">
@@ -1160,44 +1179,51 @@
                                         <span class="inline-flex items-center mr-4">
                                             <i data-lucide="star" class="w-4 h-4 mr-1 text-yellow-500"></i> ${data.stargazers_count ?? 'N/A'} Stars
                                         </span>
-                                        <span class="inline-flex items-center">
+                                        <span class="inline-flex items-center mr-4">
                                             <i data-lucide="git-fork" class="w-4 h-4 mr-1 text-secondary-text dark:text-dark-secondary-text"></i> ${data.forks_count ?? 'N/A'} Forks
+                                        </span>
+                                        <span class="inline-flex items-center">
+                                            <i data-lucide="eye" class="w-4 h-4 mr-1 text-blue-500"></i> ${data.watchers_count ?? 'N/A'} Watchers
                                         </span>
                                     `;
                                     lucide.createIcons();
-                                    fetchStatsButton.classList.add('hidden');
+                                    fetchStatsButton.classList.add('hidden'); // Hide button after successful fetch
                                 })
                                 .catch(error => {
                                     console.error("Error fetching GitHub stats:", error);
-                                    statsContent.innerHTML = `<p class="text-red-coral">Could not load stats.</p>`;
-                                    fetchStatsButton.textContent = 'Retry Stats';
+                                    statsContent.innerHTML = `<p class="text-red-coral">Could not load stats. API rate limit might be exceeded.</p>`;
+                                    fetchStatsButton.textContent = 'Retry Stats'; // Allow retry
                                     fetchStatsButton.disabled = false;
                                 });
                             } else { throw new Error("Could not parse owner/repo from URL"); }
                         } catch (error) {
                              console.error("Error processing GitHub URL:", error);
-                             statsContent.innerHTML = `<p class="text-red-coral">Invalid GitHub URL.</p>`;
-                             fetchStatsButton.classList.add('hidden');
+                             statsContent.innerHTML = `<p class="text-red-coral">Invalid GitHub URL provided for this project.</p>`;
+                             fetchStatsButton.classList.add('hidden'); // Hide button if URL is invalid
                         }
-                    }, { once: false });
+                    }, { once: false }); // Allow multiple clicks if retry is needed
                 }
 
                 projectModal.classList.remove('hidden-modal');
                 projectModal.classList.add('visible-modal');
-                document.body.style.overflow = 'hidden';
-                lucide.createIcons();
+                document.body.style.overflow = 'hidden'; // Prevent background scroll
+                lucide.createIcons(); // Ensure icons in modal are rendered
             }
 
             function closeModal() {
                 if (!projectModal || !projectModalContent) return;
                 projectModal.classList.add('hidden-modal');
                 projectModal.classList.remove('visible-modal');
-                document.body.style.overflow = '';
+                document.body.style.overflow = ''; // Restore background scroll
+                // Clear content after transition finishes
                 setTimeout(() => { projectModalContent.innerHTML = ''; }, 300);
             }
 
+            // Add event listeners for project cards
             projectCards.forEach(card => card.addEventListener('click', () => openModal(card.getAttribute('data-project-id'))));
+            // Close modal if clicking outside the content area
             if(projectModal) projectModal.addEventListener('click', (event) => { if (event.target === projectModal) closeModal(); });
+            // Close modal on Escape key press
             document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && projectModal && projectModal.classList.contains('visible-modal')) closeModal(); });
 
             // --- Contact Form Handling ---
@@ -1207,9 +1233,10 @@
                     let isValid = true;
                     let firstErrorField = null;
 
+                    // Clear previous statuses and errors
                     if(formStatusEl) {
                         formStatusEl.textContent = '';
-                        formStatusEl.className = 'mt-2 text-center text-sm font-body';
+                        formStatusEl.className = 'mt-2 text-center text-sm font-body'; // Reset classes
                     }
                     contactForm.querySelectorAll('.form-error').forEach(el => el.classList.add('hidden'));
                     contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-red-coral', 'ring-red-coral', 'border-emerald-green'));
@@ -1219,66 +1246,76 @@
                     const messageField = contactForm.querySelector('#message');
                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-                    if (nameField && !nameField.value.trim()) { isValid = false; nameField.classList.add('border-red-coral', 'ring-red-coral'); nameField.nextElementSibling.textContent = 'Name is required.'; nameField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = nameField; }
-                    if (emailField && !emailField.value.trim()) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Email is required.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
-                    else if (emailField && !emailRegex.test(emailField.value)) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Please enter a valid email address.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
-                    if (messageField && !messageField.value.trim()) { isValid = false; messageField.classList.add('border-red-coral', 'ring-red-coral'); messageField.nextElementSibling.textContent = 'Message cannot be empty.'; messageField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = messageField; }
+                    // --- Validation Checks ---
+                    if (nameField && !nameField.value.trim()) { isValid = false; nameField.classList.add('border-red-coral', 'ring-1', 'ring-red-coral'); const errEl = nameField.nextElementSibling; if(errEl) { errEl.textContent = 'Name is required.'; errEl.classList.remove('hidden'); } if (!firstErrorField) firstErrorField = nameField; }
+                    if (emailField && !emailField.value.trim()) { isValid = false; emailField.classList.add('border-red-coral', 'ring-1', 'ring-red-coral'); const errEl = emailField.nextElementSibling; if(errEl) { errEl.textContent = 'Email is required.'; errEl.classList.remove('hidden'); } if (!firstErrorField) firstErrorField = emailField; }
+                    else if (emailField && !emailRegex.test(emailField.value)) { isValid = false; emailField.classList.add('border-red-coral', 'ring-1', 'ring-red-coral'); const errEl = emailField.nextElementSibling; if(errEl) { errEl.textContent = 'Please enter a valid email address.'; errEl.classList.remove('hidden'); } if (!firstErrorField) firstErrorField = emailField; }
+                    if (messageField && !messageField.value.trim()) { isValid = false; messageField.classList.add('border-red-coral', 'ring-1', 'ring-red-coral'); const errEl = messageField.nextElementSibling; if(errEl) { errEl.textContent = 'Message cannot be empty.'; errEl.classList.remove('hidden'); } if (!firstErrorField) firstErrorField = messageField; }
 
+                    // --- Handle Validation Failure ---
                     if (!isValid) {
-                        if(submitButton) submitButton.classList.add('animate-shake', '!bg-red-coral');
+                        if(submitButton) submitButton.classList.add('animate-shake', '!bg-red-coral'); // Use !important for Tailwind override
                         if(buttonText) buttonText.textContent = 'Please Check Errors';
-                        if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'alert-circle'); lucide.createIcons(); }
+                        if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'alert-circle'); lucide.createIcons(); } // Update icon
                         if(formStatusEl) { formStatusEl.textContent = 'Please correct the errors above.'; formStatusEl.classList.add('text-red-coral'); }
-                        if (firstErrorField) firstErrorField.focus();
+                        if (firstErrorField) firstErrorField.focus(); // Focus the first invalid field
+
+                        // Reset button appearance after shake
                         setTimeout(() => {
                             if(submitButton) submitButton.classList.remove('animate-shake', '!bg-red-coral');
                             if(buttonText) buttonText.textContent = 'Send Message';
-                            if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'arrow-right'); lucide.createIcons(); }
+                            if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'arrow-right'); lucide.createIcons(); } // Reset icon
                         }, 1500);
-                        return;
+                        return; // Stop form submission
                     }
 
+                    // --- Handle Validation Success ---
                     contactForm.querySelectorAll('.form-input').forEach(el => {
-                        if (!el.classList.contains('border-red-coral')) {
+                        if (!el.classList.contains('border-red-coral')) { // Only mark valid fields green
                             el.classList.add('border-emerald-green');
                         }
                     });
 
+                    // --- Simulate Submission ---
                     if(submitButton) submitButton.disabled = true;
                     if(buttonText) buttonText.textContent = 'Sending...';
-                    if(buttonIcon) buttonIcon.classList.add('hidden');
-                    if(formStatusEl) formStatusEl.textContent = '';
+                    if(buttonIcon) buttonIcon.classList.add('hidden'); // Hide icon while sending
+                    if(formStatusEl) formStatusEl.textContent = ''; // Clear status initially
 
-                    // Simulate form submission
+                    // Simulate network delay
                     setTimeout(() => {
+                        // --- Update UI for Success ---
                         if(submitButton) {
+                            // Remove gradient, add green background
                             submitButton.classList.remove('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
                             submitButton.classList.add('!bg-emerald-green', 'text-white');
                         }
                         if(buttonText) buttonText.textContent = 'Message Sent!';
                         if(formStatusEl) {
                             formStatusEl.textContent = 'Thank you for your message! I\'ll get back to you soon.';
-                            formStatusEl.classList.add('text-emerald-green');
+                            formStatusEl.classList.add('text-emerald-green'); // Make status text green
                         }
-                        contactForm.reset();
-                        contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-emerald-green', 'border-red-coral', 'ring-red-coral'));
+                        contactForm.reset(); // Clear the form fields
+                        // Remove validation borders
+                        contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-emerald-green', 'border-red-coral', 'ring-1', 'ring-red-coral'));
 
+                        // --- Reset Button and Status After Delay ---
                         setTimeout(() => {
                             if(submitButton) {
                                 submitButton.disabled = false;
+                                // Remove green, restore gradient
                                 submitButton.classList.remove('!bg-emerald-green', 'text-white');
                                 submitButton.classList.add('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
-
                             }
                             if(buttonText) buttonText.textContent = 'Send Message';
-                            if(buttonIcon) buttonIcon.classList.remove('hidden');
+                            if(buttonIcon) buttonIcon.classList.remove('hidden'); // Show icon again
                             if(formStatusEl) {
-                                formStatusEl.textContent = '';
-                                formStatusEl.className = 'mt-2 text-center text-sm font-body';
+                                formStatusEl.textContent = ''; // Clear status message
+                                formStatusEl.className = 'mt-2 text-center text-sm font-body'; // Reset status classes
                             }
-                        }, 3000);
+                        }, 3000); // How long to show the success message
 
-                    }, 1500);
+                    }, 1500); // Simulated sending time
                 });
              }
 
@@ -1298,13 +1335,15 @@
             const revealCallback = (entries, observer) => {
                 entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
-                        const delay = (entry.target.dataset.revealDelay || (index * 100));
+                        // Use data-reveal-delay if present, otherwise calculate stagger based on index
+                        const delay = entry.target.dataset.revealDelay ? parseInt(entry.target.dataset.revealDelay) : (index * 100);
                         entry.target.style.transitionDelay = `${delay}ms`;
                         entry.target.classList.add('reveal-visible');
+                        // Add slide-in class if applicable
                         if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
                             entry.target.classList.add('slide-in');
                         }
-                        observer.unobserve(entry.target);
+                        observer.unobserve(entry.target); // Stop observing once revealed
                     }
                 });
             };
@@ -1313,31 +1352,37 @@
 
             // --- Active Navigation Link Highlighting ---
             let currentActiveSectionId = null;
-            const navObserverOptions = { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 };
+            const navObserverOptions = { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 }; // Adjust rootMargin to activate slightly before section center
              const navObserverCallback = (entries) => {
-                let intersectingSectionId = currentActiveSectionId;
+                let intersectingSectionId = currentActiveSectionId; // Keep track of the currently determined active section
                  entries.forEach(entry => {
+                     // If a section is intersecting significantly within the viewport bounds
                      if (entry.isIntersecting && entry.intersectionRatio > 0) {
                          intersectingSectionId = entry.target.getAttribute('id');
                      }
                  });
 
+                 // Only update if the active section has changed
                  if (intersectingSectionId !== currentActiveSectionId) {
                     currentActiveSectionId = intersectingSectionId;
+                    // Update desktop nav links
                     navLinks.forEach(link => {
                         link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                     });
+                    // Update mobile nav links
                     mobileNavLinks.forEach(link => {
                          link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                     });
                  }
             };
             const navObserver = new IntersectionObserver(navObserverCallback, navObserverOptions);
+            // Observe all main sections with an ID
             sections.forEach(section => { if(section) navObserver.observe(section); });
 
+            // Handle initial page load with hash
             const initialHash = window.location.hash.substring(1);
              if (initialHash) {
-                 currentActiveSectionId = initialHash;
+                 currentActiveSectionId = initialHash; // Set initial active section from hash
                  navLinks.forEach(link => {
                      link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                  });
@@ -1354,14 +1399,27 @@
                     if (textToCopy && navigator.clipboard) {
                         navigator.clipboard.writeText(textToCopy).then(() => {
                             if (copyToast) {
-                                copyToast.classList.add('show');
-                                clearTimeout(toastTimeout);
+                                copyToast.classList.add('show'); // Show the toast
+                                clearTimeout(toastTimeout); // Clear any existing timeout
+                                // Set a new timeout to hide the toast
                                 toastTimeout = setTimeout(() => {
                                     copyToast.classList.remove('show');
                                 }, 2000);
                             }
+                             // Optional: Visual feedback on the button itself
+                             const icon = button.querySelector('i');
+                             if (icon) {
+                                 const originalIcon = icon.getAttribute('data-lucide');
+                                 icon.setAttribute('data-lucide', 'check');
+                                 lucide.createIcons(); // Render the check icon
+                                 setTimeout(() => {
+                                     icon.setAttribute('data-lucide', originalIcon);
+                                     lucide.createIcons(); // Render the original icon back
+                                 }, 1500);
+                             }
                         }).catch(err => {
                             console.error('Failed to copy text: ', err);
+                            // Optionally show an error toast
                         });
                     }
                 });
@@ -1370,52 +1428,69 @@
             // --- Animated Counters ---
             const animateCounter = (el) => {
                  const target = parseInt(el.dataset.target, 10);
-                if (isNaN(target)) return;
+                if (isNaN(target)) return; // Skip if target is not a number
                 let current = 0;
-                const duration = 1500;
-                const stepTime = 20;
+                const duration = 1500; // Animation duration in ms
+                const stepTime = 20; // Update interval in ms
                 const totalSteps = duration / stepTime;
                 const increment = target / totalSteps;
 
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
-                        el.textContent = target;
-                        clearInterval(timer);
+                        el.textContent = target.toLocaleString(); // Format with commas if large
+                        clearInterval(timer); // Stop the interval
                     } else {
-                        el.textContent = Math.ceil(current);
+                        el.textContent = Math.ceil(current).toLocaleString(); // Update text content
                     }
                 }, stepTime);
             };
-            const counterObserverOptions = { threshold: 0.5 };
+            const counterObserverOptions = { threshold: 0.5 }; // Trigger when 50% visible
             const counterObserverCallback = (entries, observer) => {
                  entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        animateCounter(entry.target);
-                        observer.unobserve(entry.target);
+                        animateCounter(entry.target); // Start animation
+                        observer.unobserve(entry.target); // Stop observing once animated
                     }
                 });
             };
             const counterObserver = new IntersectionObserver(counterObserverCallback, counterObserverOptions);
+            // Observe elements with data-target attribute
             counterElements.forEach(el => counterObserver.observe(el));
 
             // --- Device Orientation Tilt Effect ---
             function handleOrientation(event) {
                  if (!mainContentContainer) return;
-                const beta = Math.max(-30, Math.min(30, event.beta || 0));
-                const gamma = Math.max(-30, Math.min(30, event.gamma || 0));
-                const maxTilt = 1.0;
-                const tiltY = (beta / 30 * maxTilt).toFixed(2);
-                const tiltX = (gamma / 30 * -maxTilt).toFixed(2);
+                 // Cap the tilt angles to prevent extreme effects
+                const beta = Math.max(-20, Math.min(20, event.beta || 0)); // Tilt front/back (X-axis rotation)
+                const gamma = Math.max(-20, Math.min(20, event.gamma || 0)); // Tilt left/right (Y-axis rotation)
+                const maxTilt = 1.5; // Max degrees of rotation
+                // Apply transformation with perspective
+                const tiltY = (beta / 20 * maxTilt).toFixed(2); // Rotate around X based on beta
+                const tiltX = (gamma / 20 * -maxTilt).toFixed(2); // Rotate around Y based on gamma (inverted)
                 mainContentContainer.style.transform = `perspective(1500px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`;
             }
+            // Check for permission requirement (iOS 13+)
             if (window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function') {
-                 console.log("DeviceOrientation requires permission request on this device.");
+                 console.log("DeviceOrientation requires permission request.");
+                 // Example: Add a button to request permission
+                 // const permissionButton = document.createElement('button');
+                 // permissionButton.textContent = 'Enable Tilt Effect';
+                 // permissionButton.onclick = () => {
+                 //   DeviceOrientationEvent.requestPermission().then(response => {
+                 //     if (response === 'granted') {
+                 //       window.addEventListener('deviceorientation', handleOrientation, true);
+                 //     }
+                 //   });
+                 // };
+                 // document.body.appendChild(permissionButton);
+                 // For now, just add the listener, it might work on some devices or prompt automatically
                  window.addEventListener('deviceorientation', handleOrientation, true);
             } else if (window.DeviceOrientationEvent) {
+                 // Standard way for devices not requiring explicit permission
                  window.addEventListener('deviceorientation', handleOrientation, true);
             } else {
-                console.log("DeviceOrientation not supported.");
+                console.log("DeviceOrientation not supported on this device.");
             }
 
              // --- Particle Background Animation (Theme Aware & Interactive) ---
@@ -1423,14 +1498,28 @@
                 const ctx = particleCanvas.getContext('2d');
                 let particles = [];
 
+                // Track mouse position relative to the canvas
                 particleCanvas.addEventListener('mousemove', (event) => {
-                    mouse.x = event.clientX;
-                    mouse.y = event.clientY;
+                    const rect = particleCanvas.getBoundingClientRect();
+                    mouse.x = event.clientX - rect.left;
+                    mouse.y = event.clientY - rect.top;
                 });
+                 particleCanvas.addEventListener('touchmove', (event) => {
+                     if (event.touches.length > 0) {
+                         const rect = particleCanvas.getBoundingClientRect();
+                         mouse.x = event.touches[0].clientX - rect.left;
+                         mouse.y = event.touches[0].clientY - rect.top;
+                     }
+                 }, { passive: true }); // Improve scroll performance on touch
+
                 particleCanvas.addEventListener('mouseleave', () => {
                     mouse.x = null;
                     mouse.y = null;
                 });
+                 particleCanvas.addEventListener('touchend', () => {
+                     mouse.x = null;
+                     mouse.y = null;
+                 });
 
                 function resizeCanvas() {
                     particleCanvas.width = window.innerWidth;
@@ -1439,68 +1528,89 @@
 
                 function createParticles() {
                     particles = [];
-                    const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 20000);
+                    // Adjust particle count based on screen size
+                    const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 15000); // Slightly more particles
                     for (let i = 0; i < particleCount; i++) {
                         particles.push({
                             x: Math.random() * particleCanvas.width,
                             y: Math.random() * particleCanvas.height,
-                            vx: (Math.random() - 0.5) * 0.3,
-                            vy: (Math.random() - 0.5) * 0.3,
-                            radius: Math.random() * 1.5 + 0.5,
-                            baseColor: null,
-                            drawColor: null
+                            vx: (Math.random() - 0.5) * 0.4, // Slightly faster base speed
+                            vy: (Math.random() - 0.5) * 0.4,
+                            // --- Increased Particle Size ---
+                            radius: Math.random() * 2.5 + 1, // Was: Math.random() * 1.5 + 0.5
+                            baseRadius: Math.random() * 2.5 + 1, // Store base radius
+                            baseColor: null, // Store base color hex+alpha
+                            drawColor: null // Current color for drawing
                         });
                     }
                 }
 
                 function drawParticles() {
                     if (!ctx) return;
-                    ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                    ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height); // Clear canvas each frame
                     const isDark = document.documentElement.classList.contains('dark');
-                    const twConfig = tailwind.config.theme.extend.colors;
-                    const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`];
-                    const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`];
+                    const twConfig = tailwind.config.theme.extend.colors; // Access Tailwind config
+
+                    // Define theme-specific colors with alpha (adjust alpha '80' as needed)
+                    const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`, `${twConfig['tertiary-light']}60`]; // Added tertiary
+                    const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`, `${twConfig['tertiary-dark']}60`]; // Added tertiary
                     const themeColors = isDark ? darkColors : lightColors;
-                    const lineColor = isDark ? 'rgba(197, 198, 199, 0.08)' : 'rgba(74, 74, 74, 0.08)';
+                    // Line color between particles
+                    const lineColor = isDark ? 'rgba(197, 198, 199, 0.06)' : 'rgba(74, 74, 74, 0.06)'; // Reduced line opacity
 
                     particles.forEach((p, i) => {
+                         // Assign a base color if it doesn't have one yet
                          if (!p.baseColor) {
                              p.baseColor = themeColors[Math.floor(Math.random() * themeColors.length)];
                          }
-                         p.drawColor = p.baseColor;
+                         p.drawColor = p.baseColor; // Default draw color is base color
+                         p.radius = p.baseRadius; // Reset radius
 
+                        // --- Mouse/Touch Interaction ---
                         if (mouse.x !== null && mouse.y !== null) {
                             const dx = mouse.x - p.x;
                             const dy = mouse.y - p.y;
                             const distance = Math.sqrt(dx * dx + dy * dy);
-                            const interactionRadius = 150;
+                            const interactionRadius = 120; // Radius around cursor for interaction
 
                             if (distance < interactionRadius) {
-                                const opacityFactor = 1 - (distance / interactionRadius);
-                                const baseHex = p.baseColor.substring(0, 7);
-                                const alphaHex = Math.min(255, Math.floor(parseInt(p.baseColor.substring(7, 9) || '80', 16) + opacityFactor * 150)).toString(16).padStart(2, '0');
-                                p.drawColor = `${baseHex}${alphaHex}`;
+                                // Make particles near cursor brighter/more opaque and slightly larger
+                                const proximityFactor = 1 - (distance / interactionRadius); // 0 to 1
+                                const baseHex = p.baseColor.substring(0, 7); // Color hex part
+                                const currentAlpha = parseInt(p.baseColor.substring(7, 9) || '80', 16); // Current alpha value (0-255)
+                                const targetAlpha = Math.min(255, Math.floor(currentAlpha + proximityFactor * 100)); // Increase alpha based on proximity
+                                const alphaHex = targetAlpha.toString(16).padStart(2, '0'); // Convert back to hex
+                                p.drawColor = `${baseHex}${alphaHex}`; // Update draw color with new alpha
 
-                                const force = (interactionRadius - distance) / interactionRadius;
-                                p.x -= (dx / distance) * force * 0.5;
-                                p.y -= (dy / distance) * force * 0.5;
+                                // Slightly increase radius near cursor
+                                p.radius = p.baseRadius + proximityFactor * 1.5;
+
+                                // Push particles away from cursor
+                                const force = proximityFactor; // Force proportional to proximity
+                                const pushStrength = 0.6; // Adjust push strength
+                                p.x -= (dx / distance) * force * pushStrength;
+                                p.y -= (dy / distance) * force * pushStrength;
                             }
                         }
 
+                        // Draw the particle
                         ctx.fillStyle = p.drawColor;
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                         ctx.fill();
 
+                        // Update particle position
                         p.x += p.vx;
                         p.y += p.vy;
 
+                        // --- Edge Wrapping ---
                         if (p.x < -p.radius) p.x = particleCanvas.width + p.radius;
                         if (p.x > particleCanvas.width + p.radius) p.x = -p.radius;
                         if (p.y < -p.radius) p.y = particleCanvas.height + p.radius;
                         if (p.y > particleCanvas.height + p.radius) p.y = -p.radius;
 
-                        const lineDistanceThreshold = 100;
+                        // --- Draw Lines Between Nearby Particles ---
+                        const lineDistanceThreshold = 110; // Max distance to draw a line
                         for (let j = i + 1; j < particles.length; j++) {
                             const p2 = particles[j];
                             const dx = p.x - p2.x;
@@ -1508,8 +1618,9 @@
                             const distance = Math.sqrt(dx * dx + dy * dy);
 
                             if (distance < lineDistanceThreshold) {
+                                // Line opacity fades with distance
                                 ctx.strokeStyle = lineColor;
-                                ctx.lineWidth = 0.5 * (1 - distance / lineDistanceThreshold);
+                                ctx.lineWidth = 0.6 * (1 - distance / lineDistanceThreshold); // Thicker lines, fade faster
                                 ctx.beginPath();
                                 ctx.moveTo(p.x, p.y);
                                 ctx.lineTo(p2.x, p2.y);
@@ -1518,33 +1629,43 @@
                         }
                     });
 
+                    // Request next frame
                     particleAnimationId = requestAnimationFrame(drawParticles);
                 }
 
                 function initParticles() {
-                    resizeCanvas();
+                    resizeCanvas(); // Set canvas size
+                    // Reset base color for all particles so they pick new theme colors
                     particles.forEach(p => p.baseColor = null);
-                    createParticles();
-                    if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
-                    if (!document.hidden) { drawParticles(); }
+                    createParticles(); // Create/recreate particles
+                    if (particleAnimationId) cancelAnimationFrame(particleAnimationId); // Stop previous animation loop
+                    // Only start animation if the page is visible
+                    if (!document.hidden) {
+                        drawParticles();
+                    }
                 }
 
+                // Initial setup
                 initParticles();
 
+                // Re-initialize on window resize (with debounce)
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(initParticles, 250);
+                    resizeTimeout = setTimeout(initParticles, 250); // Wait 250ms after resize stops
                 });
 
+                 // Pause/Resume animation based on page visibility
                  document.addEventListener('visibilitychange', () => {
                     if (document.hidden) {
+                        // Pause animation if page is hidden
                         if (particleAnimationId) {
                             cancelAnimationFrame(particleAnimationId);
                             particleAnimationId = null;
                             console.log("Particle animation paused.");
                         }
                     } else {
+                        // Resume animation if page becomes visible and wasn't already running
                         if (!particleAnimationId) {
                             drawParticles();
                             console.log("Particle animation resumed.");
@@ -1557,7 +1678,7 @@
             if (backToTopButton) {
                 // Show/hide button based on scroll position
                 window.addEventListener('scroll', () => {
-                    if (window.scrollY > 300) { // Show after scrolling 300px
+                    if (window.scrollY > 300) { // Show after scrolling 300px down
                         backToTopButton.classList.add('visible');
                     } else {
                         backToTopButton.classList.remove('visible');
@@ -1568,7 +1689,7 @@
                 backToTopButton.addEventListener('click', () => {
                     window.scrollTo({
                         top: 0,
-                        behavior: 'smooth'
+                        behavior: 'smooth' // Use smooth scrolling behavior
                     });
                 });
             }
