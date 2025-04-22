@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Wanjala - Project Portfolio: Data in Action</title> <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="shortcut icon" href="assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        /* Base, Fonts, Scrollbar, Mobile Menu (Consistent) */
+        body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background-attachment: fixed; position: relative; }
+        .font-heading { font-family: 'Satoshi', 'Space Grotesk', 'Neue Montreal', sans-serif; }
+        .font-body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', 'Source Code Pro', monospace; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: theme('colors.sandstone'); }
+        ::-webkit-scrollbar-thumb { background: theme('colors.accent'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.accent-secondary'); }
+        html.dark ::-webkit-scrollbar-track { background: theme('colors.dark-secondary-bg'); }
+        html.dark ::-webkit-scrollbar-thumb { background: theme('colors.dark-accent'); }
+        html.dark ::-webkit-scrollbar-thumb:hover { background: theme('colors.dark-accent-secondary'); }
+        html { scroll-behavior: smooth; }
+        #mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, opacity 0.3s ease-out; opacity: 0; }
+        #mobile-menu.open { max-height: 500px; opacity: 1; }
+
+        /* Scroll Reveal (Consistent) */
+        .reveal-hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .reveal-visible { opacity: 1; transform: translateY(0); }
+        .reveal-slide-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .reveal-slide-right { opacity: 0; transform: translateX(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .reveal-visible.slide-in { opacity: 1; transform: translateX(0); }
+
+        /* Enhanced Navbar (Consistent - Highlight Projects) */
+        .nav-link { @apply px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ease-out relative text-secondary-text dark:text-dark-secondary-text opacity-80 hover:opacity-100; }
+        .nav-link:hover:not(.nav-active) { @apply text-primary-text dark:text-dark-primary-text transform scale-[1.03]; }
+        .nav-link.nav-active { @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent opacity-100 font-semibold; }
+        .nav-link .active-underline { display: none; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary')); border-radius: 1px; transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+        html.dark .nav-link .active-underline { background-image: linear-gradient(to right, theme('colors.dark-accent'), theme('colors.dark-accent-secondary')); }
+        .nav-link.nav-active .active-underline { display: block; width: 60%; }
+        .mobile-nav-link { @apply block px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ease-in-out text-secondary-text dark:text-dark-secondary-text; }
+        .mobile-nav-link:hover { @apply bg-secondary-text/5 dark:bg-dark-secondary-text/10 text-primary-text dark:text-dark-primary-text; }
+        .mobile-nav-link.nav-active { background-image: linear-gradient(to right, theme('colors.accent/10'), theme('colors.accent-secondary/20')); color: theme('colors.accent') !important; @apply font-semibold; }
+        html.dark .mobile-nav-link.nav-active { background-image: linear-gradient(to right, theme('colors.dark-accent/10'), theme('colors.dark-accent-secondary/20')); color: theme('colors.dark-accent') !important; }
+
+        /* Canvas, Main Container, Header Shrink, Back to Top (Consistent) */
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        #main-content-container { perspective: 1000px; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+        header.scrolled { @apply h-14 shadow-md; }
+        header.scrolled .h-16 { @apply h-14; }
+        header.scrolled .h-8 { @apply h-7; }
+        #back-to-top { position: fixed; bottom: 20px; right: 20px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out; transform: translateY(20px); z-index: 1000; @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent; }
+        #back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        /* --- Project Filtering Styles --- */
+        .filter-button {
+            @apply px-4 py-2 rounded-full text-sm font-medium border-2 transition-all duration-300 ease-out cursor-pointer;
+            @apply border-secondary-text/30 text-secondary-text dark:border-dark-secondary-text/30 dark:text-dark-secondary-text;
+            @apply hover:border-accent dark:hover:border-dark-accent hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:text-accent dark:hover:text-dark-accent hover:scale-105;
+        }
+        .filter-button.active {
+            @apply border-accent dark:border-dark-accent bg-accent dark:bg-dark-accent text-white dark:text-jet-black scale-105 shadow-md;
+        }
+
+        /* --- Project Grid & Card Styles --- */
+        #project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+            gap: 2rem; /* Increased gap */
+        }
+        .project-card {
+            @apply bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl overflow-hidden shadow-md flex flex-col; /* Added flex for content structure */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, opacity 0.5s ease-out;
+            transform-style: preserve-3d;
+            opacity: 1;
+            position: relative;
+            @apply focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-accent dark:focus-within:ring-dark-accent;
+        }
+        .project-card.hidden { transform: scale(0.9); opacity: 0; pointer-events: none; position: absolute; }
+        .project-card:hover { transform: translateY(-8px) scale(1.03) rotateX(2deg) rotateY(-1deg); @apply shadow-xl dark:shadow-dark-accent/20; }
+        .project-card::before { content: ''; position: absolute; inset: -2px; border-radius: inherit; z-index: -1; background: conic-gradient(from 180deg at 50% 50%, theme('colors.accent/0') 0deg, theme('colors.accent') 180deg, theme('colors.accent/0') 360deg); opacity: 0; transition: opacity 0.4s ease; }
+        html.dark .project-card::before { background: conic-gradient(from 180deg at 50% 50%, theme('colors.dark-accent/0') 0deg, theme('colors.dark-accent') 180deg, theme('colors.dark-accent/0') 360deg); }
+        .project-card:hover::before { opacity: 0.5; animation: spin 3s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .project-image-wrapper { @apply relative h-48 w-full overflow-hidden flex-shrink-0; } /* Ensure image doesn't shrink */
+        .project-image { @apply absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out; }
+        .project-card:hover .project-image { transform: scale(1.1); }
+        .project-content { @apply p-6 flex flex-col flex-grow; } /* Allow content to grow */
+        .project-title { @apply text-xl font-semibold mb-2 font-heading text-accent dark:text-dark-accent; transition: color 0.3s ease; }
+        .project-card:hover .project-title { @apply text-accent-secondary dark:text-dark-accent-secondary; }
+        .project-description { @apply text-sm mb-4 text-secondary-text dark:text-dark-secondary-text font-body flex-grow; } /* Allow description to take space */
+        .project-tags { @apply mt-auto pt-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/10; } /* Push tags and links down */
+        .project-tags .tag { @apply text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-3 py-1 rounded-full font-mono transition-all duration-200 ease-out inline-block mr-1 mb-1; }
+        .project-card:hover .project-tags .tag { @apply bg-accent/20 dark:bg-dark-accent/20 scale-105; }
+        .project-links { @apply flex items-center justify-end space-x-3 pt-2; }
+        .project-link { @apply p-2 rounded-full text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-accent/10 dark:hover:bg-dark-accent/10 transition-all duration-200 ease-out transform hover:scale-110; }
+
+        /* --- API Section Styles --- */
+        .api-card { @apply bg-glass-light dark:bg-glass-dark backdrop-blur-md border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg p-5 shadow-sm; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .api-card:hover { transform: translateY(-3px); @apply shadow-md border-accent/20 dark:border-dark-accent/20; }
+        .api-icon { transition: transform 0.5s ease; }
+        .api-card:hover .api-icon { transform: rotateY(180deg); }
+        .api-name { @apply font-semibold text-primary-text dark:text-dark-primary-text mb-1 font-heading; }
+        .api-description { @apply text-xs text-secondary-text dark:text-dark-secondary-text font-body; }
+
+        /* General Button Styles (Consistent) */
+        .cta-button { @apply interactive-element group relative inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg shadow-lg transition-all duration-300 ease-out overflow-hidden transform focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black focus:ring-accent dark:focus:ring-dark-accent; }
+        .cta-button::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent); transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        .cta-button:hover::before { left: 100%; }
+        .cta-button:hover { @apply shadow-accent/40 dark:shadow-dark-accent/40 scale-[1.03] -translate-y-0.5; }
+        .cta-button i { transition: transform 0.3s ease-out; }
+        .cta-button:hover i { transform: translateX(4px) scale(1.1); }
+
+        /* Accessibility: Focus Styles */
+        *:focus-visible { outline: 2px solid theme('colors.accent'); outline-offset: 2px; border-radius: 2px; }
+        html.dark *:focus-visible { outline-color: theme('colors.dark-accent'); }
+        *:focus { outline: none; }
+
+    </style>
+    <script>
+      tailwind.config = { /* Tailwind config - same as before */
+        darkMode: 'class', theme: { extend: {
+            colors: { 'jet-black': '#0B0C10', 'ghost-white': '#F7F7F7', 'signal-cyan': '#66FCF1', 'tech-purple': '#6C5CE7', 'emerald-green': '#2ECC71', 'red-coral': '#FF6B6B', 'sandstone': '#E0C097', 'whatsapp-green': '#25D366', 'primary-bg': '#F7F7F7', 'primary-text': '#0B0C10', 'secondary-bg': '#E0C097', 'secondary-text': '#4A4A4A', 'accent': '#6C5CE7', 'accent-secondary': '#FF6B6B', 'dark-primary-bg': '#0B0C10', 'dark-primary-text': '#F7F7F7', 'dark-secondary-bg': '#1F2833', 'dark-secondary-text': '#C5C6C7', 'dark-accent': '#66FCF1', 'dark-accent-secondary': '#45A29E', 'tertiary-light': '#F5B041', 'tertiary-dark': '#F39C12', 'glass-light': 'rgba(225, 229, 255, 0.1)', 'glass-dark': 'rgba(17, 24, 39, 0.2)', 'glass-darker': 'rgba(17, 24, 39, 0.3)', },
+            fontFamily: { heading: ['Satoshi', 'Space Grotesk', 'Neue Montreal', 'sans-serif'], body: ['Inter', 'IBM Plex Sans', 'sans-serif'], mono: ['JetBrains Mono', 'Source Code Pro', 'monospace'], },
+            keyframes: { spin: { 'from': { transform: 'rotate(0deg)' }, 'to': { transform: 'rotate(360deg)' } } },
+            animation: { 'spin': 'spin 3s linear infinite', 'spin-slow': 'spin 10s linear infinite', 'spin-medium': 'spin 5s linear infinite', 'bounce-slow': 'bounce 2s infinite', 'pulse': 'pulse 2s infinite cubic-bezier(0.66, 0, 0, 1)' } // Added pulse back if needed
+        } }
+      }
+    </script>
+    <script>
+        (function() { /* IIFE for theme initialization */
+            const storedTheme = localStorage.getItem('theme'); let initialTheme = 'light'; if (storedTheme) { initialTheme = storedTheme; } if (initialTheme === 'dark') { document.documentElement.classList.add('dark'); } else { document.documentElement.classList.remove('dark'); } const applyBgNoise = () => { const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")"; const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")"; if (document.body) { document.body.style.backgroundImage = document.documentElement.classList.contains('dark') ? noiseDark : noiseLight; } }; if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', applyBgNoise); } else { applyBgNoise(); }
+        })();
+    </script>
+</head>
+<body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+    <canvas id="particle-canvas"></canvas>
+    <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary origin-left z-50" style="transform: scaleX(0);"></div>
+
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-glass-light dark:bg-glass-dark border-b border-secondary-text/10 dark:border-dark-secondary-text/10 h-16">
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 transition-all duration-300">
+                <a href="index.html" class="flex items-center space-x-2 group" aria-label="Daniel Wanjala - Home">
+                     <img src="assets/logo.png" alt="" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-5deg]" aria-hidden="true" onerror="this.style.display='none'; console.error('Logo image failed to load')">
+                     <span class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading group-hover:opacity-80 transition-opacity duration-300">
+                        Daniel Wanjala.
+                    </span>
+                </a>
+                <nav class="hidden md:flex space-x-6" id="desktop-nav" aria-label="Main navigation">
+                     <a href="index.html" data-section="home" class="nav-link">Home <span class="active-underline"></span></a>
+                     <a href="about.html" data-section="about" class="nav-link">About <span class="active-underline"></span></a>
+                     <a href="skills.html" data-section="skills" class="nav-link">Skills <span class="active-underline"></span></a>
+                     <a href="education.html" data-section="education" class="nav-link">Education <span class="active-underline"></span></a>
+                     <a href="projects.html" data-section="projects" class="nav-link nav-active">Projects <span class="active-underline"></span></a> <a href="contact.html" data-section="contact" class="nav-link">Contact <span class="active-underline"></span></a>
+                </nav>
+                <div class="flex items-center space-x-2">
+                     <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="interactive-element p-2 rounded-full text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent">
+                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden" aria-hidden="true"></i>
+                        <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5" aria-hidden="true"></i>
+                     </button>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="interactive-element inline-flex items-center justify-center p-2 rounded-md text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent dark:focus:ring-dark-accent" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg id="menu-icon-open" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            <svg id="menu-icon-close" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden bg-glass-light dark:bg-glass-darker border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
+             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3" role="menu" aria-orientation="vertical" aria-labelledby="mobile-menu-button">
+                 <a href="index.html" data-section="home" class="mobile-nav-link" role="menuitem">Home</a>
+                <a href="about.html" data-section="about" class="mobile-nav-link" role="menuitem">About</a>
+                <a href="skills.html" data-section="skills" class="mobile-nav-link" role="menuitem">Skills</a>
+                <a href="education.html" data-section="education" class="mobile-nav-link" role="menuitem">Education</a>
+                <a href="projects.html" data-section="projects" class="mobile-nav-link nav-active" role="menuitem">Projects</a> <a href="contact.html" data-section="contact" class="mobile-nav-link" role="menuitem">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <div id="main-content-container">
+        <main class="pt-24 pb-16">
+
+            <section id="projects-intro" class="py-20 px-4 md:px-8 lg:px-16 text-center bg-gradient-to-b from-primary-bg via-secondary-bg/10 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/10 dark:to-dark-primary-bg reveal-hidden">
+                 <i data-lucide="lightbulb" class="w-16 h-16 mx-auto mb-6 text-accent dark:text-dark-accent reveal-hidden animate-pulse"></i>
+                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden" style="transition-delay: 100ms;">
+                    Where Ideas Meet Execution (and Data!)
+                 </h1>
+                 <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text max-w-3xl mx-auto mb-8 leading-relaxed font-body reveal-hidden" style="transition-delay: 200ms;">
+                    Welcome to my project showcase – the digital equivalent of a mad scientist's lab, but hopefully with fewer explosions and more actionable insights! This is where theory gets its hands dirty, where algorithms face real-world data (which is often messier than my desk after a long coding session), and where the goal is always to build something meaningful and effective.
+                 </p>
+                 <p class="text-md text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto leading-relaxed font-body reveal-hidden" style="transition-delay: 300ms;">
+                    Think of each project as a mini-adventure: a problem to decipher, data to explore, models to train (and retrain... and retrain...), and ultimately, a solution to engineer. From predicting economic shifts to helping plants feel better with AI, it's a diverse collection reflecting my journey. Use the filters to navigate, and click around – exploration is encouraged!
+                 </p>
+            </section>
+
+            <section id="project-filters" class="py-8 px-4 md:px-8 lg:px-16 sticky top-16 bg-primary-bg/80 dark:bg-dark-primary-bg/80 backdrop-blur-md z-30 border-b border-secondary-text/10 dark:border-dark-secondary-text/10 reveal-hidden">
+                 <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-3">
+                     <button class="filter-button active interactive-element" data-filter="all">All Projects</button>
+                     <button class="filter-button interactive-element" data-filter="finance">Finance & Economics</button>
+                     <button class="filter-button interactive-element" data-filter="ai-ml">AI / ML</button>
+                     <button class="filter-button interactive-element" data-filter="health-agri">Health / Agriculture</button>
+                     <button class="filter-button interactive-element" data-filter="web-tool">Web Tools</button>
+                     <button class="filter-button interactive-element" data-filter="analysis">Data Analysis</button>
+                     <button class="filter-button interactive-element" data-filter="it-infra">IT / Infra</button> </div>
+            </section>
+
+            <section id="projects-grid-section" class="py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg">
+                <div id="project-grid" class="max-w-7xl mx-auto">
+
+                    <article class="project-card interactive-element reveal-hidden" data-tags='["finance", "ai-ml", "analysis"]' tabindex="0">
+                        <div class="project-image-wrapper">
+                            <img src="assets/project1_main.png" alt="Abstract representation of GDP growth chart" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/6C5CE7?text=GDP+Model'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">GDP Growth Prediction Model</h3>
+                            <p class="project-description">
+                                Tasked with gazing into the economic crystal ball (metaphorically, of course!). This project involved wrangling diverse economic indicators – inflation rates doing the cha-cha, fluctuating exchange rates, historical trends – and feeding them into a machine learning model (shoutout to Scikit-learn!) to forecast annual GDP growth. The goal? To provide policymakers with slightly less fuzzy data for their big decisions.
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">Finance</span> <span class="tag">AI/ML</span> <span class="tag">Analysis</span>
+                                <div class="project-links">
+                                    <a href="https://github.com/MadScie254/Phase-3-Project-Modelling" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View GDP Growth code on GitHub">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card interactive-element reveal-hidden" data-tags='["health-agri", "ai-ml"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/project2_main.png" alt="AI analyzing a plant leaf for diseases" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/2ECC71?text=Plant+AI'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">AI-Driven Plant Disease Detection</h3>
+                            <p class="project-description">
+                                Playing doctor for the plant kingdom! This collaborative capstone project involved training a Convolutional Neural Network (CNN) using TensorFlow and OpenCV to identify common plant diseases from leaf images. It felt like teaching a computer botany. The aim was ambitious: empower farmers with early detection capabilities to safeguard precious crops and contribute to food security. Required lots of image augmentation – plants aren't always cooperative models!
+                            </p>
+                            <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">Health/Agri</span> <span class="tag">AI/ML</span> <span class="tag">CV</span>
+                                <div class="project-links">
+                                    <a href="https://github.com/MadScie254/Capstone-Lazarus" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Plant Disease code on GitHub">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                     <article class="project-card interactive-element reveal-hidden" data-tags='["finance", "analysis", "web-tool"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/project3_main.png" alt="Map of Kenya with economic trend lines" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/FF6B6B?text=Kenya+GDP'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Kenya's GDP Forecasting Tool</h3>
+                            <p class="project-description">
+                                Zooming in on the nation's economic pulse. This project focused specifically on Kenya's GDP, utilizing time-series analysis techniques (ARIMA, Prophet – the usual suspects) to model historical patterns and project future trends. The end product was a tool designed to give stakeholders a clearer, data-informed view for strategic decisions, moving beyond simple trend lines.
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">Finance</span> <span class="tag">Analysis</span> <span class="tag">TimeSeries</span>
+                                <div class="project-links">
+                                    <a href="https://github.com/MadScie254/GDP-Forecast-Sample" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Kenya GDP code on GitHub">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                     <article class="project-card interactive-element reveal-hidden" data-tags='["finance", "ai-ml", "web-tool"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/project4_main.png" alt="Financial charts and investment icons" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/6C5CE7?text=InvestWise'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">InvestWise Predictor (Conceptual)</h3>
+                            <p class="project-description">
+                                An ambitious venture into creating an intelligent assistant for Kenyan investors! The concept involves using neural networks fed with diverse economic indicators, trade data, and regional metrics to identify promising investment opportunities and business ventures. It's currently a work-in-progress, aiming to democratize data-driven investment insights. Still wrestling with some data pipelines here!
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">Finance</span> <span class="tag">AI/ML</span> <span class="tag">Web Tool</span> <span class="tag">WIP</span>
+                                <div class="project-links">
+                                    <a href="https://github.com/MadScie254/InvestWise-Predictor-Project" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View InvestWise code on GitHub">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                     <article class="project-card interactive-element reveal-hidden" data-tags='["finance", "analysis"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/project5_main.png" alt="Netflix logo with stock chart overlay" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/E0C097?text=Netflix+Stock'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Netflix Stock Profitability Analysis</h3>
+                            <p class="project-description">
+                                Combining my interest in data with... well, watching shows! This analysis used Pandas to dissect historical Netflix stock data, visualizing trends with Matplotlib and Seaborn to understand performance patterns and potential profitability signals for investors. It turns out analyzing stock charts is almost as engaging as a good season finale.
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">Finance</span> <span class="tag">Analysis</span> <span class="tag">Visualization</span>
+                                <div class="project-links">
+                                    <a href="https://github.com/MadScie254/Netflix-Analysis" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Netflix Analysis code on GitHub">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card interactive-element reveal-hidden" data-tags='["health-agri", "analysis", "simulation"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/hospital_flow.png" alt="Flowchart showing patient movement in a hospital" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/45A29E?text=Patient+Flow'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Hospital Patient Flow Optimization (Simulation)</h3>
+                            <p class="project-description">
+                                Building on my experience at Kingdom Hospital, this project involved creating a simulation model (using Python libraries like SimPy) to analyze patient flow bottlenecks. By simulating different scenarios (e.g., adding staff, changing appointment systems), we could identify strategies to reduce wait times without needing real-world trial-and-error. It's like playing SimHospital, but with real potential impact!
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">Health/Agri</span> <span class="tag">Analysis</span> <span class="tag">Simulation</span>
+                                <div class="project-links">
+                                    <a href="#" target="_blank" rel="noopener noreferrer" class="project-link opacity-50 cursor-not-allowed" aria-label="Hospital Flow code (Private Repository)">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                     <span class="text-xs font-mono text-secondary-text/70 dark:text-dark-secondary-text/70"> (Private)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card interactive-element reveal-hidden" data-tags='["ai-ml", "web-tool", "analysis"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/sentiment_analysis.png" alt="Smiling and frowning faces representing sentiment" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F5B041?text=Sentiment'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Basic Sentiment Analysis Web App</h3>
+                            <p class="project-description">
+                                Exploring the world of Natural Language Processing (NLP). Built a simple web application using Flask and a pre-trained sentiment analysis model (like VADER or TextBlob) to instantly classify text input as positive, negative, or neutral. A fun exercise in deploying a basic ML model and understanding text data nuances. It's surprisingly hard to teach a computer sarcasm!
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">AI/ML</span> <span class="tag">Web Tool</span> <span class="tag">NLP</span>
+                                <div class="project-links">
+                                    <a href="https://github.com/MadScie254/SimpleSentimentWebApp" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Sentiment Analyzer code on GitHub">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                     <article class="project-card interactive-element reveal-hidden" data-tags='["it-infra", "web-tool"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/asset_tracker.png" alt="Icons representing computer hardware and network devices" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/1F2833?text=IT+Assets'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Simple IT Asset Management Tool</h3>
+                            <p class="project-description">
+                                Drawing from my IT management days, I developed a basic web-based tool (likely using Python with a simple database like SQLite or integrating with Frappe) to track hardware inventory, software licenses, and maintenance schedules. Aimed at small organizations needing a straightforward way to manage their tech resources without complex enterprise software. Keeping track of who has which laptop can be a surprising challenge!
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">IT/Infra</span> <span class="tag">Web Tool</span> <span class="tag">Database</span>
+                                <div class="project-links">
+                                     <a href="#" target="_blank" rel="noopener noreferrer" class="project-link opacity-50 cursor-not-allowed" aria-label="IT Asset Tracker code (Internal Tool)">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                     <span class="text-xs font-mono text-secondary-text/70 dark:text-dark-secondary-text/70"> (Internal)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                     <article class="project-card interactive-element reveal-hidden" data-tags='["analysis", "ai-ml"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/churn_analysis.png" alt="Graph showing customer retention and churn rates" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/E74C3C?text=Churn+Analysis'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Customer Churn Exploratory Analysis</h3>
+                            <p class="project-description">
+                                Investigating the age-old question: why do customers leave? This involved analyzing a sample customer dataset using Pandas and visualization libraries to identify key factors correlated with churn. Explored basic classification models (like Logistic Regression) to see if churn could be predicted based on usage patterns and demographics. Understanding customer behavior is key to retention.
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">Analysis</span> <span class="tag">AI/ML</span> <span class="tag">Visualization</span>
+                                <div class="project-links">
+                                    <a href="https://github.com/MadScie254/CustomerChurnAnalysis" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Churn Analysis code on GitHub">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                     <article class="project-card interactive-element reveal-hidden" data-tags='["web-tool", "it-infra"]' tabindex="0">
+                         <div class="project-image-wrapper">
+                            <img src="assets/portfolio_site.png" alt="Screenshot of this portfolio website" class="project-image" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F39C12?text=Portfolio'">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Personal Portfolio Website V2</h3>
+                            <p class="project-description">
+                                You're looking at it! A constantly evolving project to showcase my skills and journey. Built with HTML, Tailwind CSS for rapid styling, and vanilla JavaScript for interactivity (like the particle background, theme toggle, and filtering). Focus on clean design, responsiveness, and adding those little touches of animation and interaction. It's also an exercise in content creation and personal branding!
+                            </p>
+                             <div class="project-tags" aria-label="Project Tags">
+                                <span class="tag">Web Tool</span> <span class="tag">Frontend</span> <span class="tag">Design</span>
+                                <div class="project-links">
+                                     <a href="https://github.com/MadScie254/MyPortfolioSite" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Portfolio code on GitHub">
+                                        <i data-lucide="github" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+            <section id="api-integrations" class="py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Connecting the Dots: Frontend & APIs I Admire
+                </h2>
+                <p class="text-center text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto mb-16 font-body reveal-hidden" style="transition-delay: 100ms;">
+                    While crunching numbers and training models is my bread and butter, bringing those insights to life often involves connecting with the wider digital world through APIs and building user-friendly interfaces. Making data useful often means making it accessible! Here are some types of APIs and frontend tools that I find particularly powerful or fascinating for building complete data-driven applications:
+                </p>
+                <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 reveal-hidden" style="transition-delay: 200ms;">
+                    <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="bar-chart-big" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Data Visualization Libraries (Plotly.js, Chart.js, D3.js)</h4>
+                        <p class="api-description">The artists' tools for data! Essential for creating interactive, dynamic charts directly in the browser, turning numbers into visual narratives.</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="map" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Mapping APIs (Leaflet, Mapbox GL JS, Google Maps API)</h4>
+                        <p class="api-description">Putting data on the map, literally. Indispensable for geospatial analysis and location-based insights visualization.</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="database" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Public Data APIs (World Bank, OpenWeatherMap, Census APIs)</h4>
+                        <p class="api-description">Tapping into the vast ocean of publicly available information to enrich analyses and build context-aware applications.</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="cloud" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Cloud AI/ML Service APIs (GCP AI, AWS AI, Azure ML)</h4>
+                        <p class="api-description">Leveraging the power of the cloud giants for tasks like model training, deployment, or accessing sophisticated pre-built AI services.</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="bot" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Natural Language Processing APIs (OpenAI GPT, Google NLP, Hugging Face)</h4>
+                        <p class="api-description">Unlocking the meaning within text data – sentiment analysis, entity recognition, translation, text generation, the possibilities are huge.</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="image" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Image & Video APIs (Cloud Vision, Clarifai, OpenCV.js)</h4>
+                        <p class="api-description">Enabling applications to 'see' – classifying content, detecting objects, analyzing faces, or even processing video streams.</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="dollar-sign" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Financial Data APIs (Alpha Vantage, Polygon.io, Plaid)</h4>
+                        <p class="api-description">Accessing real-time and historical market data, stock quotes, cryptocurrency prices, or even banking information (with permission!).</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="server-cog" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Backend Framework APIs (Flask, FastAPI, Node.js/Express)</h4>
+                        <p class="api-description">The backbone for serving data. Building robust, scalable REST APIs to deliver model predictions or processed data to frontends.</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="webhook" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Automation APIs (Zapier, IFTTT, Cloud Functions)</h4>
+                        <p class="api-description">Connecting different services and automating workflows triggered by data events – making systems work smarter, not harder.</p>
+                    </div>
+                     <div class="api-card interactive-element" tabindex="0">
+                        <i data-lucide="layout-template" class="api-icon w-8 h-8 mb-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="api-name">Frontend Frameworks/Libraries (React, Vue, Svelte, Streamlit)</h4>
+                        <p class="api-description">Tools for building the actual user interface, making the data and interactions intuitive and engaging for the end-user.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects-connect" class="py-20 px-4 md:px-8 lg:px-16 text-center bg-gradient-to-t from-secondary-bg/10 to-primary-bg dark:from-dark-secondary-bg/10 dark:to-dark-primary-bg reveal-hidden">
+                 <h2 class="text-3xl md:text-4xl font-bold mb-6 text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Got a Project Idea Brewing or Need a Data Detective?
+                 </h2>
+                 <p class="text-lg text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto mb-10 leading-relaxed font-body reveal-hidden" style="transition-delay: 100ms;">
+                     Exploring these projects might just spark an idea for your own data challenge! Whether you've got a complex dataset that needs taming, a process begging for automation, or a prediction you'd love to make reality, I'm always eager to discuss potential collaborations and new adventures in data.
+                 </p>
+                 <div class="reveal-hidden" style="transition-delay: 200ms;">
+                     <a href="contact.html" class="cta-button">
+                         Let's Discuss Your Project
+                         <i data-lucide="message-square-plus" class="ml-2 h-5 w-5" aria-hidden="true"></i>
+                     </a>
+                 </div>
+            </section>
+
+        </main>
+
+        <footer class="bg-secondary-bg/10 dark:bg-dark-secondary-bg text-secondary-text dark:text-dark-secondary-text py-6 px-4 md:px-8 text-center text-sm reveal-hidden opacity-0 border-t border-secondary-text/10 dark:border-dark-secondary-text/10 font-body">
+             © <span id="currentYear"></span> Daniel Wanjala. All rights reserved. | Data into Action. Code into Reality.
+        </footer>
+
+        <button id="back-to-top" aria-label="Back to Top" class="interactive-element p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black shadow-lg hover:bg-accent-secondary dark:hover:bg-dark-accent-secondary transition-all duration-300 hover:scale-110">
+            <i data-lucide="arrow-up" class="h-5 w-5"></i>
+        </button>
+
+    </div>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Initialize Lucide Icons ---
+            try { if (typeof lucide !== 'undefined') { lucide.createIcons(); } else { console.warn('Lucide icons library not loaded yet.'); } } catch (e) { console.error('Error creating Lucide icons:', e); }
+
+            // --- Constants and State ---
+            const scrollRevealThreshold = 0.1;
+            const scrollRevealRootMargin = "0px 0px -50px 0px";
+            let toneJsStarted = false;
+            let synth, clickSynth;
+            let particleAnimationId = null;
+            let mouse = { x: null, y: null };
+            let currentActiveSectionId = 'projects';
+
+            // --- DOM Element References ---
+            const htmlEl = document.documentElement;
+            const bodyEl = document.body;
+            const mainHeader = document.getElementById('main-header');
+            const themeToggleButton = document.getElementById('theme-toggle');
+            const currentYearEl = document.getElementById('currentYear');
+            const scrollProgressBar = document.getElementById('scrollProgressBar');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            const themeIconSun = document.getElementById('theme-icon-sun');
+            const themeIconMoon = document.getElementById('theme-icon-moon');
+            const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
+            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link');
+            const mainContentContainer = document.getElementById('main-content-container');
+            const particleCanvas = document.getElementById('particle-canvas');
+            const backToTopButton = document.getElementById('back-to-top');
+            const interactiveElements = document.querySelectorAll('a[href], button, [role="button"], [role="link"], .interactive-element');
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const projectGrid = document.getElementById('project-grid');
+            const projectCards = projectGrid ? projectGrid.querySelectorAll('.project-card') : [];
+
+            // --- Initial Setup Functions ---
+            function setupToneJS() { /* ... Same as before ... */
+                 const startTone = () => { if (toneJsStarted || typeof Tone === 'undefined') return; try { Tone.start(); synth = new Tone.Synth({ oscillator: { type: 'sine' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }, volume: -25 }).toDestination(); clickSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }, volume: -20 }).toDestination(); toneJsStarted = true; console.log("Tone.js AudioContext started."); ['click', 'keydown', 'touchstart'].forEach(evt => bodyEl.removeEventListener(evt, startTone)); } catch (e) { console.error("Tone.js initialization failed:", e); toneJsStarted = false; } }; ['click', 'keydown', 'touchstart'].forEach(evt => bodyEl.addEventListener(evt, startTone, { once: true, passive: true }));
+            }
+            function addSoundFeedback() { /* ... Same as before ... */
+                 interactiveElements.forEach(el => { el.addEventListener('mouseenter', () => { if (toneJsStarted && synth) { try { synth.triggerAttackRelease('C5', '16n', Tone.now()); } catch(e) {} } }); el.addEventListener('click', () => { if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease('E4', '16n', Tone.now()); } catch(e) {} } }); });
+            }
+            function setFooterYear() { /* ... Same as before ... */
+                 if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+            }
+
+            // --- Core Functionality ---
+             function updateThemeUI() { /* ... Same as before ... */
+                 if (!htmlEl || !bodyEl) return; const isDark = htmlEl.classList.contains('dark'); if (themeIconSun && themeIconMoon) { themeIconSun.classList.toggle('hidden', !isDark); themeIconMoon.classList.toggle('hidden', isDark); try { lucide.createIcons(); } catch(e) {} } const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")"; const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")"; bodyEl.style.backgroundImage = isDark ? noiseDark : noiseLight; if (particleCanvas) initParticles();
+             }
+            function setTheme(theme) { /* ... Same as before ... */
+                 if (!htmlEl) return; htmlEl.classList.toggle('dark', theme === 'dark'); localStorage.setItem('theme', theme); updateThemeUI(); if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now()); } catch(e) {} }
+            }
+            function toggleMobileMenu() { /* ... Same as before ... */
+                  if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return; const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true'; mobileMenuButton.setAttribute('aria-expanded', !isExpanded); mobileMenu.classList.toggle('open'); menuIconOpen.classList.toggle('hidden'); menuIconClose.classList.toggle('hidden');
+             }
+             function closeMobileMenu() { /* ... Same as before ... */
+                 if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return; if (mobileMenuButton.getAttribute('aria-expanded') === 'true') { mobileMenuButton.setAttribute('aria-expanded', 'false'); mobileMenu.classList.remove('open'); menuIconOpen.classList.remove('hidden'); menuIconClose.classList.add('hidden'); }
+             }
+            function handleScroll() { /* ... Same as before ... */
+                 if (!htmlEl || !scrollProgressBar || !mainHeader) return; const scrollableHeight = htmlEl.scrollHeight - window.innerHeight; const scrolled = window.scrollY; const progress = scrollableHeight > 0 ? Math.min(1, scrolled / scrollableHeight) : 0; scrollProgressBar.style.transform = `scaleX(${progress})`; mainHeader.classList.toggle('scrolled', scrolled > 50); if (backToTopButton) { backToTopButton.classList.toggle('visible', scrolled > 300); }
+            }
+            function setupTiltEffect() { /* ... Same as before ... */
+                  if (!mainContentContainer) return; const handleOrientation = (event) => { if (event.beta === null || event.gamma === null) return; const beta = Math.max(-20, Math.min(20, event.beta)); const gamma = Math.max(-20, Math.min(20, event.gamma)); const maxTilt = 1.5; const tiltY = (beta / 20 * maxTilt).toFixed(2); const tiltX = (gamma / 20 * -maxTilt).toFixed(2); requestAnimationFrame(() => { mainContentContainer.style.transform = `perspective(1000px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`; }); }; if (window.DeviceOrientationEvent) { window.addEventListener('deviceorientation', handleOrientation, true); } else { console.log("DeviceOrientation not supported."); }
+             }
+            function setupBackToTop() { /* ... Same as before ... */
+                 if (backToTopButton) { backToTopButton.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
+            }
+
+            // --- Projects Page Specific Functionality ---
+            function setupScrollReveal() {
+                const revealObserverOptions = { threshold: scrollRevealThreshold, rootMargin: scrollRevealRootMargin };
+                const revealCallback = (entries, observer) => { entries.forEach((entry, index) => { if (entry.isIntersecting) { const delay = entry.target.dataset.revealDelay ? parseInt(entry.target.dataset.revealDelay) : (index * 50); entry.target.style.transitionDelay = `${delay}ms`; entry.target.classList.add('reveal-visible'); if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) { entry.target.classList.add('slide-in'); } observer.unobserve(entry.target); } }); };
+                const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
+                document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right').forEach(el => revealObserver.observe(el));
+            }
+
+            function setupProjectFiltering() {
+                if (!projectGrid || projectCards.length === 0 || filterButtons.length === 0) {
+                    console.warn("Project filtering elements not found.");
+                    return;
+                }
+
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const filterValue = button.getAttribute('data-filter');
+
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        projectCards.forEach(card => {
+                            const tags = JSON.parse(card.getAttribute('data-tags') || '[]');
+                            const shouldShow = filterValue === 'all' || tags.includes(filterValue);
+
+                            // Apply classes for transitions
+                            if (shouldShow) {
+                                // Remove 'hidden' first to allow transition *in*
+                                card.classList.remove('hidden');
+                                // Ensure position is relative for layout flow
+                                card.style.position = 'relative';
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                            } else {
+                                // Apply 'hidden' styles via class for transition *out*
+                                card.classList.add('hidden');
+                                // Optionally set absolute positioning after a delay if using a layout library
+                                // setTimeout(() => { if (card.classList.contains('hidden')) card.style.position = 'absolute'; }, 500); // Match transition duration
+                            }
+                        });
+                         if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease('C4', '16n', Tone.now()); } catch(e) {} }
+                    });
+                });
+            }
+
+
+            function setupNavHighlighting() { // Simplified for single page
+                navLinks.forEach(link => { link.classList.toggle('nav-active', link.getAttribute('data-section') === 'projects'); });
+                mobileNavLinks.forEach(link => { link.classList.toggle('nav-active', link.getAttribute('data-section') === 'projects'); });
+            }
+
+            // --- Particle Background Logic ---
+            let particles = [];
+            function initParticles() { /* ... Same as before ... */
+                 if (!particleCanvas) return; const ctx = particleCanvas.getContext('2d'); if (!ctx) return; if (particleAnimationId) cancelAnimationFrame(particleAnimationId); resizeCanvas(); particles.forEach(p => p.baseColor = null); createParticles(); if (!document.hidden) { drawParticles(); }
+            }
+            function resizeCanvas() { /* ... Same as before ... */
+                  if (!particleCanvas) return; particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight;
+             }
+            function createParticles() { /* ... Same as before ... */
+                 if (!particleCanvas) return; particles = []; const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 18000); for (let i = 0; i < particleCount; i++) { particles.push({ x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, radius: Math.random() * 1.8 + 0.8, baseRadius: Math.random() * 1.8 + 0.8, baseColor: null, drawColor: null, }); }
+            }
+            function drawParticles() { /* ... Same as before ... */
+                  if (!particleCanvas) return; const ctx = particleCanvas.getContext('2d'); if (!ctx) return; ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height); const isDark = htmlEl.classList.contains('dark'); const twConfig = tailwind.config.theme.extend.colors; const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`, `${twConfig['tertiary-light']}60`]; const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`, `${twConfig['tertiary-dark']}60`]; const themeColors = isDark ? darkColors : lightColors; const lineColor = isDark ? 'rgba(197, 198, 199, 0.05)' : 'rgba(74, 74, 74, 0.05)'; const particleInteractionRadius = 120; const particleLineThreshold = 110; particles.forEach((p, i) => { if (!p.baseColor) p.baseColor = themeColors[Math.floor(Math.random() * themeColors.length)]; p.drawColor = p.baseColor; p.radius = p.baseRadius; if (mouse.x !== null && mouse.y !== null) { const dx = mouse.x - p.x; const dy = mouse.y - p.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < particleInteractionRadius) { const proximityFactor = 1 - (distance / particleInteractionRadius); const baseHex = p.baseColor.substring(0, 7); const currentAlphaHex = p.baseColor.substring(7, 9) || '80'; const currentAlphaDec = parseInt(currentAlphaHex, 16); const targetAlphaDec = Math.min(255, Math.floor(currentAlphaDec + proximityFactor * 100)); p.drawColor = `${baseHex}${targetAlphaDec.toString(16).padStart(2, '0')}`; p.radius = p.baseRadius + proximityFactor * 1.5; const force = proximityFactor; const pushStrength = 0.4; p.x -= (dx / distance) * force * pushStrength; p.y -= (dy / distance) * force * pushStrength; } } ctx.fillStyle = p.drawColor; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); p.x += p.vx; p.y += p.vy; if (p.x < -p.radius) p.x = particleCanvas.width + p.radius; if (p.x > particleCanvas.width + p.radius) p.x = -p.radius; if (p.y < -p.radius) p.y = particleCanvas.height + p.radius; if (p.y > particleCanvas.height + p.radius) p.y = -p.radius; for (let j = i + 1; j < particles.length; j++) { const p2 = particles[j]; const dx = p.x - p2.x; const dy = p.y - p2.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < particleLineThreshold) { ctx.strokeStyle = lineColor; ctx.lineWidth = 0.5 * (1 - distance / particleLineThreshold); ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke(); } } }); particleAnimationId = requestAnimationFrame(drawParticles);
+             }
+            const updateMousePosition = (event) => { /* ... Same as before ... */
+                 if (!particleCanvas) return; const rect = particleCanvas.getBoundingClientRect(); const clientX = event.touches ? event.touches[0].clientX : event.clientX; const clientY = event.touches ? event.touches[0].clientY : event.clientY; mouse.x = clientX - rect.left; mouse.y = clientY - rect.top;
+             };
+            const resetMousePosition = () => { /* ... Same as before ... */
+                 mouse.x = null; mouse.y = null;
+             };
+            if (particleCanvas) { /* ... Same event listeners as before ... */
+                 particleCanvas.addEventListener('mousemove', updateMousePosition); particleCanvas.addEventListener('touchmove', updateMousePosition, { passive: true }); particleCanvas.addEventListener('mouseleave', resetMousePosition); particleCanvas.addEventListener('touchend', resetMousePosition); let resizeTimeout; window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(initParticles, 250); }); document.addEventListener('visibilitychange', () => { if (!particleCanvas) return; if (document.hidden) { if (particleAnimationId) { cancelAnimationFrame(particleAnimationId); particleAnimationId = null; } } else { if (!particleAnimationId) { drawParticles(); } } });
+            }
+            // --- End Particle Logic ---
+
+            // --- Event Listeners & Initialization Call ---
+            if (themeToggleButton) { themeToggleButton.addEventListener('click', () => { const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark'; setTheme(newTheme); }); }
+            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', toggleMobileMenu); }
+            mobileNavLinks.forEach(link => { link.addEventListener('click', closeMobileMenu); });
+            window.addEventListener('scroll', handleScroll, { passive: true });
+
+            // --- Initialize Everything ---
+            setupToneJS();
+            addSoundFeedback();
+            setFooterYear();
+            updateThemeUI();
+            setupScrollReveal();
+            setupProjectFiltering(); // Initialize filtering
+            setupNavHighlighting();
+            setupTiltEffect();
+            setupBackToTop();
+            if (particleCanvas) initParticles();
+
+        }); // End DOMContentLoaded
+    </script>
+
+</body>
+</html>
