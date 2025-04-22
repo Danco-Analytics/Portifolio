@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Wanjala's Skills - The Data Toolkit</title>
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="shortcut icon" href="assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        /* Base body styles (Consistent) */
+        body {
+          font-family: 'Inter', 'IBM Plex Sans', sans-serif;
+          overflow-x: hidden;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          background-attachment: fixed;
+          position: relative;
+        }
+
+        /* Font utilities (Consistent) */
+        .font-heading { font-family: 'Satoshi', 'Space Grotesk', 'Neue Montreal', sans-serif; }
+        .font-body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', 'Source Code Pro', monospace; }
+
+        /* Custom Scrollbar (Consistent) */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: theme('colors.sandstone'); }
+        ::-webkit-scrollbar-thumb { background: theme('colors.accent'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.accent-secondary'); }
+        html.dark ::-webkit-scrollbar-track { background: theme('colors.dark-secondary-bg'); }
+        html.dark ::-webkit-scrollbar-thumb { background: theme('colors.dark-accent'); }
+        html.dark ::-webkit-scrollbar-thumb:hover { background: theme('colors.dark-accent-secondary'); }
+
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+
+        /* Mobile Menu Transition (Consistent) */
+        #mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, opacity 0.3s ease-out; opacity: 0; }
+        #mobile-menu.open { max-height: 500px; opacity: 1; }
+
+        /* Scroll Reveal Animation Base (Consistent) */
+        .reveal-hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .reveal-visible { opacity: 1; transform: translateY(0); }
+        .reveal-slide-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .reveal-slide-right { opacity: 0; transform: translateX(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .reveal-visible.slide-in { opacity: 1; transform: translateX(0); }
+
+        /* --- Enhanced Navbar Styles --- */
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ease-out relative; /* Added transition-all */
+            @apply text-secondary-text dark:text-dark-secondary-text opacity-80 hover:opacity-100; /* Dim non-active links slightly */
+        }
+        /* Hover effect: subtle scale and brighter text */
+        .nav-link:hover:not(.nav-active) {
+             @apply text-primary-text dark:text-dark-primary-text transform scale-[1.03];
+        }
+        /* Active link style */
+        .nav-link.nav-active {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent opacity-100 font-semibold; /* Ensure active is fully opaque and bold */
+        }
+        /* Underline for active link */
+        .nav-link .active-underline {
+            display: none; /* Hidden by default */
+            position: absolute;
+            bottom: -4px; /* Position slightly below the text */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; /* Start with zero width */
+            height: 2px;
+            background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary'));
+            border-radius: 1px;
+            transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1); /* Smooth transition */
+        }
+        html.dark .nav-link .active-underline {
+            background-image: linear-gradient(to right, theme('colors.dark-accent'), theme('colors.dark-accent-secondary'));
+        }
+        /* Show and animate underline for the active link */
+        .nav-link.nav-active .active-underline {
+            display: block;
+            width: 60%; /* Animate to this width */
+        }
+
+        /* Mobile active link */
+        .mobile-nav-link {
+             @apply block px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ease-in-out; /* Added transition */
+             @apply text-secondary-text dark:text-dark-secondary-text;
+        }
+         .mobile-nav-link:hover {
+             @apply bg-secondary-text/5 dark:bg-dark-secondary-text/10 text-primary-text dark:text-dark-primary-text;
+         }
+        .mobile-nav-link.nav-active {
+            background-image: linear-gradient(to right, theme('colors.accent/10'), theme('colors.accent-secondary/20'));
+            color: theme('colors.accent') !important; /* Ensure color overrides */
+            @apply font-semibold;
+        }
+        html.dark .mobile-nav-link.nav-active {
+             background-image: linear-gradient(to right, theme('colors.dark-accent/10'), theme('colors.dark-accent-secondary/20'));
+             color: theme('colors.dark-accent') !important;
+        }
+        /* --- End Navbar Styles --- */
+
+        /* Canvas Background (Consistent) */
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        #main-content-container { perspective: 1000px; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+
+        /* Header Shrink (Consistent) */
+        header.scrolled { @apply h-14 shadow-md; }
+        header.scrolled .h-16 { @apply h-14; }
+        header.scrolled .h-8 { @apply h-7; }
+
+        /* Back to Top (Consistent) */
+        #back-to-top { position: fixed; bottom: 20px; right: 20px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out; transform: translateY(20px); z-index: 1000; @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent; }
+        #back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        /* --- Skill Category Card Styles --- */
+        .skill-category-card {
+            transition: transform 0.3s ease, box-shadow 0.4s ease;
+            @apply focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-accent dark:focus-within:ring-dark-accent;
+        }
+        .skill-category-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            @apply shadow-xl dark:shadow-dark-accent/10;
+        }
+        .skill-category-icon {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bounce effect */
+        }
+        .skill-category-card:hover .skill-category-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* --- Individual Skill Item Styles --- */
+        .skill-item {
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-out;
+            position: relative;
+            overflow: hidden; /* For pseudo-element */
+            @apply focus:outline-none focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent rounded-md;
+        }
+        .skill-item:hover {
+            @apply bg-accent/10 dark:bg-dark-accent/10 transform scale-[1.03];
+        }
+        /* Animated underline effect */
+        .skill-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: theme('colors.accent');
+            transition: width 0.3s ease-out;
+        }
+        html.dark .skill-item::after {
+             background-color: theme('colors.dark-accent');
+        }
+        .skill-item:hover::after {
+            width: 100%;
+        }
+        /* Tooltip for skill items */
+        .skill-tooltip {
+            visibility: hidden; opacity: 0; transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+            position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+            @apply text-xs bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded-md shadow-lg whitespace-nowrap z-20 pointer-events-none;
+        }
+        .skill-item:hover .skill-tooltip {
+            visibility: visible; opacity: 1; transition-delay: 0s;
+        }
+
+        /* --- Proficiency Meter Styles --- */
+        .proficiency-bar-bg {
+            @apply bg-secondary-text/10 dark:bg-dark-secondary-text/10 rounded-full h-2 overflow-hidden;
+        }
+        .proficiency-bar {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary h-full rounded-full;
+            width: 0; /* Initial width */
+            transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1) 0.5s; /* Delayed and eased transition */
+        }
+        /* Trigger width change when parent section is visible */
+        .reveal-visible .proficiency-bar {
+            /* Width set via inline style by JS */
+        }
+
+        /* --- Tool Icon Grid Styles --- */
+        .tool-icon-item {
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: grayscale(50%); /* Start slightly desaturated */
+            opacity: 0.8;
+        }
+        .tool-icon-item:hover {
+            transform: scale(1.15);
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+        /* Tooltip for tool icons */
+        .tool-tooltip {
+            visibility: hidden; opacity: 0; transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+            position: absolute; top: 115%; left: 50%; transform: translateX(-50%);
+            @apply text-xs bg-accent dark:bg-dark-accent text-white dark:text-jet-black px-2 py-1 rounded-md shadow-lg whitespace-nowrap z-20 pointer-events-none;
+        }
+        .tool-icon-item:hover .tool-tooltip {
+            visibility: visible; opacity: 1; transition-delay: 0s;
+        }
+
+        /* --- Soft Skill Card Styles --- */
+        .soft-skill-card {
+            @apply bg-gradient-to-br from-secondary-bg/30 to-primary-bg dark:from-dark-secondary-bg/30 dark:to-dark-primary-bg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-md;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .soft-skill-card:hover {
+            transform: translateY(-3px);
+            @apply shadow-lg;
+        }
+        .soft-skill-icon {
+             transition: transform 0.5s ease;
+        }
+        .soft-skill-card:hover .soft-skill-icon {
+            transform: rotate(360deg);
+        }
+
+        /* --- Learning Path Visualization (Conceptual) --- */
+        .learning-path-svg { /* Styles for the SVG container */ }
+        .learning-path-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw-line 5s linear forwards; }
+        @keyframes draw-line { to { stroke-dashoffset: 0; } }
+        .learning-node { transition: fill 0.3s ease, transform 0.3s ease; cursor: pointer; }
+        .learning-node:hover { transform: scale(1.2); }
+
+        /* --- Certification Badge Styles --- */
+        .cert-badge { transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; }
+        .cert-badge:hover { transform: translateY(-2px) scale(1.05); @apply shadow-md; }
+
+        /* --- Interactive Counter Styles --- */
+        .stat-counter { @apply text-4xl font-bold text-accent dark:text-dark-accent font-heading; transition: color 0.3s ease; }
+        .stat-counter:hover { @apply text-accent-secondary dark:text-dark-accent-secondary; }
+
+        /* --- Accessibility: Focus Styles (Consistent) --- */
+        *:focus-visible { outline: 2px solid theme('colors.accent'); outline-offset: 2px; border-radius: 2px; }
+        html.dark *:focus-visible { outline-color: theme('colors.dark-accent'); }
+        *:focus { outline: none; }
+
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: { /* Same colors */
+              'jet-black': '#0B0C10', 'ghost-white': '#F7F7F7', 'signal-cyan': '#66FCF1',
+              'tech-purple': '#6C5CE7', 'emerald-green': '#2ECC71', 'red-coral': '#FF6B6B',
+              'sandstone': '#E0C097', 'whatsapp-green': '#25D366',
+              'primary-bg': '#F7F7F7', 'primary-text': '#0B0C10', 'secondary-bg': '#E0C097',
+              'secondary-text': '#4A4A4A', 'accent': '#6C5CE7', 'accent-secondary': '#FF6B6B',
+              'dark-primary-bg': '#0B0C10', 'dark-primary-text': '#F7F7F7', 'dark-secondary-bg': '#1F2833',
+              'dark-secondary-text': '#C5C6C7', 'dark-accent': '#66FCF1', 'dark-accent-secondary': '#45A29E',
+              'tertiary-light': '#F5B041', 'tertiary-dark': '#F39C12',
+              'glass-light': 'rgba(225, 229, 255, 0.1)', 'glass-dark': 'rgba(17, 24, 39, 0.2)',
+              'glass-darker': 'rgba(17, 24, 39, 0.3)',
+            },
+            fontFamily: { /* Same fonts */
+              heading: ['Satoshi', 'Space Grotesk', 'Neue Montreal', 'sans-serif'],
+              body: ['Inter', 'IBM Plex Sans', 'sans-serif'],
+              mono: ['JetBrains Mono', 'Source Code Pro', 'monospace'],
+            },
+            keyframes: { 'draw-line': { 'to': { strokeDashoffset: 0 } } },
+            animation: { 'draw-line': 'draw-line 5s linear forwards' }
+          }
+        }
+      }
+    </script>
+    <script>
+        (function() { /* IIFE for theme initialization */
+            const storedTheme = localStorage.getItem('theme'); let initialTheme = 'light';
+            if (storedTheme) { initialTheme = storedTheme; }
+            if (initialTheme === 'dark') { document.documentElement.classList.add('dark'); }
+            else { document.documentElement.classList.remove('dark'); }
+            const applyBgNoise = () => {
+                const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+                const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+                if (document.body) { document.body.style.backgroundImage = document.documentElement.classList.contains('dark') ? noiseDark : noiseLight; }
+            };
+            if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', applyBgNoise); } else { applyBgNoise(); }
+        })();
+    </script>
+</head>
+<body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary origin-left z-50" style="transform: scaleX(0);"></div>
+
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-glass-light dark:bg-glass-dark border-b border-secondary-text/10 dark:border-dark-secondary-text/10 h-16">
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 transition-all duration-300">
+                <a href="index.html" class="flex items-center space-x-2 group" aria-label="Daniel Wanjala - Home">
+                     <img src="assets/logo.png" alt="" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-5deg]" aria-hidden="true" onerror="this.style.display='none'; console.error('Logo image failed to load')">
+                     <span class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading group-hover:opacity-80 transition-opacity duration-300">
+                        Daniel Wanjala.
+                    </span>
+                </a>
+                <nav class="hidden md:flex space-x-6" id="desktop-nav" aria-label="Main navigation">
+                     <a href="index.html" data-section="home" class="nav-link"> Home <span class="active-underline"></span>
+                    </a>
+                     <a href="about.html" data-section="about" class="nav-link">
+                        About <span class="active-underline"></span>
+                    </a>
+                     <a href="skills.html" data-section="skills" class="nav-link nav-active"> Skills <span class="active-underline"></span>
+                    </a>
+                    <a href="education.html" data-section="education" class="nav-link"> Education <span class="active-underline"></span>
+                    </a>
+                    <a href="projects.html" data-section="projects" class="nav-link"> Projects <span class="active-underline"></span>
+                    </a>
+                    <a href="contact.html" data-section="contact" class="nav-link"> Contact <span class="active-underline"></span>
+                    </a>
+                </nav>
+                <div class="flex items-center space-x-2">
+                     <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="interactive-element p-2 rounded-full text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent">
+                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden" aria-hidden="true"></i>
+                        <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5" aria-hidden="true"></i>
+                     </button>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="interactive-element inline-flex items-center justify-center p-2 rounded-md text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent dark:focus:ring-dark-accent" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg id="menu-icon-open" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            <svg id="menu-icon-close" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden bg-glass-light dark:bg-glass-darker border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
+             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3" role="menu" aria-orientation="vertical" aria-labelledby="mobile-menu-button">
+                 <a href="index.html" data-section="home" class="mobile-nav-link" role="menuitem">Home</a>
+                <a href="about.html" data-section="about" class="mobile-nav-link" role="menuitem">About</a>
+                <a href="skills.html" data-section="skills" class="mobile-nav-link nav-active" role="menuitem">Skills</a>
+                <a href="education.html" data-section="education" class="mobile-nav-link" role="menuitem">Education</a>
+                <a href="projects.html" data-section="projects" class="mobile-nav-link" role="menuitem">Projects</a>
+                <a href="contact.html" data-section="contact" class="mobile-nav-link" role="menuitem">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <div id="main-content-container">
+        <main class="pt-24 pb-16"> <section id="skills-intro" class="py-16 px-4 md:px-8 lg:px-16 text-center bg-gradient-to-br from-primary-bg via-secondary-bg/30 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg reveal-hidden">
+                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">
+                    My Data Science Toolkit & More
+                 </h1>
+                 <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text max-w-3xl mx-auto mb-8 leading-relaxed font-body reveal-hidden" style="transition-delay: 100ms;">
+                    Welcome to my digital workshop! This isn't just a list; it's a glimpse into the toolbox I use to transform raw data into meaningful insights, build intelligent systems, and tackle complex challenges. Think of it as my collection of superpowers... but, you know, with more Python and less spandex.
+                 </p>
+                 <p class="text-md text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto leading-relaxed font-body reveal-hidden" style="transition-delay: 200ms;">
+                    From wrangling unruly datasets (they never listen!) to training sophisticated machine learning models (teaching computers to be smart, one algorithm at a time), my skills span the data science lifecycle. Dive in and explore the capabilities I bring to the table!
+                 </p>
+            </section>
+
+            <section id="technical-skills" class="py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    The Technical Arsenal
+                </h2>
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <div class="skill-category-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0" style="transition-delay: 0ms;">
+                        <div class="flex items-center mb-5">
+                            <i data-lucide="database" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Code & Data Wrangling</h3>
+                        </div>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-6 font-body leading-relaxed">
+                            The foundation of any data work. This is where I speak the languages of computers and convince data to reveal its secrets (sometimes it requires a bit of persuasion, aka 'debugging').
+                        </p>
+                        <ul class="space-y-3 text-sm text-primary-text dark:text-dark-primary-text font-body">
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="python" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Python (Pandas, NumPy, Scikit-learn)</span>
+                                <span class="skill-tooltip" role="tooltip">Core language for analysis, ML, and automation.</span>
+                            </li>
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="database-zap" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>SQL & Database Management</span>
+                                <span class="skill-tooltip" role="tooltip">Querying, structuring, and managing relational data.</span>
+                            </li>
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="wrench" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Data Wrangling & Cleaning</span>
+                                <span class="skill-tooltip" role="tooltip">The art of taming messy data into usable formats.</span>
+                            </li>
+                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="git-branch" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Git & Version Control</span>
+                                <span class="skill-tooltip" role="tooltip">Tracking changes and collaborating without chaos.</span>
+                            </li>
+                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="plug-zap" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>API Integration</span>
+                                <span class="skill-tooltip" role="tooltip">Connecting systems and fetching data programmatically.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-category-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0" style="transition-delay: 100ms;">
+                        <div class="flex items-center mb-5">
+                            <i data-lucide="brain-circuit" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Machine Learning & AI</h3>
+                        </div>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-6 font-body leading-relaxed">
+                            Teaching machines to learn from data, make predictions, and find patterns humans might miss. It's like giving data a brain (a very specialized, mathematical one).
+                        </p>
+                        <ul class="space-y-3 text-sm text-primary-text dark:text-dark-primary-text font-body">
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="trending-up" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Predictive Modeling (Regression, Classification)</span>
+                                <span class="skill-tooltip" role="tooltip">Forecasting outcomes and categorizing data points.</span>
+                            </li>
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="area-chart" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Time Series Forecasting (ARIMA, Prophet)</span>
+                                <span class="skill-tooltip" role="tooltip">Predicting future values based on historical time data.</span>
+                            </li>
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="network" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Neural Networks (TensorFlow/Keras, MLPs, RNNs, LSTMs)</span>
+                                <span class="skill-tooltip" role="tooltip">Building complex models inspired by the brain.</span>
+                            </li>
+                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="scan-face" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Computer Vision Basics (OpenCV)</span>
+                                <span class="skill-tooltip" role="tooltip">Enabling computers to "see" and interpret images.</span>
+                            </li>
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="rocket" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Model Deployment Basics (Flask/Streamlit)</span>
+                                <span class="skill-tooltip" role="tooltip">Taking models from notebooks to usable applications.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-category-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0" style="transition-delay: 200ms;">
+                        <div class="flex items-center mb-5">
+                            <i data-lucide="pie-chart" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Visualization & Tools</h3>
+                        </div>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-6 font-body leading-relaxed">
+                            Data is great, but insights are better! These are the tools I use to translate numbers into compelling stories and build the environments where data work happens. It's about making data understandable (and pretty!).
+                        </p>
+                        <ul class="space-y-3 text-sm text-primary-text dark:text-dark-primary-text font-body">
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="bar-chart-horizontal" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Matplotlib & Seaborn</span>
+                                <span class="skill-tooltip" role="tooltip">Creating static and informative plots in Python.</span>
+                            </li>
+                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="line-chart" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Plotly & Dash (Basic)</span>
+                                <span class="skill-tooltip" role="tooltip">Building interactive charts and web dashboards.</span>
+                            </li>
+                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="notebook-tabs" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Jupyter Notebooks & Google Colab</span>
+                                <span class="skill-tooltip" role="tooltip">Interactive environments for coding and analysis.</span>
+                            </li>
+                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="cloud" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>Cloud Platforms (GCP/AWS Basics)</span>
+                                <span class="skill-tooltip" role="tooltip">Leveraging cloud resources for storage and compute.</span>
+                            </li>
+                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
+                                <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                                <span>ERP Systems (Frappe/ERPNext)</span>
+                                <span class="skill-tooltip" role="tooltip">Integrating data solutions with business processes.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skill-proficiency" class="py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Skill Snapshot: Where I Shine
+                </h2>
+                <p class="text-center text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto mb-12 font-body reveal-hidden" style="transition-delay: 100ms;">
+                    Quantifying skills is tricky (it's not like they have hit points!), but here's a rough gauge of my comfort level and experience with key areas. Consider these 'confidence bars' – always growing!
+                </p>
+                <div class="max-w-4xl mx-auto space-y-8 reveal-hidden" style="transition-delay: 200ms;">
+                    <div class="proficiency-item">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-md font-medium text-primary-text dark:text-dark-primary-text font-body">Python for Data Science</span>
+                            <span class="text-sm font-mono text-accent dark:text-dark-accent">Highly Proficient</span>
+                        </div>
+                        <div class="proficiency-bar-bg">
+                            <div class="proficiency-bar" data-level="90" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="proficiency-item">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-md font-medium text-primary-text dark:text-dark-primary-text font-body">Predictive Modeling</span>
+                            <span class="text-sm font-mono text-accent dark:text-dark-accent">Proficient</span>
+                        </div>
+                        <div class="proficiency-bar-bg">
+                            <div class="proficiency-bar" data-level="85" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="proficiency-item">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-md font-medium text-primary-text dark:text-dark-primary-text font-body">SQL & Databases</span>
+                            <span class="text-sm font-mono text-accent dark:text-dark-accent">Proficient</span>
+                        </div>
+                        <div class="proficiency-bar-bg">
+                            <div class="proficiency-bar" data-level="80" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                     <div class="proficiency-item">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-md font-medium text-primary-text dark:text-dark-primary-text font-body">Data Visualization (Python Libs)</span>
+                            <span class="text-sm font-mono text-accent dark:text-dark-accent">Proficient</span>
+                        </div>
+                        <div class="proficiency-bar-bg">
+                            <div class="proficiency-bar" data-level="75" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                     <div class="proficiency-item">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-md font-medium text-primary-text dark:text-dark-primary-text font-body">Deep Learning (TensorFlow/Keras)</span>
+                            <span class="text-sm font-mono text-accent dark:text-dark-accent">Intermediate</span>
+                        </div>
+                        <div class="proficiency-bar-bg">
+                            <div class="proficiency-bar" data-level="70" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                     <div class="proficiency-item">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-md font-medium text-primary-text dark:text-dark-primary-text font-body">Cloud Platforms (GCP/AWS)</span>
+                            <span class="text-sm font-mono text-accent dark:text-dark-accent">Foundational</span>
+                        </div>
+                        <div class="proficiency-bar-bg">
+                            <div class="proficiency-bar" data-level="55" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tools-tech" class="py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Favorite Tools of the Trade
+                </h2>
+                <p class="text-center text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto mb-16 font-body reveal-hidden" style="transition-delay: 100ms;">
+                    Every craftsperson needs their tools! Here are some of the specific technologies, libraries, and platforms I frequently work with. Hover over them for a quick peek!
+                </p>
+                <div class="max-w-4xl mx-auto grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-8 justify-items-center reveal-hidden" style="transition-delay: 200ms;">
+                    <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <i data-lucide="python" class="w-12 h-12 text-blue-500" aria-hidden="true"></i>
+                        <span class="tool-tooltip" role="tooltip">Python</span>
+                    </div>
+                    <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <i data-lucide="database" class="w-12 h-12 text-orange-500" aria-hidden="true"></i>
+                        <span class="tool-tooltip" role="tooltip">SQL</span>
+                    </div>
+                     <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <svg class="w-12 h-12 text-purple-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8v4H6V7h5v4h3V7h2v10h-2v-4h-3v4h-2z"></path></svg>
+                        <span class="tool-tooltip" role="tooltip">Pandas</span>
+                    </div>
+                     <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <svg class="w-12 h-12 text-blue-700" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16v-4h-5v4h5zm-7-6V6h5v4h-5zm7 0V6h5v4h-5zM4 16V6h5v10H4z"></path></svg>
+                        <span class="tool-tooltip" role="tooltip">NumPy</span>
+                    </div>
+                     <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <svg class="w-12 h-12 text-orange-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.31L22 9.27l-5 4.87L18.18 22 12 18.31 5.82 22 7 14.14 2 9.27l6.91-1.06L12 2z"></path></svg>
+                        <span class="tool-tooltip" role="tooltip">Scikit-learn</span>
+                    </div>
+                     <div class="tool-icon-item interactive-element relative" tabindex="0">
+                         <svg class="w-12 h-12 text-orange-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 6l-4 8h8l-4-8zm0 10.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5zm0-5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"></path></svg>
+                        <span class="tool-tooltip" role="tooltip">TensorFlow/Keras</span>
+                    </div>
+                    <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <i data-lucide="bar-chart-2" class="w-12 h-12 text-red-500" aria-hidden="true"></i>
+                        <span class="tool-tooltip" role="tooltip">Matplotlib</span>
+                    </div>
+                    <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <i data-lucide="area-chart" class="w-12 h-12 text-indigo-500" aria-hidden="true"></i>
+                        <span class="tool-tooltip" role="tooltip">Seaborn</span>
+                    </div>
+                     <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <i data-lucide="git-commit-vertical" class="w-12 h-12 text-gray-700 dark:text-gray-300" aria-hidden="true"></i>
+                        <span class="tool-tooltip" role="tooltip">Git</span>
+                    </div>
+                    <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <i data-lucide="cloud" class="w-12 h-12 text-sky-500" aria-hidden="true"></i>
+                        <span class="tool-tooltip" role="tooltip">GCP/AWS (Basics)</span>
+                    </div>
+                     <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <svg class="w-12 h-12 text-cyan-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z"></path></svg>
+                        <span class="tool-tooltip" role="tooltip">Tableau</span>
+                    </div>
+                     <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <svg class="w-12 h-12 text-lime-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"></path></svg>
+                        <span class="tool-tooltip" role="tooltip">Frappe/ERPNext</span>
+                    </div>
+                    </div>
+            </section>
+
+             <section id="soft-skills" class="py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Beyond the Tech: The Human Element
+                </h2>
+                 <p class="text-center text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto mb-16 font-body reveal-hidden" style="transition-delay: 100ms;">
+                    Technical skills are crucial, but they're only half the equation. Effective data science requires communication, critical thinking, and collaboration. You can't just crunch numbers; you have to understand the *why* and explain the *what*.
+                </p>
+                <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="soft-skill-card interactive-element reveal-hidden" style="transition-delay: 0ms;" tabindex="0">
+                        <i data-lucide="lightbulb" class="soft-skill-icon w-10 h-10 mb-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">Problem-Solving</h4>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body">Deconstructing complex issues, identifying root causes, and devising effective, data-driven solutions.</p>
+                    </div>
+                     <div class="soft-skill-card interactive-element reveal-hidden" style="transition-delay: 100ms;" tabindex="0">
+                        <i data-lucide="users" class="soft-skill-icon w-10 h-10 mb-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">Leadership & Teamwork</h4>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body">Experience leading IT interns and collaborating effectively within teams to achieve shared goals.</p>
+                    </div>
+                     <div class="soft-skill-card interactive-element reveal-hidden" style="transition-delay: 200ms;" tabindex="0">
+                        <i data-lucide="search" class="soft-skill-icon w-10 h-10 mb-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">Research & Documentation</h4>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body">Methodically investigating problems, exploring solutions, and clearly documenting findings and processes.</p>
+                    </div>
+                     <div class="soft-skill-card interactive-element reveal-hidden" style="transition-delay: 300ms;" tabindex="0">
+                        <i data-lucide="refresh-cw" class="soft-skill-icon w-10 h-10 mb-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                        <h4 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">Adaptability & Learning</h4>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body">Thriving in dynamic environments, quickly learning new technologies, and embracing continuous improvement.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="learning-growth" class="py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                 <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Always Learning, Always Growing
+                 </h2>
+                 <p class="text-center text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto mb-16 font-body reveal-hidden" style="transition-delay: 100ms;">
+                    The world of data science is a marathon, not a sprint (though sometimes deadlines feel like sprints!). I'm committed to lifelong learning, staying curious, and formally expanding my knowledge base through certifications and ongoing education like my current MSc program. Here are a few badges I've picked up along the way:
+                 </p>
+                 <div class="max-w-5xl mx-auto flex flex-wrap justify-center gap-4 reveal-hidden" style="transition-delay: 200ms;">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="cert-badge interactive-element inline-flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-full px-4 py-2 text-sm font-medium text-primary-text dark:text-dark-primary-text hover:border-accent dark:hover:border-dark-accent" aria-label="View Google Cloud Certification Details">
+                        <i data-lucide="cloud" class="w-4 h-4 mr-2 text-blue-500" aria-hidden="true"></i> Google Cloud Admin Intro
+                    </a>
+                     <a href="#" target="_blank" rel="noopener noreferrer" class="cert-badge interactive-element inline-flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-full px-4 py-2 text-sm font-medium text-primary-text dark:text-dark-primary-text hover:border-accent dark:hover:border-dark-accent" aria-label="View HackerRank Software Engineer Certification Details">
+                        <i data-lucide="code" class="w-4 h-4 mr-2 text-green-600" aria-hidden="true"></i> HackerRank Software Engineer
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="cert-badge interactive-element inline-flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-full px-4 py-2 text-sm font-medium text-primary-text dark:text-dark-primary-text hover:border-accent dark:hover:border-dark-accent" aria-label="View HackerRank Problem Solving Intermediate Certification Details">
+                        <i data-lucide="puzzle" class="w-4 h-4 mr-2 text-green-600" aria-hidden="true"></i> HackerRank Problem Solving (Int.)
+                    </a>
+                     <a href="#" target="_blank" rel="noopener noreferrer" class="cert-badge interactive-element inline-flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-full px-4 py-2 text-sm font-medium text-primary-text dark:text-dark-primary-text hover:border-accent dark:hover:border-dark-accent" aria-label="View Google Data Foundations Certification Details">
+                        <i data-lucide="database" class="w-4 h-4 mr-2 text-blue-500" aria-hidden="true"></i> Google Data Foundations
+                    </a>
+                     <a href="#" target="_blank" rel="noopener noreferrer" class="cert-badge interactive-element inline-flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-full px-4 py-2 text-sm font-medium text-primary-text dark:text-dark-primary-text hover:border-accent dark:hover:border-dark-accent" aria-label="View HackerRank Python Basic Certification Details">
+                        <i data-lucide="python" class="w-4 h-4 mr-2 text-green-600" aria-hidden="true"></i> HackerRank Python (Basic)
+                    </a>
+                     <a href="#" target="_blank" rel="noopener noreferrer" class="cert-badge interactive-element inline-flex items-center bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-full px-4 py-2 text-sm font-medium text-primary-text dark:text-dark-primary-text hover:border-accent dark:hover:border-dark-accent" aria-label="View Udemy Python for Data Science Certification Details">
+                        <i data-lucide="graduation-cap" class="w-4 h-4 mr-2 text-purple-500" aria-hidden="true"></i> Udemy: Python for Data Science
+                    </a>
+                 </div>
+            </section>
+
+            <section id="skills-connect" class="py-16 px-4 md:px-8 lg:px-16 text-center bg-gradient-to-t from-secondary-bg/20 to-primary-bg dark:from-dark-secondary-bg/20 dark:to-dark-primary-bg reveal-hidden">
+                 <h2 class="text-3xl md:text-4xl font-bold mb-6 text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Ready to Apply These Skills?
+                 </h2>
+                 <p class="text-lg text-secondary-text dark:text-dark-secondary-text max-w-2xl mx-auto mb-8 leading-relaxed font-body reveal-hidden" style="transition-delay: 100ms;">
+                     My skills are more than just lines on a resume; they're tools ready to be deployed on challenging projects. If you see a potential fit or just want to chat about data, let's connect!
+                 </p>
+                 <div class="reveal-hidden" style="transition-delay: 200ms;">
+                     <a href="contact.html" class="interactive-element group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black font-semibold rounded-lg shadow-lg hover:shadow-accent/30 dark:hover:shadow-dark-accent/30 transition-all duration-300 ease-out overflow-hidden transform hover:-translate-y-1 hover:scale-103 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent">
+                         Let's Talk Data
+                         <i data-lucide="message-circle" class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:rotate-[15deg]" aria-hidden="true"></i>
+                     </a>
+                 </div>
+            </section>
+
+        </main>
+
+        <footer class="bg-secondary-bg/10 dark:bg-dark-secondary-bg text-secondary-text dark:text-dark-secondary-text py-6 px-4 md:px-8 text-center text-sm reveal-hidden opacity-0 border-t border-secondary-text/10 dark:border-dark-secondary-text/10 font-body">
+             © <span id="currentYear"></span> Daniel Wanjala. All rights reserved. | Building with Data. Solving with Code.
+        </footer>
+
+        <button id="back-to-top" aria-label="Back to Top" class="interactive-element p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black shadow-lg hover:bg-accent-secondary dark:hover:bg-dark-accent-secondary transition-all duration-300">
+            <i data-lucide="arrow-up" class="h-5 w-5" aria-hidden="true"></i>
+        </button>
+
+    </div> <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Initialize Lucide Icons ---
+            try {
+                if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+                else { console.warn('Lucide icons library not loaded yet.'); }
+            } catch (e) { console.error('Error creating Lucide icons:', e); }
+
+            // --- Constants and State ---
+            const scrollRevealThreshold = 0.1;
+            const scrollRevealRootMargin = "0px 0px -50px 0px";
+            let toneJsStarted = false;
+            let synth, clickSynth;
+            let particleAnimationId = null;
+            let mouse = { x: null, y: null };
+            let currentActiveSectionId = 'skills'; // Default active section for this page
+
+            // --- DOM Element References ---
+            const htmlEl = document.documentElement;
+            const bodyEl = document.body;
+            const mainHeader = document.getElementById('main-header');
+            const themeToggleButton = document.getElementById('theme-toggle');
+            const themeIconSun = document.getElementById('theme-icon-sun');
+            const themeIconMoon = document.getElementById('theme-icon-moon');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            const currentYearEl = document.getElementById('currentYear');
+            const scrollProgressBar = document.getElementById('scrollProgressBar');
+            const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
+            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link');
+            const mainContentContainer = document.getElementById('main-content-container');
+            const particleCanvas = document.getElementById('particle-canvas');
+            const backToTopButton = document.getElementById('back-to-top');
+            const interactiveElements = document.querySelectorAll('a[href], button, [role="button"], [role="link"], .interactive-element');
+            const proficiencyBars = document.querySelectorAll('.proficiency-bar');
+
+            // --- Initial Setup Functions ---
+            function setupToneJS() {
+                const startTone = () => {
+                    if (toneJsStarted || typeof Tone === 'undefined') return;
+                    try {
+                        Tone.start();
+                        synth = new Tone.Synth({ oscillator: { type: 'sine' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }, volume: -25 }).toDestination();
+                        clickSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }, volume: -20 }).toDestination();
+                        toneJsStarted = true; console.log("Tone.js AudioContext started.");
+                        ['click', 'keydown', 'touchstart'].forEach(evt => bodyEl.removeEventListener(evt, startTone));
+                    } catch (e) { console.error("Tone.js initialization failed:", e); toneJsStarted = false; }
+                };
+                ['click', 'keydown', 'touchstart'].forEach(evt => bodyEl.addEventListener(evt, startTone, { once: true, passive: true }));
+            }
+            function addSoundFeedback() {
+                 interactiveElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => { if (toneJsStarted && synth) { try { synth.triggerAttackRelease('C5', '16n', Tone.now()); } catch(e) {} } });
+                    el.addEventListener('click', () => { if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease('E4', '16n', Tone.now()); } catch(e) {} } });
+                });
+            }
+            function setFooterYear() {
+                if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+            }
+
+            // --- Core Functionality ---
+            function updateThemeUI() {
+                if (!htmlEl || !bodyEl) return; const isDark = htmlEl.classList.contains('dark');
+                if (themeIconSun && themeIconMoon) {
+                    themeIconSun.classList.toggle('hidden', !isDark); themeIconMoon.classList.toggle('hidden', isDark);
+                    try { lucide.createIcons(); } catch(e) {}
+                }
+                const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+                const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+                bodyEl.style.backgroundImage = isDark ? noiseDark : noiseLight;
+                if (particleCanvas) initParticles();
+            }
+            function setTheme(theme) {
+                if (!htmlEl) return; htmlEl.classList.toggle('dark', theme === 'dark'); localStorage.setItem('theme', theme); updateThemeUI();
+                if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now()); } catch(e) {} }
+            }
+            function toggleMobileMenu() {
+                 if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return; const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                 mobileMenuButton.setAttribute('aria-expanded', !isExpanded); mobileMenu.classList.toggle('open');
+                 menuIconOpen.classList.toggle('hidden'); menuIconClose.classList.toggle('hidden');
+            }
+            function closeMobileMenu() {
+                if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return;
+                if (mobileMenuButton.getAttribute('aria-expanded') === 'true') {
+                    mobileMenuButton.setAttribute('aria-expanded', 'false'); mobileMenu.classList.remove('open');
+                    menuIconOpen.classList.remove('hidden'); menuIconClose.classList.add('hidden');
+                }
+            }
+            function handleScroll() {
+                if (!htmlEl || !scrollProgressBar || !mainHeader) return; const scrollableHeight = htmlEl.scrollHeight - window.innerHeight; const scrolled = window.scrollY;
+                const progress = scrollableHeight > 0 ? Math.min(1, scrolled / scrollableHeight) : 0; scrollProgressBar.style.transform = `scaleX(${progress})`;
+                mainHeader.classList.toggle('scrolled', scrolled > 50); if (backToTopButton) { backToTopButton.classList.toggle('visible', scrolled > 300); }
+            }
+            function setupTiltEffect() {
+                 if (!mainContentContainer) return; const handleOrientation = (event) => { if (event.beta === null || event.gamma === null) return; const beta = Math.max(-20, Math.min(20, event.beta)); const gamma = Math.max(-20, Math.min(20, event.gamma)); const maxTilt = 1.5; const tiltY = (beta / 20 * maxTilt).toFixed(2); const tiltX = (gamma / 20 * -maxTilt).toFixed(2); requestAnimationFrame(() => { mainContentContainer.style.transform = `perspective(1000px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`; }); };
+                 if (window.DeviceOrientationEvent) { window.addEventListener('deviceorientation', handleOrientation, true); } else { console.log("DeviceOrientation not supported."); }
+            }
+            function setupBackToTop() {
+                if (backToTopButton) { backToTopButton.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
+            }
+
+            // --- Skills Page Specific Functionality ---
+            function setupScrollRevealAndProficiency() {
+                const revealObserverOptions = { threshold: scrollRevealThreshold, rootMargin: scrollRevealRootMargin };
+                const revealCallback = (entries, observer) => {
+                    entries.forEach((entry, index) => {
+                        if (entry.isIntersecting) {
+                            const delay = entry.target.dataset.revealDelay ? parseInt(entry.target.dataset.revealDelay) : (index * 50);
+                            entry.target.style.transitionDelay = `${delay}ms`;
+                            entry.target.classList.add('reveal-visible');
+                            if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
+                                entry.target.classList.add('slide-in');
+                            }
+                            const barsInside = entry.target.querySelectorAll('.proficiency-bar');
+                            if (barsInside.length > 0) {
+                                barsInside.forEach(bar => {
+                                    const level = bar.getAttribute('data-level');
+                                    if (level) { bar.style.width = `${level}%`; }
+                                });
+                            } else if (entry.target.classList.contains('proficiency-item')) {
+                                const bar = entry.target.querySelector('.proficiency-bar');
+                                const level = bar?.getAttribute('data-level');
+                                if (bar && level) { bar.style.width = `${level}%`; }
+                             }
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                };
+                const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
+                document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right, .proficiency-item').forEach(el => revealObserver.observe(el));
+            }
+
+            function setupNavHighlighting() {
+                // Set 'Skills' as active on this page load
+                navLinks.forEach(link => {
+                    link.classList.toggle('nav-active', link.getAttribute('data-section') === 'skills');
+                });
+                mobileNavLinks.forEach(link => {
+                    link.classList.toggle('nav-active', link.getAttribute('data-section') === 'skills');
+                });
+            }
+
+            // --- Particle Background Logic ---
+            let particles = [];
+            function initParticles() {
+                if (!particleCanvas) return; const ctx = particleCanvas.getContext('2d'); if (!ctx) return;
+                if (particleAnimationId) cancelAnimationFrame(particleAnimationId); resizeCanvas(); particles.forEach(p => p.baseColor = null); createParticles(); if (!document.hidden) { drawParticles(); }
+            }
+            function resizeCanvas() {
+                 if (!particleCanvas) return; particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight;
+            }
+            function createParticles() {
+                if (!particleCanvas) return; particles = []; const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 18000);
+                for (let i = 0; i < particleCount; i++) { particles.push({ x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, radius: Math.random() * 1.8 + 0.8, baseRadius: Math.random() * 1.8 + 0.8, baseColor: null, drawColor: null, }); }
+            }
+            function drawParticles() {
+                 if (!particleCanvas) return; const ctx = particleCanvas.getContext('2d'); if (!ctx) return; ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height); const isDark = htmlEl.classList.contains('dark'); const twConfig = tailwind.config.theme.extend.colors; const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`, `${twConfig['tertiary-light']}60`]; const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`, `${twConfig['tertiary-dark']}60`]; const themeColors = isDark ? darkColors : lightColors; const lineColor = isDark ? 'rgba(197, 198, 199, 0.05)' : 'rgba(74, 74, 74, 0.05)'; const particleInteractionRadius = 120; const particleLineThreshold = 110;
+                 particles.forEach((p, i) => { if (!p.baseColor) p.baseColor = themeColors[Math.floor(Math.random() * themeColors.length)]; p.drawColor = p.baseColor; p.radius = p.baseRadius; if (mouse.x !== null && mouse.y !== null) { const dx = mouse.x - p.x; const dy = mouse.y - p.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < particleInteractionRadius) { const proximityFactor = 1 - (distance / particleInteractionRadius); const baseHex = p.baseColor.substring(0, 7); const currentAlphaHex = p.baseColor.substring(7, 9) || '80'; const currentAlphaDec = parseInt(currentAlphaHex, 16); const targetAlphaDec = Math.min(255, Math.floor(currentAlphaDec + proximityFactor * 100)); p.drawColor = `${baseHex}${targetAlphaDec.toString(16).padStart(2, '0')}`; p.radius = p.baseRadius + proximityFactor * 1.5; const force = proximityFactor; const pushStrength = 0.4; p.x -= (dx / distance) * force * pushStrength; p.y -= (dy / distance) * force * pushStrength; } } ctx.fillStyle = p.drawColor; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); p.x += p.vx; p.y += p.vy; if (p.x < -p.radius) p.x = particleCanvas.width + p.radius; if (p.x > particleCanvas.width + p.radius) p.x = -p.radius; if (p.y < -p.radius) p.y = particleCanvas.height + p.radius; if (p.y > particleCanvas.height + p.radius) p.y = -p.radius; for (let j = i + 1; j < particles.length; j++) { const p2 = particles[j]; const dx = p.x - p2.x; const dy = p.y - p2.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < particleLineThreshold) { ctx.strokeStyle = lineColor; ctx.lineWidth = 0.5 * (1 - distance / particleLineThreshold); ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke(); } } });
+                 particleAnimationId = requestAnimationFrame(drawParticles);
+            }
+            const updateMousePosition = (event) => {
+                if (!particleCanvas) return; const rect = particleCanvas.getBoundingClientRect(); const clientX = event.touches ? event.touches[0].clientX : event.clientX; const clientY = event.touches ? event.touches[0].clientY : event.clientY; mouse.x = clientX - rect.left; mouse.y = clientY - rect.top;
+            };
+            const resetMousePosition = () => { mouse.x = null; mouse.y = null; };
+            if (particleCanvas) {
+                particleCanvas.addEventListener('mousemove', updateMousePosition); particleCanvas.addEventListener('touchmove', updateMousePosition, { passive: true }); particleCanvas.addEventListener('mouseleave', resetMousePosition); particleCanvas.addEventListener('touchend', resetMousePosition);
+                let resizeTimeout; window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(initParticles, 250); });
+                document.addEventListener('visibilitychange', () => { if (!particleCanvas) return; if (document.hidden) { if (particleAnimationId) { cancelAnimationFrame(particleAnimationId); particleAnimationId = null; } } else { if (!particleAnimationId) { drawParticles(); } } });
+            }
+            // --- End Particle Logic ---
+
+            // --- Event Listeners & Initialization Call ---
+            if (themeToggleButton) { themeToggleButton.addEventListener('click', () => { const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark'; setTheme(newTheme); }); }
+            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', toggleMobileMenu); }
+            mobileNavLinks.forEach(link => { link.addEventListener('click', closeMobileMenu); });
+            window.addEventListener('scroll', handleScroll, { passive: true });
+
+            // --- Initialize Everything ---
+            setupToneJS();
+            addSoundFeedback();
+            setFooterYear();
+            updateThemeUI();
+            setupScrollRevealAndProficiency(); // Use the combined function
+            setupNavHighlighting(); // Set initial nav state for this page
+            setupTiltEffect();
+            setupBackToTop();
+            if (particleCanvas) initParticles();
+
+        }); // End DOMContentLoaded
+    </script>
+
+</body>
+</html>
