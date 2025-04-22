@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Wanjala - Data Scientist / ML Engineer</title>
-    <link rel="icon" href="favicon.ico" sizes="32x32"> <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"> <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"> <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="assets/favicon.ico" sizes="32x32">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -30,9 +33,9 @@
         .font-body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', 'Source Code Pro', monospace; }
 
-        /* Custom Scrollbar Styling (Keeping solid accents for simplicity) */
+        /* Custom Scrollbar Styling */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: theme('colors.sandstone'); } /* Updated to use theme color */
+        ::-webkit-scrollbar-track { background: theme('colors.sandstone'); }
         ::-webkit-scrollbar-thumb { background: theme('colors.accent'); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: theme('colors.accent-secondary'); }
         html.dark ::-webkit-scrollbar-track { background: theme('colors.dark-secondary-bg'); }
@@ -65,7 +68,7 @@
         }
         #mobile-menu.open { max-height: 500px; opacity: 1; }
 
-        /* Tooltip Styles - Using Tertiary Accent */
+        /* Tooltip Styles */
         .tooltip-container { position: relative; display: inline-block; }
         .tooltip-text {
             visibility: hidden; width: max-content; text-align: center; border-radius: 6px;
@@ -88,7 +91,7 @@
         .reveal-visible.slide-in { opacity: 1; transform: translateX(0); }
         /* Staggering delay added via JS */
 
-        /* Navbar Underline - Updated to use gradient */
+        /* Navbar Underline */
         .nav-link.nav-active {
             @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
         }
@@ -120,7 +123,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            pointer-events: none;
+            /* pointer-events: none; */ /* Removed to allow mouse interaction */
         }
 
          /* --- Main Content Container for Tilt --- */
@@ -170,6 +173,22 @@
             pointer-events: none;
         }
         #copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+        /* --- Know More Button Style --- */
+        .know-more-button {
+            @apply inline-flex items-center justify-center px-6 py-2 mt-8 text-sm font-medium rounded-lg shadow-md transition-all duration-300 ease-out transform hover:-translate-y-1 hover:scale-103;
+            @apply bg-gradient-to-r from-accent/80 to-accent-secondary/80 dark:from-dark-accent/80 dark:to-dark-accent-secondary/80 text-white dark:text-jet-black;
+            @apply hover:from-accent hover:to-accent-secondary dark:hover:from-dark-accent dark:hover:to-dark-accent-secondary hover:shadow-lg;
+        }
+        .know-more-button i {
+            @apply ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1;
+        }
+
+        /* --- Section Title Hover Effect --- */
+        section h2:hover {
+            transform: skewX(-5deg) scale(1.02);
+            transition: transform 0.3s ease-in-out;
+        }
 
     </style>
     <script>
@@ -262,10 +281,16 @@
                     <a href="#hero" class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading hover:opacity-80 transition-opacity">
                         Daniel Wanjala.
                     </a>
-                </div>
+                    </div>
                 <nav class="hidden md:flex space-x-6" id="desktop-nav">
                      <a href="#about" data-section="about" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
                         About <span class="active-underline"></span>
+                    </a>
+                     <a href="#skills" data-section="skills" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
+                        Skills <span class="active-underline"></span>
+                    </a>
+                    <a href="#education" data-section="education" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
+                        Education <span class="active-underline"></span>
                     </a>
                     <a href="#projects" data-section="projects" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
                         Projects <span class="active-underline"></span>
@@ -302,6 +327,8 @@
              <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#hero" data-section="hero" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Hero</a>
                 <a href="#about" data-section="about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">About</a>
+                <a href="#skills" data-section="skills" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Skills</a>
+                <a href="#education" data-section="education" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Education</a>
                 <a href="#projects" data-section="projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Projects</a>
                 <a href="#essays" data-section="essays" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Essays</a>
                 <a href="#publications" data-section="publications" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Publications</a>
@@ -347,7 +374,7 @@
 
             <section id="about" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
                 <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">About Me: Data With A Pulse</h2>
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center max-w-6xl mx-auto">
                     <div class="md:col-span-2 flex justify-center relative group reveal-hidden">
                          <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-accent-secondary dark:border-dark-accent-secondary shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(108,92,231,0.3)] dark:hover:shadow-[0_0_25px_rgba(102,252,241,0.3)]">
                             <img src="https://image-proxy.labnol.org/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocKz999-B81M89M5n0l6rW7-X9s7yV9z5H9f3Y1g6n8H%3Ds96-c" alt="Portrait of Daniel Wanjala" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/320x320/0B0C10/F7F7F7?text=Daniel+W.'">
@@ -386,11 +413,116 @@
                         </div>
                     </div>
                 </div>
+                 <div class="text-center mt-12 reveal-hidden">
+                    <a href="about.html" class="know-more-button group">
+                        Learn More About Me
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+
+            <section id="skills" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Core Competencies</h2>
+                <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="skill-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg reveal-hidden hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="code-2" class="w-8 h-8 mr-3 text-accent dark:text-dark-accent"></i>
+                            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Programming & Data</h3>
+                        </div>
+                        <ul class="space-y-2 text-secondary-text dark:text-dark-secondary-text font-body text-sm">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Python (Pandas, NumPy, Scikit-learn)</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> SQL & Database Management</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Data Wrangling & Cleaning</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> API Integration</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Git & Version Control</li>
+                        </ul>
+                    </div>
+                    <div class="skill-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg reveal-hidden hover:shadow-xl transition-shadow duration-300" style="transition-delay: 100ms;">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="brain-circuit" class="w-8 h-8 mr-3 text-accent dark:text-dark-accent"></i>
+                            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Machine Learning & AI</h3>
+                        </div>
+                        <ul class="space-y-2 text-secondary-text dark:text-dark-secondary-text font-body text-sm">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Predictive Modeling (Regression, Classification)</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Time Series Forecasting (ARIMA, Prophet)</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Neural Networks (TensorFlow/Keras)</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Computer Vision Basics (OpenCV)</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Model Deployment (Flask/Streamlit Basics)</li>
+                        </ul>
+                    </div>
+                    <div class="skill-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg reveal-hidden hover:shadow-xl transition-shadow duration-300" style="transition-delay: 200ms;">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="bar-chart-3" class="w-8 h-8 mr-3 text-accent dark:text-dark-accent"></i>
+                            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Visualization & Tools</h3>
+                        </div>
+                        <ul class="space-y-2 text-secondary-text dark:text-dark-secondary-text font-body text-sm">
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Matplotlib & Seaborn</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Plotly & Dash (Basic)</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Jupyter Notebooks & Google Colab</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> Cloud Platforms (GCP/AWS Basics)</li>
+                            <li class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-emerald-green"></i> ERP Systems (Frappe/ERPNext)</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="text-center mt-12 reveal-hidden">
+                    <a href="skills.html" class="know-more-button group">
+                        Explore My Skillset
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
+            </section>
+
+            <section id="education" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Educational Journey</h2>
+                <div class="max-w-4xl mx-auto space-y-10">
+                    <div class="education-item relative pl-10 pb-8 border-l-2 border-accent dark:border-dark-accent reveal-slide-left">
+                        <div class="absolute -left-[11px] top-0 w-5 h-5 bg-accent dark:bg-dark-accent rounded-full border-4 border-secondary-bg dark:border-dark-secondary-bg"></div>
+                        <span class="absolute left-10 -top-3 text-xs font-mono text-accent-secondary dark:text-dark-accent-secondary bg-secondary-bg dark:bg-dark-secondary-bg px-2 py-0.5 rounded">2024 – Present (Part-Time)</span>
+                        <h3 class="text-xl md:text-2xl font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">Master of Science in Data Science</h3>
+                        <p class="text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-2">Cooperative University of Kenya</p>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
+                            Currently pursuing advanced training in machine learning, statistical modeling, and data-driven research methodologies. Admitted with special approval into the late September intake based on prior experience and proven competencies in Data Science.
+                        </p>
+                    </div>
+                    <div class="education-item relative pl-10 pb-8 border-l-2 border-accent dark:border-dark-accent reveal-slide-right">
+                         <div class="absolute -left-[11px] top-0 w-5 h-5 bg-accent dark:bg-dark-accent rounded-full border-4 border-secondary-bg dark:border-dark-secondary-bg"></div>
+                        <span class="absolute left-10 -top-3 text-xs font-mono text-accent-secondary dark:text-dark-accent-secondary bg-secondary-bg dark:bg-dark-secondary-bg px-2 py-0.5 rounded">Apr 2023 – Nov 2023</span>
+                        <h3 class="text-xl md:text-2xl font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">Certificate in Data Science & Machine Learning</h3>
+                        <p class="text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-2">Moringa School, Nairobi</p>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
+                            A project-based, immersive program focusing on predictive analytics, neural networks, data wrangling, model deployment, and real-world applications in healthcare and business intelligence.
+                        </p>
+                    </div>
+                    <div class="education-item relative pl-10 pb-8 border-l-2 border-accent dark:border-dark-accent reveal-slide-left">
+                         <div class="absolute -left-[11px] top-0 w-5 h-5 bg-accent dark:bg-dark-accent rounded-full border-4 border-secondary-bg dark:border-dark-secondary-bg"></div>
+                        <span class="absolute left-10 -top-3 text-xs font-mono text-accent-secondary dark:text-dark-accent-secondary bg-secondary-bg dark:bg-dark-secondary-bg px-2 py-0.5 rounded">May 2019 – Nov 2022</span>
+                        <h3 class="text-xl md:text-2xl font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">Bachelor of Science in Information Technology</h3>
+                        <p class="text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-2">Zetech University, Kenya</p>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
+                            Specialized in software development, data structures, networking, and system integration. Graduated with a strong foundation in IT infrastructure, system design, and technical leadership.
+                        </p>
+                    </div>
+                    <div class="education-item relative pl-10 pb-8 border-l-2 border-accent dark:border-dark-accent reveal-slide-right">
+                         <div class="absolute -left-[11px] top-0 w-5 h-5 bg-accent dark:bg-dark-accent rounded-full border-4 border-secondary-bg dark:border-dark-secondary-bg"></div>
+                         <span class="absolute left-10 -top-3 text-xs font-mono text-accent-secondary dark:text-dark-accent-secondary bg-secondary-bg dark:bg-dark-secondary-bg px-2 py-0.5 rounded">Graduated 2018</span>
+                        <h3 class="text-xl md:text-2xl font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">Kenya Certificate of Secondary Education (KCSE)</h3>
+                        <p class="text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-2">St. Anthony’s Boys High School, Kitale</p>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
+                            Completed with a focus on sciences and mathematics, building the analytical mindset that would later shape a career in data and technology. (Also Alumni and Tutorial Fellow - Part-Time Applicant).
+                        </p>
+                    </div>
+                </div>
+                 <div class="text-center mt-12 reveal-hidden">
+                    <a href="education.html" class="know-more-button group">
+                        View Education Details
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
             </section>
 
             <section id="projects" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
                 <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Projects: Work That Talks Back</h2>
-                <div class="columns-1 md:columns-2 lg:columns-3 gap-6">
+                <div class="columns-1 md:columns-2 lg:columns-3 gap-6 max-w-7xl mx-auto">
                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="1">
                          <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-500 to-blue-400 z-10"></div>
                         <div class="relative h-48 w-full">
@@ -410,7 +542,7 @@
                             View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                         </div>
                     </article>
-                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="2">
+                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="2">
                         <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-emerald-500 to-emerald-400 z-10"></div>
                         <div class="relative h-48 w-full">
                             <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" alt="AI-Driven Plant Disease Detection" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
@@ -429,7 +561,7 @@
                             View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                         </div>
                     </article>
-                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="3">
+                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="3">
                        <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-red-500 to-red-400 z-10"></div>
                         <div class="relative h-48 w-full">
                              <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" alt="Kenya's GDP Forecasting Tool" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Kenya+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
@@ -448,7 +580,7 @@
                             View Project <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>
                         </div>
                     </article>
-                     <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="4">
+                    <article class="project-card interactive-element relative rounded-xl overflow-hidden shadow-lg cursor-pointer bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 group break-inside-avoid mb-6 reveal-hidden transition-transform duration-300 hover:-translate-y-1" data-project-id="4">
                        <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-purple-500 to-purple-400 z-10"></div>
                         <div class="relative h-48 w-full">
                             <img src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" alt="InvestWise Predictor" class="project-image absolute inset-0 w-full h-full object-cover transition-opacity duration-500" loading="lazy" data-original-src="https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise" data-alt-src="https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0B0C10/F7F7F7?text=Image+Error'">
@@ -487,6 +619,12 @@
                         </div>
                     </article>
                 </div>
+                <div class="text-center mt-12 reveal-hidden">
+                    <a href="projects.html" class="know-more-button group">
+                        See All Projects
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
             </section>
 
             <section id="essays" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
@@ -513,9 +651,15 @@
                          <div class="essay-progress-bar absolute bottom-0 left-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
                     </article>
                  </div>
+                 <div class="text-center mt-12 reveal-hidden">
+                    <a href="essays.html" class="know-more-button group">
+                        Read More Essays
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
             </section>
 
-             <section id="publications" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+            <section id="publications" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
                 <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Publications & Articles</h2>
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                     <a href="https://www.linkedin.com/pulse/logarithms-algorithms-invisible-engines-ai-data-science-wanjala-u9qgf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
@@ -526,7 +670,7 @@
                             <span>~10 min read</span>
                         </div>
                     </a>
-                     <a href="https://www.linkedin.com/pulse/from-excel-neural-networks-my-journey-data-science-daniel-wanjala-s6vjf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
+                    <a href="https://www.linkedin.com/pulse/from-excel-neural-networks-my-journey-data-science-daniel-wanjala-s6vjf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">From Excel to Neural Networks: My Journey in Data Science</h3>
                         <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">First off, let me start by saying: that it’s been a while. My LinkedIn feed probably thought I disappeared into the data abyss...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
@@ -534,7 +678,7 @@
                             <span>~12 min read</span>
                         </div>
                     </a>
-                     <a href="https://www.linkedin.com/pulse/why-ai-bots-leave-customers-frustrated-improving-zuriand-wanjala-9kbhf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                    <a href="https://www.linkedin.com/pulse/why-ai-bots-leave-customers-frustrated-improving-zuriand-wanjala-9kbhf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Why AI Bots Leave Customers Frustrated: Improving Safaricom's Zuri (And Others)</h3>
                         <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">If you call Safaricom or Airtel, you might feel frustrated because you're only interacting with an AI bot. While these bots, such as Safaricom's Zuri...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
@@ -558,7 +702,7 @@
                             <span>~10 min read</span>
                         </div>
                     </a>
-                     <a href="https://www.linkedin.com/pulse/how-machine-learning-transportation-can-transform-africas-wanjala-163gf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                    <a href="https://www.linkedin.com/pulse/how-machine-learning-transportation-can-transform-africas-wanjala-163gf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">How Machine Learning in Transportation Can Transform Africa’s Transit Systems</h3>
                         <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Highway Design Highway SafeBoda Twiga Foods Africa’s transportation sector is undergoing a radical transformation, thanks to the infusion of machine...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
@@ -566,7 +710,7 @@
                             <span>~14 min read</span>
                         </div>
                     </a>
-                     <a href="https://www.linkedin.com/pulse/machine-learning-blockchain-crypto-financial-analysis-daniel-wanjala-bf0mf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
+                    <a href="https://www.linkedin.com/pulse/machine-learning-blockchain-crypto-financial-analysis-daniel-wanjala-bf0mf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Machine Learning, Blockchain, and Crypto in Financial Analysis</h3>
                         <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Introduction: In the financial world, machine learning, blockchain, and cryptocurrencies are three emerging technologies reshaping how we analyze...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
@@ -582,7 +726,7 @@
                             <span>~3 min read</span>
                         </div>
                     </a>
-                     <a href="https://www.linkedin.com/pulse/importance-diversity-inclusion-data-science-ml-daniel-wanjala-lw3if/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
+                    <a href="https://www.linkedin.com/pulse/importance-diversity-inclusion-data-science-ml-daniel-wanjala-lw3if/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">The Importance of Diversity and Inclusion in Data Science and ML</h3>
                         <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">I. Introduction Diversity and inclusion are crucial elements in any field, and data science and machine learning (ML) are no exception...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
@@ -590,10 +734,16 @@
                             <span>~15 min read</span>
                         </div>
                     </a>
-                    </div>
+                </div>
+                 <div class="text-center mt-12 reveal-hidden">
+                    <a href="publications.html" class="know-more-button group">
+                        View All Publications
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
             </section>
 
-            <section id="demos" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+            <section id="demos" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
                 <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Live Demos: Try My Logic</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     <article class="demo-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg cursor-pointer hover:border-accent/60 dark:hover:border-dark-accent/60 transition-all duration-300 group reveal-hidden hover:-translate-y-1">
@@ -616,32 +766,38 @@
                 <p class="text-center text-secondary-text dark:text-dark-secondary-text mt-12 text-sm reveal-hidden font-body">
                     Note: Live demos may link to external platforms like Streamlit Cloud or JS playgrounds.
                 </p>
+                 <div class="text-center mt-12 reveal-hidden">
+                    <a href="demos.html" class="know-more-button group">
+                        Explore Demos
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
             </section>
 
-            <section id="contact" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+            <section id="contact" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
                 <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Contact: Let's Collaborate</h2>
                 <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
                     <div class="reveal-slide-left">
                         <h3 class="text-2xl font-semibold mb-6 text-primary-text dark:text-dark-primary-text font-heading">Connect with me</h3>
                         <div class="space-y-4">
-                             <a href="https://www.linkedin.com/in/daniel-wanjala-912b8b17b/" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg">
+                            <a href="https://www.linkedin.com/in/daniel-wanjala-912b8b17b/" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                                 <span class="font-medium font-body">LinkedIn</span>
                                 <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                             </a>
-                             <a href="https://github.com/MadScie254" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.1s;">
+                            <a href="https://github.com/MadScie254" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.1s;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-1.5 6-7A6.9 6.9 0 0 0 18.5 4c.1-.8.1-1.7-.1-2.5 0 0-1.1-.4-3.6 1.3A12.3 12.3 0 0 0 12 2.8c-1.1 0-2.3.1-3.4.4-2.5-1.7-3.6-1.3-3.6-1.3-.2.8-.2 1.7-.1 2.5A6.9 6.9 0 0 0 3 7.5c0 5.5 3 7 6 7a4.8 4.8 0 0 0-1 3.5v4"></path></svg>
                                 <span class="font-medium font-body">GitHub</span>
                                 <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
                             </a>
-                             <div class="social-card flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-md border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text transition-all duration-300 group hover:border-accent/50 dark:hover:border-dark-accent/50 reveal-hidden" data-reveal-delay="200">
+                            <div class="social-card flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-md border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text transition-all duration-300 group hover:border-accent/50 dark:hover:border-dark-accent/50 reveal-hidden" data-reveal-delay="200">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
                                 <a href="mailto:dmwanjala254@gmail.com" class="font-medium font-body hover:text-accent dark:hover:text-dark-accent transition-colors break-all">dmwanjala254@gmail.com</a>
                                 <button class="copy-btn ml-auto flex-shrink-0 p-1 rounded hover:bg-accent/20 dark:hover:bg-dark-accent/20 text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition-colors" data-copy-text="dmwanjala254@gmail.com" aria-label="Copy email address">
                                     <i data-lucide="copy" class="h-4 w-4"></i>
                                 </button>
                             </div>
-                             <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
+                            <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-4 text-accent dark:text-dark-accent group-hover:scale-110 transition-transform"> <path d="M16.6 14c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.7-.3-1.4-.7-2-1.2-.5-.5-1-1.1-1.4-1.7-.1-.2 0-.4.1-.5.1-.1.2-.2.4-.4.1-.1.2-.3.3-.4.1-.2 0-.4-.1-.5-.1-.1-1.7-4-1.9-4.5-.3-.4-.5-.4-.7-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2 1 2.4.1.2 1.5 2.3 3.7 3.3.5.2.9.4 1.2.5.5.2 1 .1 1.4-.1.4-.2.6-.4.8-.8.2-.3.2-.6.1-.7zm4.9-1.5c-.3-1.2-1.8-2.2-3.4-2.5-.4-.1-.9.1-1.3.4l-.1.1c-.1.1-.2.1-.3.1-.3 0-.5-.1-.7-.2-.1-.1-.2-.2-.3-.3-.6-.4-1.1-.9-1.6-1.4-.1-.1-.3-.2-.4-.2-.1 0-.2 0-.3.1-.4.4-.8.8-1.1 1.3L12 10c-.1.1-.2.2-.3.2-.1.1-.3.1-.4.1h-.5c-1.1 0-2.1-.4-2.9-1.1-.2-.1-.4-.2-.6-.2-.4 0-.8.2-1.1.5-.3.3-.5.7-.6 1.1-.1.4-.1.9 0 1.3l.1.3c.1.1.1.3 0 .4-.3.4-.6.9-.8 1.4 0 .1-.1.2-.1.3-.2.7-.3 1.4-.3 2.1 0 1.9.8 3.6 2.2 4.9 1.4 1.3 3.1 2 5 2h.1c.5 0 1 0 1.4-.1.5-.1 1-.2 1.5-.4.5-.2 1-.5 1.4-.8.4-.3.8-.7 1.1-1.1.1-.1.2-.2.3-.3.1-.1.3-.1.4-.1.2 0 .4.1.6.2.2.1.4.3.6.4 1.2.6 2.6.9 4.1.8 1.4-.1 2.8-.6 3.9-1.5s1.9-2.3 2.3-3.8c.3-1.1.2-2.3-.1-3.4-.1-.4-.3-.8-.6-1.1zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path> </svg>
                                 <span class="font-medium font-body">WhatsApp</span>
                                 <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform"></i>
@@ -679,6 +835,12 @@
                         </form>
                     </div>
                 </div>
+                 <div class="text-center mt-12 reveal-hidden">
+                    <a href="contact.html" class="know-more-button group">
+                        Get In Touch
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
             </section>
         </main>
 
@@ -701,6 +863,7 @@
 
             // --- Constants and State ---
             const name = "Daniel Wanjala";
+            // Project data (unchanged from original)
              const projectsData = [
               { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
               { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
@@ -708,11 +871,12 @@
               { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
               { id: 5, title: "Netflix Stock Profit Analysis", description: "Analyzed Netflix's stock performance...", tags: ["Finance", "Analysis", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz", problem: "Understanding historical performance...", dataUsed: "Historical Netflix stock data.", results: "Provided insights into profitability...", techStack: ["Python", "Pandas", "Matplotlib"], githubUrl: "https://github.com/MadScie254/Netflix-Analysis", liveDemoUrl: null, accentColor: "sandstone" }
             ];
-            const whatsappBaseUrl = "https://wa.me/254742007277";
+            const whatsappBaseUrl = "https://wa.me/254742007277"; // Replace with actual number if needed
             const whatsappMessage = "Hello Daniel, I visited your portfolio and would like to connect.";
             let toneJsStarted = false;
             let synth, clickSynth;
             let particleAnimationId;
+            let mouse = { x: null, y: null, radius: 100 }; // Mouse position for particle interaction
 
             // --- DOM Element References ---
             const htmlEl = document.documentElement;
@@ -736,9 +900,9 @@
             const formStatusEl = document.getElementById('formStatus');
             const currentYearEl = document.getElementById('currentYear');
             const scrollProgressBar = document.getElementById('scrollProgressBar');
-            const navLinks = document.querySelectorAll('#desktop-nav .nav-link'); // Select all desktop links
-            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link'); // Select all mobile links
-            const sections = document.querySelectorAll('main section[id]'); // Select all sections with an ID in main
+            const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
+            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link');
+            const sections = document.querySelectorAll('main section[id]');
             const whatsappLink = document.getElementById('whatsapp-link');
             const whatsappDirectLink = document.getElementById('whatsapp-direct-link');
             const copyButtons = document.querySelectorAll('.copy-btn');
@@ -746,7 +910,7 @@
             const counterElements = document.querySelectorAll('[data-target]');
             const mainContentContainer = document.getElementById('main-content-container');
             const particleCanvas = document.getElementById('particle-canvas');
-            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card'); // Added publication-card
+            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card, .skill-card, .education-item'); // Added new interactive elements
 
 
             // --- Hide Preloader ---
@@ -755,7 +919,7 @@
                     if (preloader) {
                         preloader.classList.add('hidden');
                     }
-                 }, 4000);
+                 }, 4000); // Keep preloader duration
             });
 
             // --- Update WhatsApp Link ---
@@ -768,33 +932,38 @@
             function startTone() {
                 if (toneJsStarted || typeof Tone === 'undefined') return;
                 Tone.start();
+                // Low volume synth for subtle hover feedback
                 synth = new Tone.Synth({
                     oscillator: { type: 'sine' },
                     envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }
                 }).toDestination();
-                 synth.volume.value = -25;
+                 synth.volume.value = -25; // Quieter hover sound
 
+                // Slightly different synth for clicks
                 clickSynth = new Tone.Synth({
                     oscillator: { type: 'triangle' },
                     envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }
                 }).toDestination();
-                clickSynth.volume.value = -20;
+                clickSynth.volume.value = -20; // Slightly louder click
 
                 toneJsStarted = true;
                 console.log("Tone.js AudioContext started.");
             }
+            // Start audio context on first user interaction
             document.body.addEventListener('click', startTone, { once: true });
             document.body.addEventListener('keydown', startTone, { once: true });
 
-            // --- Sound Feedback ---
+            // --- Sound Feedback for Interactive Elements ---
             interactiveElements.forEach(el => {
                  el.addEventListener('mouseenter', () => {
                     if (toneJsStarted && synth) {
+                        // Play a subtle high note on hover
                         synth.triggerAttackRelease('C5', '16n', Tone.now());
                     }
                 });
                  el.addEventListener('click', () => {
                     if (toneJsStarted && clickSynth) {
+                        // Play a distinct click sound
                         clickSynth.triggerAttackRelease('E4', '16n', Tone.now());
                     }
                 });
@@ -810,8 +979,8 @@
                     themeIconSun.classList.add('hidden');
                     themeIconMoon.classList.remove('hidden');
                 }
-                 lucide.createIcons();
-                 // Update body background noise
+                 lucide.createIcons(); // Re-render icons after changing visibility
+                 // Update body background noise pattern
                  const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                  const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                  document.body.style.backgroundImage = theme === 'dark' ? noiseDark : noiseLight;
@@ -825,15 +994,19 @@
                 }
                 localStorage.setItem('theme', theme);
                 updateThemeUI(theme);
+                 // Play a subtle sound feedback for theme change
                  if (toneJsStarted && clickSynth) {
                      clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now());
                  }
-                 if (particleCanvas) initParticles(); // Re-init particles for new theme color
+                 // Re-initialize particles with new theme colors
+                 if (particleCanvas) initParticles();
             }
 
+            // Set initial theme based on preference or storage
             const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            updateThemeUI(currentTheme);
+            updateThemeUI(currentTheme); // Update icons immediately
 
+            // Theme toggle button listener
             if (themeToggleButton) {
                 themeToggleButton.addEventListener('click', () => {
                     const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
@@ -846,10 +1019,11 @@
                  mobileMenuButton.addEventListener('click', () => {
                     const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
                     mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-                    mobileMenu.classList.toggle('open');
-                    menuIconOpen.classList.toggle('hidden');
-                    menuIconClose.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('open'); // Toggle the 'open' class for smooth transition
+                    menuIconOpen.classList.toggle('hidden'); // Toggle burger icon
+                    menuIconClose.classList.toggle('hidden'); // Toggle close icon
                  });
+                 // Close mobile menu when a link is clicked
                  mobileNavLinks.forEach(link => {
                     link.addEventListener('click', () => {
                          mobileMenuButton.setAttribute('aria-expanded', 'false');
@@ -861,19 +1035,23 @@
              }
 
             // --- Hero Section Word Rotation ---
-             const words = ["forecast", "heal", "accelerate", "optimize", "innovate"];
+             const words = ["forecast", "heal", "accelerate", "optimize", "innovate", "analyze", "deploy"]; // Added more words
              let wordIndex = 0;
              if (rotatingWordEl) {
-                 setInterval(() => {
+                 // Function to change the word
+                 function changeWord() {
                      wordIndex = (wordIndex + 1) % words.length;
                      rotatingWordEl.style.opacity = '0';
-                     rotatingWordEl.style.transform = 'translateY(10px)';
+                     rotatingWordEl.style.transform = 'translateY(10px)'; // Move down slightly before changing
                      setTimeout(() => {
                          rotatingWordEl.textContent = words[wordIndex];
                          rotatingWordEl.style.opacity = '1';
-                         rotatingWordEl.style.transform = 'translateY(0)';
-                     }, 300);
-                 }, 3000);
+                         rotatingWordEl.style.transform = 'translateY(0)'; // Move back up
+                     }, 300); // Wait for fade out transition
+                 }
+                 // Set interval for rotation
+                 setInterval(changeWord, 3000); // Change every 3 seconds
+                 // Apply smooth transition styles
                  rotatingWordEl.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
              }
 
@@ -883,7 +1061,9 @@
                 if (img) {
                     const originalSrc = img.getAttribute('data-original-src');
                     const altSrc = img.getAttribute('data-alt-src');
+                    // Swap to alt image on hover
                     card.addEventListener('mouseenter', () => { if (altSrc) img.src = altSrc; });
+                    // Swap back to original image when mouse leaves
                     card.addEventListener('mouseleave', () => { if (originalSrc) img.src = originalSrc; });
                 }
             });
@@ -893,11 +1073,14 @@
                 const project = projectsData.find(p => p.id === parseInt(projectId));
                 if (!project || !projectModalContent || !projectModal || !projectModalContentWrapper) return;
 
+                // Generate HTML for tech stack tags
                 const techStackHtml = project.techStack.map(tech => `<span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">${tech}</span>`).join(' ');
+                // Generate GitHub button if URL exists
                 const githubButton = project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-secondary-text dark:bg-dark-accent-secondary text-primary-bg dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub </a>` : '';
+                // Generate Live Demo button if URL exists
                 const demoButton = project.liveDemoUrl ? `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="code" class="mr-2 h-4 w-4"></i> Live Demo </a>` : '';
 
-                // Initial modal content with placeholders for stats
+                // Set initial modal content with placeholders for stats
                 projectModalContent.innerHTML = `
                     <div class="relative">
                        <img src="${project.altImageUrl || project.imageUrl}" alt="${project.title}" class="w-full h-64 object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/800x400/0B0C10/F7F7F7?text=Image+Error'">
@@ -922,18 +1105,18 @@
                       <div id="github-stats-container" class="mt-6 pt-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/20 ${!project.githubUrl ? 'hidden' : ''}">
                           <button id="fetch-stats-button" class="interactive-element text-sm text-accent dark:text-dark-accent hover:underline mb-2">Show GitHub Stats</button>
                           <div id="github-stats-content" class="hidden text-sm space-y-1">
-                              <p>Fetching stats...</p>
-                          </div>
+                              <p>Fetching stats...</p> </div>
                           <p class="text-xs text-secondary-text dark:text-dark-secondary-text mt-2">Note: Stats via public GitHub API. May be rate-limited.</p>
                       </div>
 
                       <div class="flex gap-4 mt-6">${githubButton}${demoButton}</div>
                     </div>`;
 
+                // Add event listener for the close button
                 const closeButton = projectModalContent.querySelector('#closeModalButton');
                 if(closeButton) closeButton.addEventListener('click', closeModal);
 
-                // Add event listener for the fetch stats button
+                // Add event listener for the fetch GitHub stats button
                 const fetchStatsButton = projectModalContent.querySelector('#fetch-stats-button');
                 const statsContent = projectModalContent.querySelector('#github-stats-content');
 
@@ -941,22 +1124,25 @@
                     fetchStatsButton.addEventListener('click', () => {
                         fetchStatsButton.textContent = 'Loading...';
                         fetchStatsButton.disabled = true;
-                        statsContent.classList.remove('hidden');
+                        statsContent.classList.remove('hidden'); // Show the loading message
 
                         try {
+                            // Extract owner and repo name from GitHub URL
                             const url = new URL(project.githubUrl);
-                            const pathParts = url.pathname.split('/').filter(Boolean);
+                            const pathParts = url.pathname.split('/').filter(Boolean); // Get parts like ['owner', 'repo']
                             if (pathParts.length >= 2) {
                                 const owner = pathParts[0];
                                 const repo = pathParts[1];
                                 const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
 
+                                // Fetch data from GitHub API
                                 fetch(apiUrl)
                                 .then(response => {
                                     if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                                     return response.json();
                                 })
                                 .then(data => {
+                                    // Display fetched stats
                                     statsContent.innerHTML = `
                                         <span class="inline-flex items-center mr-4">
                                             <i data-lucide="star" class="w-4 h-4 mr-1 text-yellow-500"></i> ${data.stargazers_count ?? 'N/A'} Stars
@@ -965,121 +1151,165 @@
                                             <i data-lucide="git-fork" class="w-4 h-4 mr-1 text-secondary-text dark:text-dark-secondary-text"></i> ${data.forks_count ?? 'N/A'} Forks
                                         </span>
                                     `;
-                                    lucide.createIcons(); // Render new icons
-                                    fetchStatsButton.classList.add('hidden'); // Hide button after success
+                                    lucide.createIcons(); // Render new icons (star, fork)
+                                    fetchStatsButton.classList.add('hidden'); // Hide button after successful fetch
                                 })
                                 .catch(error => {
+                                    // Handle errors during fetch
                                     console.error("Error fetching GitHub stats:", error);
                                     statsContent.innerHTML = `<p class="text-red-coral">Could not load stats.</p>`;
-                                    fetchStatsButton.textContent = 'Retry Stats';
+                                    fetchStatsButton.textContent = 'Retry Stats'; // Allow retry
                                     fetchStatsButton.disabled = false;
                                 });
                             } else { throw new Error("Could not parse owner/repo from URL"); }
                         } catch (error) {
+                             // Handle errors parsing the URL
                              console.error("Error processing GitHub URL:", error);
                              statsContent.innerHTML = `<p class="text-red-coral">Invalid GitHub URL.</p>`;
-                             fetchStatsButton.classList.add('hidden');
+                             fetchStatsButton.classList.add('hidden'); // Hide button if URL is invalid
                         }
-                    }, { once: false }); // Allow retry
+                    }, { once: false }); // Allow retry by not using { once: true }
                 }
 
+                // Show the modal with animation
                 projectModal.classList.remove('hidden-modal');
                 projectModal.classList.add('visible-modal');
-                document.body.style.overflow = 'hidden';
-                lucide.createIcons();
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                lucide.createIcons(); // Ensure all icons in the modal are rendered
             }
 
+            // Function to close the modal
             function closeModal() {
                 if (!projectModal || !projectModalContent) return;
                 projectModal.classList.add('hidden-modal');
                 projectModal.classList.remove('visible-modal');
-                document.body.style.overflow = '';
+                document.body.style.overflow = ''; // Re-enable background scrolling
+                // Clear modal content after transition
                 setTimeout(() => { projectModalContent.innerHTML = ''; }, 300);
             }
 
+            // Add click listeners to project cards to open the modal
             projectCards.forEach(card => card.addEventListener('click', () => openModal(card.getAttribute('data-project-id'))));
+            // Add listener to close modal when clicking outside the content area
             if(projectModal) projectModal.addEventListener('click', (event) => { if (event.target === projectModal) closeModal(); });
+            // Add listener to close modal with the Escape key
             document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && projectModal && projectModal.classList.contains('visible-modal')) closeModal(); });
 
             // --- Contact Form Handling ---
              if (contactForm) {
                  contactForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
+                    e.preventDefault(); // Prevent default form submission
                     let isValid = true;
                     let firstErrorField = null;
 
+                    // Reset previous status/errors
                     if(formStatusEl) {
                         formStatusEl.textContent = '';
-                        formStatusEl.className = 'mt-2 text-center text-sm font-body';
+                        formStatusEl.className = 'mt-2 text-center text-sm font-body'; // Reset classes
                     }
-                    contactForm.querySelectorAll('.form-error').forEach(el => el.classList.add('hidden'));
-                    contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-red-coral', 'ring-red-coral', 'border-emerald-green'));
+                    contactForm.querySelectorAll('.form-error').forEach(el => el.classList.add('hidden')); // Hide all error messages
+                    contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-red-coral', 'ring-red-coral', 'border-emerald-green')); // Remove validation borders
 
+                    // Get form fields
                     const nameField = contactForm.querySelector('#name');
                     const emailField = contactForm.querySelector('#email');
                     const messageField = contactForm.querySelector('#message');
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
 
-                    if (nameField && !nameField.value.trim()) { isValid = false; nameField.classList.add('border-red-coral', 'ring-red-coral'); nameField.nextElementSibling.textContent = 'Name is required.'; nameField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = nameField; }
-                    if (emailField && !emailField.value.trim()) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Email is required.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
-                    else if (emailField && !emailRegex.test(emailField.value)) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Valid email required.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
-                    if (messageField && !messageField.value.trim()) { isValid = false; messageField.classList.add('border-red-coral', 'ring-red-coral'); messageField.nextElementSibling.textContent = 'Message is required.'; messageField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = messageField; }
+                    // Validate Name
+                    if (nameField && !nameField.value.trim()) {
+                        isValid = false;
+                        nameField.classList.add('border-red-coral', 'ring-red-coral');
+                        nameField.nextElementSibling.textContent = 'Name is required.';
+                        nameField.nextElementSibling.classList.remove('hidden');
+                        if (!firstErrorField) firstErrorField = nameField; // Track first error for focus
+                    }
+                    // Validate Email
+                    if (emailField && !emailField.value.trim()) {
+                        isValid = false;
+                        emailField.classList.add('border-red-coral', 'ring-red-coral');
+                        emailField.nextElementSibling.textContent = 'Email is required.';
+                        emailField.nextElementSibling.classList.remove('hidden');
+                        if (!firstErrorField) firstErrorField = emailField;
+                    } else if (emailField && !emailRegex.test(emailField.value)) {
+                        isValid = false;
+                        emailField.classList.add('border-red-coral', 'ring-red-coral');
+                        emailField.nextElementSibling.textContent = 'Please enter a valid email address.';
+                        emailField.nextElementSibling.classList.remove('hidden');
+                        if (!firstErrorField) firstErrorField = emailField;
+                    }
+                    // Validate Message
+                    if (messageField && !messageField.value.trim()) {
+                        isValid = false;
+                        messageField.classList.add('border-red-coral', 'ring-red-coral');
+                        messageField.nextElementSibling.textContent = 'Message cannot be empty.';
+                        messageField.nextElementSibling.classList.remove('hidden');
+                        if (!firstErrorField) firstErrorField = messageField;
+                    }
 
+                    // If form is invalid
                     if (!isValid) {
-                        if(submitButton) submitButton.classList.add('animate-shake', '!bg-red-coral');
+                        if(submitButton) submitButton.classList.add('animate-shake', '!bg-red-coral'); // Shake button and make it red
                         if(buttonText) buttonText.textContent = 'Please Check Errors';
-                        if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'alert-circle'); lucide.createIcons(); }
+                        if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'alert-circle'); lucide.createIcons(); } // Change icon to alert
                         if(formStatusEl) { formStatusEl.textContent = 'Please correct the errors above.'; formStatusEl.classList.add('text-red-coral'); }
-                        if (firstErrorField) firstErrorField.focus();
+                        if (firstErrorField) firstErrorField.focus(); // Focus the first field with an error
+                        // Reset button appearance after a delay
                         setTimeout(() => {
                             if(submitButton) submitButton.classList.remove('animate-shake', '!bg-red-coral');
                             if(buttonText) buttonText.textContent = 'Send Message';
-                            if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'arrow-right'); lucide.createIcons(); }
+                            if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'arrow-right'); lucide.createIcons(); } // Reset icon
                         }, 1500);
-                        return;
+                        return; // Stop form submission
                     }
 
+                    // If form is valid, show success state (simulation)
+                    // Add green border to valid fields
                     contactForm.querySelectorAll('.form-input').forEach(el => {
-                        if (!el.classList.contains('border-red-coral')) {
+                        if (!el.classList.contains('border-red-coral')) { // Only add green if no error
                             el.classList.add('border-emerald-green');
                         }
                     });
 
+                    // Update button to "Sending..." state
                     if(submitButton) submitButton.disabled = true;
                     if(buttonText) buttonText.textContent = 'Sending...';
-                    if(buttonIcon) buttonIcon.classList.add('hidden');
-                    if(formStatusEl) formStatusEl.textContent = '';
+                    if(buttonIcon) buttonIcon.classList.add('hidden'); // Hide icon while sending
+                    if(formStatusEl) formStatusEl.textContent = ''; // Clear status message
 
-                    // Simulate form submission
+                    // Simulate network delay for submission
                     setTimeout(() => {
+                        // Update button to "Sent" state
                         if(submitButton) {
                             submitButton.classList.remove('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
-                            submitButton.classList.add('!bg-emerald-green', 'text-white');
+                            submitButton.classList.add('!bg-emerald-green', 'text-white'); // Make button green
                         }
                         if(buttonText) buttonText.textContent = 'Message Sent!';
                         if(formStatusEl) {
-                            formStatusEl.textContent = 'Thank you for your message!';
-                            formStatusEl.classList.add('text-emerald-green');
+                            formStatusEl.textContent = 'Thank you for your message! I\'ll get back to you soon.';
+                            formStatusEl.classList.add('text-emerald-green'); // Show success message
                         }
-                        contactForm.reset();
+                        contactForm.reset(); // Clear the form
+                        // Remove validation borders after successful submission
                         contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-emerald-green', 'border-red-coral', 'ring-red-coral'));
 
+                        // Reset button and form status after another delay
                         setTimeout(() => {
                             if(submitButton) {
                                 submitButton.disabled = false;
                                 submitButton.classList.remove('!bg-emerald-green', 'text-white');
+                                // Re-apply original gradient background
                                 submitButton.classList.add('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
-
                             }
                             if(buttonText) buttonText.textContent = 'Send Message';
-                            if(buttonIcon) buttonIcon.classList.remove('hidden');
+                            if(buttonIcon) buttonIcon.classList.remove('hidden'); // Show icon again
                             if(formStatusEl) {
-                                formStatusEl.textContent = '';
-                                formStatusEl.className = 'mt-2 text-center text-sm font-body';
+                                formStatusEl.textContent = ''; // Clear success message
+                                formStatusEl.className = 'mt-2 text-center text-sm font-body'; // Reset classes
                             }
-                        }, 3000);
+                        }, 3000); // Reset after 3 seconds
 
-                    }, 1500);
+                    }, 1500); // Simulate 1.5 second delay
                 });
              }
 
@@ -1090,55 +1320,67 @@
             window.addEventListener('scroll', () => {
                 const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
                 const scrolled = window.scrollY;
+                // Calculate progress, handle division by zero if scrollableHeight is 0
                 const progress = scrollableHeight > 0 ? (scrolled / scrollableHeight) : 0;
                 if(scrollProgressBar) scrollProgressBar.style.transform = `scaleX(${progress})`;
             });
 
             // --- Scroll Reveal Animations (with Staggering) ---
-            const revealObserverOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            const revealObserverOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }; // Trigger slightly before element is fully visible
             const revealCallback = (entries, observer) => {
                 entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
-                        const delay = (entry.target.dataset.revealDelay || (index * 100));
+                        // Apply delay based on data attribute or index for staggering effect
+                        const delay = (entry.target.dataset.revealDelay || (index * 100)); // Default stagger 100ms
                         entry.target.style.transitionDelay = `${delay}ms`;
+                        // Add visibility classes
                         entry.target.classList.add('reveal-visible');
                         if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
                             entry.target.classList.add('slide-in');
                         }
-                        observer.unobserve(entry.target);
+                        observer.unobserve(entry.target); // Stop observing once revealed
                     }
                 });
             };
             const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
+            // Observe all elements with reveal classes
             document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right').forEach(el => revealObserver.observe(el));
 
             // --- Active Navigation Link Highlighting ---
             let currentActiveSectionId = null;
+            // Observer options: trigger when section is roughly centered in viewport
             const navObserverOptions = { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 };
              const navObserverCallback = (entries) => {
-                let intersectingSectionId = currentActiveSectionId;
+                let intersectingSectionId = currentActiveSectionId; // Keep track of the currently active section
                  entries.forEach(entry => {
+                     // If a section is intersecting significantly, mark it as potentially active
                      if (entry.isIntersecting && entry.intersectionRatio > 0) {
                          intersectingSectionId = entry.target.getAttribute('id');
                      }
                  });
 
+                 // Update active link only if the intersecting section has changed
                  if (intersectingSectionId !== currentActiveSectionId) {
                     currentActiveSectionId = intersectingSectionId;
+                    // Update desktop nav links
                     navLinks.forEach(link => {
                         link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                     });
+                    // Update mobile nav links
                     mobileNavLinks.forEach(link => {
                          link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                     });
                  }
             };
             const navObserver = new IntersectionObserver(navObserverCallback, navObserverOptions);
+            // Observe all main sections with an ID
             sections.forEach(section => { if(section) navObserver.observe(section); });
-            // Initial check on load
+
+            // Initial check on page load for hash links
             const initialHash = window.location.hash.substring(1);
              if (initialHash) {
                  currentActiveSectionId = initialHash;
+                 // Highlight the corresponding nav link immediately
                  navLinks.forEach(link => {
                      link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                  });
@@ -1148,154 +1390,237 @@
              }
 
             // --- Clipboard Copy Functionality ---
-            let toastTimeout;
+            let toastTimeout; // Timeout ID for hiding the toast
             copyButtons.forEach(button => {
                  button.addEventListener('click', () => {
-                    const textToCopy = button.dataset.copyText;
+                    const textToCopy = button.dataset.copyText; // Get text from data attribute
                     if (textToCopy && navigator.clipboard) {
                         navigator.clipboard.writeText(textToCopy).then(() => {
+                            // Show success toast
                             if (copyToast) {
                                 copyToast.classList.add('show');
+                                // Clear previous timeout if exists
                                 clearTimeout(toastTimeout);
+                                // Set new timeout to hide toast
                                 toastTimeout = setTimeout(() => {
                                     copyToast.classList.remove('show');
-                                }, 2000);
+                                }, 2000); // Hide after 2 seconds
                             }
                         }).catch(err => {
+                            // Log error if copy fails
                             console.error('Failed to copy text: ', err);
                         });
                     }
                 });
             });
 
-            // --- Animated Counters ---
+            // --- Animated Counters (Example - if you add elements with data-target) ---
             const animateCounter = (el) => {
                  const target = parseInt(el.dataset.target, 10);
-                if (isNaN(target)) return;
+                if (isNaN(target)) return; // Ignore if target is not a number
                 let current = 0;
-                const duration = 1500;
-                const stepTime = 20;
+                const duration = 1500; // Animation duration in ms
+                const stepTime = 20; // Update interval in ms
                 const totalSteps = duration / stepTime;
-                const increment = target / totalSteps;
+                const increment = target / totalSteps; // Value to add each step
 
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
-                        el.textContent = target;
-                        clearInterval(timer);
+                        el.textContent = target; // Ensure final value is exact
+                        clearInterval(timer); // Stop the interval
                     } else {
-                        el.textContent = Math.ceil(current);
+                        el.textContent = Math.ceil(current); // Update text content
                     }
                 }, stepTime);
             };
-            const counterObserverOptions = { threshold: 0.5 };
+            // Observer to trigger counter animation when element is visible
+            const counterObserverOptions = { threshold: 0.5 }; // Trigger when 50% visible
             const counterObserverCallback = (entries, observer) => {
                  entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        animateCounter(entry.target);
-                        observer.unobserve(entry.target);
+                        animateCounter(entry.target); // Start animation
+                        observer.unobserve(entry.target); // Stop observing once animated
                     }
                 });
             };
             const counterObserver = new IntersectionObserver(counterObserverCallback, counterObserverOptions);
+            // Observe elements with data-target attribute
             counterElements.forEach(el => counterObserver.observe(el));
 
-            // --- Device Orientation Tilt Effect ---
+            // --- Device Orientation Tilt Effect (Optional Enhancement) ---
             function handleOrientation(event) {
-                 if (!mainContentContainer) return;
+                 if (!mainContentContainer) return; // Check if container exists
+                // Clamp beta (X-axis tilt) and gamma (Y-axis tilt) values
                 const beta = Math.max(-30, Math.min(30, event.beta || 0));
                 const gamma = Math.max(-30, Math.min(30, event.gamma || 0));
-                const maxTilt = 1.0;
+                const maxTilt = 1.0; // Max tilt degrees
+                // Calculate tilt percentages
                 const tiltY = (beta / 30 * maxTilt).toFixed(2);
-                const tiltX = (gamma / 30 * -maxTilt).toFixed(2);
+                const tiltX = (gamma / 30 * -maxTilt).toFixed(2); // Invert gamma for natural feel
+                // Apply transform
                 mainContentContainer.style.transform = `perspective(1500px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`;
             }
+            // Check for DeviceOrientationEvent support and permissions
             if (window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function') {
+                 // iOS 13+ requires permission
                  console.log("DeviceOrientation requires permission request on this device.");
+                 // Example: Add a button to request permission
+                 // document.getElementById('request-orientation-permission').addEventListener('click', () => {
+                 //   DeviceOrientationEvent.requestPermission().then(permissionState => {
+                 //     if (permissionState === 'granted') {
+                 //       window.addEventListener('deviceorientation', handleOrientation, true);
+                 //     }
+                 //   });
+                 // });
+                 // For now, just add listener, might not work without explicit user grant
                  window.addEventListener('deviceorientation', handleOrientation, true);
             } else if (window.DeviceOrientationEvent) {
+                 // Older browsers / Android
                  window.addEventListener('deviceorientation', handleOrientation, true);
             } else {
                 console.log("DeviceOrientation not supported.");
             }
 
-             // --- Particle Background Animation (Theme Aware) ---
+             // --- Particle Background Animation (Theme Aware & Interactive) ---
             if (particleCanvas) {
                 const ctx = particleCanvas.getContext('2d');
                 let particles = [];
 
+                // Update mouse position on mouse move over the canvas
+                particleCanvas.addEventListener('mousemove', (event) => {
+                    mouse.x = event.clientX;
+                    mouse.y = event.clientY;
+                });
+                // Reset mouse position when mouse leaves canvas
+                particleCanvas.addEventListener('mouseleave', () => {
+                    mouse.x = null;
+                    mouse.y = null;
+                });
+
+                // Function to resize canvas to window size
                 function resizeCanvas() {
                     particleCanvas.width = window.innerWidth;
                     particleCanvas.height = window.innerHeight;
                  }
 
+                // Function to create particles
                 function createParticles() {
                     particles = [];
-                    const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 25000);
+                    // Adjust particle count based on screen area
+                    const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 20000); // Denser particles
                     for (let i = 0; i < particleCount; i++) {
                         particles.push({
                             x: Math.random() * particleCanvas.width,
                             y: Math.random() * particleCanvas.height,
-                            vx: (Math.random() - 0.5) * 0.25,
-                            vy: (Math.random() - 0.5) * 0.25,
-                            radius: Math.random() * 1.2 + 0.4,
-                            color: null // Color will be assigned in drawParticles
+                            vx: (Math.random() - 0.5) * 0.3, // Slightly faster base speed
+                            vy: (Math.random() - 0.5) * 0.3,
+                            radius: Math.random() * 1.5 + 0.5, // Slightly larger particles
+                            baseColor: null, // Store the base theme color
+                            drawColor: null // Store the current color (potentially affected by mouse)
                         });
                     }
                 }
 
+                // Function to draw particles and lines
                 function drawParticles() {
                     if (!ctx) return;
-                    ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                    ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height); // Clear canvas each frame
                     const isDark = document.documentElement.classList.contains('dark');
-                    // Theme-aware particle colors using Tailwind config values
+                    // Get theme colors from Tailwind config
                     const twConfig = tailwind.config.theme.extend.colors;
-                    const lightColors = [`${twConfig.accent}33`, `${twConfig['accent-secondary']}33`]; // Append alpha hex
-                    const darkColors = [`${twConfig['dark-accent']}33`, `${twConfig['dark-accent-secondary']}33`];
+                    const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`]; // Use alpha hex for transparency
+                    const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`];
                     const themeColors = isDark ? darkColors : lightColors;
+                    const lineColor = isDark ? 'rgba(197, 198, 199, 0.08)' : 'rgba(74, 74, 74, 0.08)'; // Subtle line color
 
-
-                    particles.forEach(p => {
-                        // Assign color if needed (e.g., on first draw or theme change)
-                         if (!p.color) {
-                             p.color = themeColors[Math.floor(Math.random() * themeColors.length)];
+                    particles.forEach((p, i) => {
+                        // Assign base color if needed (on first draw or theme change)
+                         if (!p.baseColor) {
+                             p.baseColor = themeColors[Math.floor(Math.random() * themeColors.length)];
                          }
-                        ctx.fillStyle = p.color;
+                         p.drawColor = p.baseColor; // Default draw color
+
+                        // Interaction with mouse
+                        if (mouse.x !== null && mouse.y !== null) {
+                            const dx = mouse.x - p.x;
+                            const dy = mouse.y - p.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            const interactionRadius = 150; // Increased interaction radius
+
+                            if (distance < interactionRadius) {
+                                // Make particles near mouse slightly brighter/more opaque
+                                const opacityFactor = 1 - (distance / interactionRadius);
+                                const baseHex = p.baseColor.substring(0, 7); // Get #RRGGBB
+                                const alphaHex = Math.min(255, Math.floor(parseInt(p.baseColor.substring(7, 9) || '80', 16) + opacityFactor * 150)).toString(16).padStart(2, '0'); // Increase alpha
+                                p.drawColor = `${baseHex}${alphaHex}`;
+
+                                // Push particles away from mouse slightly
+                                const force = (interactionRadius - distance) / interactionRadius;
+                                p.x -= (dx / distance) * force * 0.5; // Gentle push
+                                p.y -= (dy / distance) * force * 0.5;
+                            }
+                        }
+
+                        // Draw particle
+                        ctx.fillStyle = p.drawColor;
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                         ctx.fill();
 
+                        // Update position
                         p.x += p.vx;
                         p.y += p.vy;
 
-                        // Wrap particles
+                        // Wrap particles around edges
                         if (p.x < -p.radius) p.x = particleCanvas.width + p.radius;
                         if (p.x > particleCanvas.width + p.radius) p.x = -p.radius;
                         if (p.y < -p.radius) p.y = particleCanvas.height + p.radius;
                         if (p.y > particleCanvas.height + p.radius) p.y = -p.radius;
+
+                        // Draw lines to nearby particles
+                        const lineDistanceThreshold = 100; // Max distance to draw lines
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const p2 = particles[j];
+                            const dx = p.x - p2.x;
+                            const dy = p.y - p2.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+
+                            if (distance < lineDistanceThreshold) {
+                                ctx.strokeStyle = lineColor;
+                                ctx.lineWidth = 0.5 * (1 - distance / lineDistanceThreshold); // Thinner lines further away
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.stroke();
+                            }
+                        }
                     });
 
+                    // Request next frame
                     particleAnimationId = requestAnimationFrame(drawParticles);
                 }
 
+                // Initialize or re-initialize particles
                 function initParticles() {
                     resizeCanvas();
-                    // Reset particle colors so they get reassigned based on current theme
-                    particles.forEach(p => p.color = null);
+                    // Reset particle base colors so they get reassigned based on current theme
+                    particles.forEach(p => p.baseColor = null);
                     createParticles(); // Create particles (they will get colors in drawParticles)
-                    if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
-                    if (!document.hidden) { drawParticles(); }
+                    if (particleAnimationId) cancelAnimationFrame(particleAnimationId); // Stop previous animation loop
+                    if (!document.hidden) { drawParticles(); } // Start animation loop if page is visible
                 }
 
                 initParticles(); // Initial setup
 
+                // Re-initialize on resize (debounced)
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(initParticles, 250); // Debounce resize
+                    resizeTimeout = setTimeout(initParticles, 250);
                 });
 
-                 // Page Visibility API Integration
+                 // Pause/Resume animation based on page visibility
                  document.addEventListener('visibilitychange', () => {
                     if (document.hidden) {
                         if (particleAnimationId) {
@@ -1304,7 +1629,7 @@
                             console.log("Particle animation paused.");
                         }
                     } else {
-                        if (!particleAnimationId) {
+                        if (!particleAnimationId) { // Only resume if not already running
                             drawParticles();
                             console.log("Particle animation resumed.");
                         }
