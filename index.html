@@ -6,8 +6,7 @@
     <title>Daniel Wanjala - Data Scientist / ML Engineer</title>
     <link rel="icon" href="assets/favicon.ico" sizes="32x32">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png"> <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -134,30 +133,31 @@
 
         /* --- Preloader Styles (Loading Bar) --- */
         #preloader {
-            position: fixed; inset: 0; background-color: #F7F7F7;
+            position: fixed; inset: 0; background-color: #F7F7F7; /* Default to light bg */
             z-index: 9999; display: flex; align-items: center; justify-content: center;
             opacity: 1; transition: opacity 0.5s ease-out 3.8s;
         }
+        /* Dark preloader style (applied if dark mode is activated later) */
         html.dark #preloader { background-color: #0B0C10; }
         #preloader.hidden { opacity: 0; pointer-events: none; }
 
         #loading-bar-container {
             width: 70%; max-width: 400px; height: 8px;
-            background-color: rgba(108, 92, 231, 0.2);
+            background-color: rgba(108, 92, 231, 0.2); /* Light theme accent */
             border-radius: 4px; overflow: hidden;
         }
-        html.dark #loading-bar-container { background-color: rgba(102, 252, 241, 0.2); }
+        html.dark #loading-bar-container { background-color: rgba(102, 252, 241, 0.2); } /* Dark theme accent */
 
         #loading-bar {
             width: 100%; height: 100%;
-            background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary'));
+            background-image: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary')); /* Light theme gradient */
             border-radius: 4px;
             transform: scaleX(0);
             transform-origin: left;
             animation: load 4s ease-out forwards;
         }
         html.dark #loading-bar {
-             background-image: linear-gradient(to right, theme('colors.dark-accent'), theme('colors.dark-accent-secondary'));
+             background-image: linear-gradient(to right, theme('colors.dark-accent'), theme('colors.dark-accent-secondary')); /* Dark theme gradient */
         }
         @keyframes load {
             0% { transform: scaleX(0); }
@@ -190,11 +190,28 @@
             transition: transform 0.3s ease-in-out;
         }
 
+        /* --- Back to Top Button Styles --- */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateY(20px);
+            z-index: 1000;
+        }
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
     </style>
     <script>
       // Tailwind Config - Extended with new theme colors
       tailwind.config = {
-        darkMode: 'class',
+        darkMode: 'class', // Keep 'class' strategy to allow manual toggle
         theme: {
           extend: {
             colors: {
@@ -235,29 +252,35 @@
       }
     </script>
     <script>
-        // Immediately set theme and background noise
+        // --- Theme Initialization (Defaults to Light) ---
         (function() {
+            // Check local storage *first* in case user explicitly set it during the session
             const storedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const isDark = storedTheme === 'dark' || (!storedTheme && prefersDark);
+            let initialTheme = 'light'; // Default to light
 
-            if (isDark) {
+            // If a theme was stored, use that
+            if (storedTheme) {
+                initialTheme = storedTheme;
+            }
+            // Apply the initial theme (defaults to light if nothing stored)
+            if (initialTheme === 'dark') {
                 document.documentElement.classList.add('dark');
             } else {
-                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.remove('dark'); // Ensure light mode if not dark
             }
 
-            const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-            const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-
-             const setBgNoise = () => {
+            // Function to apply background noise based on the current theme
+            const applyBgNoise = () => {
+                const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
+                const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                 document.body.style.backgroundImage = document.documentElement.classList.contains('dark') ? noiseDark : noiseLight;
-             };
+            };
 
-             if (document.body) {
-                 setBgNoise();
+            // Apply noise pattern once DOM is ready or immediately if already loaded
+             if (document.readyState === 'loading') {
+                 document.addEventListener('DOMContentLoaded', applyBgNoise);
              } else {
-                 document.addEventListener('DOMContentLoaded', setBgNoise);
+                 applyBgNoise();
              }
         })();
     </script>
@@ -281,7 +304,7 @@
                     <a href="#hero" class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading hover:opacity-80 transition-opacity">
                         Daniel Wanjala.
                     </a>
-                    </div>
+                </div>
                 <nav class="hidden md:flex space-x-6" id="desktop-nav">
                      <a href="#about" data-section="about" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">
                         About <span class="active-underline"></span>
@@ -310,9 +333,7 @@
                 </nav>
                 <div class="flex items-center space-x-2">
                      <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="p-2 rounded-full text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200">
-                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden"></i>
-                        <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5 hidden"></i>
-                     </button>
+                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden"></i> <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5"></i> </button>
                     <div class="md:hidden">
                         <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent dark:focus:ring-dark-accent" aria-controls="mobile-menu" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
@@ -856,6 +877,10 @@
 
         <div id="copy-toast">✅ Copied!</div>
 
+        <button id="back-to-top" aria-label="Back to Top" class="interactive-element p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black shadow-lg hover:bg-accent-secondary dark:hover:bg-dark-accent-secondary transition-all duration-300">
+            <i data-lucide="arrow-up" class="h-5 w-5"></i>
+        </button>
+
     </div> <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- Initialize Lucide Icons ---
@@ -863,7 +888,7 @@
 
             // --- Constants and State ---
             const name = "Daniel Wanjala";
-            // Project data (unchanged from original)
+            // Project data (unchanged)
              const projectsData = [
               { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=GDP+Viz", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
               { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Plant+Viz", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
@@ -871,12 +896,12 @@
               { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Invest+Viz", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
               { id: 5, title: "Netflix Stock Profit Analysis", description: "Analyzed Netflix's stock performance...", tags: ["Finance", "Analysis", "Python"], imageUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock", altImageUrl: "https://placehold.co/600x400/66FCF1/0B0C10?text=Netflix+Viz", problem: "Understanding historical performance...", dataUsed: "Historical Netflix stock data.", results: "Provided insights into profitability...", techStack: ["Python", "Pandas", "Matplotlib"], githubUrl: "https://github.com/MadScie254/Netflix-Analysis", liveDemoUrl: null, accentColor: "sandstone" }
             ];
-            const whatsappBaseUrl = "https://wa.me/254742007277"; // Replace with actual number if needed
+            const whatsappBaseUrl = "https://wa.me/254742007277";
             const whatsappMessage = "Hello Daniel, I visited your portfolio and would like to connect.";
             let toneJsStarted = false;
             let synth, clickSynth;
             let particleAnimationId;
-            let mouse = { x: null, y: null, radius: 100 }; // Mouse position for particle interaction
+            let mouse = { x: null, y: null, radius: 100 };
 
             // --- DOM Element References ---
             const htmlEl = document.documentElement;
@@ -910,7 +935,8 @@
             const counterElements = document.querySelectorAll('[data-target]');
             const mainContentContainer = document.getElementById('main-content-container');
             const particleCanvas = document.getElementById('particle-canvas');
-            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card, .skill-card, .education-item'); // Added new interactive elements
+            const backToTopButton = document.getElementById('back-to-top'); // NEW: Back to top button
+            const interactiveElements = document.querySelectorAll('a, button, .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card, .skill-card, .education-item, #back-to-top'); // Added back-to-top
 
 
             // --- Hide Preloader ---
@@ -919,7 +945,7 @@
                     if (preloader) {
                         preloader.classList.add('hidden');
                     }
-                 }, 4000); // Keep preloader duration
+                 }, 4000);
             });
 
             // --- Update WhatsApp Link ---
@@ -931,59 +957,60 @@
             // --- Tone.js Initialization ---
             function startTone() {
                 if (toneJsStarted || typeof Tone === 'undefined') return;
-                Tone.start();
-                // Low volume synth for subtle hover feedback
-                synth = new Tone.Synth({
-                    oscillator: { type: 'sine' },
-                    envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }
-                }).toDestination();
-                 synth.volume.value = -25; // Quieter hover sound
+                try {
+                    Tone.start();
+                    synth = new Tone.Synth({
+                        oscillator: { type: 'sine' },
+                        envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }
+                    }).toDestination();
+                    synth.volume.value = -25;
 
-                // Slightly different synth for clicks
-                clickSynth = new Tone.Synth({
-                    oscillator: { type: 'triangle' },
-                    envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }
-                }).toDestination();
-                clickSynth.volume.value = -20; // Slightly louder click
+                    clickSynth = new Tone.Synth({
+                        oscillator: { type: 'triangle' },
+                        envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }
+                    }).toDestination();
+                    clickSynth.volume.value = -20;
 
-                toneJsStarted = true;
-                console.log("Tone.js AudioContext started.");
+                    toneJsStarted = true;
+                    console.log("Tone.js AudioContext started.");
+                } catch (e) {
+                    console.error("Tone.js initialization failed:", e);
+                }
             }
-            // Start audio context on first user interaction
             document.body.addEventListener('click', startTone, { once: true });
             document.body.addEventListener('keydown', startTone, { once: true });
 
-            // --- Sound Feedback for Interactive Elements ---
+            // --- Sound Feedback ---
             interactiveElements.forEach(el => {
                  el.addEventListener('mouseenter', () => {
                     if (toneJsStarted && synth) {
-                        // Play a subtle high note on hover
-                        synth.triggerAttackRelease('C5', '16n', Tone.now());
+                        try { synth.triggerAttackRelease('C5', '16n', Tone.now()); } catch(e) { console.warn("Synth sound error:", e); }
                     }
                 });
                  el.addEventListener('click', () => {
                     if (toneJsStarted && clickSynth) {
-                        // Play a distinct click sound
-                        clickSynth.triggerAttackRelease('E4', '16n', Tone.now());
+                         try { clickSynth.triggerAttackRelease('E4', '16n', Tone.now()); } catch(e) { console.warn("Click sound error:", e); }
                     }
                 });
             });
 
-            // --- Theme Toggle ---
-            function updateThemeUI(theme) {
+            // --- Theme Management ---
+            function updateThemeUI() {
+                const isDark = document.documentElement.classList.contains('dark');
                 if (!themeIconSun || !themeIconMoon) return;
-                if (theme === 'dark') {
+                if (isDark) {
                     themeIconSun.classList.remove('hidden');
                     themeIconMoon.classList.add('hidden');
                 } else {
                     themeIconSun.classList.add('hidden');
                     themeIconMoon.classList.remove('hidden');
                 }
-                 lucide.createIcons(); // Re-render icons after changing visibility
-                 // Update body background noise pattern
+                 lucide.createIcons(); // Re-render icons
+
+                 // Update body background noise
                  const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                  const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-                 document.body.style.backgroundImage = theme === 'dark' ? noiseDark : noiseLight;
+                 document.body.style.backgroundImage = isDark ? noiseDark : noiseLight;
             }
 
             function setTheme(theme) {
@@ -992,25 +1019,25 @@
                 } else {
                     htmlEl.classList.remove('dark');
                 }
+                // Save the *user's choice* to local storage
                 localStorage.setItem('theme', theme);
-                updateThemeUI(theme);
-                 // Play a subtle sound feedback for theme change
+                updateThemeUI();
+                 // Play sound feedback for theme change
                  if (toneJsStarted && clickSynth) {
-                     clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now());
+                     try { clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now()); } catch(e) { console.warn("Theme change sound error:", e); }
                  }
                  // Re-initialize particles with new theme colors
                  if (particleCanvas) initParticles();
             }
 
-            // Set initial theme based on preference or storage
-            const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            updateThemeUI(currentTheme); // Update icons immediately
+            // Update UI based on initial theme set in the IIFE
+            updateThemeUI();
 
             // Theme toggle button listener
             if (themeToggleButton) {
                 themeToggleButton.addEventListener('click', () => {
                     const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
-                    setTheme(newTheme);
+                    setTheme(newTheme); // This function now saves to localStorage
                 });
             }
 
@@ -1019,11 +1046,10 @@
                  mobileMenuButton.addEventListener('click', () => {
                     const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
                     mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-                    mobileMenu.classList.toggle('open'); // Toggle the 'open' class for smooth transition
-                    menuIconOpen.classList.toggle('hidden'); // Toggle burger icon
-                    menuIconClose.classList.toggle('hidden'); // Toggle close icon
+                    mobileMenu.classList.toggle('open');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
                  });
-                 // Close mobile menu when a link is clicked
                  mobileNavLinks.forEach(link => {
                     link.addEventListener('click', () => {
                          mobileMenuButton.setAttribute('aria-expanded', 'false');
@@ -1035,23 +1061,20 @@
              }
 
             // --- Hero Section Word Rotation ---
-             const words = ["forecast", "heal", "accelerate", "optimize", "innovate", "analyze", "deploy"]; // Added more words
+             const words = ["forecast", "heal", "accelerate", "optimize", "innovate", "analyze", "deploy"];
              let wordIndex = 0;
              if (rotatingWordEl) {
-                 // Function to change the word
                  function changeWord() {
                      wordIndex = (wordIndex + 1) % words.length;
                      rotatingWordEl.style.opacity = '0';
-                     rotatingWordEl.style.transform = 'translateY(10px)'; // Move down slightly before changing
+                     rotatingWordEl.style.transform = 'translateY(10px)';
                      setTimeout(() => {
                          rotatingWordEl.textContent = words[wordIndex];
                          rotatingWordEl.style.opacity = '1';
-                         rotatingWordEl.style.transform = 'translateY(0)'; // Move back up
-                     }, 300); // Wait for fade out transition
+                         rotatingWordEl.style.transform = 'translateY(0)';
+                     }, 300);
                  }
-                 // Set interval for rotation
-                 setInterval(changeWord, 3000); // Change every 3 seconds
-                 // Apply smooth transition styles
+                 setInterval(changeWord, 3000);
                  rotatingWordEl.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
              }
 
@@ -1061,9 +1084,7 @@
                 if (img) {
                     const originalSrc = img.getAttribute('data-original-src');
                     const altSrc = img.getAttribute('data-alt-src');
-                    // Swap to alt image on hover
                     card.addEventListener('mouseenter', () => { if (altSrc) img.src = altSrc; });
-                    // Swap back to original image when mouse leaves
                     card.addEventListener('mouseleave', () => { if (originalSrc) img.src = originalSrc; });
                 }
             });
@@ -1073,14 +1094,10 @@
                 const project = projectsData.find(p => p.id === parseInt(projectId));
                 if (!project || !projectModalContent || !projectModal || !projectModalContentWrapper) return;
 
-                // Generate HTML for tech stack tags
                 const techStackHtml = project.techStack.map(tech => `<span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">${tech}</span>`).join(' ');
-                // Generate GitHub button if URL exists
                 const githubButton = project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-secondary-text dark:bg-dark-accent-secondary text-primary-bg dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub </a>` : '';
-                // Generate Live Demo button if URL exists
                 const demoButton = project.liveDemoUrl ? `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md"> <i data-lucide="code" class="mr-2 h-4 w-4"></i> Live Demo </a>` : '';
 
-                // Set initial modal content with placeholders for stats
                 projectModalContent.innerHTML = `
                     <div class="relative">
                        <img src="${project.altImageUrl || project.imageUrl}" alt="${project.title}" class="w-full h-64 object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/800x400/0B0C10/F7F7F7?text=Image+Error'">
@@ -1105,18 +1122,17 @@
                       <div id="github-stats-container" class="mt-6 pt-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/20 ${!project.githubUrl ? 'hidden' : ''}">
                           <button id="fetch-stats-button" class="interactive-element text-sm text-accent dark:text-dark-accent hover:underline mb-2">Show GitHub Stats</button>
                           <div id="github-stats-content" class="hidden text-sm space-y-1">
-                              <p>Fetching stats...</p> </div>
+                              <p>Fetching stats...</p>
+                          </div>
                           <p class="text-xs text-secondary-text dark:text-dark-secondary-text mt-2">Note: Stats via public GitHub API. May be rate-limited.</p>
                       </div>
 
                       <div class="flex gap-4 mt-6">${githubButton}${demoButton}</div>
                     </div>`;
 
-                // Add event listener for the close button
                 const closeButton = projectModalContent.querySelector('#closeModalButton');
                 if(closeButton) closeButton.addEventListener('click', closeModal);
 
-                // Add event listener for the fetch GitHub stats button
                 const fetchStatsButton = projectModalContent.querySelector('#fetch-stats-button');
                 const statsContent = projectModalContent.querySelector('#github-stats-content');
 
@@ -1124,25 +1140,22 @@
                     fetchStatsButton.addEventListener('click', () => {
                         fetchStatsButton.textContent = 'Loading...';
                         fetchStatsButton.disabled = true;
-                        statsContent.classList.remove('hidden'); // Show the loading message
+                        statsContent.classList.remove('hidden');
 
                         try {
-                            // Extract owner and repo name from GitHub URL
                             const url = new URL(project.githubUrl);
-                            const pathParts = url.pathname.split('/').filter(Boolean); // Get parts like ['owner', 'repo']
+                            const pathParts = url.pathname.split('/').filter(Boolean);
                             if (pathParts.length >= 2) {
                                 const owner = pathParts[0];
                                 const repo = pathParts[1];
                                 const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
 
-                                // Fetch data from GitHub API
                                 fetch(apiUrl)
                                 .then(response => {
                                     if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                                     return response.json();
                                 })
                                 .then(data => {
-                                    // Display fetched stats
                                     statsContent.innerHTML = `
                                         <span class="inline-flex items-center mr-4">
                                             <i data-lucide="star" class="w-4 h-4 mr-1 text-yellow-500"></i> ${data.stargazers_count ?? 'N/A'} Stars
@@ -1151,165 +1164,121 @@
                                             <i data-lucide="git-fork" class="w-4 h-4 mr-1 text-secondary-text dark:text-dark-secondary-text"></i> ${data.forks_count ?? 'N/A'} Forks
                                         </span>
                                     `;
-                                    lucide.createIcons(); // Render new icons (star, fork)
-                                    fetchStatsButton.classList.add('hidden'); // Hide button after successful fetch
+                                    lucide.createIcons();
+                                    fetchStatsButton.classList.add('hidden');
                                 })
                                 .catch(error => {
-                                    // Handle errors during fetch
                                     console.error("Error fetching GitHub stats:", error);
                                     statsContent.innerHTML = `<p class="text-red-coral">Could not load stats.</p>`;
-                                    fetchStatsButton.textContent = 'Retry Stats'; // Allow retry
+                                    fetchStatsButton.textContent = 'Retry Stats';
                                     fetchStatsButton.disabled = false;
                                 });
                             } else { throw new Error("Could not parse owner/repo from URL"); }
                         } catch (error) {
-                             // Handle errors parsing the URL
                              console.error("Error processing GitHub URL:", error);
                              statsContent.innerHTML = `<p class="text-red-coral">Invalid GitHub URL.</p>`;
-                             fetchStatsButton.classList.add('hidden'); // Hide button if URL is invalid
+                             fetchStatsButton.classList.add('hidden');
                         }
-                    }, { once: false }); // Allow retry by not using { once: true }
+                    }, { once: false });
                 }
 
-                // Show the modal with animation
                 projectModal.classList.remove('hidden-modal');
                 projectModal.classList.add('visible-modal');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-                lucide.createIcons(); // Ensure all icons in the modal are rendered
+                document.body.style.overflow = 'hidden';
+                lucide.createIcons();
             }
 
-            // Function to close the modal
             function closeModal() {
                 if (!projectModal || !projectModalContent) return;
                 projectModal.classList.add('hidden-modal');
                 projectModal.classList.remove('visible-modal');
-                document.body.style.overflow = ''; // Re-enable background scrolling
-                // Clear modal content after transition
+                document.body.style.overflow = '';
                 setTimeout(() => { projectModalContent.innerHTML = ''; }, 300);
             }
 
-            // Add click listeners to project cards to open the modal
             projectCards.forEach(card => card.addEventListener('click', () => openModal(card.getAttribute('data-project-id'))));
-            // Add listener to close modal when clicking outside the content area
             if(projectModal) projectModal.addEventListener('click', (event) => { if (event.target === projectModal) closeModal(); });
-            // Add listener to close modal with the Escape key
             document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && projectModal && projectModal.classList.contains('visible-modal')) closeModal(); });
 
             // --- Contact Form Handling ---
              if (contactForm) {
                  contactForm.addEventListener('submit', (e) => {
-                    e.preventDefault(); // Prevent default form submission
+                    e.preventDefault();
                     let isValid = true;
                     let firstErrorField = null;
 
-                    // Reset previous status/errors
                     if(formStatusEl) {
                         formStatusEl.textContent = '';
-                        formStatusEl.className = 'mt-2 text-center text-sm font-body'; // Reset classes
+                        formStatusEl.className = 'mt-2 text-center text-sm font-body';
                     }
-                    contactForm.querySelectorAll('.form-error').forEach(el => el.classList.add('hidden')); // Hide all error messages
-                    contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-red-coral', 'ring-red-coral', 'border-emerald-green')); // Remove validation borders
+                    contactForm.querySelectorAll('.form-error').forEach(el => el.classList.add('hidden'));
+                    contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-red-coral', 'ring-red-coral', 'border-emerald-green'));
 
-                    // Get form fields
                     const nameField = contactForm.querySelector('#name');
                     const emailField = contactForm.querySelector('#email');
                     const messageField = contactForm.querySelector('#message');
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-                    // Validate Name
-                    if (nameField && !nameField.value.trim()) {
-                        isValid = false;
-                        nameField.classList.add('border-red-coral', 'ring-red-coral');
-                        nameField.nextElementSibling.textContent = 'Name is required.';
-                        nameField.nextElementSibling.classList.remove('hidden');
-                        if (!firstErrorField) firstErrorField = nameField; // Track first error for focus
-                    }
-                    // Validate Email
-                    if (emailField && !emailField.value.trim()) {
-                        isValid = false;
-                        emailField.classList.add('border-red-coral', 'ring-red-coral');
-                        emailField.nextElementSibling.textContent = 'Email is required.';
-                        emailField.nextElementSibling.classList.remove('hidden');
-                        if (!firstErrorField) firstErrorField = emailField;
-                    } else if (emailField && !emailRegex.test(emailField.value)) {
-                        isValid = false;
-                        emailField.classList.add('border-red-coral', 'ring-red-coral');
-                        emailField.nextElementSibling.textContent = 'Please enter a valid email address.';
-                        emailField.nextElementSibling.classList.remove('hidden');
-                        if (!firstErrorField) firstErrorField = emailField;
-                    }
-                    // Validate Message
-                    if (messageField && !messageField.value.trim()) {
-                        isValid = false;
-                        messageField.classList.add('border-red-coral', 'ring-red-coral');
-                        messageField.nextElementSibling.textContent = 'Message cannot be empty.';
-                        messageField.nextElementSibling.classList.remove('hidden');
-                        if (!firstErrorField) firstErrorField = messageField;
-                    }
+                    if (nameField && !nameField.value.trim()) { isValid = false; nameField.classList.add('border-red-coral', 'ring-red-coral'); nameField.nextElementSibling.textContent = 'Name is required.'; nameField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = nameField; }
+                    if (emailField && !emailField.value.trim()) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Email is required.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
+                    else if (emailField && !emailRegex.test(emailField.value)) { isValid = false; emailField.classList.add('border-red-coral', 'ring-red-coral'); emailField.nextElementSibling.textContent = 'Please enter a valid email address.'; emailField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = emailField; }
+                    if (messageField && !messageField.value.trim()) { isValid = false; messageField.classList.add('border-red-coral', 'ring-red-coral'); messageField.nextElementSibling.textContent = 'Message cannot be empty.'; messageField.nextElementSibling.classList.remove('hidden'); if (!firstErrorField) firstErrorField = messageField; }
 
-                    // If form is invalid
                     if (!isValid) {
-                        if(submitButton) submitButton.classList.add('animate-shake', '!bg-red-coral'); // Shake button and make it red
+                        if(submitButton) submitButton.classList.add('animate-shake', '!bg-red-coral');
                         if(buttonText) buttonText.textContent = 'Please Check Errors';
-                        if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'alert-circle'); lucide.createIcons(); } // Change icon to alert
+                        if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'alert-circle'); lucide.createIcons(); }
                         if(formStatusEl) { formStatusEl.textContent = 'Please correct the errors above.'; formStatusEl.classList.add('text-red-coral'); }
-                        if (firstErrorField) firstErrorField.focus(); // Focus the first field with an error
-                        // Reset button appearance after a delay
+                        if (firstErrorField) firstErrorField.focus();
                         setTimeout(() => {
                             if(submitButton) submitButton.classList.remove('animate-shake', '!bg-red-coral');
                             if(buttonText) buttonText.textContent = 'Send Message';
-                            if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'arrow-right'); lucide.createIcons(); } // Reset icon
+                            if(buttonIcon) { buttonIcon.setAttribute('data-lucide', 'arrow-right'); lucide.createIcons(); }
                         }, 1500);
-                        return; // Stop form submission
+                        return;
                     }
 
-                    // If form is valid, show success state (simulation)
-                    // Add green border to valid fields
                     contactForm.querySelectorAll('.form-input').forEach(el => {
-                        if (!el.classList.contains('border-red-coral')) { // Only add green if no error
+                        if (!el.classList.contains('border-red-coral')) {
                             el.classList.add('border-emerald-green');
                         }
                     });
 
-                    // Update button to "Sending..." state
                     if(submitButton) submitButton.disabled = true;
                     if(buttonText) buttonText.textContent = 'Sending...';
-                    if(buttonIcon) buttonIcon.classList.add('hidden'); // Hide icon while sending
-                    if(formStatusEl) formStatusEl.textContent = ''; // Clear status message
+                    if(buttonIcon) buttonIcon.classList.add('hidden');
+                    if(formStatusEl) formStatusEl.textContent = '';
 
-                    // Simulate network delay for submission
+                    // Simulate form submission
                     setTimeout(() => {
-                        // Update button to "Sent" state
                         if(submitButton) {
                             submitButton.classList.remove('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
-                            submitButton.classList.add('!bg-emerald-green', 'text-white'); // Make button green
+                            submitButton.classList.add('!bg-emerald-green', 'text-white');
                         }
                         if(buttonText) buttonText.textContent = 'Message Sent!';
                         if(formStatusEl) {
                             formStatusEl.textContent = 'Thank you for your message! I\'ll get back to you soon.';
-                            formStatusEl.classList.add('text-emerald-green'); // Show success message
+                            formStatusEl.classList.add('text-emerald-green');
                         }
-                        contactForm.reset(); // Clear the form
-                        // Remove validation borders after successful submission
+                        contactForm.reset();
                         contactForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('border-emerald-green', 'border-red-coral', 'ring-red-coral'));
 
-                        // Reset button and form status after another delay
                         setTimeout(() => {
                             if(submitButton) {
                                 submitButton.disabled = false;
                                 submitButton.classList.remove('!bg-emerald-green', 'text-white');
-                                // Re-apply original gradient background
                                 submitButton.classList.add('bg-gradient-to-r', 'from-accent', 'to-accent-secondary', 'dark:from-dark-accent', 'dark:to-dark-accent-secondary');
+
                             }
                             if(buttonText) buttonText.textContent = 'Send Message';
-                            if(buttonIcon) buttonIcon.classList.remove('hidden'); // Show icon again
+                            if(buttonIcon) buttonIcon.classList.remove('hidden');
                             if(formStatusEl) {
-                                formStatusEl.textContent = ''; // Clear success message
-                                formStatusEl.className = 'mt-2 text-center text-sm font-body'; // Reset classes
+                                formStatusEl.textContent = '';
+                                formStatusEl.className = 'mt-2 text-center text-sm font-body';
                             }
-                        }, 3000); // Reset after 3 seconds
+                        }, 3000);
 
-                    }, 1500); // Simulate 1.5 second delay
+                    }, 1500);
                 });
              }
 
@@ -1320,67 +1289,55 @@
             window.addEventListener('scroll', () => {
                 const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
                 const scrolled = window.scrollY;
-                // Calculate progress, handle division by zero if scrollableHeight is 0
                 const progress = scrollableHeight > 0 ? (scrolled / scrollableHeight) : 0;
                 if(scrollProgressBar) scrollProgressBar.style.transform = `scaleX(${progress})`;
             });
 
             // --- Scroll Reveal Animations (with Staggering) ---
-            const revealObserverOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }; // Trigger slightly before element is fully visible
+            const revealObserverOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
             const revealCallback = (entries, observer) => {
                 entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
-                        // Apply delay based on data attribute or index for staggering effect
-                        const delay = (entry.target.dataset.revealDelay || (index * 100)); // Default stagger 100ms
+                        const delay = (entry.target.dataset.revealDelay || (index * 100));
                         entry.target.style.transitionDelay = `${delay}ms`;
-                        // Add visibility classes
                         entry.target.classList.add('reveal-visible');
                         if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
                             entry.target.classList.add('slide-in');
                         }
-                        observer.unobserve(entry.target); // Stop observing once revealed
+                        observer.unobserve(entry.target);
                     }
                 });
             };
             const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
-            // Observe all elements with reveal classes
             document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right').forEach(el => revealObserver.observe(el));
 
             // --- Active Navigation Link Highlighting ---
             let currentActiveSectionId = null;
-            // Observer options: trigger when section is roughly centered in viewport
             const navObserverOptions = { root: null, rootMargin: "-40% 0px -60% 0px", threshold: 0 };
              const navObserverCallback = (entries) => {
-                let intersectingSectionId = currentActiveSectionId; // Keep track of the currently active section
+                let intersectingSectionId = currentActiveSectionId;
                  entries.forEach(entry => {
-                     // If a section is intersecting significantly, mark it as potentially active
                      if (entry.isIntersecting && entry.intersectionRatio > 0) {
                          intersectingSectionId = entry.target.getAttribute('id');
                      }
                  });
 
-                 // Update active link only if the intersecting section has changed
                  if (intersectingSectionId !== currentActiveSectionId) {
                     currentActiveSectionId = intersectingSectionId;
-                    // Update desktop nav links
                     navLinks.forEach(link => {
                         link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                     });
-                    // Update mobile nav links
                     mobileNavLinks.forEach(link => {
                          link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                     });
                  }
             };
             const navObserver = new IntersectionObserver(navObserverCallback, navObserverOptions);
-            // Observe all main sections with an ID
             sections.forEach(section => { if(section) navObserver.observe(section); });
 
-            // Initial check on page load for hash links
             const initialHash = window.location.hash.substring(1);
              if (initialHash) {
                  currentActiveSectionId = initialHash;
-                 // Highlight the corresponding nav link immediately
                  navLinks.forEach(link => {
                      link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
                  });
@@ -1390,93 +1347,72 @@
              }
 
             // --- Clipboard Copy Functionality ---
-            let toastTimeout; // Timeout ID for hiding the toast
+            let toastTimeout;
             copyButtons.forEach(button => {
                  button.addEventListener('click', () => {
-                    const textToCopy = button.dataset.copyText; // Get text from data attribute
+                    const textToCopy = button.dataset.copyText;
                     if (textToCopy && navigator.clipboard) {
                         navigator.clipboard.writeText(textToCopy).then(() => {
-                            // Show success toast
                             if (copyToast) {
                                 copyToast.classList.add('show');
-                                // Clear previous timeout if exists
                                 clearTimeout(toastTimeout);
-                                // Set new timeout to hide toast
                                 toastTimeout = setTimeout(() => {
                                     copyToast.classList.remove('show');
-                                }, 2000); // Hide after 2 seconds
+                                }, 2000);
                             }
                         }).catch(err => {
-                            // Log error if copy fails
                             console.error('Failed to copy text: ', err);
                         });
                     }
                 });
             });
 
-            // --- Animated Counters (Example - if you add elements with data-target) ---
+            // --- Animated Counters ---
             const animateCounter = (el) => {
                  const target = parseInt(el.dataset.target, 10);
-                if (isNaN(target)) return; // Ignore if target is not a number
+                if (isNaN(target)) return;
                 let current = 0;
-                const duration = 1500; // Animation duration in ms
-                const stepTime = 20; // Update interval in ms
+                const duration = 1500;
+                const stepTime = 20;
                 const totalSteps = duration / stepTime;
-                const increment = target / totalSteps; // Value to add each step
+                const increment = target / totalSteps;
 
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
-                        el.textContent = target; // Ensure final value is exact
-                        clearInterval(timer); // Stop the interval
+                        el.textContent = target;
+                        clearInterval(timer);
                     } else {
-                        el.textContent = Math.ceil(current); // Update text content
+                        el.textContent = Math.ceil(current);
                     }
                 }, stepTime);
             };
-            // Observer to trigger counter animation when element is visible
-            const counterObserverOptions = { threshold: 0.5 }; // Trigger when 50% visible
+            const counterObserverOptions = { threshold: 0.5 };
             const counterObserverCallback = (entries, observer) => {
                  entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        animateCounter(entry.target); // Start animation
-                        observer.unobserve(entry.target); // Stop observing once animated
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
                     }
                 });
             };
             const counterObserver = new IntersectionObserver(counterObserverCallback, counterObserverOptions);
-            // Observe elements with data-target attribute
             counterElements.forEach(el => counterObserver.observe(el));
 
-            // --- Device Orientation Tilt Effect (Optional Enhancement) ---
+            // --- Device Orientation Tilt Effect ---
             function handleOrientation(event) {
-                 if (!mainContentContainer) return; // Check if container exists
-                // Clamp beta (X-axis tilt) and gamma (Y-axis tilt) values
+                 if (!mainContentContainer) return;
                 const beta = Math.max(-30, Math.min(30, event.beta || 0));
                 const gamma = Math.max(-30, Math.min(30, event.gamma || 0));
-                const maxTilt = 1.0; // Max tilt degrees
-                // Calculate tilt percentages
+                const maxTilt = 1.0;
                 const tiltY = (beta / 30 * maxTilt).toFixed(2);
-                const tiltX = (gamma / 30 * -maxTilt).toFixed(2); // Invert gamma for natural feel
-                // Apply transform
+                const tiltX = (gamma / 30 * -maxTilt).toFixed(2);
                 mainContentContainer.style.transform = `perspective(1500px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`;
             }
-            // Check for DeviceOrientationEvent support and permissions
             if (window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function') {
-                 // iOS 13+ requires permission
                  console.log("DeviceOrientation requires permission request on this device.");
-                 // Example: Add a button to request permission
-                 // document.getElementById('request-orientation-permission').addEventListener('click', () => {
-                 //   DeviceOrientationEvent.requestPermission().then(permissionState => {
-                 //     if (permissionState === 'granted') {
-                 //       window.addEventListener('deviceorientation', handleOrientation, true);
-                 //     }
-                 //   });
-                 // });
-                 // For now, just add listener, might not work without explicit user grant
                  window.addEventListener('deviceorientation', handleOrientation, true);
             } else if (window.DeviceOrientationEvent) {
-                 // Older browsers / Android
                  window.addEventListener('deviceorientation', handleOrientation, true);
             } else {
                 console.log("DeviceOrientation not supported.");
@@ -1487,99 +1423,84 @@
                 const ctx = particleCanvas.getContext('2d');
                 let particles = [];
 
-                // Update mouse position on mouse move over the canvas
                 particleCanvas.addEventListener('mousemove', (event) => {
                     mouse.x = event.clientX;
                     mouse.y = event.clientY;
                 });
-                // Reset mouse position when mouse leaves canvas
                 particleCanvas.addEventListener('mouseleave', () => {
                     mouse.x = null;
                     mouse.y = null;
                 });
 
-                // Function to resize canvas to window size
                 function resizeCanvas() {
                     particleCanvas.width = window.innerWidth;
                     particleCanvas.height = window.innerHeight;
                  }
 
-                // Function to create particles
                 function createParticles() {
                     particles = [];
-                    // Adjust particle count based on screen area
-                    const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 20000); // Denser particles
+                    const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 20000);
                     for (let i = 0; i < particleCount; i++) {
                         particles.push({
                             x: Math.random() * particleCanvas.width,
                             y: Math.random() * particleCanvas.height,
-                            vx: (Math.random() - 0.5) * 0.3, // Slightly faster base speed
+                            vx: (Math.random() - 0.5) * 0.3,
                             vy: (Math.random() - 0.5) * 0.3,
-                            radius: Math.random() * 1.5 + 0.5, // Slightly larger particles
-                            baseColor: null, // Store the base theme color
-                            drawColor: null // Store the current color (potentially affected by mouse)
+                            radius: Math.random() * 1.5 + 0.5,
+                            baseColor: null,
+                            drawColor: null
                         });
                     }
                 }
 
-                // Function to draw particles and lines
                 function drawParticles() {
                     if (!ctx) return;
-                    ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height); // Clear canvas each frame
+                    ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
                     const isDark = document.documentElement.classList.contains('dark');
-                    // Get theme colors from Tailwind config
                     const twConfig = tailwind.config.theme.extend.colors;
-                    const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`]; // Use alpha hex for transparency
+                    const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`];
                     const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`];
                     const themeColors = isDark ? darkColors : lightColors;
-                    const lineColor = isDark ? 'rgba(197, 198, 199, 0.08)' : 'rgba(74, 74, 74, 0.08)'; // Subtle line color
+                    const lineColor = isDark ? 'rgba(197, 198, 199, 0.08)' : 'rgba(74, 74, 74, 0.08)';
 
                     particles.forEach((p, i) => {
-                        // Assign base color if needed (on first draw or theme change)
                          if (!p.baseColor) {
                              p.baseColor = themeColors[Math.floor(Math.random() * themeColors.length)];
                          }
-                         p.drawColor = p.baseColor; // Default draw color
+                         p.drawColor = p.baseColor;
 
-                        // Interaction with mouse
                         if (mouse.x !== null && mouse.y !== null) {
                             const dx = mouse.x - p.x;
                             const dy = mouse.y - p.y;
                             const distance = Math.sqrt(dx * dx + dy * dy);
-                            const interactionRadius = 150; // Increased interaction radius
+                            const interactionRadius = 150;
 
                             if (distance < interactionRadius) {
-                                // Make particles near mouse slightly brighter/more opaque
                                 const opacityFactor = 1 - (distance / interactionRadius);
-                                const baseHex = p.baseColor.substring(0, 7); // Get #RRGGBB
-                                const alphaHex = Math.min(255, Math.floor(parseInt(p.baseColor.substring(7, 9) || '80', 16) + opacityFactor * 150)).toString(16).padStart(2, '0'); // Increase alpha
+                                const baseHex = p.baseColor.substring(0, 7);
+                                const alphaHex = Math.min(255, Math.floor(parseInt(p.baseColor.substring(7, 9) || '80', 16) + opacityFactor * 150)).toString(16).padStart(2, '0');
                                 p.drawColor = `${baseHex}${alphaHex}`;
 
-                                // Push particles away from mouse slightly
                                 const force = (interactionRadius - distance) / interactionRadius;
-                                p.x -= (dx / distance) * force * 0.5; // Gentle push
+                                p.x -= (dx / distance) * force * 0.5;
                                 p.y -= (dy / distance) * force * 0.5;
                             }
                         }
 
-                        // Draw particle
                         ctx.fillStyle = p.drawColor;
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                         ctx.fill();
 
-                        // Update position
                         p.x += p.vx;
                         p.y += p.vy;
 
-                        // Wrap particles around edges
                         if (p.x < -p.radius) p.x = particleCanvas.width + p.radius;
                         if (p.x > particleCanvas.width + p.radius) p.x = -p.radius;
                         if (p.y < -p.radius) p.y = particleCanvas.height + p.radius;
                         if (p.y > particleCanvas.height + p.radius) p.y = -p.radius;
 
-                        // Draw lines to nearby particles
-                        const lineDistanceThreshold = 100; // Max distance to draw lines
+                        const lineDistanceThreshold = 100;
                         for (let j = i + 1; j < particles.length; j++) {
                             const p2 = particles[j];
                             const dx = p.x - p2.x;
@@ -1588,7 +1509,7 @@
 
                             if (distance < lineDistanceThreshold) {
                                 ctx.strokeStyle = lineColor;
-                                ctx.lineWidth = 0.5 * (1 - distance / lineDistanceThreshold); // Thinner lines further away
+                                ctx.lineWidth = 0.5 * (1 - distance / lineDistanceThreshold);
                                 ctx.beginPath();
                                 ctx.moveTo(p.x, p.y);
                                 ctx.lineTo(p2.x, p2.y);
@@ -1597,30 +1518,25 @@
                         }
                     });
 
-                    // Request next frame
                     particleAnimationId = requestAnimationFrame(drawParticles);
                 }
 
-                // Initialize or re-initialize particles
                 function initParticles() {
                     resizeCanvas();
-                    // Reset particle base colors so they get reassigned based on current theme
                     particles.forEach(p => p.baseColor = null);
-                    createParticles(); // Create particles (they will get colors in drawParticles)
-                    if (particleAnimationId) cancelAnimationFrame(particleAnimationId); // Stop previous animation loop
-                    if (!document.hidden) { drawParticles(); } // Start animation loop if page is visible
+                    createParticles();
+                    if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
+                    if (!document.hidden) { drawParticles(); }
                 }
 
-                initParticles(); // Initial setup
+                initParticles();
 
-                // Re-initialize on resize (debounced)
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimeout);
                     resizeTimeout = setTimeout(initParticles, 250);
                 });
 
-                 // Pause/Resume animation based on page visibility
                  document.addEventListener('visibilitychange', () => {
                     if (document.hidden) {
                         if (particleAnimationId) {
@@ -1629,11 +1545,31 @@
                             console.log("Particle animation paused.");
                         }
                     } else {
-                        if (!particleAnimationId) { // Only resume if not already running
+                        if (!particleAnimationId) {
                             drawParticles();
                             console.log("Particle animation resumed.");
                         }
                     }
+                });
+            }
+
+            // --- Back to Top Button Logic ---
+            if (backToTopButton) {
+                // Show/hide button based on scroll position
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) { // Show after scrolling 300px
+                        backToTopButton.classList.add('visible');
+                    } else {
+                        backToTopButton.classList.remove('visible');
+                    }
+                });
+
+                // Scroll to top smoothly on click
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 });
             }
 
