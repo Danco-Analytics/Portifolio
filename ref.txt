@@ -174,12 +174,15 @@
             box-shadow: 0 0 0 0 theme('colors.dark-accent/50');
         }
 
+        /* Consolidated Pulse Keyframes */
         @keyframes pulse {
             to {
+                /* Default to light theme pulse end state */
                 box-shadow: 0 0 0 45px rgba(108, 92, 231, 0); /* Light accent alpha 0 */
             }
         }
-        @keyframes pulse {
+        /* Dark theme pulse override */
+        html.dark @keyframes pulse {
              to {
                 box-shadow: 0 0 0 45px rgba(102, 252, 241, 0); /* Dark accent alpha 0 */
              }
@@ -197,17 +200,49 @@
         }
         #copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
 
-        /* --- Know More Button Style --- */
+        /* --- Know More Button Style --- Enhanced --- */
         .know-more-button {
-            @apply inline-flex items-center justify-center px-6 py-2 mt-8 text-sm font-medium rounded-lg shadow-md transition-all duration-300 ease-out transform hover:-translate-y-1 hover:scale-103;
+            @apply relative inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg shadow-md transition-all duration-300 ease-out transform hover:-translate-y-1.5 hover:scale-105 overflow-hidden; /* Increased padding/size, added overflow */
             @apply bg-gradient-to-r from-accent/80 to-accent-secondary/80 dark:from-dark-accent/80 dark:to-dark-accent-secondary/80 text-white dark:text-jet-black;
-            @apply hover:from-accent hover:to-accent-secondary dark:hover:from-dark-accent dark:hover:to-dark-accent-secondary hover:shadow-lg;
+            @apply hover:from-accent hover:to-accent-secondary dark:hover:from-dark-accent dark:hover:to-dark-accent-secondary hover:shadow-xl; /* Enhanced hover shadow */
             /* Ensure focus state is visible */
-            @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent;
+            @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent focus:ring-offset-primary-bg dark:focus:ring-offset-dark-primary-bg; /* Added offset color */
+            animation: subtle-pulse 2.5s infinite ease-in-out; /* Added pulse animation */
         }
+
         .know-more-button i {
-            @apply ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1;
+            @apply ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover:scale-110; /* Enhanced icon animation */
         }
+
+        /* Keyframe animation for the button pulse */
+        @keyframes subtle-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Tailwind md shadow */
+            }
+            50% {
+                transform: scale(1.02); /* Slightly larger */
+                box-shadow: 0 10px 15px -3px rgba(108, 92, 231, 0.2), 0 4px 6px -2px rgba(108, 92, 231, 0.1); /* Accent shadow - light mode */
+            }
+        }
+        /* Dark mode pulse shadow override */
+        @keyframes subtle-pulse-dark {
+             0%, 100% {
+                 transform: scale(1);
+                 /* Adjust dark shadow if needed, using same as light for now */
+                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+             }
+             50% {
+                 transform: scale(1.02);
+                 box-shadow: 0 10px 15px -3px rgba(102, 252, 241, 0.15), 0 4px 6px -2px rgba(102, 252, 241, 0.1); /* Dark Accent shadow */
+             }
+         }
+         /* Apply dark mode animation */
+         html.dark .know-more-button {
+             animation-name: subtle-pulse-dark;
+         }
+        /* --- End Know More Button Style --- */
+
 
         /* --- Section Title Hover Effect --- */
         section h2:hover {
@@ -346,6 +381,20 @@
         /* Ensure high contrast focus for specific elements if needed */
         /* Example: .high-contrast-focus:focus-visible { outline: 3px solid blue; } */
 
+        /* --- Skill Constellation Canvas Style --- */
+        #skill-constellation-canvas {
+            display: block; /* Remove extra space below canvas */
+            width: 100%;
+            height: 200px; /* Adjust height as needed */
+            margin-bottom: 2rem; /* Space below canvas */
+            cursor: crosshair; /* Indicate interactivity */
+            opacity: 0; /* Initially hidden, fade in with JS */
+            transition: opacity 0.8s ease-out;
+        }
+        #skill-constellation-canvas.visible {
+            opacity: 1;
+        }
+
 
     </style>
     <script>
@@ -385,7 +434,7 @@
                  '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
                  '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' },
                },
-               pulse: {
+               pulse: { /* Consolidated pulse keyframe - used by preloader */
                     'to': { boxShadow: '0 0 0 45px rgba(108, 92, 231, 0)' } // Light theme pulse end state
                },
                'pulse-icon': { // Renamed from pulse-dot
@@ -396,13 +445,24 @@
                'bounce-icon': { // Added for social icons
                    '0%, 100%': { transform: 'translateY(0) scale(1)' },
                    '50%': { transform: 'translateY(-4px) scale(1.1)' },
+               },
+               /* Added button pulse keyframes */
+               'subtle-pulse': {
+                   '0%, 100%': { transform: 'scale(1)', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' },
+                   '50%': { transform: 'scale(1.02)', boxShadow: '0 10px 15px -3px rgba(108, 92, 231, 0.2), 0 4px 6px -2px rgba(108, 92, 231, 0.1)' }
+               },
+               'subtle-pulse-dark': {
+                   '0%, 100%': { transform: 'scale(1)', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' },
+                   '50%': { transform: 'scale(1.02)', boxShadow: '0 10px 15px -3px rgba(102, 252, 241, 0.15), 0 4px 6px -2px rgba(102, 252, 241, 0.1)' }
                }
              },
              animation: {
                shake: 'shake 0.5s ease-in-out',
-               pulse: 'pulse 2s infinite cubic-bezier(0.66, 0, 0, 1)',
+               pulse: 'pulse 2s infinite cubic-bezier(0.66, 0, 0, 1)', // Preloader pulse
                'pulse-icon': 'pulse-icon 1.5s ease-out', // Updated name
-               'bounce-icon': 'bounce-icon 0.5s ease-in-out' // Added
+               'bounce-icon': 'bounce-icon 0.5s ease-in-out', // Added
+               'subtle-pulse': 'subtle-pulse 2.5s infinite ease-in-out', // Added for button
+               'subtle-pulse-dark': 'subtle-pulse-dark 2.5s infinite ease-in-out' // Added for button dark mode
              }
           }
         }
@@ -463,7 +523,7 @@
        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 transition-all duration-300">
                 <a href="#hero" class="flex items-center space-x-2 group" aria-label="Daniel Wanjala - Home">
-                     <img src="assets/logo.png" alt="" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-5deg]" aria-hidden="true" onerror="this.style.display='none'; console.error('Logo image failed to load')">
+                     <img src="assets/logo.png" alt="" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-5deg]" aria-hidden="true" onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<span class=\'text-xl font-bold text-accent dark:text-dark-accent\'>DW</span>'); console.error('Logo image failed to load')">
                      <span class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading group-hover:opacity-80 transition-opacity duration-300">
                         Daniel Wanjala.
                     </span>
@@ -540,7 +600,7 @@
                         </span>.
                     </h1>
                     <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text mb-8 max-w-2xl mx-auto font-body leading-relaxed">
-                        Machine learning meets real-world outcomes. From predictive insights to automated solutions.
+                        Machine learning meets real-world outcomes. From predictive insights to automated solutions. Based in Nairobi, Kenya.
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center gap-4">
                         <a href="#projects" class="interactive-element group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black font-semibold rounded-lg shadow-lg hover:shadow-accent/30 dark:hover:shadow-dark-accent/30 transition-all duration-300 ease-out overflow-hidden transform hover:-translate-y-1 hover:scale-103 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent">
@@ -601,7 +661,7 @@
                         </div>
                     </div>
                 </div>
-                 <div class="text-center mt-12 reveal-hidden">
+                 <div class="text-center mt-16 reveal-hidden">
                     <a href="about.html" class="know-more-button group interactive-element">
                         Learn More About Me
                         <i data-lucide="arrow-right" aria-hidden="true"></i>
@@ -610,7 +670,13 @@
             </section>
 
             <section id="skills" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden pt-20">
-                 <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Core Competencies</h2>
+                 <h2 class="text-4xl md:text-5xl font-bold mb-6 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Core Competencies</h2>
+
+                 <div class="max-w-4xl mx-auto mb-10 reveal-hidden">
+                     <canvas id="skill-constellation-canvas"></canvas>
+                     <p class="text-center text-xs text-secondary-text dark:text-dark-secondary-text font-mono mt-[-1rem] opacity-70">Interactive Skill Constellation</p>
+                 </div>
+
                 <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="skill-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg reveal-hidden hover:shadow-xl transition-shadow duration-300 group">
                         <div class="flex items-center mb-4">
@@ -652,7 +718,7 @@
                         </ul>
                     </div>
                 </div>
-                 <div class="text-center mt-12 reveal-hidden">
+                 <div class="text-center mt-16 reveal-hidden">
                     <a href="skills.html" class="know-more-button group interactive-element">
                         Explore My Skillset
                         <i data-lucide="arrow-right" aria-hidden="true"></i>
@@ -708,7 +774,7 @@
                         </p>
                     </div>
                 </div>
-                 <div class="text-center mt-12 reveal-hidden">
+                 <div class="text-center mt-16 reveal-hidden">
                     <a href="education.html" class="know-more-button group interactive-element">
                         View Education Details
                         <i data-lucide="arrow-right" aria-hidden="true"></i>
@@ -815,7 +881,7 @@
                         </div>
                     </article>
                 </div>
-                 <div class="text-center mt-12 reveal-hidden">
+                 <div class="text-center mt-16 reveal-hidden">
                     <a href="projects.html" class="know-more-button group interactive-element">
                         See All Projects
                         <i data-lucide="arrow-right" aria-hidden="true"></i>
@@ -851,7 +917,7 @@
                          <div class="essay-progress-bar absolute bottom-0 left-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary w-0 group-hover:w-full transition-all duration-500 ease-in-out" aria-hidden="true"></div>
                     </article>
                  </div>
-                 <div class="text-center mt-12 reveal-hidden">
+                 <div class="text-center mt-16 reveal-hidden">
                     <a href="essays.html" class="know-more-button group interactive-element">
                         Read More Essays
                         <i data-lucide="arrow-right" aria-hidden="true"></i>
@@ -935,7 +1001,7 @@
                         </div>
                     </a>
                 </div>
-                 <div class="text-center mt-12 reveal-hidden">
+                 <div class="text-center mt-16 reveal-hidden">
                     <a href="publications.html" class="know-more-button group interactive-element">
                         View All Publications
                         <i data-lucide="arrow-right" aria-hidden="true"></i>
@@ -966,7 +1032,7 @@
                 <p class="text-center text-secondary-text dark:text-dark-secondary-text mt-12 text-sm reveal-hidden font-body">
                     Note: Live demos may link to external platforms like Streamlit Cloud or JS playgrounds. (Actual links TBD)
                 </p>
-                 <div class="text-center mt-12 reveal-hidden">
+                 <div class="text-center mt-16 reveal-hidden">
                     <a href="demos.html" class="know-more-button group interactive-element">
                         Explore Demos
                         <i data-lucide="arrow-right" aria-hidden="true"></i>
@@ -1010,18 +1076,18 @@
                             <h3 class="text-xl font-semibold mb-4 text-primary-text dark:text-dark-primary-text font-heading">Find Me Here</h3>
                              <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md border border-secondary-text/10 dark:border-dark-secondary-text/20">
                                 <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.790618179779!2d36.7990403153298!3d-1.302090999051358!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10e9f7cf679d%3A0xdfc7b1830a995b18!2sBrighton%20Pharmaceuticals%20Ltd!5e0!3m2!1sen!2ske!4v1678886543210!5m2!1sen!2ske"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.790618214888!2d36.78901261475408!3d-1.302246999051988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1a6bfd7f3d7f%3A0x7f4e9b0a5f9f0e5!2sMbagathi%20Way%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1678886000000!5m2!1sen!2ske"
                                     width="100%"
                                     height="300"
                                     style="border:0;"
                                     allowfullscreen=""
                                     loading="lazy"
                                     referrerpolicy="no-referrer-when-downgrade"
-                                    title="Google Map Location for Brighton Pharmaceuticals Apartments Area">
+                                    title="Google Map Location near Mbagathi Way">
                                 </iframe>
                                 </div>
                             <p class="text-xs text-center mt-2 text-secondary-text dark:text-dark-secondary-text font-body">
-                                Brighton Pharmaceuticals Apartments Area, Mbagathi Way, Nairobi, Kenya (Approx. Location)
+                                Near Mbagathi Way, Nairobi, Kenya (Approx. Location)
                             </p>
                         </div>
                     </div>
@@ -1039,12 +1105,13 @@
                             title="Contact Form"
                             class="rounded-lg border border-secondary-text/20 dark:border-dark-secondary-text/30 shadow-md">
                         </iframe>
+                         <p id="tally-fallback" class="hidden text-center text-red-coral p-4 border border-red-coral rounded-lg mt-4">Contact form could not be loaded. Please try again later or use another contact method.</p>
                         <p class="text-xs text-center mt-4 text-secondary-text dark:text-dark-secondary-text font-body">
                             Alternatively, use the form above or connect via the links on the left.
                         </p>
                     </div>
                 </div>
-                 <div class="text-center mt-12 reveal-hidden">
+                 <div class="text-center mt-16 reveal-hidden">
                     <a href="contact.html" class="know-more-button group interactive-element">
                         Get In Touch
                         <i data-lucide="arrow-right" aria-hidden="true"></i>
@@ -1078,10 +1145,10 @@
         /**
          * Main JavaScript for Daniel Wanjala's Portfolio
          * Handles interactivity, animations, theme switching, modals, etc.
+         * Includes Particle Background and Skill Constellation animations.
          */
         document.addEventListener('DOMContentLoaded', () => {
             // --- Initialize Lucide Icons ---
-            // Ensure icons are rendered after the DOM is ready
             try {
                 if (typeof lucide !== 'undefined') {
                     lucide.createIcons();
@@ -1099,11 +1166,11 @@
             // Project data (ensure paths are correct)
             // Added placeholder image URLs for robustness
             const projectsData = [
-              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "assets/project1_main.png", altImageUrl: "assets/project1_alt.png", placeholderUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
-              { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "assets/project2_main.png", altImageUrl: "assets/project2_alt.png", placeholderUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Plant+AI", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
-              { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "assets/project3_main.png", altImageUrl: "assets/project3_alt.png", placeholderUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Kenya+GDP", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-coral" },
-              { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "assets/project4_main.png", altImageUrl: "assets/project4_alt.png", placeholderUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=InvestWise", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
-              { id: 5, title: "Netflix Stock Profit Analysis", description: "Analyzed Netflix's stock performance...", tags: ["Finance", "Analysis", "Python"], imageUrl: "assets/project5_main.png", altImageUrl: "assets/project5_alt.png", placeholderUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=Netflix+Stock", problem: "Understanding historical performance...", dataUsed: "Historical Netflix stock data.", results: "Provided insights into profitability...", techStack: ["Python", "Pandas", "Matplotlib"], githubUrl: "https://github.com/MadScie254/Netflix-Analysis", liveDemoUrl: null, accentColor: "sandstone" }
+              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "assets/project1_main.png", altImageUrl: "assets/project1_alt.png", placeholderUrl: "https://placehold.co/600x400/6C5CE7/F7F7F7?text=GDP+Model", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
+              { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "assets/project2_main.png", altImageUrl: "assets/project2_alt.png", placeholderUrl: "https://placehold.co/600x400/2ECC71/F7F7F7?text=Plant+AI", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
+              { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "assets/project3_main.png", altImageUrl: "assets/project3_alt.png", placeholderUrl: "https://placehold.co/600x400/FF6B6B/F7F7F7?text=Kenya+GDP", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-coral" },
+              { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "assets/project4_main.png", altImageUrl: "assets/project4_alt.png", placeholderUrl: "https://placehold.co/600x400/6C5CE7/F7F7F7?text=InvestWise", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
+              { id: 5, title: "Netflix Stock Profit Analysis", description: "Analyzed Netflix's stock performance...", tags: ["Finance", "Analysis", "Python"], imageUrl: "assets/project5_main.png", altImageUrl: "assets/project5_alt.png", placeholderUrl: "https://placehold.co/600x400/E0C097/0B0C10?text=Netflix+Stock", problem: "Understanding historical performance...", dataUsed: "Historical Netflix stock data.", results: "Provided insights into profitability...", techStack: ["Python", "Pandas", "Matplotlib"], githubUrl: "https://github.com/MadScie254/Netflix-Analysis", liveDemoUrl: null, accentColor: "sandstone" }
             ];
 
             // Configuration
@@ -1115,17 +1182,23 @@
             const scrollRevealRootMargin = "0px 0px -50px 0px"; // Adjust trigger point relative to viewport
             const navScrollThreshold = 0; // Threshold for nav highlighting
             const navScrollRootMargin = "-20% 0px -70% 0px"; // Active area for nav highlighting
+            const skillConstellationNodeRadius = 4;
+            const skillConstellationInteractionRadius = 80;
+            const skillConstellationLineThreshold = 150;
 
             // State Variables
             let toneJsStarted = false;
             let synth, clickSynth;
             let particleAnimationId = null; // ID for particle animation frame
-            let mouse = { x: null, y: null }; // Mouse position relative to canvas
+            let skillConstellationAnimationId = null; // ID for skill constellation animation
+            let mouse = { x: null, y: null }; // Mouse position relative to window
+            let constellationMouse = { x: null, y: null }; // Mouse position relative to skill canvas
             let isScrolling; // Timer for scroll end detection
             let currentActiveSectionId = null; // Track active navigation section
             let toastTimeout; // Timer for copy toast
             let modalOpen = false; // Track if modal is open
             let previouslyFocusedElement = null; // For modal focus management
+            let skillConstellationVisible = false; // Track if skill canvas is in view
 
             // --- DOM Element References ---
             // Cache frequently accessed DOM elements
@@ -1155,31 +1228,25 @@
             const floatingWhatsappLink = document.getElementById('floating-whatsapp');
             const copyButtons = document.querySelectorAll('.copy-btn');
             const copyToast = document.getElementById('copy-toast');
-            // const counterElements = document.querySelectorAll('[data-target]'); // Uncomment if using counters
             const mainContentContainer = document.getElementById('main-content-container');
             const particleCanvas = document.getElementById('particle-canvas');
+            const skillConstellationCanvas = document.getElementById('skill-constellation-canvas'); // New Canvas
             const backToTopButton = document.getElementById('back-to-top');
-            // Select all elements intended to be interactive for sound feedback
             const interactiveElements = document.querySelectorAll('a[href], button, [role="button"], [role="link"], .project-card, .essay-card, .demo-card, #theme-toggle, .publication-card, .skill-card, .education-item, #back-to-top, .copy-btn, #floating-whatsapp');
 
 
             // --- Initial Setup Functions ---
 
-            /**
-             * Hides the preloader after a delay when the window loads.
-             */
+            /** Hides the preloader after a delay when the window loads. */
             function hidePreloader() {
                  window.addEventListener('load', () => {
-                     // Add a slight delay after load to ensure assets are rendered
                      setTimeout(() => {
                         if (preloader) preloader.classList.add('hidden');
-                     }, 500); // Adjust delay as needed
+                     }, 500);
                  }, { once: true });
             }
 
-            /**
-             * Updates all WhatsApp links with the pre-defined message.
-             */
+            /** Updates all WhatsApp links with the pre-defined message. */
             function setupWhatsAppLinks() {
                 const encodedMessage = encodeURIComponent(whatsappMessage);
                 const whatsappUrlWithMessage = `${whatsappBaseUrl}?text=${encodedMessage}`;
@@ -1188,48 +1255,37 @@
                 if (floatingWhatsappLink) floatingWhatsappLink.href = whatsappUrlWithMessage;
             }
 
-            /**
-             * Initializes Tone.js for audio feedback on first user interaction.
-             * Uses try-catch for robustness if Tone.js fails to load.
-             */
+            /** Initializes Tone.js for audio feedback on first user interaction. */
             function setupToneJS() {
                 const startTone = () => {
                     if (toneJsStarted || typeof Tone === 'undefined') return;
                     try {
                         Tone.start();
-                        // Subtle synth for hover
                         synth = new Tone.Synth({ oscillator: { type: 'sine' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }, volume: -25 }).toDestination();
-                        // Slightly sharper synth for click
                         clickSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }, volume: -20 }).toDestination();
                         toneJsStarted = true;
                         console.log("Tone.js AudioContext started.");
-                        // Remove the event listeners once started
                         ['click', 'keydown', 'touchstart'].forEach(evt =>
                             bodyEl.removeEventListener(evt, startTone)
                         );
                     } catch (e) {
                         console.error("Tone.js initialization failed:", e);
-                        toneJsStarted = false; // Ensure state reflects failure
+                        toneJsStarted = false;
                     }
                 };
-                // Add listeners to start Tone.js on interaction
                 ['click', 'keydown', 'touchstart'].forEach(evt =>
                     bodyEl.addEventListener(evt, startTone, { once: true, passive: true })
                 );
             }
 
-            /**
-             * Adds sound feedback listeners to interactive elements.
-             */
+            /** Adds sound feedback listeners to interactive elements. */
             function addSoundFeedback() {
                 interactiveElements.forEach(el => {
-                     // Hover sound
                      el.addEventListener('mouseenter', () => {
                         if (toneJsStarted && synth) {
                             try { synth.triggerAttackRelease('C5', '16n', Tone.now()); } catch(e) { /* Silenced */ }
                         }
                     });
-                     // Click sound
                      el.addEventListener('click', () => {
                         if (toneJsStarted && clickSynth) {
                              try { clickSynth.triggerAttackRelease('E4', '16n', Tone.now()); } catch(e) { /* Silenced */ }
@@ -1238,20 +1294,16 @@
                 });
             }
 
-            /**
-             * Sets the initial footer year.
-             */
+            /** Sets the initial footer year. */
             function setFooterYear() {
                  if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
             }
 
             // --- Core Functionality ---
 
-            /**
-             * Updates the UI (icons, background noise) based on the current theme.
-             */
+            /** Updates the UI (icons, background noise, canvas colors) based on the current theme. */
             function updateThemeUI() {
-                if (!htmlEl || !bodyEl) return; // Ensure elements exist
+                if (!htmlEl || !bodyEl) return;
                 const isDark = htmlEl.classList.contains('dark');
 
                 // Toggle theme icons
@@ -1262,46 +1314,39 @@
                 }
 
                 // Apply appropriate background noise pattern
-                // Accessibility Note: Ensure text contrast remains sufficient over noise patterns.
                 const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                 const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                 bodyEl.style.backgroundImage = isDark ? noiseDark : noiseLight;
 
-                // Re-initialize particles if canvas exists (colors depend on theme)
+                // Re-initialize particles if canvas exists
                 if (particleCanvas) initParticles();
+                // Re-initialize skill constellation if canvas exists
+                if (skillConstellationCanvas) initSkillConstellation();
             }
 
-            /**
-             * Sets the theme (light/dark), updates localStorage, and triggers UI/sound updates.
-             * @param {'light' | 'dark'} theme The desired theme.
-             */
+            /** Sets the theme (light/dark), updates localStorage, and triggers UI/sound updates. */
             function setTheme(theme) {
                 if (!htmlEl) return;
                 htmlEl.classList.toggle('dark', theme === 'dark');
-                localStorage.setItem('theme', theme); // Persist choice
-                updateThemeUI(); // Update icons and background
+                localStorage.setItem('theme', theme);
+                updateThemeUI(); // Update icons, background, and canvases
 
-                // Play theme change sound
                 if (toneJsStarted && clickSynth) {
                      try { clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now()); } catch(e) { /* Silenced */ }
                 }
             }
 
-            /**
-             * Toggles the mobile navigation menu visibility and updates ARIA attributes.
-             */
+            /** Toggles the mobile navigation menu visibility and updates ARIA attributes. */
             function toggleMobileMenu() {
                  if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return;
                  const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
                  mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-                 mobileMenu.classList.toggle('open'); // CSS handles the transition
+                 mobileMenu.classList.toggle('open');
                  menuIconOpen.classList.toggle('hidden');
                  menuIconClose.classList.toggle('hidden');
             }
 
-            /**
-             * Closes the mobile menu (used when a link is clicked).
-             */
+            /** Closes the mobile menu (used when a link is clicked). */
             function closeMobileMenu() {
                 if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return;
                 if (mobileMenuButton.getAttribute('aria-expanded') === 'true') {
@@ -1312,9 +1357,7 @@
                 }
             }
 
-            /**
-             * Animates the rotating word in the hero section.
-             */
+            /** Animates the rotating word in the hero section. */
             function setupHeroWordRotation() {
                  const words = ["forecast", "heal", "accelerate", "optimize", "innovate", "analyze", "deploy"];
                  let wordIndex = 0;
@@ -1328,21 +1371,18 @@
                              rotatingWordEl.textContent = words[wordIndex];
                              rotatingWordEl.style.opacity = '1';
                              rotatingWordEl.style.transform = 'translateY(0)';
-                         }, 300); // Matches CSS transition duration
-                     }, 3000); // Change word every 3 seconds
+                         }, 300);
+                     }, 3000);
                  }
             }
 
-            /**
-             * Adds hover effect to swap project card images.
-             */
+            /** Adds hover effect to swap project card images. */
             function setupProjectCardImageSwap() {
                 projectCards.forEach(card => {
                      const img = card.querySelector('.project-image');
                     if (img) {
                         const originalSrc = img.getAttribute('data-original-src');
                         const altSrc = img.getAttribute('data-alt-src');
-                        // Only add listeners if both srcs are valid
                         if (originalSrc && originalSrc !== 'null' && altSrc && altSrc !== 'null') {
                             card.addEventListener('mouseenter', () => { img.src = altSrc; });
                             card.addEventListener('mouseleave', () => { img.src = originalSrc; });
@@ -1351,23 +1391,18 @@
                 });
             }
 
-            /**
-             * Fetches GitHub repository stats using the public API.
-             * @param {string} githubUrl - The full GitHub repository URL.
-             * @param {HTMLElement} statsContentEl - The element to display stats in.
-             * @param {HTMLElement} buttonEl - The button that triggered the fetch.
-             */
+            /** Fetches GitHub repository stats using the public API. */
             async function fetchGitHubStats(githubUrl, statsContentEl, buttonEl) {
                 if (!githubUrl || !statsContentEl || !buttonEl) return;
 
                 buttonEl.textContent = 'Loading...';
                 buttonEl.disabled = true;
                 statsContentEl.classList.remove('hidden');
-                statsContentEl.innerHTML = `<p class="text-sm text-secondary-text dark:text-dark-secondary-text">Fetching stats...</p>`; // Initial loading message
+                statsContentEl.innerHTML = `<p class="text-sm text-secondary-text dark:text-dark-secondary-text">Fetching stats...</p>`;
 
                 try {
                     const url = new URL(githubUrl);
-                    const pathParts = url.pathname.split('/').filter(Boolean); // Get owner/repo
+                    const pathParts = url.pathname.split('/').filter(Boolean);
                     if (pathParts.length < 2) throw new Error("Invalid GitHub URL path");
                     const owner = pathParts[0];
                     const repo = pathParts[1];
@@ -1375,51 +1410,38 @@
 
                     const response = await fetch(apiUrl);
                     if (!response.ok) {
-                        // Handle specific errors like rate limiting (403) or not found (404)
-                        if (response.status === 403) {
-                            throw new Error(`API rate limit exceeded (Status: ${response.status})`);
-                        } else if (response.status === 404) {
-                             throw new Error(`Repository not found (Status: ${response.status})`);
-                        } else {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
+                        if (response.status === 403) throw new Error(`API rate limit exceeded`);
+                        else if (response.status === 404) throw new Error(`Repository not found`);
+                        else throw new Error(`HTTP error! Status: ${response.status}`);
                     }
                     const data = await response.json();
 
-                    // Display fetched stats
                     statsContentEl.innerHTML = `
                         <span class="inline-flex items-center mr-4"><i data-lucide="star" class="w-4 h-4 mr-1 text-yellow-500" aria-hidden="true"></i> ${data.stargazers_count ?? 'N/A'} Stars</span>
                         <span class="inline-flex items-center mr-4"><i data-lucide="git-fork" class="w-4 h-4 mr-1 text-secondary-text dark:text-dark-secondary-text" aria-hidden="true"></i> ${data.forks_count ?? 'N/A'} Forks</span>
                         <span class="inline-flex items-center"><i data-lucide="eye" class="w-4 h-4 mr-1 text-blue-500" aria-hidden="true"></i> ${data.watchers_count ?? 'N/A'} Watchers</span>
                     `;
-                    lucide.createIcons(); // Re-render icons
-                    buttonEl.classList.add('hidden'); // Hide button after successful fetch
+                    lucide.createIcons();
+                    buttonEl.classList.add('hidden');
 
                 } catch (error) {
                     console.error("Error fetching GitHub stats:", error);
-                    statsContentEl.innerHTML = `<p class="text-red-coral text-sm">Could not load stats. ${error.message}.</p>`;
-                    buttonEl.textContent = 'Retry Stats'; // Allow retry
+                    statsContentEl.innerHTML = `<p class="text-red-coral text-sm">Could not load stats: ${error.message}.</p>`;
+                    buttonEl.textContent = 'Retry Stats';
                     buttonEl.disabled = false;
                 }
             }
 
-             /**
-             * Opens the project modal with details for the given project ID.
-             * Handles content injection, focus management, and API calls.
-             * @param {string} projectId - The ID of the project to display.
-             */
+             /** Opens the project modal with details for the given project ID. */
             function openModal(projectId) {
                 const project = projectsData.find(p => p.id === parseInt(projectId));
                 if (!project || !projectModalContent || !projectModal || !projectModalContentWrapper) return;
 
-                // --- Accessibility: Store focused element and set up focus trap ---
-                previouslyFocusedElement = document.activeElement; // Store element focused before modal opened
+                previouslyFocusedElement = document.activeElement;
 
-                // --- Populate Modal Content ---
                 const techStackHtml = project.techStack?.map(tech => `<span class="text-xs bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent px-2 py-1 rounded-full font-mono">${tech}</span>`).join(' ') || 'N/A';
                 const githubButton = project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-secondary-text dark:bg-dark-accent-secondary text-primary-bg dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent"> <i data-lucide="github" class="mr-2 h-4 w-4" aria-hidden="true"></i> GitHub </a>` : '';
                 const demoButton = project.liveDemoUrl ? `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element inline-flex items-center px-4 py-2 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black rounded-lg hover:opacity-80 transition-opacity duration-200 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent"> <i data-lucide="code" class="mr-2 h-4 w-4" aria-hidden="true"></i> Live Demo </a>` : '';
-                // Use alt image, then main, then placeholder
                 const modalImageUrl = project.altImageUrl && project.altImageUrl !== 'null' ? project.altImageUrl : (project.imageUrl && project.imageUrl !== 'null' ? project.imageUrl : project.placeholderUrl);
 
                 projectModalContent.innerHTML = `
@@ -1451,66 +1473,41 @@
                       <div class="flex flex-wrap gap-4 mt-6">${githubButton}${demoButton}</div>
                     </div>`;
 
-                // --- Add Event Listeners for Modal Elements ---
                 const closeButton = projectModalContent.querySelector('#closeModalButton');
                 if (closeButton) closeButton.addEventListener('click', closeModal);
 
                 const fetchStatsButton = projectModalContent.querySelector('#fetch-stats-button');
                 const statsContent = projectModalContent.querySelector('#github-stats-content');
                 if (fetchStatsButton && statsContent && project.githubUrl) {
-                    // Use async function directly in listener
                     fetchStatsButton.addEventListener('click', () => fetchGitHubStats(project.githubUrl, statsContent, fetchStatsButton));
                 }
 
-                // --- Show Modal & Manage State ---
                 projectModal.classList.remove('hidden-modal');
                 projectModal.classList.add('visible-modal');
-                bodyEl.style.overflow = 'hidden'; // Prevent background scroll
+                bodyEl.style.overflow = 'hidden';
                 modalOpen = true;
-                lucide.createIcons(); // Re-render icons inside modal
+                lucide.createIcons();
 
-                // --- Accessibility: Focus Management ---
-                // Set focus to the modal container initially, then trap focus
-                projectModalContentWrapper.focus(); // Focus the wrapper first
-                // Find all focusable elements within the modal
+                projectModalContentWrapper.focus();
                 const focusableElements = projectModalContentWrapper.querySelectorAll(
                     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
                 );
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
+                if (closeButton) closeButton.focus();
+                else if (focusableElements[0]) focusableElements[0].focus();
 
-                // Focus the close button or the first interactive element
-                if (closeButton) {
-                    closeButton.focus();
-                } else if (firstElement) {
-                    firstElement.focus();
-                }
-
-                // Add keydown listener for focus trapping (Tab, Shift+Tab, Escape)
                 projectModal.addEventListener('keydown', handleModalKeyDown);
 
             } // End openModal
 
-            /**
-             * Handles keydown events within the modal for focus trapping and closing.
-             * @param {KeyboardEvent} event - The keydown event.
-             */
+            /** Handles keydown events within the modal for focus trapping and closing. */
             function handleModalKeyDown(event) {
                  if (!modalOpen) return;
-
                  const isTabPressed = event.key === 'Tab';
                  const isEscapePressed = event.key === 'Escape';
 
-                 if (isEscapePressed) {
-                     closeModal();
-                     return;
-                 }
+                 if (isEscapePressed) { closeModal(); return; }
+                 if (!isTabPressed) { return; }
 
-                 if (!isTabPressed) {
-                     return;
-                 }
-
-                 // Focus trapping logic
                  const focusableElements = projectModalContentWrapper.querySelectorAll(
                      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
                  );
@@ -1518,193 +1515,103 @@
                  const lastElement = focusableElements[focusableElements.length - 1];
 
                  if (event.shiftKey) { // Shift + Tab
-                     if (document.activeElement === firstElement) {
-                         lastElement.focus();
-                         event.preventDefault();
-                     }
+                     if (document.activeElement === firstElement) { lastElement.focus(); event.preventDefault(); }
                  } else { // Tab
-                     if (document.activeElement === lastElement) {
-                         firstElement.focus();
-                         event.preventDefault();
-                     }
+                     if (document.activeElement === lastElement) { firstElement.focus(); event.preventDefault(); }
                  }
              }
 
-
-            /**
-             * Closes the project modal, restores focus, and cleans up listeners.
-             */
+            /** Closes the project modal, restores focus, and cleans up listeners. */
             function closeModal() {
                 if (!projectModal || !projectModalContent) return;
-
                 projectModal.classList.add('hidden-modal');
                 projectModal.classList.remove('visible-modal');
-                bodyEl.style.overflow = ''; // Restore background scroll
+                bodyEl.style.overflow = '';
                 modalOpen = false;
-
-                // --- Accessibility: Restore Focus ---
-                if (previouslyFocusedElement) {
-                    previouslyFocusedElement.focus();
-                    previouslyFocusedElement = null; // Clear stored element
-                }
-
-                // Remove modal-specific keydown listener
+                if (previouslyFocusedElement) { previouslyFocusedElement.focus(); previouslyFocusedElement = null; }
                 projectModal.removeEventListener('keydown', handleModalKeyDown);
-
-                // Clear content after transition
-                setTimeout(() => {
-                    projectModalContent.innerHTML = '';
-                }, 300); // Match CSS transition duration
+                setTimeout(() => { projectModalContent.innerHTML = ''; }, 300);
             }
 
-            /**
-             * Updates the scroll progress bar and handles header shrinking.
-             */
+            /** Updates the scroll progress bar and handles header shrinking. */
             function handleScroll() {
                 if (!htmlEl || !scrollProgressBar || !mainHeader) return;
-
                 const scrollableHeight = htmlEl.scrollHeight - window.innerHeight;
                 const scrolled = window.scrollY;
-                const progress = scrollableHeight > 0 ? Math.min(1, scrolled / scrollableHeight) : 0; // Clamp progress between 0 and 1
-
-                // Update progress bar
+                const progress = scrollableHeight > 0 ? Math.min(1, scrolled / scrollableHeight) : 0;
                 scrollProgressBar.style.transform = `scaleX(${progress})`;
-
-                // Shrink header
                 mainHeader.classList.toggle('scrolled', scrolled > 50);
-
-                // Back to top button visibility
-                if (backToTopButton) {
-                    backToTopButton.classList.toggle('visible', scrolled > 300);
-                }
-
-                // Debounce scroll end (optional, if needed for specific actions)
-                // window.clearTimeout(isScrolling);
-                // isScrolling = setTimeout(() => {
-                //     // Actions to perform after scrolling stops
-                // }, 100);
+                if (backToTopButton) backToTopButton.classList.toggle('visible', scrolled > 300);
             }
 
-            /**
-             * Sets up the Intersection Observer for scroll reveal animations.
-             */
+            /** Sets up the Intersection Observer for scroll reveal animations. */
             function setupScrollReveal() {
-                const revealObserverOptions = {
-                    threshold: scrollRevealThreshold,
-                    rootMargin: scrollRevealRootMargin
-                };
-
+                const revealObserverOptions = { threshold: scrollRevealThreshold, rootMargin: scrollRevealRootMargin };
                 const revealCallback = (entries, observer) => {
                     entries.forEach((entry, index) => {
                         if (entry.isIntersecting) {
-                            // Calculate delay (use data attribute or index-based stagger)
                             const delay = entry.target.dataset.revealDelay ? parseInt(entry.target.dataset.revealDelay) : (index * 100);
                             entry.target.style.transitionDelay = `${delay}ms`;
-
-                            // Add visibility classes
                             entry.target.classList.add('reveal-visible');
                             if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
                                 entry.target.classList.add('slide-in');
                             }
-
-                            // Trigger icon animation if applicable (e.g., education timeline)
                             if (entry.target.classList.contains('education-item')) {
                                 const icon = entry.target.querySelector('.timeline-icon');
-                                if (icon) icon.style.animationDelay = `${delay + 200}ms`; // Animate slightly after reveal
+                                if (icon) icon.style.animationDelay = `${delay + 200}ms`;
                             }
-
-                            // Stop observing once revealed
                             observer.unobserve(entry.target);
                         }
                     });
                 };
-
                 const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
-                // Observe all elements marked for reveal
                 document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right').forEach(el => revealObserver.observe(el));
             }
 
-            /**
-             * Sets up the Intersection Observer for highlighting active navigation links.
-             */
+            /** Sets up the Intersection Observer for highlighting active navigation links. */
             function setupNavHighlighting() {
-                const navObserverOptions = {
-                    root: null, // Use viewport as root
-                    rootMargin: navScrollRootMargin,
-                    threshold: navScrollThreshold
-                 };
-
+                const navObserverOptions = { root: null, rootMargin: navScrollRootMargin, threshold: navScrollThreshold };
                  const navObserverCallback = (entries) => {
                     let intersectingSectionId = null;
                     let maxRatio = 0;
-
-                    // Find the section most visible within the rootMargin bounds
                      entries.forEach(entry => {
                          if (entry.isIntersecting && entry.intersectionRatio >= maxRatio) {
                              maxRatio = entry.intersectionRatio;
                              intersectingSectionId = entry.target.getAttribute('id');
                          }
                      });
+                     if (!intersectingSectionId && window.scrollY < window.innerHeight * 0.3) intersectingSectionId = 'hero';
+                     else if (!intersectingSectionId && currentActiveSectionId) intersectingSectionId = currentActiveSectionId;
 
-                     // Fallback: If near top, highlight hero; otherwise keep current
-                     if (!intersectingSectionId && window.scrollY < window.innerHeight * 0.3) {
-                         intersectingSectionId = 'hero';
-                     } else if (!intersectingSectionId && currentActiveSectionId) {
-                         // Keep the current active section if nothing new is intersecting significantly
-                         intersectingSectionId = currentActiveSectionId;
-                     }
-
-
-                     // Update nav links if the active section changes
                      if (intersectingSectionId && intersectingSectionId !== currentActiveSectionId) {
                         currentActiveSectionId = intersectingSectionId;
-                        // Update desktop nav
-                        navLinks.forEach(link => {
-                            link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
-                        });
-                        // Update mobile nav
-                        mobileNavLinks.forEach(link => {
-                            link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId);
-                        });
+                        navLinks.forEach(link => link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId));
+                        mobileNavLinks.forEach(link => link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId));
                      }
                 };
-
                 const navObserver = new IntersectionObserver(navObserverCallback, navObserverOptions);
-                // Observe all main sections and the hero section
                 document.querySelectorAll('main section[id], #hero').forEach(section => {
                     if(section) navObserver.observe(section);
                 });
 
-                // --- Initial Active Link Check ---
-                // Set initial active link based on hash or default to 'hero'
                 const initialHash = window.location.hash.substring(1);
-                 if (initialHash && document.getElementById(initialHash)) {
-                    currentActiveSectionId = initialHash;
-                 } else {
-                    currentActiveSectionId = 'hero'; // Default to hero
-                 }
-                 // Apply initial active class
+                 currentActiveSectionId = (initialHash && document.getElementById(initialHash)) ? initialHash : 'hero';
                  navLinks.forEach(link => link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId));
                  mobileNavLinks.forEach(link => link.classList.toggle('nav-active', link.getAttribute('data-section') === currentActiveSectionId));
-
             } // End setupNavHighlighting
 
-            /**
-             * Sets up the copy-to-clipboard functionality for buttons.
-             */
+            /** Sets up the copy-to-clipboard functionality for buttons. */
             function setupClipboardCopy() {
                 copyButtons.forEach(button => {
                      button.addEventListener('click', () => {
                         const textToCopy = button.dataset.copyText;
                         if (textToCopy && navigator.clipboard) {
                             navigator.clipboard.writeText(textToCopy).then(() => {
-                                // Show confirmation toast
                                 if (copyToast) {
                                     copyToast.classList.add('show');
-                                    clearTimeout(toastTimeout); // Clear previous timeout if any
+                                    clearTimeout(toastTimeout);
                                     toastTimeout = setTimeout(() => { copyToast.classList.remove('show'); }, 2000);
                                 }
-                                // Temporarily change icon to 'check'
                                 const icon = button.querySelector('i[data-lucide]');
                                 if (icon) {
                                      const originalIcon = icon.getAttribute('data-lucide');
@@ -1715,96 +1622,55 @@
                                          try { lucide.createIcons(); } catch(e) { /* Silenced */ }
                                      }, 1500);
                                 }
-                                // Play click sound
                                 if (toneJsStarted && clickSynth) {
                                      try { clickSynth.triggerAttackRelease('G4', '16n', Tone.now()); } catch(e) { /* Silenced */ }
                                 }
-                            }).catch(err => {
-                                console.error('Failed to copy text: ', err);
-                                // Optionally show an error toast here
-                            });
-                        } else {
-                            console.warn('Clipboard API not available or no text to copy.');
-                            // Fallback for older browsers (e.g., using document.execCommand) could be added here
-                        }
+                            }).catch(err => console.error('Failed to copy text: ', err));
+                        } else console.warn('Clipboard API not available or no text to copy.');
                     });
                 });
             }
 
-            /**
-             * Sets up the device orientation tilt effect (if supported).
-             * Performance Note: Can be battery intensive on mobile.
-             */
+            /** Sets up the device orientation tilt effect (if supported). */
             function setupTiltEffect() {
                  if (!mainContentContainer) return;
-
                  const handleOrientation = (event) => {
-                     // Basic check for event data
                      if (event.beta === null || event.gamma === null) return;
-
-                     // Clamp values to prevent extreme tilting
-                     const beta = Math.max(-20, Math.min(20, event.beta)); // Tilt front/back (X-axis rotation)
-                     const gamma = Math.max(-20, Math.min(20, event.gamma)); // Tilt left/right (Y-axis rotation)
-
-                     const maxTilt = 1.5; // Max degrees of tilt
-                     // Calculate tilt degrees based on clamped orientation values
-                     const tiltY = (beta / 20 * maxTilt).toFixed(2); // Rotate around X-axis
-                     const tiltX = (gamma / 20 * -maxTilt).toFixed(2); // Rotate around Y-axis (negated for natural feel)
-
-                     // Apply the transform using requestAnimationFrame for smoother updates
-                     requestAnimationFrame(() => {
-                        mainContentContainer.style.transform = `perspective(1500px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`;
-                     });
+                     const beta = Math.max(-20, Math.min(20, event.beta));
+                     const gamma = Math.max(-20, Math.min(20, event.gamma));
+                     const maxTilt = 1.5;
+                     const tiltY = (beta / 20 * maxTilt).toFixed(2);
+                     const tiltX = (gamma / 20 * -maxTilt).toFixed(2);
+                     requestAnimationFrame(() => { mainContentContainer.style.transform = `perspective(1500px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`; });
                  };
-
-                 // Check for support and add listener
-                 if (window.DeviceOrientationEvent) {
-                     window.addEventListener('deviceorientation', handleOrientation, true);
-                 } else {
-                     console.log("DeviceOrientation not supported by this browser/device.");
-                 }
+                 if (window.DeviceOrientationEvent) window.addEventListener('deviceorientation', handleOrientation, true);
+                 else console.log("DeviceOrientation not supported.");
             }
 
-            /**
-             * Sets up the back-to-top button functionality.
-             */
+            /** Sets up the back-to-top button functionality. */
             function setupBackToTop() {
                 if (backToTopButton) {
-                    // Show/hide based on scroll position (handled in handleScroll)
-                    // Add click listener
-                    backToTopButton.addEventListener('click', () => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    });
+                    backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
                 }
             }
 
 
             // --- Particle Background Logic ---
-            let particles = []; // Array to hold particle objects
-            /**
-             * Initializes or re-initializes the particle canvas and animation.
-             * Called on load and on theme change/resize.
-             */
+            let particles = [];
+            /** Initializes or re-initializes the particle canvas and animation. */
             function initParticles() {
                 if (!particleCanvas) return;
                 const ctx = particleCanvas.getContext('2d');
-                if (!ctx) return; // Ensure context is available
-
-                // Cancel any existing animation frame
+                if (!ctx) return;
                 if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
-
-                resizeCanvas(); // Set canvas size
-                particles.forEach(p => p.baseColor = null); // Reset colors for theme change
-                createParticles(); // Create new particles
-
-                // Start animation loop only if the page is visible
-                if (!document.hidden) {
-                    drawParticles();
-                }
+                resizeParticleCanvas();
+                particles.forEach(p => p.baseColor = null);
+                createParticles();
+                if (!document.hidden) drawParticles();
             }
 
-            /** Resizes the canvas to fill the window. */
-            function resizeCanvas() {
+            /** Resizes the particle canvas to fill the window. */
+            function resizeParticleCanvas() {
                 if (!particleCanvas) return;
                 particleCanvas.width = window.innerWidth;
                 particleCanvas.height = window.innerHeight;
@@ -1814,18 +1680,13 @@
             function createParticles() {
                 if (!particleCanvas) return;
                 particles = [];
-                // Adjust particle count based on screen area (performance optimization)
-                const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 18000); // Reduced density slightly
+                const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 18000);
                 for (let i = 0; i < particleCount; i++) {
                     particles.push({
-                        x: Math.random() * particleCanvas.width,
-                        y: Math.random() * particleCanvas.height,
-                        vx: (Math.random() - 0.5) * 0.3, // Slower speed
-                        vy: (Math.random() - 0.5) * 0.3, // Slower speed
-                        radius: Math.random() * 1.8 + 0.8, // Slightly smaller radius
-                        baseRadius: Math.random() * 1.8 + 0.8,
-                        baseColor: null, // Will be set based on theme
-                        drawColor: null, // Current color for drawing
+                        x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height,
+                        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+                        radius: Math.random() * 1.8 + 0.8, baseRadius: Math.random() * 1.8 + 0.8,
+                        baseColor: null, drawColor: null,
                     });
                 }
             }
@@ -1835,217 +1696,305 @@
                 if (!particleCanvas) return;
                 const ctx = particleCanvas.getContext('2d');
                 if (!ctx) return;
-
-                ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height); // Clear canvas
-
-                // Determine colors based on current theme
+                ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
                 const isDark = htmlEl.classList.contains('dark');
-                const twConfig = tailwind.config.theme.extend.colors; // Access Tailwind colors
-                // Define color palettes with alpha (transparency)
-                const lightColors = [
-                    `${twConfig.accent}80`, // #6C5CE7 with 80 alpha
-                    `${twConfig['accent-secondary']}80`, // #FF6B6B with 80 alpha
-                    `${twConfig['tertiary-light']}60` // #F5B041 with 60 alpha
-                ];
-                const darkColors = [
-                    `${twConfig['dark-accent']}80`, // #66FCF1 with 80 alpha
-                    `${twConfig['dark-accent-secondary']}80`, // #45A29E with 80 alpha
-                    `${twConfig['tertiary-dark']}60` // #F39C12 with 60 alpha
-                ];
+                const twConfig = tailwind.config.theme.extend.colors;
+                const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`, `${twConfig['tertiary-light']}60`];
+                const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`, `${twConfig['tertiary-dark']}60`];
                 const themeColors = isDark ? darkColors : lightColors;
-                // Line color with low opacity
-                const lineColor = isDark ? 'rgba(197, 198, 199, 0.05)' : 'rgba(74, 74, 74, 0.05)'; // Reduced line opacity
+                const lineColor = isDark ? 'rgba(197, 198, 199, 0.05)' : 'rgba(74, 74, 74, 0.05)';
 
                 particles.forEach((p, i) => {
-                    // Assign base color if not already set
                     if (!p.baseColor) p.baseColor = themeColors[Math.floor(Math.random() * themeColors.length)];
-                    p.drawColor = p.baseColor; // Default draw color
-                    p.radius = p.baseRadius; // Default radius
+                    p.drawColor = p.baseColor; p.radius = p.baseRadius;
 
-                    // --- Mouse/Touch Interaction ---
+                    // Mouse interaction (using window-relative mouse coords)
                     if (mouse.x !== null && mouse.y !== null) {
-                        const dx = mouse.x - p.x;
-                        const dy = mouse.y - p.y;
+                        const rect = particleCanvas.getBoundingClientRect();
+                        const canvasMouseX = mouse.x - rect.left;
+                        const canvasMouseY = mouse.y - rect.top;
+                        const dx = canvasMouseX - p.x;
+                        const dy = canvasMouseY - p.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
 
                         if (distance < particleInteractionRadius) {
-                            const proximityFactor = 1 - (distance / particleInteractionRadius); // 0 to 1
-
-                            // Make particle brighter/more opaque and larger when near mouse
-                            const baseHex = p.baseColor.substring(0, 7); // Get #RRGGBB
-                            const currentAlphaHex = p.baseColor.substring(7, 9) || '80'; // Get alpha hex or default
+                            const proximityFactor = 1 - (distance / particleInteractionRadius);
+                            const baseHex = p.baseColor.substring(0, 7);
+                            const currentAlphaHex = p.baseColor.substring(7, 9) || '80';
                             const currentAlphaDec = parseInt(currentAlphaHex, 16);
-                            const targetAlphaDec = Math.min(255, Math.floor(currentAlphaDec + proximityFactor * 100)); // Increase alpha
+                            const targetAlphaDec = Math.min(255, Math.floor(currentAlphaDec + proximityFactor * 100));
                             p.drawColor = `${baseHex}${targetAlphaDec.toString(16).padStart(2, '0')}`;
-                            p.radius = p.baseRadius + proximityFactor * 1.5; // Increase radius
-
-                            // Push particle away from mouse
-                            const force = proximityFactor;
-                            const pushStrength = 0.4; // Reduced push strength
+                            p.radius = p.baseRadius + proximityFactor * 1.5;
+                            const force = proximityFactor; const pushStrength = 0.4;
                             p.x -= (dx / distance) * force * pushStrength;
                             p.y -= (dy / distance) * force * pushStrength;
                         }
                     }
 
-                    // Draw the particle
-                    ctx.fillStyle = p.drawColor;
+                    ctx.fillStyle = p.drawColor; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < -p.radius) p.x = particleCanvas.width + p.radius; if (p.x > particleCanvas.width + p.radius) p.x = -p.radius;
+                    if (p.y < -p.radius) p.y = particleCanvas.height + p.radius; if (p.y > particleCanvas.height + p.radius) p.y = -p.radius;
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j]; const dx = p.x - p2.x; const dy = p.y - p2.y; const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < particleLineThreshold) {
+                            ctx.strokeStyle = lineColor; ctx.lineWidth = 0.5 * (1 - distance / particleLineThreshold);
+                            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                        }
+                    }
+                });
+                particleAnimationId = requestAnimationFrame(drawParticles);
+            } // End drawParticles
+
+
+            // --- Skill Constellation Logic --- "Brilliant Creation"
+            let skillNodes = [];
+            const skillNames = [ // Match skills from cards or add more
+                "Python", "SQL", "Pandas", "NumPy", "Scikit-learn", "ML", "AI",
+                "TensorFlow", "Keras", "TimeSeries", "Forecast", "CV", "API", "Git",
+                "Matplotlib", "Seaborn", "Plotly", "Cloud", "ERP", "WebDev" // Added WebDev
+            ];
+
+            /** Initializes or re-initializes the skill constellation canvas. */
+            function initSkillConstellation() {
+                if (!skillConstellationCanvas) return;
+                const ctx = skillConstellationCanvas.getContext('2d');
+                if (!ctx) return;
+
+                if (skillConstellationAnimationId) cancelAnimationFrame(skillConstellationAnimationId); // Stop previous animation
+
+                resizeSkillCanvas();
+                createSkillNodes();
+
+                // Use IntersectionObserver to start/stop animation based on visibility
+                const observerOptions = { threshold: 0.1 }; // Trigger when 10% visible
+                const observerCallback = (entries) => {
+                    entries.forEach(entry => {
+                        skillConstellationVisible = entry.isIntersecting;
+                        if (skillConstellationVisible) {
+                            skillConstellationCanvas.classList.add('visible'); // Fade in
+                            if (!skillConstellationAnimationId) drawSkillConstellation(); // Start animation if not running
+                        } else {
+                            skillConstellationCanvas.classList.remove('visible'); // Fade out
+                            if (skillConstellationAnimationId) {
+                                cancelAnimationFrame(skillConstellationAnimationId); // Stop animation
+                                skillConstellationAnimationId = null;
+                            }
+                        }
+                    });
+                };
+                const skillObserver = new IntersectionObserver(observerCallback, observerOptions);
+                skillObserver.observe(skillConstellationCanvas);
+            }
+
+            /** Resizes the skill constellation canvas. */
+            function resizeSkillCanvas() {
+                 if (!skillConstellationCanvas) return;
+                 // Make canvas responsive based on its container, but keep fixed height
+                 const parentWidth = skillConstellationCanvas.parentElement.clientWidth;
+                 skillConstellationCanvas.width = parentWidth;
+                 // Height is fixed via CSS, but set here too if needed: skillConstellationCanvas.height = 200;
+            }
+
+            /** Creates the skill nodes with random positions. */
+            function createSkillNodes() {
+                if (!skillConstellationCanvas) return;
+                skillNodes = [];
+                const padding = 30; // Padding from canvas edges
+                skillNames.forEach(name => {
+                    skillNodes.push({
+                        name: name,
+                        x: Math.random() * (skillConstellationCanvas.width - padding * 2) + padding,
+                        y: Math.random() * (skillConstellationCanvas.height - padding * 2) + padding,
+                        vx: (Math.random() - 0.5) * 0.15, // Slower movement
+                        vy: (Math.random() - 0.5) * 0.15,
+                        radius: skillConstellationNodeRadius,
+                        targetRadius: skillConstellationNodeRadius, // For hover effect
+                        color: null, // Set in draw loop based on theme
+                        alpha: 1 // For hover effect
+                    });
+                });
+            }
+
+            /** Animation loop for the skill constellation. */
+            function drawSkillConstellation() {
+                if (!skillConstellationCanvas || !skillConstellationVisible) {
+                    skillConstellationAnimationId = null; // Ensure animation stops if canvas disappears or isn't visible
+                    return;
+                }
+                const ctx = skillConstellationCanvas.getContext('2d');
+                if (!ctx) return;
+
+                ctx.clearRect(0, 0, skillConstellationCanvas.width, skillConstellationCanvas.height);
+
+                const isDark = htmlEl.classList.contains('dark');
+                const twConfig = tailwind.config.theme.extend.colors;
+                // Define colors (use accents)
+                const nodeColor = isDark ? twConfig['dark-accent'] : twConfig['accent'];
+                const hoverColor = isDark ? twConfig['dark-accent-secondary'] : twConfig['accent-secondary'];
+                const lineColor = isDark ? 'rgba(102, 252, 241, 0.15)' : 'rgba(108, 92, 231, 0.15)'; // Faint accent lines
+                const textColor = isDark ? twConfig['dark-secondary-text'] : twConfig['secondary-text'];
+                const hoverTextColor = isDark ? twConfig['dark-primary-text'] : twConfig['primary-text'];
+
+                skillNodes.forEach((node, i) => {
+                    let isHovering = false;
+                    // Mouse interaction for skills canvas
+                    if (constellationMouse.x !== null && constellationMouse.y !== null) {
+                        const dx = constellationMouse.x - node.x;
+                        const dy = constellationMouse.y - node.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < skillConstellationInteractionRadius) {
+                            isHovering = true;
+                            const proximityFactor = 1 - (distance / skillConstellationInteractionRadius);
+                            node.targetRadius = skillConstellationNodeRadius + proximityFactor * 3; // Grow slightly
+                            node.alpha = 1; // Fully opaque
+                            // Optional: Slightly push away
+                            // const force = proximityFactor * 0.05;
+                            // node.x -= (dx / distance) * force;
+                            // node.y -= (dy / distance) * force;
+                        } else {
+                            node.targetRadius = skillConstellationNodeRadius;
+                            node.alpha = 0.7; // Slightly transparent when not hovered
+                        }
+                    } else {
+                        node.targetRadius = skillConstellationNodeRadius;
+                        node.alpha = 0.7;
+                    }
+
+                    // Smooth radius change
+                    node.radius += (node.targetRadius - node.radius) * 0.1;
+
+                    // Draw node
+                    ctx.fillStyle = isHovering ? `${hoverColor}${Math.round(node.alpha * 255).toString(16).padStart(2, '0')}` : `${nodeColor}${Math.round(node.alpha * 255).toString(16).padStart(2, '0')}`;
                     ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Update particle position
-                    p.x += p.vx;
-                    p.y += p.vy;
+                    // Draw text label on hover
+                    if (isHovering) {
+                        ctx.fillStyle = hoverTextColor;
+                        ctx.font = '11px "JetBrains Mono", monospace'; // Use mono font
+                        ctx.textAlign = 'center';
+                        ctx.fillText(node.name, node.x, node.y - node.radius - 5); // Position above node
+                    }
 
-                    // --- Edge Wrapping ---
-                    // Wrap particles around edges smoothly
-                    if (p.x < -p.radius) p.x = particleCanvas.width + p.radius;
-                    if (p.x > particleCanvas.width + p.radius) p.x = -p.radius;
-                    if (p.y < -p.radius) p.y = particleCanvas.height + p.radius;
-                    if (p.y > particleCanvas.height + p.radius) p.y = -p.radius;
+                    // Update position & bounce off edges
+                    node.x += node.vx;
+                    node.y += node.vy;
+                    if (node.x < node.radius || node.x > skillConstellationCanvas.width - node.radius) node.vx *= -1;
+                    if (node.y < node.radius || node.y > skillConstellationCanvas.height - node.radius) node.vy *= -1;
 
-                    // --- Draw Connecting Lines ---
-                    // Connect nearby particles
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const p2 = particles[j];
-                        const dx = p.x - p2.x;
-                        const dy = p.y - p2.y;
+                    // Draw connecting lines (simple proximity based)
+                    for (let j = i + 1; j < skillNodes.length; j++) {
+                        const node2 = skillNodes[j];
+                        const dx = node.x - node2.x;
+                        const dy = node.y - node2.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
 
-                        if (distance < particleLineThreshold) {
-                            ctx.strokeStyle = lineColor;
-                            // Line width fades with distance
-                            ctx.lineWidth = 0.5 * (1 - distance / particleLineThreshold); // Thinner lines
+                        if (distance < skillConstellationLineThreshold) {
+                            // Line opacity fades with distance
+                            const lineAlpha = Math.max(0, 1 - distance / skillConstellationLineThreshold) * 0.5; // Max 50% opacity
+                            ctx.strokeStyle = lineColor.replace('0.15', lineAlpha.toFixed(2)); // Adjust alpha
+                            ctx.lineWidth = 0.8;
                             ctx.beginPath();
-                            ctx.moveTo(p.x, p.y);
-                            ctx.lineTo(p2.x, p2.y);
+                            ctx.moveTo(node.x, node.y);
+                            ctx.lineTo(node2.x, node2.y);
                             ctx.stroke();
                         }
                     }
                 });
 
-                // Request next frame
-                particleAnimationId = requestAnimationFrame(drawParticles);
-            } // End drawParticles
+                skillConstellationAnimationId = requestAnimationFrame(drawSkillConstellation);
+            } // End drawSkillConstellation
 
-            /** Updates the mouse position relative to the canvas. */
-            const updateMousePosition = (event) => {
-                if (!particleCanvas) return;
-                const rect = particleCanvas.getBoundingClientRect();
-                // Handle both mouse and touch events
+            /** Updates the mouse position relative to the skill constellation canvas. */
+            const updateConstellationMousePosition = (event) => {
+                if (!skillConstellationCanvas) return;
+                const rect = skillConstellationCanvas.getBoundingClientRect();
                 const clientX = event.touches ? event.touches[0].clientX : event.clientX;
                 const clientY = event.touches ? event.touches[0].clientY : event.clientY;
-                mouse.x = clientX - rect.left;
-                mouse.y = clientY - rect.top;
+                constellationMouse.x = clientX - rect.left;
+                constellationMouse.y = clientY - rect.top;
             };
 
-            /** Resets the mouse position when it leaves the canvas. */
-            const resetMousePosition = () => {
-                mouse.x = null;
-                mouse.y = null;
+            /** Resets the skill constellation mouse position. */
+            const resetConstellationMousePosition = () => {
+                constellationMouse.x = null;
+                constellationMouse.y = null;
             };
-
-            // Add listeners for particle canvas interactions
-            if (particleCanvas) {
-                particleCanvas.addEventListener('mousemove', updateMousePosition);
-                particleCanvas.addEventListener('touchmove', updateMousePosition, { passive: true }); // Use passive for performance
-                particleCanvas.addEventListener('mouseleave', resetMousePosition);
-                particleCanvas.addEventListener('touchend', resetMousePosition);
-
-                // Handle window resize for canvas
-                let resizeTimeout;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    // Debounce resize event to avoid excessive recalculations
-                    resizeTimeout = setTimeout(initParticles, 250);
-                });
-
-                // Pause/resume animation on visibility change (save resources)
-                document.addEventListener('visibilitychange', () => {
-                    if (!particleCanvas) return;
-                    if (document.hidden) {
-                        if (particleAnimationId) {
-                            cancelAnimationFrame(particleAnimationId);
-                            particleAnimationId = null;
-                        }
-                    } else {
-                        // Resume only if it was previously running
-                        if (!particleAnimationId) {
-                            drawParticles();
-                        }
-                    }
-                });
-            } // End particle canvas setup
 
 
             // --- Event Listeners & Initialization Call ---
 
+            // General Mouse Position Listener (for particle canvas)
+            window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+            window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; }); // Reset when mouse leaves window
+
             // Theme Toggle Button
-            if (themeToggleButton) {
-                themeToggleButton.addEventListener('click', () => {
-                    const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
-                    setTheme(newTheme);
-                });
-            }
+            if (themeToggleButton) themeToggleButton.addEventListener('click', () => setTheme(htmlEl.classList.contains('dark') ? 'light' : 'dark'));
 
-            // Mobile Menu Button
-            if (mobileMenuButton) {
-                 mobileMenuButton.addEventListener('click', toggleMobileMenu);
-            }
-            // Close mobile menu when a link is clicked
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', closeMobileMenu);
-            });
+            // Mobile Menu Button & Links
+            if (mobileMenuButton) mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
 
-            // Project Card Clicks (Open Modal)
+            // Project Card Clicks & Keydown (Open Modal)
             projectCards.forEach(card => {
                 card.addEventListener('click', () => openModal(card.getAttribute('data-project-id')));
-                // Allow opening modal with Enter key for accessibility
-                card.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault(); // Prevent space bar scrolling
-                        openModal(card.getAttribute('data-project-id'));
-                    }
-                });
+                card.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openModal(card.getAttribute('data-project-id')); } });
             });
 
             // Close modal on background click
-            if(projectModal) {
-                projectModal.addEventListener('click', (event) => {
-                    // Close only if the click is directly on the modal background
-                    if (event.target === projectModal) {
-                        closeModal();
-                    }
+            if(projectModal) projectModal.addEventListener('click', (event) => { if (event.target === projectModal) closeModal(); });
+
+            // Scroll Listener
+            window.addEventListener('scroll', handleScroll, { passive: true });
+
+            // Skill Constellation Canvas Listeners
+            if (skillConstellationCanvas) {
+                skillConstellationCanvas.addEventListener('mousemove', updateConstellationMousePosition);
+                skillConstellationCanvas.addEventListener('touchmove', updateConstellationMousePosition, { passive: true });
+                skillConstellationCanvas.addEventListener('mouseleave', resetConstellationMousePosition);
+                skillConstellationCanvas.addEventListener('touchend', resetConstellationMousePosition);
+
+                // Handle resize for skill canvas
+                let skillResizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(skillResizeTimeout);
+                    skillResizeTimeout = setTimeout(() => {
+                        // Re-initialize only if it's currently visible to avoid unnecessary computation
+                        if (skillConstellationVisible) {
+                            initSkillConstellation();
+                        } else {
+                            // Just resize if not visible, nodes will be recreated when it becomes visible
+                            resizeSkillCanvas();
+                            createSkillNodes(); // Recreate nodes with new positions based on potential new size
+                        }
+                    }, 250);
                 });
             }
-            // Close modal on Escape key (handled within handleModalKeyDown)
-
-
-            // Scroll Listener for progress bar, header shrink, back-to-top
-            window.addEventListener('scroll', handleScroll, { passive: true }); // Use passive listener
 
             // --- Initialize Everything ---
             hidePreloader();
             setupWhatsAppLinks();
-            setupToneJS(); // Prepare Tone.js
-            addSoundFeedback(); // Add sound listeners (will work once Tone.js starts)
+            setupToneJS();
+            addSoundFeedback();
             setFooterYear();
-            updateThemeUI(); // Set initial theme UI state
+            updateThemeUI(); // Set initial theme UI state (calls initParticles & initSkillConstellation indirectly)
             setupHeroWordRotation();
             setupProjectCardImageSwap();
             setupScrollReveal();
             setupNavHighlighting();
             setupClipboardCopy();
-            setupTiltEffect(); // Add tilt effect
+            setupTiltEffect();
             setupBackToTop();
-            if (particleCanvas) initParticles(); // Start particle animation
-
+            // Initial calls to init canvases are handled by updateThemeUI now
 
         }); // End DOMContentLoaded
     </script>
 
     <script>
-        var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w;s.onload=v;s.onerror=function(){console.error("Failed to load Tally embed script."); /* Optional: Display fallback message */ var formIframe=document.getElementById('tally-contact-form'); if(formIframe){ formIframe.outerHTML = '<p class="text-center text-red-coral p-4 border border-red-coral rounded-lg">Contact form could not be loaded. Please try again later or use another contact method.</p>'; }};d.body.appendChild(s);}
+        var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w;s.onload=v;s.onerror=function(){console.error("Failed to load Tally embed script."); var formIframe=document.getElementById('tally-contact-form'); var fallbackMsg=document.getElementById('tally-fallback'); if(formIframe) formIframe.style.display='none'; if(fallbackMsg) fallbackMsg.classList.remove('hidden'); };d.body.appendChild(s);}
     </script>
 
 </body>
