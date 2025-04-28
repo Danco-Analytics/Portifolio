@@ -182,10 +182,14 @@
             }
         }
         /* Dark theme pulse override */
-        html.dark @keyframes pulse {
+        @keyframes pulse-dark {
              to {
                 box-shadow: 0 0 0 45px rgba(102, 252, 241, 0); /* Dark accent alpha 0 */
              }
+        }
+
+        html.dark .preloader-pulse {
+            animation-name: pulse-dark;
         }
         /* --- End Futuristic Preloader Styles --- */
 
@@ -322,6 +326,7 @@
             border: 2px solid transparent; border-radius: inherit;
             background: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary')) border-box;
             -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: destination-out; mask-composite: exclude;
             opacity: 0; transition: opacity 0.3s ease-in-out; z-index: -1;
             pointer-events: none; /* Prevent border from interfering */
@@ -768,7 +773,7 @@
                          </div>
                          <span class="absolute left-10 -top-3 text-xs font-mono text-accent-secondary dark:text-dark-accent-secondary bg-secondary-bg dark:bg-dark-secondary-bg px-2 py-0.5 rounded">Graduated 2018</span>
                         <h3 class="text-xl md:text-2xl font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">Kenya Certificate of Secondary Education (KCSE)</h3>
-                        <p class="text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-2">St. Anthony’s Boys High School, Kitale</p>
+                        <p class="text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-2">St. Anthony's Boys High School, Kitale</p>
                         <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
                             Completed with a focus on sciences and mathematics, building the analytical mindset that would later shape a career in data and technology. (Also Alumni and Tutorial Fellow - Part-Time Applicant).
                         </p>
@@ -930,7 +935,7 @@
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                     <a href="https://www.linkedin.com/pulse/logarithms-algorithms-invisible-engines-ai-data-science-wanjala-u9qgf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Logarithms & Algorithms: The Invisible Engines of AI, Data Science, and Beyond</h3>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Ever wondered how Google finds exactly what you’re looking for in a fraction of a second? Or how does Spotify...</p>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Ever wondered how Google finds exactly what you're looking for in a fraction of a second? Or how does Spotify...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
                             <span>by Daniel Wanjala</span>
                             <span>~10 min read</span>
@@ -938,7 +943,7 @@
                     </a>
                     <a href="https://www.linkedin.com/pulse/from-excel-neural-networks-my-journey-data-science-daniel-wanjala-s6vjf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">From Excel to Neural Networks: My Journey in Data Science</h3>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">First off, let me start by saying: that it’s been a while. My LinkedIn feed probably thought I disappeared into the data abyss...</p>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">First off, let me start by saying: that it's been a while. My LinkedIn feed probably thought I disappeared into the data abyss...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
                             <span>by Daniel Wanjala</span>
                             <span>~12 min read</span>
@@ -969,8 +974,8 @@
                         </div>
                     </a>
                     <a href="https://www.linkedin.com/pulse/how-machine-learning-transportation-can-transform-africas-wanjala-163gf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
-                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">How Machine Learning in Transportation Can Transform Africa’s Transit Systems</h3>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Highway Design Highway SafeBoda Twiga Foods Africa’s transportation sector is undergoing a radical transformation, thanks to the infusion of machine...</p>
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">How Machine Learning in Transportation Can Transform Africa's Transit Systems</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Highway Design Highway SafeBoda Twiga Foods Africa's transportation sector is undergoing a radical transformation, thanks to the infusion of machine...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
                             <span>by Daniel Wanjala</span>
                             <span>~14 min read</span>
@@ -1465,9 +1470,71 @@
                         <div class="flex flex-wrap gap-2 mb-6">${techStackHtml}</div>
                       </div>
                       <div id="github-stats-container" class="mt-6 pt-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/20 ${!project.githubUrl ? 'hidden' : ''}">
-                          <button id="fetch-stats-button" class="interactive-element text-sm text-accent dark:text-dark-accent hover:underline mb-2 focus:outline-none focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent rounded">Show GitHub Stats</button>
-                          <div id="github-stats-content" class="hidden text-sm space-y-1">
+                          <button id="fetch-stats-button" class="interactive-element text-sm text-accent dark:text-dark-accent hover:underline mb-2 focus:outline-none focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent rounded group">
+                              <span class="inline-flex items-center">
+                                  <i data-lucide="git-branch" class="w-4 h-4 mr-2 transition-transform duration-300 group-hover:rotate-45" aria-hidden="true"></i>
+                                  Show GitHub Stats
+                              </span>
+                          </button>
+                          <div id="github-stats-content" class="hidden">
+                              <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-md rounded-lg p-4 border border-accent/20 dark:border-dark-accent/20 shadow-lg relative overflow-hidden transition-all duration-300 ease-out transform hover:scale-[1.02] hover:shadow-xl">
+                                  <!-- Pulsing border effect -->
+                                  <div class="absolute inset-0 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary opacity-0 transition-opacity duration-500 stats-border-pulse"></div>
+                                  
+                                  <!-- Stats grid -->
+                                  <div class="grid grid-cols-3 gap-4">
+                                      <!-- Stars -->
+                                      <div class="stat-item text-center">
+                                          <div class="inline-flex items-center justify-center mb-2 relative group">
+                                              <i data-lucide="star" class="w-6 h-6 text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                                          </div>
+                                          <div class="font-mono text-lg font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent stat-value">0</div>
+                                          <div class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Stars</div>
+                                          <div class="h-1 w-full bg-secondary-text/10 dark:bg-dark-secondary-text/10 rounded-full mt-2 overflow-hidden">
+                                              <div class="stat-progress h-full w-0 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-1000"></div>
+                                          </div>
+                                      </div>
+                                      
+                                      <!-- Forks -->
+                                      <div class="stat-item text-center">
+                                          <div class="inline-flex items-center justify-center mb-2 relative group">
+                                              <i data-lucide="git-fork" class="w-6 h-6 text-transparent bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                                          </div>
+                                          <div class="font-mono text-lg font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent stat-value">0</div>
+                                          <div class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Forks</div>
+                                          <div class="h-1 w-full bg-secondary-text/10 dark:bg-dark-secondary-text/10 rounded-full mt-2 overflow-hidden">
+                                              <div class="stat-progress h-full w-0 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-1000"></div>
+                                          </div>
+                                      </div>
+                                      
+                                      <!-- Watchers -->
+                                      <div class="stat-item text-center">
+                                          <div class="inline-flex items-center justify-center mb-2 relative group">
+                                              <i data-lucide="eye" class="w-6 h-6 text-transparent bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                                          </div>
+                                          <div class="font-mono text-lg font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent stat-value">0</div>
+                                          <div class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Watchers</div>
+                                          <div class="h-1 w-full bg-secondary-text/10 dark:bg-dark-secondary-text/10 rounded-full mt-2 overflow-hidden">
+                                              <div class="stat-progress h-full w-0 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-1000"></div>
+                                          </div>
+                                      </div>
+                                  </div>
                               </div>
+                              
+                              <!-- Error state -->
+                              <div id="github-stats-error" class="hidden">
+                                  <div class="bg-red-coral/10 border border-red-coral/20 rounded-lg p-4 mt-4 animate-shake">
+                                      <p class="text-red-coral text-sm flex items-center">
+                                          <i data-lucide="alert-circle" class="w-4 h-4 mr-2" aria-hidden="true"></i>
+                                          <span class="error-message">Could not load stats.</span>
+                                      </p>
+                                      <button class="retry-button mt-2 text-xs text-accent dark:text-dark-accent hover:underline focus:outline-none focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent rounded px-2 py-1 inline-flex items-center">
+                                          <i data-lucide="refresh-cw" class="w-3 h-3 mr-1" aria-hidden="true"></i>
+                                          Retry
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
                           <p class="text-xs text-secondary-text dark:text-dark-secondary-text mt-2">Note: Stats via public GitHub API. May be rate-limited.</p>
                       </div>
                       <div class="flex flex-wrap gap-4 mt-6">${githubButton}${demoButton}</div>

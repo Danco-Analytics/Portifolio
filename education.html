@@ -63,15 +63,21 @@
         #back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
 
         /* --- Education Timeline Styles --- */
+        .education-timeline { /* Add relative positioning for the ::before */
+            position: relative;
+        }
         .education-timeline::before { /* The main timeline bar */
             content: ''; position: absolute; top: 0; bottom: 0; left: 1.5rem; /* Adjust based on icon size */
             width: 4px; background-color: theme('colors.accent/20'); border-radius: 2px;
             transform-origin: top; transform: scaleY(0); /* Start hidden */
-            animation: draw-timeline-bar 3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            animation-delay: 0.5s; /* Delay start */
+            transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1) 0.5s; /* Use transition instead of animation */
         }
         html.dark .education-timeline::before { background-color: theme('colors.dark-accent/20'); }
-        @keyframes draw-timeline-bar { to { transform: scaleY(1); } }
+        /* Add a class to trigger the animation via JS */
+        .education-timeline.animate-bar::before {
+            transform: scaleY(1);
+        }
+        /* @keyframes draw-timeline-bar { to { transform: scaleY(1); } } */ /* Remove keyframes */
 
         .education-item { position: relative; padding-left: 4rem; /* More space for icon + effects */ padding-bottom: 4rem; }
         .education-item:last-child { padding-bottom: 1rem; } /* Less padding on last item */
@@ -82,52 +88,79 @@
             background-color: theme('colors.primary-bg'); dark:bg-dark-primary-bg;
             display: flex; align-items: center; justify-content: center; z-index: 10;
             box-shadow: 0 0 0 4px theme('colors.primary-bg'), 0 0 0 6px theme('colors.accent');
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; /* Enhanced transition */
         }
         html.dark .education-icon-wrapper {
             background-color: theme('colors.dark-primary-bg');
             box-shadow: 0 0 0 4px theme('colors.dark-primary-bg'), 0 0 0 6px theme('colors.dark-accent');
         }
         .education-item:hover .education-icon-wrapper {
-            transform: scale(1.1);
-            box-shadow: 0 0 0 4px theme('colors.primary-bg'), 0 0 0 7px theme('colors.accent-secondary'), 0 5px 15px rgba(0,0,0,0.1);
+            transform: scale(1.15) rotate(-10deg); /* Add rotation */
+            box-shadow: 0 0 0 4px theme('colors.primary-bg'), 0 0 0 8px theme('colors.accent-secondary'), 0 8px 20px rgba(0,0,0,0.15); /* Enhanced shadow */
         }
         html.dark .education-item:hover .education-icon-wrapper {
-             box-shadow: 0 0 0 4px theme('colors.dark-primary-bg'), 0 0 0 7px theme('colors.dark-accent-secondary'), 0 5px 15px rgba(0,0,0,0.2);
+             box-shadow: 0 0 0 4px theme('colors.dark-primary-bg'), 0 0 0 8px theme('colors.dark-accent-secondary'), 0 8px 20px rgba(0,0,0,0.25);
         }
-        .education-icon { width: 1.25rem; height: 1.25rem; color: theme('colors.accent'); transition: color 0.3s ease; }
+        .education-icon { width: 1.25rem; height: 1.25rem; color: theme('colors.accent'); transition: color 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); } /* Add transform transition */
         html.dark .education-icon { color: theme('colors.dark-accent'); }
-        .education-item:hover .education-icon { color: theme('colors.accent-secondary'); }
+        .education-item:hover .education-icon {
+            color: theme('colors.accent-secondary');
+            transform: scale(1.1); /* Scale icon on hover */
+        }
         html.dark .education-item:hover .education-icon { color: theme('colors.dark-accent-secondary'); }
 
-        .education-content { @apply bg-glass-light dark:bg-glass-dark backdrop-blur-md border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-md; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .education-item:hover .education-content { transform: translateX(10px) scale(1.01); @apply shadow-lg; }
-        .education-date { @apply text-xs font-mono text-accent-secondary dark:text-dark-accent-secondary mb-2 inline-block bg-secondary-bg dark:bg-dark-secondary-bg px-2 py-0.5 rounded; }
+        .education-content {
+            @apply bg-glass-light dark:bg-glass-dark backdrop-blur-md border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-md;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.3s ease; /* Enhanced transition */
+        }
+        .education-item:hover .education-content {
+            transform: translateX(15px) scale(1.02); /* Slightly more movement */
+            @apply shadow-xl border-accent/30 dark:border-dark-accent/30; /* Enhance shadow and border */
+        }
+        .education-date { @apply text-xs font-mono text-accent-secondary dark:text-dark-accent-secondary mb-2 inline-block bg-secondary-bg dark:bg-dark-secondary-bg px-2 py-0.5 rounded; transition: background-color 0.3s ease; }
+        .education-item:hover .education-date { @apply bg-accent/10 dark:bg-dark-accent/10; }
         .education-title { @apply text-xl md:text-2xl font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading; }
         .education-institution { @apply text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-3 italic; }
         .education-description { @apply text-sm text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed space-y-2; }
 
         /* --- Certification Card Styles --- */
         .certification-card {
-            @apply bg-gradient-to-br from-secondary-bg/40 to-primary-bg dark:from-dark-secondary-bg/40 dark:to-dark-primary-bg border border-secondary-text/15 dark:border-dark-secondary-text/25 rounded-lg p-4 shadow-sm;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            @apply bg-gradient-to-br from-secondary-bg/40 to-primary-bg dark:from-dark-secondary-bg/40 dark:to-dark-primary-bg border border-secondary-text/15 dark:border-dark-secondary-text/25 rounded-lg p-4 shadow-sm relative overflow-hidden; /* Add relative and overflow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        /* Add a pseudo-element for hover background effect */
+        .certification-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, theme('colors.accent/10'), theme('colors.accent-secondary/10'));
+            background: linear-gradient(45deg, theme('colors.dark-accent/10'), theme('colors.dark-accent-secondary/10'));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1; /* Place behind content */
+            border-radius: inherit; /* Match parent border radius */
         }
         .certification-card:hover {
-            transform: translateY(-4px) scale(1.03);
-            @apply shadow-lg border-accent/30 dark:border-dark-accent/30;
+            transform: translateY(-6px) scale(1.04); /* More pronounced lift */
+            @apply shadow-lg border-accent/40 dark:border-dark-accent/40;
         }
-        .cert-icon { transition: transform 0.4s ease; }
-        .certification-card:hover .cert-icon { transform: rotate(-10deg) scale(1.1); }
+        .certification-card:hover::after {
+            opacity: 1; /* Fade in the background */
+        }
+        .cert-icon { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease; } /* Smoother bounce */
+        .certification-card:hover .cert-icon { transform: rotate(-15deg) scale(1.2); opacity: 1; } /* More rotation and scale */
         .cert-title { @apply text-sm font-semibold text-primary-text dark:text-dark-primary-text font-heading mb-1 line-clamp-1; } /* Limit title lines */
         .cert-issuer { @apply text-xs text-secondary-text dark:text-dark-secondary-text font-mono; }
-        .cert-link { @apply text-xs text-accent dark:text-dark-accent hover:underline mt-2 inline-block; transition: transform 0.2s ease; }
-        .certification-card:hover .cert-link { transform: translateX(2px); }
+        .cert-link { @apply text-xs text-accent dark:text-dark-accent hover:underline mt-2 inline-block; transition: transform 0.3s ease, letter-spacing 0.3s ease; } /* Add letter-spacing transition */
+        .certification-card:hover .cert-link { transform: translateX(3px); letter-spacing: 0.5px; } /* Add letter spacing */
 
         /* --- Animated Counter Styles --- */
-        .stat-card { @apply bg-glass-light dark:bg-glass-dark backdrop-blur-sm p-6 rounded-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 text-center shadow-md; transition: transform 0.3s ease; }
-        .stat-card:hover { transform: scale(1.05); }
-        .stat-number { @apply block text-4xl lg:text-5xl font-bold font-heading bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent mb-1; }
-        .stat-label { @apply text-sm font-medium text-secondary-text dark:text-dark-secondary-text uppercase tracking-wider; }
+        .stat-card { @apply bg-glass-light dark:bg-glass-dark backdrop-blur-sm p-6 rounded-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 text-center shadow-md; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .stat-card:hover { transform: scale(1.07) rotate(1deg); @apply shadow-lg; } /* Add slight rotation */
+        .stat-number { @apply block text-4xl lg:text-5xl font-bold font-heading bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent mb-1; transition: transform 0.3s ease; }
+        .stat-card:hover .stat-number { transform: scale(1.05); } /* Scale number on hover */
+        .stat-label { @apply text-sm font-medium text-secondary-text dark:text-dark-secondary-text uppercase tracking-wider; transition: color 0.3s ease; }
+        .stat-card:hover .stat-label { @apply text-accent dark:text-dark-accent; } /* Highlight label on hover */
 
         /* --- General Button Styles (Consistent) --- */
         .cta-button { @apply interactive-element group relative inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg shadow-lg transition-all duration-300 ease-out overflow-hidden transform focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black focus:ring-accent dark:focus:ring-dark-accent; }
@@ -136,6 +169,12 @@
         .cta-button:hover { @apply shadow-accent/40 dark:shadow-dark-accent/40 scale-[1.03] -translate-y-0.5; }
         .cta-button i { transition: transform 0.3s ease-out; }
         .cta-button:hover i { transform: translateX(4px) scale(1.1); }
+
+        /* Secondary CTA Button Style */
+        .secondary-cta-button { @apply interactive-element group relative inline-flex items-center justify-center px-6 py-2.5 font-medium rounded-lg border border-accent dark:border-dark-accent text-accent dark:text-dark-accent transition-all duration-300 ease-out overflow-hidden transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent bg-transparent hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:text-accent-secondary dark:hover:text-dark-accent-secondary hover:border-accent-secondary dark:hover:border-dark-accent-secondary; }
+        .secondary-cta-button:hover { @apply scale-[1.03] -translate-y-0.5; }
+        .secondary-cta-button i { transition: transform 0.3s ease-out; }
+        .secondary-cta-button:hover i { transform: translateX(3px); }
 
         /* Accessibility: Focus Styles */
         *:focus-visible { outline: 2px solid theme('colors.accent'); outline-offset: 2px; border-radius: 2px; }
@@ -148,8 +187,8 @@
         darkMode: 'class', theme: { extend: {
             colors: { 'jet-black': '#0B0C10', 'ghost-white': '#F7F7F7', 'signal-cyan': '#66FCF1', 'tech-purple': '#6C5CE7', 'emerald-green': '#2ECC71', 'red-coral': '#FF6B6B', 'sandstone': '#E0C097', 'whatsapp-green': '#25D366', 'primary-bg': '#F7F7F7', 'primary-text': '#0B0C10', 'secondary-bg': '#E0C097', 'secondary-text': '#4A4A4A', 'accent': '#6C5CE7', 'accent-secondary': '#FF6B6B', 'dark-primary-bg': '#0B0C10', 'dark-primary-text': '#F7F7F7', 'dark-secondary-bg': '#1F2833', 'dark-secondary-text': '#C5C6C7', 'dark-accent': '#66FCF1', 'dark-accent-secondary': '#45A29E', 'tertiary-light': '#F5B041', 'tertiary-dark': '#F39C12', 'glass-light': 'rgba(225, 229, 255, 0.1)', 'glass-dark': 'rgba(17, 24, 39, 0.2)', 'glass-darker': 'rgba(17, 24, 39, 0.3)', },
             fontFamily: { heading: ['Satoshi', 'Space Grotesk', 'Neue Montreal', 'sans-serif'], body: ['Inter', 'IBM Plex Sans', 'sans-serif'], mono: ['JetBrains Mono', 'Source Code Pro', 'monospace'], },
-            keyframes: { 'draw-timeline-bar': { 'to': { transform: 'scaleY(1)' } } },
-            animation: { 'draw-timeline-bar': 'draw-timeline-bar 3s cubic-bezier(0.25, 1, 0.5, 1) forwards' }
+            keyframes: { /* Keyframes not directly used for timeline bar anymore */ },
+            animation: { /* Animation not directly used for timeline bar anymore */ }
         } }
       }
     </script>
@@ -540,9 +579,11 @@
                             }
                             // Trigger timeline bar animation if the timeline section is revealed
                             if (entry.target.id === 'education-timeline-section') {
-                                const timelineBar = document.querySelector('.education-timeline::before');
-                                // You might need to add a class to trigger the animation defined in CSS
-                                // Or directly manipulate style if animation is JS-driven
+                                const timelineContainer = entry.target.querySelector('.education-timeline');
+                                if (timelineContainer) {
+                                    // Add the class to trigger the CSS transition/animation
+                                    timelineContainer.classList.add('animate-bar');
+                                }
                             }
                             observer.unobserve(entry.target);
                         }
