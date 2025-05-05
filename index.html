@@ -2,13 +2,206 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0B0C10">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Daniel Wanjala - Data Scientist / ML Engineer</title>
     <link rel="icon" href="assets/logo.png" type="image/png">
     <link rel="shortcut icon" href="assets/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Add mobile-specific styles -->
+    <style>
+        /* Mobile-first base styles */
+        html {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            overscroll-behavior-y: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile touch targets */
+        button, a, .interactive-element {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        /* Mobile menu improvements */
+        #mobile-menu {
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile-specific animations */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Enhanced touch feedback */
+        .touch-feedback {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .touch-feedback::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
+
+        .touch-feedback:active::after {
+            opacity: 1;
+            animation: touch-ripple 0.4s ease-out;
+        }
+
+        @keyframes touch-ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(100, 100);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile-optimized grid layouts */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            width: 100%;
+        }
+
+        /* Mobile-friendly spacing */
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .section {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.75rem; }
+            h3 { font-size: 1.5rem; }
+        }
+
+        /* Mobile-optimized music player */
+        #floating-music-player {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 50;
+        }
+
+        @media (max-width: 640px) {
+            #spotify-player {
+                width: calc(100vw - 2rem);
+                left: 1rem;
+                right: 1rem;
+                transform: translateY(100%);
+            }
+
+            #spotify-player.visible {
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile-friendly navigation */
+        @media (max-width: 768px) {
+            .nav-link {
+                padding: 0.75rem 1rem;
+            }
+
+            .mobile-nav-link {
+                padding: 1rem;
+                border-bottom: 1px solid rgba(156, 163, 175, 0.1);
+            }
+        }
+
+        /* Mobile scroll improvements */
+        .smooth-scroll {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile-optimized forms */
+        input, textarea, select {
+            font-size: 16px !important; /* Prevents iOS zoom on focus */
+        }
+
+        /* Mobile gesture handling */
+        .swipe-area {
+            touch-action: pan-y pinch-zoom;
+        }
+
+        /* Mobile-friendly cards */
+        .card {
+            height: auto !important;
+            min-height: 200px;
+        }
+
+        /* Improved mobile tooltips */
+        @media (max-width: 640px) {
+            .tooltip-text {
+                position: fixed;
+                bottom: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 2rem);
+                text-align: center;
+            }
+        }
+
+        /* Mobile-optimized images */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Mobile-friendly buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            touch-action: manipulation;
+        }
+
+        /* Mobile scroll snap */
+        .scroll-snap-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .scroll-snap-item {
+            scroll-snap-align: start;
+            height: 100vh;
+        }
+    </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
