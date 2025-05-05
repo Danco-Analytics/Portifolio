@@ -448,6 +448,26 @@
             transition: opacity 0.3s ease;
         }
 
+        /* AI Thought Bubble Styles */
+        @keyframes neuron-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        @keyframes synapse-flow {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: -100; }
+        }
+
+        .thought-bubble-visible {
+            opacity: 1 !important;
+        }
+
+        .thought-content-visible {
+            opacity: 1 !important;
+            transform: translate-y-0 !important;
+        }
+
     </style>
     <script>
       // Tailwind Config - Extended with new theme colors
@@ -1222,6 +1242,17 @@
         <button id="back-to-top" aria-label="Back to Top" class="interactive-element p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black shadow-lg hover:bg-accent-secondary dark:hover:bg-dark-accent-secondary transition-all duration-300">
             <i data-lucide="arrow-up" class="h-5 w-5" aria-hidden="true"></i>
         </button>
+
+        <div id="ai-thought-bubble" class="fixed top-24 right-4 w-64 h-64 pointer-events-none z-30 opacity-0 transition-opacity duration-500">
+            <canvas id="neural-network" class="w-full h-full"></canvas>
+            <div id="thought-content" class="absolute bottom-full right-0 mb-2 p-3 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-lg border border-accent/20 dark:border-dark-accent/20 text-xs font-mono max-w-[200px] opacity-0 transform translate-y-2 transition-all duration-300">
+                <div class="flex items-center gap-2 mb-1">
+                    <div class="animate-pulse w-2 h-2 rounded-full bg-accent dark:bg-dark-accent"></div>
+                    <span class="text-accent dark:text-dark-accent">AI Processing...</span>
+                </div>
+                <p class="text-secondary-text dark:text-dark-secondary-text leading-relaxed"></p>
+            </div>
+        </div>
 
     </div> <script defer>
         /**
@@ -2327,6 +2358,207 @@
                     cancelAnimationFrame(animationFrame);
                 } else {
                     animate();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // AI Thought Bubble Visualization
+        document.addEventListener('DOMContentLoaded', () => {
+            const bubble = document.getElementById('ai-thought-bubble');
+            const canvas = document.getElementById('neural-network');
+            const thoughtContent = document.getElementById('thought-content');
+            const thoughtText = thoughtContent.querySelector('p');
+            
+            if (!bubble || !canvas || !thoughtContent) return;
+
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = 256;
+            let height = canvas.height = 256;
+            
+            // Neural network structure
+            const layers = [4, 6, 8, 6, 4];
+            const neurons = [];
+            const synapses = [];
+            let activeNeurons = new Set();
+            let activeSynapses = new Set();
+            
+            // Initialize neurons
+            layers.forEach((count, layerIndex) => {
+                const layer = [];
+                const layerY = height * (layerIndex + 1) / (layers.length + 1);
+                
+                for (let i = 0; i < count; i++) {
+                    const neuron = {
+                        x: width * (i + 1) / (count + 1),
+                        y: layerY,
+                        radius: 3,
+                        activation: 0,
+                        layer: layerIndex
+                    };
+                    layer.push(neuron);
+                }
+                neurons.push(layer);
+            });
+            
+            // Create synapses
+            for (let i = 0; i < neurons.length - 1; i++) {
+                const currentLayer = neurons[i];
+                const nextLayer = neurons[i + 1];
+                
+                currentLayer.forEach(neuron1 => {
+                    nextLayer.forEach(neuron2 => {
+                        synapses.push({
+                            from: neuron1,
+                            to: neuron2,
+                            weight: Math.random(),
+                            signal: 0
+                        });
+                    });
+                });
+            }
+
+            function drawNetwork() {
+                ctx.clearRect(0, 0, width, height);
+                
+                // Draw synapses
+                synapses.forEach(synapse => {
+                    const active = activeSynapses.has(synapse);
+                    ctx.beginPath();
+                    ctx.moveTo(synapse.from.x, synapse.from.y);
+                    ctx.lineTo(synapse.to.x, synapse.to.y);
+                    
+                    const gradient = ctx.createLinearGradient(
+                        synapse.from.x, synapse.from.y,
+                        synapse.to.x, synapse.to.y
+                    );
+                    
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const baseColor = isDark ? 'rgba(102, 252, 241,' : 'rgba(108, 92, 231,';
+                    
+                    gradient.addColorStop(0, `${baseColor}${active ? '0.5' : '0.1'})`);
+                    gradient.addColorStop(1, `${baseColor}${active ? '0.1' : '0.1'})`);
+                    
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = active ? 2 : 1;
+                    ctx.stroke();
+                });
+                
+                // Draw neurons
+                neurons.flat().forEach(neuron => {
+                    const active = activeNeurons.has(neuron);
+                    ctx.beginPath();
+                    ctx.arc(neuron.x, neuron.y, neuron.radius * (active ? 1.5 : 1), 0, Math.PI * 2);
+                    
+                    const isDark = document.documentElement.classList.contains('dark');
+                    ctx.fillStyle = isDark ? 
+                        `rgba(102, 252, 241,${active ? '0.8' : '0.3'})` :
+                        `rgba(108, 92, 231,${active ? '0.8' : '0.3'})`;
+                    
+                    ctx.fill();
+                });
+            }
+
+            function propagateSignal() {
+                activeNeurons.clear();
+                activeSynapses.clear();
+                
+                // Activate random input neurons
+                const inputLayer = neurons[0];
+                const numActive = 1 + Math.floor(Math.random() * 2);
+                
+                for (let i = 0; i < numActive; i++) {
+                    const neuron = inputLayer[Math.floor(Math.random() * inputLayer.length)];
+                    activeNeurons.add(neuron);
+                }
+                
+                // Propagate through layers
+                for (let i = 0; i < neurons.length - 1; i++) {
+                    const nextActive = new Set();
+                    
+                    synapses.filter(s => s.from.layer === i).forEach(synapse => {
+                        if (activeNeurons.has(synapse.from) && Math.random() < 0.7) {
+                            nextActive.add(synapse.to);
+                            activeSynapses.add(synapse);
+                        }
+                    });
+                    
+                    activeNeurons = nextActive;
+                }
+            }
+
+            // Content analysis
+            const contentTypes = {
+                'hero': ['Analyzing portfolio introduction', 'Processing personal brand elements', 'Evaluating hero section impact'],
+                'about': ['Analyzing professional background', 'Processing experience patterns', 'Evaluating skill correlations'],
+                'skills': ['Mapping technical competencies', 'Analyzing skill relationships', 'Processing expertise clusters'],
+                'education': ['Analyzing academic progression', 'Processing learning patterns', 'Mapping knowledge acquisition'],
+                'projects': ['Analyzing project complexity', 'Processing technical implementations', 'Evaluating solution architectures'],
+                'publications': ['Analyzing research depth', 'Processing knowledge sharing patterns', 'Evaluating technical writing'],
+                'contact': ['Processing communication channels', 'Analyzing engagement options', 'Mapping connection points']
+            };
+
+            function getCurrentSection() {
+                const sections = document.querySelectorAll('section[id]');
+                let currentSection = 'hero';
+                
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                        currentSection = section.id;
+                    }
+                });
+                
+                return currentSection;
+            }
+
+            function updateThoughtContent() {
+                const section = getCurrentSection();
+                const thoughts = contentTypes[section] || contentTypes['hero'];
+                const thought = thoughts[Math.floor(Math.random() * thoughts.length)];
+                
+                thoughtText.textContent = thought;
+                thoughtContent.classList.add('thought-content-visible');
+                
+                setTimeout(() => {
+                    thoughtContent.classList.remove('thought-content-visible');
+                }, 3000);
+            }
+
+            let animationFrame;
+            let lastThoughtUpdate = 0;
+
+            function animate(timestamp) {
+                if (timestamp - lastThoughtUpdate > 3500) {
+                    propagateSignal();
+                    updateThoughtContent();
+                    lastThoughtUpdate = timestamp;
+                }
+                
+                drawNetwork();
+                animationFrame = requestAnimationFrame(animate);
+            }
+
+            // Show bubble when scrolling starts
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                bubble.classList.add('thought-bubble-visible');
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    bubble.classList.remove('thought-bubble-visible');
+                }, 1000);
+            });
+
+            // Start animation
+            animate(0);
+
+            // Cleanup
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(animationFrame);
+                } else {
+                    animate(0);
                 }
             });
         });
