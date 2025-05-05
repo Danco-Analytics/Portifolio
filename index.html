@@ -533,6 +533,24 @@
         .equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
         .equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
 
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-ticker {
+            animation: ticker 20s linear infinite;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 3s ease-in-out infinite;
+        }
+
     </style>
     <script>
       // Tailwind Config - Extended with new theme colors
@@ -765,10 +783,11 @@
             <!-- Add new music section -->
             <section id="music" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg reveal-hidden">
                 <div class="max-w-6xl mx-auto">
+                    <!-- Hero Section with Animations -->
                     <div class="flex flex-col md:flex-row items-center gap-6 mb-12">
-                        <div class="w-32 h-32">
+                        <div class="w-40 h-40">
                             <lottie-player
-                                src="https://lottie.host/c2328686-25c9-4889-b2e9-b6f6e1f0c8c4/YWbguuKfYl.json"
+                                src="https://assets2.lottiefiles.com/packages/lf20_GpyDh0.json"
                                 background="transparent"
                                 speed="1"
                                 loop
@@ -777,15 +796,15 @@
                         </div>
                         <div class="flex-1 text-center md:text-left">
                             <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">
-                                🎵 Neural Networks & Chill 🧠
+                                🎵 Bytes & Beats: The Data Scientist's Mix 🧠
                             </h2>
                             <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
-                                Where algorithms meet acoustics, and data science gets a soundtrack! 🎧
+                                Where algorithms dance to the rhythm of innovation! 🎧
                             </p>
                         </div>
-                        <div class="w-32 h-32">
+                        <div class="w-40 h-40">
                             <lottie-player
-                                src="https://lottie.host/21748b9b-8945-4419-b375-b5c1b2f2a2db/xqnMlYTzYC.json"
+                                src="https://assets3.lottiefiles.com/packages/lf20_UJNc2t.json"
                                 background="transparent"
                                 speed="1"
                                 loop
@@ -794,44 +813,82 @@
                         </div>
                     </div>
 
+                    <!-- Fun Facts Ticker -->
+                    <div class="relative overflow-hidden mb-12 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl border border-accent/20 dark:border-dark-accent/20 p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8">
+                                <lottie-player
+                                    src="https://assets9.lottiefiles.com/packages/lf20_kkflmtur.json"
+                                    background="transparent"
+                                    speed="1"
+                                    loop
+                                    autoplay>
+                                </lottie-player>
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <div class="animate-ticker whitespace-nowrap text-secondary-text dark:text-dark-secondary-text font-mono">
+                                    Did you know? Studies show developers are 34% more productive when listening to music 🎵 |
+                                    The average developer spends 70% of their time debugging and 30% complaining about debugging 🐛 |
+                                    There are only 10 types of people in the world: those who understand binary and those who don't 🤓 |
+                                    My code works, I have no idea why. My code doesn't work, I have no idea why 🤔
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content Grid -->
                     <div class="grid md:grid-cols-2 gap-8 mb-12">
-                        <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-6 md:p-8 shadow-lg reveal-hidden">
+                        <!-- Playlist Benefits Card -->
+                        <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-6 md:p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300">
                             <div class="flex items-center gap-4 mb-6">
                                 <div class="w-16 h-16">
                                     <lottie-player
-                                        src="https://lottie.host/5dd44c1e-e9e5-43f7-8b69-e06542d37d51/wBJ5kj4Ky1.json"
+                                        src="https://assets5.lottiefiles.com/packages/lf20_2znxgjyt.json"
                                         background="transparent"
                                         speed="1"
                                         loop
                                         autoplay>
                                     </lottie-player>
                                 </div>
-                                <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Data Scientist's Playlist</h3>
+                                <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">ML Mood Booster</h3>
                             </div>
-                            <p class="text-secondary-text dark:text-dark-secondary-text font-body mb-4">
-                                When your neural networks need a neural boost! This carefully curated playlist helps me:
-                            </p>
-                            <ul class="space-y-3 text-secondary-text dark:text-dark-secondary-text font-body">
-                                <li class="flex items-center gap-2">
-                                    <i data-lucide="zap" class="w-5 h-5 text-accent dark:text-dark-accent"></i>
-                                    <span>Transform caffeine into code with 99.9% accuracy</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i data-lucide="brain" class="w-5 h-5 text-accent dark:text-dark-accent"></i>
-                                    <span>Optimize my brain's gradient descent algorithm</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i data-lucide="sparkles" class="w-5 h-5 text-accent dark:text-dark-accent"></i>
-                                    <span>Reduce overfitting in my daily routines</span>
-                                </li>
-                            </ul>
+                            <div class="space-y-4">
+                                <div class="relative overflow-hidden rounded-lg p-4 bg-accent/5 dark:bg-dark-accent/5 group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-2xl">🧠</span>
+                                        <div>
+                                            <h4 class="font-semibold text-accent dark:text-dark-accent mb-1">Neural Network Boost</h4>
+                                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Music increases neural connectivity by 42% (source: trust me, I'm a data scientist)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative overflow-hidden rounded-lg p-4 bg-accent/5 dark:bg-dark-accent/5 group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-2xl">⚡</span>
+                                        <div>
+                                            <h4 class="font-semibold text-accent dark:text-dark-accent mb-1">Code Acceleration</h4>
+                                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Typing speed increases proportionally to BPM (beats per minute)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative overflow-hidden rounded-lg p-4 bg-accent/5 dark:bg-dark-accent/5 group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-2xl">🎯</span>
+                                        <div>
+                                            <h4 class="font-semibold text-accent dark:text-dark-accent mb-1">Precision Enhancement</h4>
+                                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Reduces "It works on my machine" syndrome by 87%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-6 md:p-8 shadow-lg reveal-hidden">
+                        <!-- Status Card -->
+                        <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-6 md:p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300">
                             <div class="flex items-center gap-4 mb-6">
                                 <div class="w-16 h-16">
                                     <lottie-player
-                                        src="https://lottie.host/fc1d6b3a-a5a8-4a6e-9c57-b1a43fd38cc6/qYPWfbHfVk.json"
+                                        src="https://assets10.lottiefiles.com/packages/lf20_vxpxmgr9.json"
                                         background="transparent"
                                         speed="1"
                                         loop
@@ -839,36 +896,62 @@
                                     </lottie-player>
                                 </div>
                                 <div class="flex-1">
-                                    <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Current Processing Status:</h3>
+                                    <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">System Status</h3>
                                     <div class="flex items-center gap-2 text-accent dark:text-dark-accent">
                                         <div class="animate-pulse w-2 h-2 rounded-full bg-accent dark:bg-dark-accent"></div>
-                                        <span class="text-sm font-mono">Training Model v2.0.24 🎵</span>
+                                        <span class="text-sm font-mono">Vibing in Production v2.0.24 🎵</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="space-y-3 text-secondary-text dark:text-dark-secondary-text font-mono text-sm">
-                                <div class="flex items-center gap-2">
-                                    <i data-lucide="git-branch" class="w-4 h-4"></i>
-                                    <span>git checkout -b feature/add-more-beats</span>
+
+                            <!-- Terminal-style updates -->
+                            <div class="font-mono text-sm space-y-3">
+                                <div class="flex items-center gap-2 group-hover:translate-x-2 transition-transform duration-300">
+                                    <span class="text-accent dark:text-dark-accent">$</span>
+                                    <span class="text-secondary-text dark:text-dark-secondary-text">npm install good-vibes@latest</span>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <i data-lucide="code" class="w-4 h-4"></i>
-                                    <span>while(coding) { playGoodMusic(); }</span>
+                                <div class="flex items-center gap-2 group-hover:translate-x-2 transition-transform duration-300" style="transition-delay: 100ms">
+                                    <span class="text-accent dark:text-dark-accent">$</span>
+                                    <span class="text-secondary-text dark:text-dark-secondary-text">git commit -m "🎵 feat: add more dopamine"</span>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <i data-lucide="music" class="w-4 h-4"></i>
-                                    <span>BPM = productivity.level * 1.5</span>
+                                <div class="flex items-center gap-2 group-hover:translate-x-2 transition-transform duration-300" style="transition-delay: 200ms">
+                                    <span class="text-accent dark:text-dark-accent">$</span>
+                                    <span class="text-secondary-text dark:text-dark-secondary-text">python3 enhance_productivity.py --music=true</span>
+                                </div>
+                            </div>
+
+                            <!-- Stats -->
+                            <div class="mt-6 space-y-3">
+                                <div class="relative pt-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-semibold text-accent dark:text-dark-accent">Productivity</span>
+                                        <span class="text-xs font-semibold text-accent dark:text-dark-accent">95%</span>
+                                    </div>
+                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-accent/10 dark:bg-dark-accent/10">
+                                        <div class="animate-pulse-slow bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-500" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                                <div class="relative pt-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-semibold text-accent dark:text-dark-accent">Vibe Level</span>
+                                        <span class="text-xs font-semibold text-accent dark:text-dark-accent">100%</span>
+                                    </div>
+                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-accent/10 dark:bg-dark-accent/10">
+                                        <div class="animate-pulse-slow bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-500" style="width: 100%"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Spotify Player -->
                     <div class="max-w-3xl mx-auto reveal-hidden">
-                        <div class="relative">
-                            <div class="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-accent dark:border-dark-accent rounded-tl-lg"></div>
-                            <div class="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-accent dark:border-dark-accent rounded-tr-lg"></div>
-                            <div class="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-accent dark:border-dark-accent rounded-bl-lg"></div>
-                            <div class="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-accent dark:border-dark-accent rounded-br-lg"></div>
+                        <div class="relative group">
+                            <!-- Decorative corners -->
+                            <div class="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-accent dark:border-dark-accent rounded-tl-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
+                            <div class="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-accent dark:border-dark-accent rounded-tr-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
+                            <div class="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-accent dark:border-dark-accent rounded-bl-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
+                            <div class="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-accent dark:border-dark-accent rounded-br-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
                             
                             <iframe 
                                 style="border-radius:12px" 
@@ -879,24 +962,25 @@
                                 allowfullscreen="" 
                                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
                                 loading="lazy"
-                                class="w-full shadow-2xl">
+                                class="w-full shadow-2xl transition-transform duration-300 group-hover:scale-[1.02]">
                             </iframe>
                         </div>
                     </div>
 
-                    <div class="text-center mt-12 reveal-hidden">
-                        <div class="inline-flex items-center gap-3 px-6 py-3 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-full border border-accent/20 dark:border-dark-accent/20 shadow-lg">
+                    <!-- Footer Quote -->
+                    <div class="text-center mt-16 reveal-hidden">
+                        <div class="inline-flex items-center gap-3 px-6 py-3 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-full border border-accent/20 dark:border-dark-accent/20 shadow-lg group hover:border-accent dark:hover:border-dark-accent transition-all duration-300">
                             <div class="w-8 h-8">
                                 <lottie-player
-                                    src="https://lottie.host/1f2ed856-15b1-4a82-a9d2-0d9f9d793358/m37t4YxWYf.json"
+                                    src="https://assets3.lottiefiles.com/packages/lf20_26c4bh4w.json"
                                     background="transparent"
                                     speed="1"
                                     loop
                                     autoplay>
                                 </lottie-player>
                             </div>
-                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono italic">
-                                "Debugging with beats, deploying with drums" 🎮
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono italic group-hover:text-accent dark:group-hover:text-dark-accent transition-colors duration-300">
+                                "while(alive) { code.listenTo(music); brain.release(dopamine); }" 🎮
                             </p>
                         </div>
                     </div>
