@@ -400,6 +400,41 @@
             opacity: 1;
         }
 
+        /* 3D Cube Styles */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+
+        .cube-face {
+            @apply absolute w-48 h-48 flex items-center justify-center text-xl font-bold font-mono;
+            backface-visibility: hidden;
+            transition: transform 0.5s ease;
+        }
+
+        .front  { transform: translateZ(24px); }
+        .back   { transform: translateZ(-24px) rotateY(180deg); }
+        .right  { transform: translateX(24px) rotateY(90deg); }
+        .left   { transform: translateX(-24px) rotateY(-90deg); }
+        .top    { transform: translateY(-24px) rotateX(90deg); }
+        .bottom { transform: translateY(24px) rotateX(-90deg); }
+
+        #skill-cube {
+            animation: slow-spin 15s infinite linear;
+            transform: rotateX(-20deg) rotateY(-20deg);
+        }
+
+        #skill-cube:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes slow-spin {
+            from { transform: rotateX(-20deg) rotateY(0deg); }
+            to { transform: rotateX(-20deg) rotateY(360deg); }
+        }
 
     </style>
     <script>
@@ -681,6 +716,31 @@
                      <canvas id="skill-constellation-canvas"></canvas>
                      <p class="text-center text-xs text-secondary-text dark:text-dark-secondary-text font-mono mt-[-1rem] opacity-70">Interactive Skill Constellation</p>
                  </div>
+
+                <!-- 3D Skill Cube -->
+                <div class="max-w-md mx-auto mb-16 reveal-hidden perspective-1000">
+                    <div id="skill-cube" class="relative w-48 h-48 mx-auto transform-style-3d transition-transform duration-1000 cursor-pointer hover:scale-110">
+                        <div class="cube-face front bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">Python</span>
+                        </div>
+                        <div class="cube-face back bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">ML/AI</span>
+                        </div>
+                        <div class="cube-face right bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">Data</span>
+                        </div>
+                        <div class="cube-face left bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">SQL</span>
+                        </div>
+                        <div class="cube-face top bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">Cloud</span>
+                        </div>
+                        <div class="cube-face bottom bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">APIs</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs text-secondary-text dark:text-dark-secondary-text font-mono mt-4 opacity-70">Interactive 3D Skill Cube (Click to rotate)</p>
+                </div>
 
                 <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="skill-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg reveal-hidden hover:shadow-xl transition-shadow duration-300 group">
@@ -1437,6 +1497,8 @@
                 }
             }
 
+
+
              /** Opens the project modal with details for the given project ID. */
             function openModal(projectId) {
                 const project = projectsData.find(p => p.id === parseInt(projectId));
@@ -2062,6 +2124,76 @@
 
     <script>
         var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w;s.onload=v;s.onerror=function(){console.error("Failed to load Tally embed script."); var formIframe=document.getElementById('tally-contact-form'); var fallbackMsg=document.getElementById('tally-fallback'); if(formIframe) formIframe.style.display='none'; if(fallbackMsg) fallbackMsg.classList.remove('hidden'); };d.body.appendChild(s);}
+    </script>
+
+    <script>
+        // Skill Cube Interaction
+        document.addEventListener('DOMContentLoaded', () => {
+            const cube = document.getElementById('skill-cube');
+            if (!cube) return;
+
+            let isDragging = false;
+            let startX, startY;
+            let rotationX = -20;
+            let rotationY = -20;
+
+            cube.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                cube.style.animation = 'none';
+                startX = e.clientX;
+                startY = e.clientY;
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+                
+                rotationY += deltaX * 0.5;
+                rotationX -= deltaY * 0.5;
+                
+                cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+                
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                cube.style.animation = 'slow-spin 15s infinite linear';
+            });
+
+            // Add touch support
+            cube.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                cube.style.animation = 'none';
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                
+                const deltaX = e.touches[0].clientX - startX;
+                const deltaY = e.touches[0].clientY - startY;
+                
+                rotationY += deltaX * 0.5;
+                rotationX -= deltaY * 0.5;
+                
+                cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+                
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+                cube.style.animation = 'slow-spin 15s infinite linear';
+            });
+        });
     </script>
 
 </body>
