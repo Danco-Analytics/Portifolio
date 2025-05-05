@@ -18,6 +18,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     <style>
         /* Base body styles */
         body {
@@ -468,6 +470,69 @@
             transform: translate-y-0 !important;
         }
 
+        /* Floating Music Player Styles */
+        #floating-music-player:hover #music-toggle {
+            @apply border-accent dark:border-dark-accent;
+        }
+
+        #spotify-player.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        @keyframes equalizer {
+            0% { height: 5px; }
+            50% { height: 15px; }
+            100% { height: 5px; }
+        }
+
+        .equalizer-bar {
+            width: 3px;
+            background: currentColor;
+            animation: equalizer 0.5s ease infinite;
+        }
+
+        .equalizer-bar:nth-child(2) { animation-delay: 0.1s; }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
+
+        /* Enhanced Floating Music Player Styles */
+        #floating-music-player {
+            animation: float-path 30s ease-in-out infinite;
+        }
+
+        @keyframes float-path {
+            0% { transform: translate(0, -30vh) rotate(-5deg); }
+            25% { transform: translate(-20px, -15vh) rotate(5deg); }
+            50% { transform: translate(0, 0) rotate(-5deg); }
+            75% { transform: translate(20px, 15vh) rotate(5deg); }
+            100% { transform: translate(0, 30vh) rotate(-5deg); }
+        }
+
+        #spotify-player.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .equalizer-bar {
+            width: 3px;
+            background: currentColor;
+            animation: equalizer 0.5s ease infinite;
+            transform-origin: bottom;
+        }
+
+        @keyframes equalizer {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+
+        .equalizer-bar:nth-child(1) { animation-delay: 0.0s; }
+        .equalizer-bar:nth-child(2) { animation-delay: 0.1s; }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
+
     </style>
     <script>
       // Tailwind Config - Extended with new theme colors
@@ -694,6 +759,147 @@
                      <a href="#about" aria-label="Scroll down to about section" class="focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent rounded-full">
                         <i data-lucide="chevron-down" class="w-6 h-6 text-accent-secondary dark:text-dark-accent-secondary" aria-hidden="true"></i>
                      </a>
+                </div>
+            </section>
+
+            <!-- Add new music section -->
+            <section id="music" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg reveal-hidden">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex flex-col md:flex-row items-center gap-6 mb-12">
+                        <div class="w-32 h-32">
+                            <lottie-player
+                                src="https://lottie.host/c2328686-25c9-4889-b2e9-b6f6e1f0c8c4/YWbguuKfYl.json"
+                                background="transparent"
+                                speed="1"
+                                loop
+                                autoplay>
+                            </lottie-player>
+                        </div>
+                        <div class="flex-1 text-center md:text-left">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">
+                                🎵 Neural Networks & Chill 🧠
+                            </h2>
+                            <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
+                                Where algorithms meet acoustics, and data science gets a soundtrack! 🎧
+                            </p>
+                        </div>
+                        <div class="w-32 h-32">
+                            <lottie-player
+                                src="https://lottie.host/21748b9b-8945-4419-b375-b5c1b2f2a2db/xqnMlYTzYC.json"
+                                background="transparent"
+                                speed="1"
+                                loop
+                                autoplay>
+                            </lottie-player>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-12">
+                        <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-6 md:p-8 shadow-lg reveal-hidden">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-16 h-16">
+                                    <lottie-player
+                                        src="https://lottie.host/5dd44c1e-e9e5-43f7-8b69-e06542d37d51/wBJ5kj4Ky1.json"
+                                        background="transparent"
+                                        speed="1"
+                                        loop
+                                        autoplay>
+                                    </lottie-player>
+                                </div>
+                                <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Data Scientist's Playlist</h3>
+                            </div>
+                            <p class="text-secondary-text dark:text-dark-secondary-text font-body mb-4">
+                                When your neural networks need a neural boost! This carefully curated playlist helps me:
+                            </p>
+                            <ul class="space-y-3 text-secondary-text dark:text-dark-secondary-text font-body">
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="zap" class="w-5 h-5 text-accent dark:text-dark-accent"></i>
+                                    <span>Transform caffeine into code with 99.9% accuracy</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="brain" class="w-5 h-5 text-accent dark:text-dark-accent"></i>
+                                    <span>Optimize my brain's gradient descent algorithm</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i data-lucide="sparkles" class="w-5 h-5 text-accent dark:text-dark-accent"></i>
+                                    <span>Reduce overfitting in my daily routines</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-6 md:p-8 shadow-lg reveal-hidden">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-16 h-16">
+                                    <lottie-player
+                                        src="https://lottie.host/fc1d6b3a-a5a8-4a6e-9c57-b1a43fd38cc6/qYPWfbHfVk.json"
+                                        background="transparent"
+                                        speed="1"
+                                        loop
+                                        autoplay>
+                                    </lottie-player>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Current Processing Status:</h3>
+                                    <div class="flex items-center gap-2 text-accent dark:text-dark-accent">
+                                        <div class="animate-pulse w-2 h-2 rounded-full bg-accent dark:bg-dark-accent"></div>
+                                        <span class="text-sm font-mono">Training Model v2.0.24 🎵</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-3 text-secondary-text dark:text-dark-secondary-text font-mono text-sm">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="git-branch" class="w-4 h-4"></i>
+                                    <span>git checkout -b feature/add-more-beats</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="code" class="w-4 h-4"></i>
+                                    <span>while(coding) { playGoodMusic(); }</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="music" class="w-4 h-4"></i>
+                                    <span>BPM = productivity.level * 1.5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="max-w-3xl mx-auto reveal-hidden">
+                        <div class="relative">
+                            <div class="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-accent dark:border-dark-accent rounded-tl-lg"></div>
+                            <div class="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-accent dark:border-dark-accent rounded-tr-lg"></div>
+                            <div class="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-accent dark:border-dark-accent rounded-bl-lg"></div>
+                            <div class="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-accent dark:border-dark-accent rounded-br-lg"></div>
+                            
+                            <iframe 
+                                style="border-radius:12px" 
+                                src="https://open.spotify.com/embed/playlist/2fWLbh8Ssvp5tBaa72EbJw?utm_source=generator" 
+                                width="100%" 
+                                height="352" 
+                                frameBorder="0" 
+                                allowfullscreen="" 
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                                loading="lazy"
+                                class="w-full shadow-2xl">
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-12 reveal-hidden">
+                        <div class="inline-flex items-center gap-3 px-6 py-3 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-full border border-accent/20 dark:border-dark-accent/20 shadow-lg">
+                            <div class="w-8 h-8">
+                                <lottie-player
+                                    src="https://lottie.host/1f2ed856-15b1-4a82-a9d2-0d9f9d793358/m37t4YxWYf.json"
+                                    background="transparent"
+                                    speed="1"
+                                    loop
+                                    autoplay>
+                                </lottie-player>
+                            </div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono italic">
+                                "Debugging with beats, deploying with drums" 🎮
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -1251,6 +1457,52 @@
                     <span class="text-accent dark:text-dark-accent">AI Processing...</span>
                 </div>
                 <p class="text-secondary-text dark:text-dark-secondary-text leading-relaxed"></p>
+            </div>
+        </div>
+
+        <div id="floating-music-player" class="fixed z-40 transition-all duration-1000 ease-in-out transform hover:scale-105" style="top: 50%; right: 2rem;">
+            <button id="music-toggle" class="interactive-element flex items-center gap-2 px-4 py-2 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-full border border-accent/20 dark:border-dark-accent/20 text-accent dark:text-dark-accent shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-end h-5 gap-[2px]">
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                </div>
+                <span class="text-sm font-medium">Ambient Vibes</span>
+            </button>
+            
+            <div id="spotify-player" class="absolute right-full top-0 mr-4 w-80 rounded-lg shadow-2xl opacity-0 pointer-events-none transform translate-x-4 transition-all duration-300">
+                <div class="relative bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-lg p-3">
+                    <button id="close-player" class="absolute -top-2 -right-2 p-1 bg-accent dark:bg-dark-accent text-white dark:text-jet-black rounded-full shadow-lg hover:scale-110 transition-transform duration-200 z-10">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                    <div class="flex gap-2 mb-2">
+                        <button id="playlist-1" class="px-3 py-1 rounded-full text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">Coding</button>
+                        <button id="playlist-2" class="px-3 py-1 rounded-full text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">Ambient</button>
+                    </div>
+                    <div id="playlist-container" class="relative">
+                        <iframe id="coding-playlist"
+                            title="Spotify Embed: Coding Playlist"
+                            src="https://open.spotify.com/embed/playlist/15hwbVhuzHziWcRl2bamTo?utm_source=generator&theme=0"
+                            width="100%"
+                            height="352"
+                            frameborder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy"
+                            class="rounded-lg transition-opacity duration-300">
+                        </iframe>
+                        <iframe id="ambient-playlist"
+                            title="Spotify Embed: Ambient Playlist"
+                            src="https://open.spotify.com/embed/playlist/6mg2L5TF0ttmDbHsHgv2Ir?utm_source=generator&theme=0"
+                            width="100%"
+                            height="352"
+                            frameborder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy"
+                            class="rounded-lg absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-300">
+                        </iframe>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -2561,6 +2813,161 @@
                     animate(0);
                 }
             });
+        });
+    </script>
+
+    <script>
+        // Music Player Controls
+        document.addEventListener('DOMContentLoaded', () => {
+            const musicToggle = document.getElementById('music-toggle');
+            const spotifyPlayer = document.getElementById('spotify-player');
+            const closePlayer = document.getElementById('close-player');
+            
+            if (!musicToggle || !spotifyPlayer || !closePlayer) return;
+
+            let isPlaying = false;
+
+            musicToggle.addEventListener('click', () => {
+                spotifyPlayer.classList.toggle('visible');
+                if (!isPlaying) {
+                    // Add equalizer animation to button
+                    const musicIcon = musicToggle.querySelector('[data-lucide="music"]');
+                    if (musicIcon) {
+                        musicIcon.outerHTML = `
+                            <div class="flex items-end h-5 gap-[2px]">
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                            </div>
+                        `;
+                    }
+                    isPlaying = true;
+                }
+            });
+
+            closePlayer.addEventListener('click', (e) => {
+                e.stopPropagation();
+                spotifyPlayer.classList.remove('visible');
+            });
+
+            // Close player when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!spotifyPlayer.contains(e.target) && !musicToggle.contains(e.target)) {
+                    spotifyPlayer.classList.remove('visible');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Enhanced Music Player Controls
+        document.addEventListener('DOMContentLoaded', () => {
+            const musicPlayer = document.getElementById('floating-music-player');
+            const musicToggle = document.getElementById('music-toggle');
+            const spotifyPlayer = document.getElementById('spotify-player');
+            const closePlayer = document.getElementById('close-player');
+            const playlist1Btn = document.getElementById('playlist-1');
+            const playlist2Btn = document.getElementById('playlist-2');
+            const codingPlaylist = document.getElementById('coding-playlist');
+            const ambientPlaylist = document.getElementById('ambient-playlist');
+            
+            if (!musicPlayer || !musicToggle || !spotifyPlayer || !closePlayer) return;
+
+            let isPlaying = true; // Start with equalizer animation
+            let currentPlaylist = 'coding';
+
+            // Smooth section-based positioning
+            let lastScrollY = window.scrollY;
+            let scrollDirection = 'down';
+            let ticking = false;
+
+            const updatePlayerPosition = () => {
+                const sections = document.querySelectorAll('section[id]');
+                let nearestSection = null;
+                let minDistance = Infinity;
+                const viewportMiddle = window.innerHeight / 2;
+
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const distance = Math.abs(rect.top + rect.height / 2 - viewportMiddle);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nearestSection = section;
+                    }
+                });
+
+                if (nearestSection) {
+                    const rect = nearestSection.getBoundingClientRect();
+                    const sectionProgress = -rect.top / (rect.height - window.innerHeight);
+                    const baseY = rect.top + rect.height / 2;
+                    
+                    // Add some organic movement based on scroll direction
+                    const directionOffset = scrollDirection === 'down' ? 50 : -50;
+                    const targetY = baseY + directionOffset;
+                    
+                    // Apply smooth transition
+                    musicPlayer.style.transform = `translateY(${targetY}px) rotate(${Math.sin(sectionProgress * Math.PI) * 5}deg)`;
+                }
+            };
+
+            window.addEventListener('scroll', () => {
+                scrollDirection = window.scrollY > lastScrollY ? 'down' : 'up';
+                lastScrollY = window.scrollY;
+
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updatePlayerPosition();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // Toggle player visibility
+            musicToggle.addEventListener('click', () => {
+                spotifyPlayer.classList.toggle('visible');
+            });
+
+            // Switch playlists
+            playlist1Btn.addEventListener('click', () => {
+                if (currentPlaylist !== 'coding') {
+                    codingPlaylist.style.opacity = '1';
+                    codingPlaylist.style.pointerEvents = 'auto';
+                    ambientPlaylist.style.opacity = '0';
+                    ambientPlaylist.style.pointerEvents = 'none';
+                    currentPlaylist = 'coding';
+                    playlist1Btn.classList.add('bg-accent/20', 'dark:bg-dark-accent/20');
+                    playlist2Btn.classList.remove('bg-accent/20', 'dark:bg-dark-accent/20');
+                }
+            });
+
+            playlist2Btn.addEventListener('click', () => {
+                if (currentPlaylist !== 'ambient') {
+                    ambientPlaylist.style.opacity = '1';
+                    ambientPlaylist.style.pointerEvents = 'auto';
+                    codingPlaylist.style.opacity = '0';
+                    codingPlaylist.style.pointerEvents = 'none';
+                    currentPlaylist = 'ambient';
+                    playlist2Btn.classList.add('bg-accent/20', 'dark:bg-dark-accent/20');
+                    playlist1Btn.classList.remove('bg-accent/20', 'dark:bg-dark-accent/20');
+                }
+            });
+
+            closePlayer.addEventListener('click', (e) => {
+                e.stopPropagation();
+                spotifyPlayer.classList.remove('visible');
+            });
+
+            // Close player when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!spotifyPlayer.contains(e.target) && !musicToggle.contains(e.target)) {
+                    spotifyPlayer.classList.remove('visible');
+                }
+            });
+
+            // Initial position update
+            updatePlayerPosition();
         });
     </script>
 </body>
