@@ -551,6 +551,50 @@
             animation: pulse-slow 3s ease-in-out infinite;
         }
 
+        /* Enhanced Ticker Animation */
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-ticker {
+            animation: ticker 30s linear infinite;
+            &:hover {
+                animation-play-state: paused;
+            }
+        }
+
+        /* Music Visualizer */
+        #music-visualizer {
+            background: linear-gradient(to right,
+                rgba(108, 92, 231, 0.1),
+                rgba(255, 107, 107, 0.1)
+            );
+            transition: transform 0.3s ease;
+        }
+
+        #music-visualizer:hover {
+            transform: scale(1.02);
+        }
+
+        /* Mood Button Animations */
+        .mood-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mood-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Toast Animation */
+        @keyframes slideUp {
+            0% { transform: translate(-50%, 100%); }
+            100% { transform: translate(-50%, 0); }
+        }
+
+        .toast-enter {
+            animation: slideUp 0.3s ease-out forwards;
+        }
     </style>
     <script>
       // Tailwind Config - Extended with new theme colors
@@ -662,6 +706,33 @@
                  applyBgNoise(); // Apply if DOM is already loaded
              }
         })();
+    </script>
+
+    <!-- Add Spotify SDK script in head -->
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
+    <!-- Add before closing head tag -->
+    <script>
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        const token = 'YOUR_ACCESS_TOKEN'; // We'll handle this with auth flow
+        const player = new Spotify.Player({
+            name: 'Daniel\'s Portfolio Player',
+            getOAuthToken: cb => { cb(token); },
+            volume: 0.5
+        });
+
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+        });
+
+        // Not Ready
+        player.addListener('not_ready', ({ device_id }) => {
+            console.log('Device ID has gone offline', device_id);
+        });
+
+        player.connect();
+    };
     </script>
 </head>
 <body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
@@ -827,10 +898,19 @@
                             </div>
                             <div class="flex-1 overflow-hidden">
                                 <div class="animate-ticker whitespace-nowrap text-secondary-text dark:text-dark-secondary-text font-mono">
-                                    Did you know? Studies show developers are 34% more productive when listening to music 🎵 |
-                                    The average developer spends 70% of their time debugging and 30% complaining about debugging 🐛 |
-                                    There are only 10 types of people in the world: those who understand binary and those who don't 🤓 |
-                                    My code works, I have no idea why. My code doesn't work, I have no idea why 🤔
+                                    Why do programmers prefer dark mode? Because light attracts bugs 🪲 |
+                                    I'd tell you a UDP joke, but you might not get it 🌐 |
+                                    Why do Python programmers wear glasses? Because they can't C 👓 |
+                                    What's a data scientist's favorite drink? Data-quila! 🍹 |
+                                    My code is like my music playlist - mostly copied from Stack Overflow 😅 |
+                                    Why did the ML model go to therapy? It had deep issues 🧠 |
+                                    How many programmers does it take to change a light bulb? None, that's a hardware problem 💡 |
+                                    I told my wife she was drawing her eyebrows too high. She looked surprised 😲 |
+                                    Why do programmers always mix up Halloween and Christmas? Because Oct 31 = Dec 25 🎃 |
+                                    What's a developer's favorite place? Foo Bar 🍺 |
+                                    Why did the database administrator leave his wife? She had too many relationships 💔 |
+                                    What do you call a developer who doesn't comment their code? A psychopath 🔪 |
+                                    Why do programmers hate nature? It has too many bugs 🐛
                                 </div>
                             </div>
                         </div>
@@ -985,6 +1065,95 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Add Spotify Auth Button -->
+                <div class="mb-8 text-center">
+                    <button id="spotify-auth" class="px-6 py-3 bg-[#1DB954] hover:bg-[#1ed760] text-white rounded-full font-medium flex items-center justify-center gap-2 mx-auto transition-all duration-300 hover:scale-105">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.371-.721.49-1.101.24-3.021-1.85-6.821-2.27-11.292-1.24-.421.09-.842-.18-.932-.6-.09-.42.18-.84.601-.93 4.891-1.119 9.092-.62 12.452 1.42.431.249.55.729.301 1.1zm1.471-3.279c-.301.459-.921.62-1.381.32-3.452-2.13-8.723-2.76-12.804-1.51-.501.15-1.021-.15-1.171-.65-.15-.502.15-1.022.65-1.172 4.672-1.42 10.453-.721 14.435 1.77.46.301.619.92.319 1.38zm.129-3.34c-4.142-2.459-10.983-2.689-14.934-1.489-.601.18-1.231-.18-1.411-.779-.18-.601.18-1.231.78-1.411 4.562-1.38 12.133-1.111 16.894 1.729.57.34.749 1.08.409 1.65-.341.57-1.081.75-1.651.41z"/>
+                        </svg>
+                        Connect with Spotify
+                    </button>
+                </div>
+
+                <!-- Add Mood Selector with Spotify Integration -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Mood Selector Card -->
+                    <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 reveal-hidden">
+                        <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading mb-6">Coding Mood Selector</h3>
+                        <div class="grid grid-cols-2 gap-4" id="mood-selector">
+                            <button class="mood-btn flex flex-col items-center p-4 rounded-xl bg-accent/10 dark:bg-dark-accent/10 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all duration-300" data-playlist="37i9dQZF1DX5trt9i14X7j">
+                                <span class="text-2xl mb-2">🎯</span>
+                                <span class="text-sm font-medium text-accent dark:text-dark-accent">Deep Focus</span>
+                                <span class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Concentration mode</span>
+                            </button>
+                            <button class="mood-btn flex flex-col items-center p-4 rounded-xl bg-accent/10 dark:bg-dark-accent/10 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all duration-300" data-playlist="37i9dQZF1DX8dTWjpijlub">
+                                <span class="text-2xl mb-2">⚡</span>
+                                <span class="text-sm font-medium text-accent dark:text-dark-accent">High Energy</span>
+                                <span class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Maximum productivity</span>
+                            </button>
+                            <button class="mood-btn flex flex-col items-center p-4 rounded-xl bg-accent/10 dark:bg-dark-accent/10 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all duration-300" data-playlist="37i9dQZF1DX0jgyAiPl8Af">
+                                <span class="text-2xl mb-2">🌊</span>
+                                <span class="text-sm font-medium text-accent dark:text-dark-accent">Chill Vibes</span>
+                                <span class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Relaxed coding</span>
+                            </button>
+                            <button class="mood-btn flex flex-col items-center p-4 rounded-xl bg-accent/10 dark:bg-dark-accent/10 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all duration-300" data-playlist="37i9dQZF1DX5trt9i14X7j">
+                                <span class="text-2xl mb-2">🐛</span>
+                                <span class="text-sm font-medium text-accent dark:text-dark-accent">Debug Mode</span>
+                                <span class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Problem solving</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Visualizer Card -->
+                    <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 reveal-hidden">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Live Visualizer</h3>
+                            <div class="flex items-center gap-3">
+                                <button id="toggle-visualizer" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M10 3a1 1 0 000 2h4a1 1 0 100-2h-4zM3 7a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1zM3 11a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <canvas id="music-visualizer" class="w-full h-40 rounded-lg bg-accent/5 dark:bg-dark-accent/5"></canvas>
+                    </div>
+                </div>
+
+                <!-- Add Now Playing Card -->
+                <div class="mb-8 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 reveal-hidden">
+                    <div class="flex items-center gap-6">
+                        <div id="now-playing-art" class="w-24 h-24 rounded-lg bg-accent/10 dark:bg-dark-accent/10 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-accent dark:text-dark-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 id="now-playing-title" class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Not Playing</h4>
+                            <p id="now-playing-artist" class="text-secondary-text dark:text-dark-secondary-text">Connect with Spotify to start</p>
+                            <div class="mt-4 flex items-center gap-4">
+                                <button id="prev-track" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"/>
+                                    </svg>
+                                </button>
+                                <button id="play-pause" class="p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:scale-105 transition-transform">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                                <button id="next-track" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798L4.555 5.168z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Previous Spotify embed remains -->
             </section>
 
             <section id="about" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden pt-20">
@@ -1590,6 +1759,117 @@
             </div>
         </div>
 
+        <!-- Add interactive music visualizer -->
+        <div class="mt-8 mb-12 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 overflow-hidden reveal-hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Music Visualizer</h3>
+                <button id="toggle-visualizer" class="px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                    Toggle Animation
+                </button>
+            </div>
+            <canvas id="music-visualizer" class="w-full h-32 rounded-lg"></canvas>
+        </div>
+
+        <!-- Add interactive mood selector -->
+        <div class="mb-8 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 reveal-hidden">
+            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading mb-4">Coding Mood Selector</h3>
+            <div class="flex flex-wrap gap-3" id="mood-selector">
+                <button class="mood-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all hover:scale-105" data-mood="focus">
+                    🎯 Deep Focus
+                </button>
+                <button class="mood-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all hover:scale-105" data-mood="energy">
+                    ⚡ High Energy
+                </button>
+                <button class="mood-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all hover:scale-105" data-mood="chill">
+                    🌊 Chill Vibes
+                </button>
+                <button class="mood-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all hover:scale-105" data-mood="debug">
+                    🐛 Debug Mode
+                </button>
+            </div>
+        </div>
+
+        <!-- Add after the music section title -->
+        <div class="max-w-4xl mx-auto mb-12">
+            <!-- Spotify Connect Button -->
+            <div class="text-center mb-8">
+                <button onclick="connectToSpotify()" class="interactive-element px-6 py-3 bg-[#1DB954] hover:bg-[#1ed760] text-white rounded-full font-medium flex items-center justify-center gap-2 mx-auto transition-all duration-300 hover:scale-105">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.371-.721.49-1.101.24-3.021-1.85-6.821-2.27-11.292-1.24-.421.09-.842-.18-.932-.6-.09-.42.18-.84.601-.93 4.891-1.119 9.092-.62 12.452 1.42.431.249.55.729.301 1.1zm1.471-3.279c-.301.459-.921.62-1.381.32-3.452-2.13-8.723-2.76-12.804-1.51-.501.15-1.021-.15-1.171-.65-.15-.502.15-1.022.65-1.172 4.672-1.42 10.453-.721 14.435 1.77.46.301.619.92.319 1.38zm.129-3.34c-4.142-2.459-10.983-2.689-14.934-1.489-.601.18-1.231-.18-1.411-.779-.18-.601.18-1.231.78-1.411 4.562-1.38 12.133-1.111 16.894 1.729.57.34.749 1.08.409 1.65-.341.57-1.081.75-1.651.41z"/>
+                    </svg>
+                    Connect with Spotify
+                </button>
+            </div>
+
+            <!-- Mood Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="mood-selector">
+                <button class="mood-btn group" data-playlist="37i9dQZF1DX5trt9i14X7j">
+                    <div class="relative overflow-hidden rounded-xl bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 p-6 transition-all duration-300 hover:border-accent dark:hover:border-dark-accent hover:shadow-lg group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/10 dark:from-dark-accent/10 dark:to-dark-accent-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <span class="text-3xl mb-3 block">🎯</span>
+                            <h4 class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Deep Focus</h4>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">For intense coding sessions</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="mood-btn group" data-playlist="37i9dQZF1DX8dTWjpijlub">
+                    <div class="relative overflow-hidden rounded-xl bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 p-6 transition-all duration-300 hover:border-accent dark:hover:border-dark-accent hover:shadow-lg group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/10 dark:from-dark-accent/10 dark:to-dark-accent-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <span class="text-3xl mb-3 block">⚡</span>
+                            <h4 class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">High Energy</h4>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Maximum productivity</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="mood-btn group" data-playlist="37i9dQZF1DX0jgyAiPl8Af">
+                    <div class="relative overflow-hidden rounded-xl bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 p-6 transition-all duration-300 hover:border-accent dark:hover:border-dark-accent hover:shadow-lg group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/10 dark:from-dark-accent/10 dark:to-dark-accent-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <span class="text-3xl mb-3 block">🌊</span>
+                            <h4 class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Chill Vibes</h4>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Relaxed coding flow</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="mood-btn group" data-playlist="37i9dQZF1DX5trt9i14X7j">
+                    <div class="relative overflow-hidden rounded-xl bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 p-6 transition-all duration-300 hover:border-accent dark:hover:border-dark-accent hover:shadow-lg group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/10 dark:from-dark-accent/10 dark:to-dark-accent-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <span class="text-3xl mb-3 block">🐛</span>
+                            <h4 class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Debug Mode</h4>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Problem solving time</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Add after the mood selector -->
+        <div class="mt-8 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20">
+            <div class="flex items-center gap-4">
+                <div id="now-playing-art" class="w-16 h-16 rounded-lg bg-accent/10 dark:bg-dark-accent/10 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-accent dark:text-dark-accent" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h4 id="now-playing-title" class="text-lg font-semibold text-primary-text dark:text-dark-primary-text">Not Playing</h4>
+                    <p id="now-playing-artist" class="text-secondary-text dark:text-dark-secondary-text">Connect to Spotify to start</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="play-pause" class="p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:scale-110 transition-transform duration-300">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div> <script defer>
         /**
          * Main JavaScript for Daniel Wanjala's Portfolio
@@ -3053,6 +3333,275 @@
             // Initial position update
             updatePlayerPosition();
         });
+    </script>
+
+    <script>
+        // Music Visualizer
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('music-visualizer');
+            const ctx = canvas.getContext('2d');
+            let animationId;
+            let isPlaying = true;
+
+            function resizeCanvas() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            function drawVisualizer() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const barCount = 30;
+                const barWidth = canvas.width / barCount;
+                const maxHeight = canvas.height * 0.8;
+
+                for (let i = 0; i < barCount; i++) {
+                    const height = Math.random() * maxHeight;
+                    const hue = (i / barCount) * 360;
+                    
+                    ctx.fillStyle = `hsla(${hue}, 70%, 60%, 0.8)`;
+                    ctx.fillRect(
+                        i * barWidth,
+                        canvas.height - height,
+                        barWidth - 2,
+                        height
+                    );
+                }
+
+                if (isPlaying) {
+                    animationId = requestAnimationFrame(drawVisualizer);
+                }
+            }
+
+            document.getElementById('toggle-visualizer').addEventListener('click', () => {
+                isPlaying = !isPlaying;
+                if (isPlaying) {
+                    drawVisualizer();
+                } else {
+                    cancelAnimationFrame(animationId);
+                }
+            });
+
+            drawVisualizer();
+        });
+
+        // Mood Selector
+        const moodButtons = document.querySelectorAll('.mood-btn');
+        moodButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active state from all buttons
+                moodButtons.forEach(b => b.classList.remove('bg-accent', 'dark:bg-dark-accent', 'text-white', 'dark:text-jet-black'));
+                // Add active state to clicked button
+                btn.classList.add('bg-accent', 'dark:bg-dark-accent', 'text-white', 'dark:text-jet-black');
+                
+                // Add a fun animation
+                btn.style.transform = 'scale(1.1)';
+                setTimeout(() => btn.style.transform = 'scale(1)', 200);
+
+                // Show a toast notification
+                showToast(`Mood set to: ${btn.textContent.trim()}`);
+            });
+        });
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg bg-accent dark:bg-dark-accent text-white dark:text-jet-black text-sm font-medium shadow-lg z-50 opacity-0 transition-opacity duration-300';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // Fade in
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+            });
+            
+            // Fade out and remove
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+    </script>
+
+    <!-- Add to script section -->
+    <script>
+    // Spotify Authentication
+    const clientId = '573805aedac64955829435745536cf78';
+    const redirectUri = 'https://danco-analytics.github.io/Portifolio/';
+    let accessToken = null;
+
+    document.getElementById('spotify-auth').addEventListener('click', () => {
+        const scope = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state';
+        const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+        window.location.href = authUrl;
+    });
+
+    // Check for access token in URL after auth
+    window.addEventListener('load', () => {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        accessToken = params.get('access_token');
+        
+        if (accessToken) {
+            // Initialize player with token
+            initializePlayer(accessToken);
+            // Remove token from URL
+            window.location.hash = '';
+        }
+    });
+
+    // Initialize Spotify Player
+    function initializePlayer(token) {
+        const player = new Spotify.Player({
+            name: 'Portfolio Music Player',
+            getOAuthToken: cb => { cb(token); }
+        });
+
+        // Error handling
+        player.addListener('initialization_error', ({ message }) => { console.error(message); });
+        player.addListener('authentication_error', ({ message }) => { console.error(message); });
+        player.addListener('account_error', ({ message }) => { console.error(message); });
+        player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+        // Playback status updates
+        player.addListener('player_state_changed', state => {
+            if (state) {
+                updateNowPlaying(state);
+                updateVisualizer(state);
+            }
+        });
+
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+            // Enable controls
+            setupControls(player);
+        });
+
+        player.connect();
+    }
+
+    // Update Now Playing
+    function updateNowPlaying(state) {
+        const titleEl = document.getElementById('now-playing-title');
+        const artistEl = document.getElementById('now-playing-artist');
+        const artEl = document.getElementById('now-playing-art');
+
+        if (state.track_window.current_track) {
+            const track = state.track_window.current_track;
+            titleEl.textContent = track.name;
+            artistEl.textContent = track.artists[0].name;
+            artEl.style.backgroundImage = `url(${track.album.images[0].url})`;
+        }
+    }
+
+    // Update Visualizer
+    function updateVisualizer(state) {
+        // Implement visualizer update logic based on Spotify state
+        console.log('Spotify player state:', state);
+    }
+
+    // Setup controls
+    function setupControls(player) {
+        player.addListener('player_state_changed', state => {
+            updateNowPlaying(state);
+            updateVisualizer(state);
+        });
+    }
+    </script>
+
+    <script>
+    const SPOTIFY_CLIENT_ID = '573805aedac64955829435745536cf78';
+    const SPOTIFY_REDIRECT_URI = 'https://danco-analytics.github.io/Portifolio/';
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        const token = localStorage.getItem('spotify_token');
+        if (token) {
+            initializePlayer(token);
+        }
+    };
+
+    // Check for access token in URL after auth
+    window.addEventListener('load', () => {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get('access_token');
+        
+        if (accessToken) {
+            localStorage.setItem('spotify_token', accessToken);
+            initializePlayer(accessToken);
+            window.location.hash = '';
+        }
+    });
+    </script>
+
+    <script>
+    function initializePlayer(token) {
+        const player = new Spotify.Player({
+            name: 'Portfolio Music Player',
+            getOAuthToken: cb => { cb(token); }
+        });
+
+        // Error handling
+        player.addListener('initialization_error', ({ message }) => { showToast('Failed to initialize player: ' + message); });
+        player.addListener('authentication_error', ({ message }) => { showToast('Authentication failed: ' + message); });
+        player.addListener('account_error', ({ message }) => { showToast('Account error: ' + message); });
+        player.addListener('playback_error', ({ message }) => { showToast('Playback error: ' + message); });
+
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+            localStorage.setItem('spotify_device_id', device_id);
+            showToast('Connected to Spotify! 🎵');
+        });
+
+        player.connect();
+    }
+
+    function connectToSpotify() {
+        const scope = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state';
+        const authUrl = `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(SPOTIFY_REDIRECT_URI)}&scope=${encodeURIComponent(scope)}`;
+        window.location.href = authUrl;
+    }
+    </script>
+
+    <script>
+    function updateNowPlaying(track) {
+        const titleEl = document.getElementById('now-playing-title');
+        const artistEl = document.getElementById('now-playing-artist');
+        const artEl = document.getElementById('now-playing-art');
+        
+        if (track) {
+            titleEl.textContent = track.name;
+            artistEl.textContent = track.artists.map(a => a.name).join(', ');
+            if (track.album.images[0]) {
+                artEl.innerHTML = `<img src="${track.album.images[0].url}" alt="Album Art" class="w-full h-full object-cover rounded-lg">`;
+            }
+        }
+    }
+
+    // Update the player initialization
+    function initializePlayer(token) {
+        const player = new Spotify.Player({
+            name: 'Portfolio Player',
+            getOAuthToken: cb => { cb(token); }
+        });
+
+        player.addListener('player_state_changed', state => {
+            if (state && state.track_window.current_track) {
+                updateNowPlaying(state.track_window.current_track);
+            }
+        });
+
+        const playPauseBtn = document.getElementById('play-pause');
+        playPauseBtn.addEventListener('click', () => {
+            player.togglePlay();
+        });
+
+        player.connect();
+    }
     </script>
 </body>
 </html>
