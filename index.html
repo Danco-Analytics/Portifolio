@@ -436,6 +436,18 @@
             to { transform: rotateX(-20deg) rotateY(360deg); }
         }
 
+        /* Wave Background Styles */
+        .wave-background {
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        #waveCanvas {
+            filter: blur(2px);
+            transform: scale(1.1);
+            transition: opacity 0.3s ease;
+        }
+
     </style>
     <script>
       // Tailwind Config - Extended with new theme colors
@@ -627,7 +639,12 @@
     <div id="main-content-container">
         <main>
             <section id="hero" class="h-screen flex flex-col items-center justify-center text-center relative overflow-hidden px-4 pt-16">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg opacity-80 z-0 transition-colors duration-300" aria-hidden="true"></div>
+                <!-- Add animated wave background -->
+                <div class="wave-background absolute inset-0 z-0">
+                    <canvas id="waveCanvas" class="absolute inset-0 w-full h-full opacity-30 dark:opacity-20"></canvas>
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg opacity-80 z-0 transition-colors duration-300"></div>
+                </div>
+
                 <svg class="absolute bottom-0 left-0 w-full h-32 text-secondary-bg/30 dark:text-dark-secondary-bg/30 z-0 opacity-50 transition-colors duration-300" preserveAspectRatio="none" viewBox="0 0 1440 320" aria-hidden="true">
                     <path fill="currentColor" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,133.3C960,107,1056,85,1152,96C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
                 </svg>
@@ -2196,5 +2213,123 @@
         });
     </script>
 
+    <script>
+        // Wave Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('waveCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+            
+            const waves = [];
+            const numWaves = 3;
+            const colors = {
+                light: ['rgba(108, 92, 231, 0.2)', 'rgba(255, 107, 107, 0.2)', 'rgba(45, 152, 218, 0.2)'],
+                dark: ['rgba(102, 252, 241, 0.2)', 'rgba(69, 162, 158, 0.2)', 'rgba(98, 205, 199, 0.2)']
+            };
+
+            class Wave {
+                constructor(index) {
+                    this.index = index;
+                    this.reset();
+                }
+
+                reset() {
+                    this.amplitude = Math.random() * 20 + 10;
+                    this.period = Math.random() * 200 + 200;
+                    this.phase = Math.random() * Math.PI * 2;
+                    this.speed = (Math.random() * 0.1 + 0.1) * (Math.random() < 0.5 ? 1 : -1);
+                    this.colorIndex = Math.floor(Math.random() * colors.light.length);
+                }
+
+                update() {
+                    this.phase += this.speed;
+                    if (this.phase > Math.PI * 2) this.phase = 0;
+                }
+
+                draw(ctx, width, height, scrollProgress, mouseX) {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const currentColors = isDark ? colors.dark : colors.light;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, height);
+
+                    for (let x = 0; x <= width; x += 5) {
+                        const relativeX = (x / width) - 0.5;
+                        const distanceFromMouse = mouseX ? Math.abs(x - mouseX) / width : 1;
+                        const mouseInfluence = Math.max(0, 1 - distanceFromMouse * 2);
+                        
+                        const y = height * 0.5 + 
+                            this.amplitude * Math.sin((x / this.period) + this.phase) * (1 + scrollProgress * 0.5) +
+                            (mouseInfluence * 20 * Math.sin(x / 30 + Date.now() / 1000));
+                        
+                        ctx.lineTo(x, y);
+                    }
+
+                    ctx.lineTo(width, height);
+                    ctx.closePath();
+
+                    const gradient = ctx.createLinearGradient(0, 0, width, height);
+                    gradient.addColorStop(0, currentColors[this.colorIndex]);
+                    gradient.addColorStop(1, currentColors[(this.colorIndex + 1) % currentColors.length]);
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                }
+            }
+
+            // Initialize waves
+            for (let i = 0; i < numWaves; i++) {
+                waves.push(new Wave(i));
+            }
+
+            let mouseX = null;
+            let scrollProgress = 0;
+            let animationFrame;
+
+            // Animation loop
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                
+                waves.forEach(wave => {
+                    wave.update();
+                    wave.draw(ctx, width, height, scrollProgress, mouseX);
+                });
+
+                animationFrame = requestAnimationFrame(animate);
+            }
+
+            // Handle resize
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            // Handle mouse movement
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+            });
+
+            // Handle scroll
+            window.addEventListener('scroll', () => {
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                scrollProgress = Math.min(1, window.scrollY / maxScroll);
+            });
+
+            // Start animation
+            animate();
+
+            // Cleanup on page visibility change
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(animationFrame);
+                } else {
+                    animate();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
