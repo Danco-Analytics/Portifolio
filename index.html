@@ -2,8 +2,14 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0B0C10">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* Fallback for unsupported browsers */
+        body {
+            background-color: #0B0C10;
+        }
+    </style>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Daniel Wanjala - Data Scientist / ML Engineer</title>
@@ -1038,7 +1044,7 @@
                     </div>
                 </div>
                 <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-                     <a href="#about" aria-label="Scroll down to about section" class="focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent rounded-full">
+                     <a href="#about" aria-label="Scroll down to about section" title="Scroll down to about section" class="focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent rounded-full">
                         <i data-lucide="chevron-down" class="w-6 h-6 text-accent-secondary dark:text-dark-accent-secondary" aria-hidden="true"></i>
                      </a>
                 </div>
@@ -1227,15 +1233,15 @@
                             <div class="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-accent dark:border-dark-accent rounded-br-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
                             
                             <iframe 
-                                style="border-radius:12px" 
+                                title="Spotify Playlist Embed"
                                 src="https://open.spotify.com/embed/playlist/2fWLbh8Ssvp5tBaa72EbJw?utm_source=generator" 
                                 width="100%" 
                                 height="352" 
                                 frameBorder="0" 
                                 allowfullscreen="" 
                                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-                                loading="lazy"
-                                class="w-full shadow-2xl transition-transform duration-300 group-hover:scale-[1.02]">
+                                class="w-full shadow-2xl transition-transform duration-300 group-hover:scale-[1.02]"
+                                style="border-radius:12px;">
                             </iframe>
                         </div>
                     </div>
@@ -1303,8 +1309,8 @@
                         <div class="flex items-center justify-between mb-6">
                             <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Live Visualizer</h3>
                             <div class="flex items-center gap-3">
-                                <button id="toggle-visualizer" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <button id="toggle-visualizer-1" title="Toggle Visualizer" aria-label="Toggle Visualizer" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path d="M10 3a1 1 0 000 2h4a1 1 0 100-2h-4zM3 7a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1zM3 11a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1z"/>
                                     </svg>
                                 </button>
@@ -1326,18 +1332,18 @@
                             <h4 id="now-playing-title" class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Not Playing</h4>
                             <p id="now-playing-artist" class="text-secondary-text dark:text-dark-secondary-text">Connect with Spotify to start</p>
                             <div class="mt-4 flex items-center gap-4">
-                                <button id="prev-track" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <button id="prev-track" aria-label="Previous Track" title="Previous Track" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"/>
                                     </svg>
                                 </button>
-                                <button id="play-pause" class="p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:scale-105 transition-transform">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                <button id="play-pause-now-playing" aria-label="Play or Pause Track" title="Play or Pause Track" class="p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:scale-105 transition-transform">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
                                     </svg>
                                 </button>
-                                <button id="next-track" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <button id="next-track" aria-label="Next Track" title="Next Track" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798L4.555 5.168z"/>
                                     </svg>
                                 </button>
@@ -1968,10 +1974,11 @@
                                 <i data-lucide="mail" class="social-icon w-6 h-6 mr-4 text-accent dark:text-dark-accent transition-transform" aria-hidden="true"></i>
                                 <a href="mailto:dmwanjala254@gmail.com" class="font-medium font-body hover:text-accent dark:hover:text-dark-accent transition-colors break-all focus:outline-none">dmwanjala254@gmail.com</a>
                                 <button class="copy-btn ml-auto flex-shrink-0 p-1 rounded hover:bg-accent/20 dark:hover:bg-dark-accent/20 text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition-colors interactive-element focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent" data-copy-text="dmwanjala254@gmail.com" aria-label="Copy email address">
-                                    <i data-lucide="copy" class="h-4 w-4" aria-hidden="true"></i>
+                                    <i data-lucide="copy" class="w-4 h-4" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
+n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
                                 <i data-lucide="message-circle" class="social-icon w-6 h-6 mr-4 text-accent dark:text-dark-accent transition-transform" aria-hidden="true"></i>
                                 <span class="font-medium font-body">WhatsApp</span>
                                 <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
@@ -1987,11 +1994,9 @@
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.790618214888!2d36.78901261475408!3d-1.302246999051988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1a6bfd7f3d7f%3A0x7f4e9b0a5f9f0e5!2sMbagathi%20Way%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1678886000000!5m2!1sen!2ske"
                                     width="100%"
                                     height="300"
-                                    style="border:0;"
                                     allowfullscreen=""
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"
-                                    title="Google Map Location near Mbagathi Way">
+                                    title="Google Map Location near Mbagathi Way"
+                                    class="border-0">
                                 </iframe>
                                 </div>
                             <p class="text-xs text-center mt-2 text-secondary-text dark:text-dark-secondary-text font-body">
@@ -2004,7 +2009,6 @@
                          <iframe
                             id="tally-contact-form"
                             data-tally-src="https://tally.so/embed/mR2xJd?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                            loading="lazy"
                             width="100%"
                             height="410" /* Initial height, JS will adjust */
                             frameborder="0"
@@ -2073,8 +2077,8 @@
             
             <div id="spotify-player" class="absolute right-full top-0 mr-4 w-80 rounded-lg shadow-2xl opacity-0 pointer-events-none transform translate-x-4 transition-all duration-300">
                 <div class="relative bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-lg p-3">
-                    <button id="close-player" class="absolute -top-2 -right-2 p-1 bg-accent dark:bg-dark-accent text-white dark:text-jet-black rounded-full shadow-lg hover:scale-110 transition-transform duration-200 z-10">
-                        <i data-lucide="x" class="w-4 h-4"></i>
+                    <button id="close-player" aria-label="Close music player" class="absolute -top-2 -right-2 p-1 bg-accent dark:bg-dark-accent text-white dark:text-jet-black rounded-full shadow-lg hover:scale-110 transition-transform duration-200 z-10">
+                        <i data-lucide="x" class="w-4 h-4" aria-hidden="true"></i>
                     </button>
                     <div class="flex gap-2 mb-2">
                         <button id="playlist-1" class="px-3 py-1 rounded-full text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">Coding</button>
@@ -2088,7 +2092,7 @@
                             height="352"
                             frameborder="0"
                             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                            loading="lazy"
+                            
                             class="rounded-lg transition-opacity duration-300">
                         </iframe>
                         <iframe id="ambient-playlist"
@@ -2098,7 +2102,7 @@
                             height="352"
                             frameborder="0"
                             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                            loading="lazy"
+                            
                             class="rounded-lg absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-300">
                         </iframe>
                     </div>
@@ -2209,7 +2213,7 @@
                     <p id="now-playing-artist" class="text-secondary-text dark:text-dark-secondary-text">Connect to Spotify to start</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="play-pause" class="p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:scale-110 transition-transform duration-300">
+                    <button id="play-pause" aria-label="Play or Pause music" class="p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:scale-110 transition-transform duration-300">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M8 5v14l11-7z"/>
                         </svg>
@@ -3781,7 +3785,7 @@
 
     document.getElementById('spotify-auth').addEventListener('click', () => {
         const scope = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state';
-        const authUrl = `https://accounts.spotify.com/authorize?client_id=${573805aedac64955829435745536cf78}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+        const authUrl = `https://accounts.spotify.com/authorize?client_id=${'573805aedac64955829435745536cf78'}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
         window.location.href = authUrl;
     });
 
@@ -3840,7 +3844,7 @@
             const track = state.track_window.current_track;
             titleEl.textContent = track.name;
             artistEl.textContent = track.artists[0].name;
-            artEl.style.backgroundImage = `url(${track.album.images[0].url})`;
+            artEl.style.backgroundImage = 'url("' + track.album.images[0].url + '")';
         }
     }
 
