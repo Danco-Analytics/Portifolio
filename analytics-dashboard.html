@@ -1,0 +1,39 @@
+<!-- Analytics Dashboard Modal -->
+<div id="analytics-dashboard" class="fixed inset-0 bg-black/80 dark:bg-jet-black/90 backdrop-blur-lg hidden z-50">
+    <div class="bg-glass-light dark:bg-glass-darker backdrop-blur-lg text-primary-text dark:text-dark-primary-text rounded-xl shadow-2xl overflow-hidden max-w-4xl w-full mx-auto mt-20 p-6 border border-secondary-text/10 dark:border-dark-secondary-text/20">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">Site Analytics Dashboard</h2>
+            <button id="close-analytics" class="p-2 hover:bg-accent/10 dark:hover:bg-dark-accent/10 rounded-lg">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-glass-light dark:bg-glass-dark p-4 rounded-lg border border-accent/20 dark:border-dark-accent/20">
+                <h3 class="text-sm text-secondary-text dark:text-dark-secondary-text mb-2">Total Visits</h3>
+                <p id="total-visits" class="text-2xl font-bold text-accent dark:text-dark-accent">0</p>
+            </div>
+            <div class="bg-glass-light dark:bg-glass-dark p-4 rounded-lg border border-accent/20 dark:border-dark-accent/20">
+                <h3 class="text-sm text-secondary-text dark:text-dark-secondary-text mb-2">Avg. Duration</h3>
+                <p id="avg-duration" class="text-2xl font-bold text-accent dark:text-dark-accent">0m</p>
+            </div>
+            <div class="bg-glass-light dark:bg-glass-dark p-4 rounded-lg border border-accent/20 dark:border-dark-accent/20">
+                <h3 class="text-sm text-secondary-text dark:text-dark-secondary-text mb-2">Most Viewed Page</h3>
+                <p id="most-viewed" class="text-2xl font-bold text-accent dark:text-dark-accent">-</p>
+            </div>
+            <div class="bg-glass-light dark:bg-glass-dark p-4 rounded-lg border border-accent/20 dark:border-dark-accent/20">
+                <h3 class="text-sm text-secondary-text dark:text-dark-secondary-text mb-2">Active Today</h3>
+                <p id="active-today" class="text-2xl font-bold text-accent dark:text-dark-accent">0</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-glass-light dark:bg-glass-dark p-4 rounded-lg border border-accent/20 dark:border-dark-accent/20">
+                <h3 class="text-lg font-semibold mb-4">Recent Visits</h3>
+                <div id="recent-visits" class="space-y-2 max-h-60 overflow-y-auto"></div>
+            </div>
+            <div class="bg-glass-light dark:bg-glass-dark p-4 rounded-lg border border-accent/20 dark:border-dark-accent/20">
+                <h3 class="text-lg font-semibold mb-4">Device Stats</h3>
+                <div id="device-stats" class="space-y-4"></div>
+            </div>
+        </div>
+    </div>
+</div> 
