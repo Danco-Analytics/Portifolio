@@ -54,11 +54,37 @@
         #mobile-menu.open { max-height: 500px; /* Adjust if needed */ opacity: 1; }
 
         /* Scroll Reveal Animation Base */
-        .reveal-hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .reveal-visible { opacity: 1; transform: translateY(0); }
-        .reveal-slide-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .reveal-slide-right { opacity: 0; transform: translateX(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .reveal-visible.slide-in { opacity: 1; transform: translateX(0); }
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+            /* Add fallback for debugging */
+            visibility: visible !important;
+            min-height: 50px; /* Ensure minimum height */
+            position: relative; /* Ensure proper stacking */
+            z-index: 1; /* Ensure proper stacking */
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-slide-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .reveal-slide-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .reveal-visible.slide-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
         /* Staggering delay added via JS */
 
         /* Navbar Underline */
@@ -304,7 +330,7 @@
         .philosophy-card-back {
             /* Styles for the back */
             transform: rotateY(180deg);
-             @apply bg-accent/80 dark:bg-dark-accent/80 text-white dark:text-jet-black;
+             @apply bg-accent/80 dark:bg-dark-accent text-white dark:text-jet-black;
         }
 
         /* --- Accessibility: Focus Styles --- */
@@ -448,25 +474,11 @@
         /* --- Project Cards --- */
         .project-card {
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(108, 92, 231, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
         }
 
         .project-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .project-card:hover::before {
@@ -653,6 +665,254 @@
             border-color: var(--dark-accent) transparent transparent transparent;
         }
 
+        /* Project Cards Styles */
+        .project-card {
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Skill Progress Styles */
+        .skill-progress-item {
+            position: relative;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .skill-progress-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-progress-item:hover .skill-details {
+            opacity: 1;
+        }
+
+        .skill-progress-bar {
+            transform-origin: left;
+            background-size: 200% 100%;
+            animation: gradientMove 2s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        .skill-progress-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--accent), var(--accent-secondary));
+            border-radius: 3px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-progress-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Dark mode adjustments */
+        .dark .skill-progress-item {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .dark .skill-progress-item:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Achievement Cards Styles */
+        .achievement-card {
+            position: relative;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(108, 92, 231, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .achievement-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .achievement-icon {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(108, 92, 231, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover .achievement-icon {
+            transform: scale(1.1);
+            background: rgba(108, 92, 231, 0.2);
+        }
+
+        .achievement-date {
+            position: relative;
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 1rem;
+            background: rgba(108, 92, 231, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover .achievement-date {
+            background: rgba(108, 92, 231, 0.2);
+            transform: translateX(5px);
+        }
+
+        /* Dark mode adjustments */
+        .dark .achievement-card {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .dark .achievement-card:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .dark .achievement-icon {
+            background: rgba(108, 92, 231, 0.2);
+        }
+
+        .dark .achievement-card:hover .achievement-icon {
+            background: rgba(108, 92, 231, 0.3);
+        }
+
+        /* Floating Action Button */
+        .floating-btn {
+            @apply w-12 h-12 rounded-full bg-accent dark:bg-dark-accent text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110;
+        }
+
+        .theme-icon {
+            @apply w-5 h-5 transition-transform duration-300;
+        }
+
+        .dark .theme-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Progress Indicator */
+        #progress-indicator {
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Contact Form */
+        .form-input {
+            @apply w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark-secondary-bg text-primary-text dark:text-dark-primary-text focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent focus:border-transparent transition-all duration-300;
+        }
+
+        .form-input.error {
+            @apply border-red-500 dark:border-red-400;
+        }
+
+        .error-message {
+            @apply text-red-500 dark:text-red-400 text-sm mt-1 hidden;
+        }
+
+        .error-message.show {
+            @apply block;
+        }
+
+        /* Modal Animation */
+        #contact-modal.active {
+            @apply flex;
+        }
+
+        #contact-modal.active > div {
+            @apply scale-100 opacity-100;
+        }
+
+        /* Interactive Elements */
+        .interactive-card {
+            @apply transition-all duration-300 hover:shadow-lg hover:scale-105;
+        }
+
+        .gradient-text {
+            @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-hover dark:from-dark-accent dark:to-dark-accent-hover;
+        }
+
+        .animated-border {
+            @apply relative overflow-hidden;
+        }
+
+        .animated-border::after {
+            content: '';
+            @apply absolute inset-0 border-2 border-accent dark:border-dark-accent opacity-0 transition-opacity duration-300;
+        }
+
+        .animated-border:hover::after {
+            @apply opacity-100;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple::after {
+            content: '';
+            @apply absolute w-0 h-0 rounded-full bg-white bg-opacity-20;
+            transform: translate(-50%, -50%);
+            animation: ripple 0.6s linear;
+        }
+
+        @keyframes ripple {
+            to {
+                width: 200%;
+                height: 200%;
+                opacity: 0;
+            }
+        }
     </style>
     <script>
       tailwind.config = {
@@ -811,82 +1071,84 @@
                 </div>
             </section>
 
-            <section id="about-journey" class="py-16 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
-                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+            <!-- New Journey Section -->
+            <section id="journey-section" class="py-16 px-4 md:px-8 lg:px-16 bg-secondary-bg dark:bg-dark-secondary-bg">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight">
                     From IT Foundations to Data Frontiers
                 </h2>
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-                    <div class="space-y-6 reveal-slide-left">
-                        <p class="text-md text-secondary-text dark:text-dark-secondary-text leading-relaxed font-body">
+                    <div class="space-y-6">
+                        <p class="text-md text-primary-text dark:text-dark-primary-text leading-relaxed font-body">
                             My professional path began in the demanding environment of healthcare IT. As the <strong class="text-accent dark:text-dark-accent">Senior IT Manager at Kingdom Hospital</strong> in Webuye, I wasn't just keeping the systems running; I was on the front lines, ensuring that technology reliably supported critical patient care. It was here, managing networks, ensuring data integrity, and leading a team of interns, that I first truly grasped the immense potential hidden within the hospital's operational data.
                         </p>
-                        <p class="text-md text-secondary-text dark:text-dark-secondary-text leading-relaxed font-body">
+                        <p class="text-md text-primary-text dark:text-dark-primary-text leading-relaxed font-body">
                             Seeing the direct impact of efficient systems – like reducing patient wait times through better scheduling or improving billing accuracy with integrated solutions – ignited my curiosity. I started volunteering my time specifically as a <strong class="text-accent dark:text-dark-accent">Data Scientist</strong> within the hospital, driven to explore how we could move beyond just *managing* data to *learning* from it. This led to developing predictive models for patient flow, a project that yielded significant improvements and solidified my passion for data's predictive power.
                         </p>
-                         <p class="text-md text-secondary-text dark:text-dark-secondary-text leading-relaxed font-body">
+                        <p class="text-md text-primary-text dark:text-dark-primary-text leading-relaxed font-body">
                             This hands-on experience naturally led me to formalize my knowledge. Pursuing a <strong class="text-accent dark:text-dark-accent">Certificate in Data Science & Machine Learning from Moringa School</strong> provided an immersive, project-based deep dive. Following that, my <strong class="text-accent dark:text-dark-accent">BSc in Information Technology from Zetech University</strong> gave me the robust technical foundation. Now, I'm furthering my expertise through a <strong class="text-accent dark:text-dark-accent">Master of Science in Data Science at Cooperative University of Kenya</strong>, constantly seeking to refine my skills in machine learning, statistical modeling, and research.
                         </p>
                     </div>
-                    <div class="reveal-slide-right">
+                    <div>
                         <h3 class="text-2xl font-semibold mb-6 text-center md:text-left text-primary-text dark:text-dark-primary-text font-heading">Key Milestones</h3>
-                        <div class="relative space-y-0"> <div class="timeline-item interactive-element reveal-hidden" tabindex="0">
-                                <span class="timeline-date">2024 - Present</span>
+                        <div class="relative space-y-0">
+                            <div class="timeline-item interactive-element" tabindex="0">
+                                <span class="timeline-date text-accent dark:text-dark-accent">2024 - Present</span>
                                 <div class="timeline-icon-wrapper" aria-hidden="true">
                                     <i data-lucide="graduation-cap" class="timeline-icon"></i>
                                 </div>
                                 <div class="timeline-content">
                                     <h4 class="text-lg font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">MSc Data Science</h4>
-                                    <p class="text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1">Cooperative University of Kenya</p>
-                                    <p class="text-xs text-secondary-text dark:text-dark-secondary-text font-body">Deepening expertise in advanced ML and research methodologies.</p>
+                                    <p class="text-sm font-medium text-primary-text dark:text-dark-primary-text mb-1">Cooperative University of Kenya</p>
+                                    <p class="text-xs text-primary-text dark:text-dark-primary-text font-body">Deepening expertise in advanced ML and research methodologies.</p>
                                 </div>
                                 <div class="timeline-details">
-                                    <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Focusing on advanced machine learning algorithms, deep learning architectures, and research methodologies. Currently working on a thesis about predictive modeling in healthcare systems.</p>
+                                    <p class="text-sm text-primary-text dark:text-dark-primary-text">Focusing on advanced machine learning algorithms, deep learning architectures, and research methodologies. Currently working on a thesis about predictive modeling in healthcare systems.</p>
                                 </div>
                             </div>
-                            <div class="timeline-item interactive-element reveal-hidden" tabindex="0" style="transition-delay: 100ms;">
-                                <span class="timeline-date">Jan 2023 - Present</span>
+                            <div class="timeline-item interactive-element" tabindex="0">
+                                <span class="timeline-date text-accent dark:text-dark-accent">Jan 2023 - Present</span>
                                 <div class="timeline-icon-wrapper" aria-hidden="true">
                                     <i data-lucide="briefcase" class="timeline-icon"></i>
                                 </div>
                                 <div class="timeline-content">
                                     <h4 class="text-lg font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">Senior IT Manager & Data Scientist (Vol.)</h4>
-                                    <p class="text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1">Kingdom Hospital, Webuye</p>
-                                    <p class="text-xs text-secondary-text dark:text-dark-secondary-text font-body">Led IT operations, championed data-driven decisions, built predictive models.</p>
+                                    <p class="text-sm font-medium text-primary-text dark:text-dark-primary-text mb-1">Kingdom Hospital, Webuye</p>
+                                    <p class="text-xs text-primary-text dark:text-dark-primary-text font-body">Led IT operations, championed data-driven decisions, built predictive models.</p>
                                 </div>
                                 <div class="timeline-details">
-                                    <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Implemented data-driven solutions that reduced patient wait times by 25% and improved resource allocation efficiency. Led a team of 5 IT interns and managed critical hospital systems.</p>
+                                    <p class="text-sm text-primary-text dark:text-dark-primary-text">Implemented data-driven solutions that reduced patient wait times by 25% and improved resource allocation efficiency. Led a team of 5 IT interns and managed critical hospital systems.</p>
                                 </div>
                             </div>
-                            <div class="timeline-item interactive-element reveal-hidden" tabindex="0" style="transition-delay: 200ms;">
-                                <span class="timeline-date">Apr 2023 – Nov 2023</span>
+                            <div class="timeline-item interactive-element" tabindex="0">
+                                <span class="timeline-date text-accent dark:text-dark-accent">Apr 2023 – Nov 2023</span>
                                 <div class="timeline-icon-wrapper" aria-hidden="true">
                                     <i data-lucide="award" class="timeline-icon"></i>
                                 </div>
                                 <div class="timeline-content">
                                     <h4 class="text-lg font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">Certificate in Data Science & ML</h4>
-                                    <p class="text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1">Moringa School, Nairobi</p>
-                                    <p class="text-xs text-secondary-text dark:text-dark-secondary-text font-body">Immersive, project-based learning in core data science concepts.</p>
+                                    <p class="text-sm font-medium text-primary-text dark:text-dark-primary-text mb-1">Moringa School, Nairobi</p>
+                                    <p class="text-xs text-primary-text dark:text-dark-primary-text font-body">Immersive, project-based learning in core data science concepts.</p>
                                 </div>
                                 <div class="timeline-details">
-                                    <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Completed intensive training in Python, machine learning, and data visualization. Built a financial forecasting model that achieved 85% prediction accuracy.</p>
+                                    <p class="text-sm text-primary-text dark:text-dark-primary-text">Completed intensive training in Python, machine learning, and data visualization. Built a financial forecasting model that achieved 85% prediction accuracy.</p>
                                 </div>
                             </div>
-                            <div class="timeline-item interactive-element reveal-hidden" tabindex="0" style="transition-delay: 300ms;">
-                                <span class="timeline-date">Graduated 2022</span>
+                            <div class="timeline-item interactive-element" tabindex="0">
+                                <span class="timeline-date text-accent dark:text-dark-accent">Graduated 2022</span>
                                 <div class="timeline-icon-wrapper" aria-hidden="true">
                                     <i data-lucide="graduation-cap" class="timeline-icon"></i>
                                 </div>
                                 <div class="timeline-content">
                                     <h4 class="text-lg font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">BSc Information Technology</h4>
-                                    <p class="text-sm font-medium text-secondary-text dark:text-dark-secondary-text mb-1">Zetech University</p>
-                                    <p class="text-xs text-secondary-text dark:text-dark-secondary-text font-body">Built strong foundation in IT infrastructure, software, and systems.</p>
+                                    <p class="text-sm font-medium text-primary-text dark:text-dark-primary-text mb-1">Zetech University</p>
+                                    <p class="text-xs text-primary-text dark:text-dark-primary-text font-body">Built strong foundation in IT infrastructure, software, and systems.</p>
                                 </div>
                                 <div class="timeline-details">
-                                    <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Specialized in database management and system architecture. Graduated with honors and received the Outstanding Student Award for innovative project work.</p>
+                                    <p class="text-sm text-primary-text dark:text-dark-primary-text">Specialized in database management and system architecture. Graduated with honors and received the Outstanding Student Award for innovative project work.</p>
                                 </div>
                             </div>
-                             </div>
-                         </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -956,6 +1218,99 @@
                 <p class="text-center mt-8 text-sm text-secondary-text dark:text-dark-secondary-text font-body reveal-hidden">
                     (Hover over a skill to learn more)
                  </p>
+            </section>
+
+            <section id="about-skills-progress" class="py-16 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Skill Mastery Journey
+                </h2>
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <div class="skill-progress-item reveal-hidden" style="transition-delay: 100ms;">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-lg font-semibold text-primary-text dark:text-dark-primary-text">Machine Learning</span>
+                            <span class="text-sm text-accent dark:text-dark-accent">90%</span>
+                        </div>
+                        <div class="h-2 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 rounded-full overflow-hidden">
+                            <div class="skill-progress-bar h-full bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transform scale-x-0 transition-transform duration-1000 ease-out" style="width: 90%"></div>
+                        </div>
+                        <div class="skill-details mt-2 text-sm text-secondary-text dark:text-dark-secondary-text opacity-0 transition-opacity duration-300">
+                            Advanced expertise in neural networks, deep learning, and predictive modeling
+                        </div>
+                    </div>
+
+                    <div class="skill-progress-item reveal-hidden" style="transition-delay: 200ms;">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-lg font-semibold text-primary-text dark:text-dark-primary-text">Data Engineering</span>
+                            <span class="text-sm text-accent dark:text-dark-accent">85%</span>
+                        </div>
+                        <div class="h-2 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 rounded-full overflow-hidden">
+                            <div class="skill-progress-bar h-full bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transform scale-x-0 transition-transform duration-1000 ease-out" style="width: 85%"></div>
+                        </div>
+                        <div class="skill-details mt-2 text-sm text-secondary-text dark:text-dark-secondary-text opacity-0 transition-opacity duration-300">
+                            Building scalable data pipelines and ETL processes
+                        </div>
+                    </div>
+
+                    <div class="skill-progress-item reveal-hidden" style="transition-delay: 300ms;">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-lg font-semibold text-primary-text dark:text-dark-primary-text">Python Development</span>
+                            <span class="text-sm text-accent dark:text-dark-accent">95%</span>
+                        </div>
+                        <div class="h-2 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 rounded-full overflow-hidden">
+                            <div class="skill-progress-bar h-full bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transform scale-x-0 transition-transform duration-1000 ease-out" style="width: 95%"></div>
+                        </div>
+                        <div class="skill-details mt-2 text-sm text-secondary-text dark:text-dark-secondary-text opacity-0 transition-opacity duration-300">
+                            Expert in data science libraries and web frameworks
+                        </div>
+                    </div>
+
+                    <div class="skill-progress-item reveal-hidden" style="transition-delay: 400ms;">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-lg font-semibold text-primary-text dark:text-dark-primary-text">Business Intelligence</span>
+                            <span class="text-sm text-accent dark:text-dark-accent">80%</span>
+                        </div>
+                        <div class="h-2 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 rounded-full overflow-hidden">
+                            <div class="skill-progress-bar h-full bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transform scale-x-0 transition-transform duration-1000 ease-out" style="width: 80%"></div>
+                        </div>
+                        <div class="skill-details mt-2 text-sm text-secondary-text dark:text-dark-secondary-text opacity-0 transition-opacity duration-300">
+                            Creating impactful data visualizations and dashboards
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about-achievements" class="py-16 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Achievement Showcase
+                </h2>
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="achievement-card reveal-hidden" style="transition-delay: 100ms;">
+                        <div class="achievement-icon">
+                            <i class="fas fa-trophy text-4xl text-accent dark:text-dark-accent"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mt-4 text-primary-text dark:text-dark-primary-text">Outstanding Student Award</h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mt-2">Recognized for academic excellence and innovative projects at Zetech University</p>
+                        <div class="achievement-date text-sm text-accent dark:text-dark-accent mt-4">2022</div>
+                    </div>
+
+                    <div class="achievement-card reveal-hidden" style="transition-delay: 200ms;">
+                        <div class="achievement-icon">
+                            <i class="fas fa-certificate text-4xl text-accent dark:text-dark-accent"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mt-4 text-primary-text dark:text-dark-primary-text">Data Science Certification</h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mt-2">Completed advanced machine learning and data analysis training at Moringa School</p>
+                        <div class="achievement-date text-sm text-accent dark:text-dark-accent mt-4">2023</div>
+                    </div>
+
+                    <div class="achievement-card reveal-hidden" style="transition-delay: 300ms;">
+                        <div class="achievement-icon">
+                            <i class="fas fa-medal text-4xl text-accent dark:text-dark-accent"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mt-4 text-primary-text dark:text-dark-primary-text">Healthcare Innovation Award</h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mt-2">Recognized for implementing data-driven solutions at Kingdom Hospital</p>
+                        <div class="achievement-date text-sm text-accent dark:text-dark-accent mt-4">2023</div>
+                    </div>
+                </div>
             </section>
 
             <section id="about-methodology" class="py-16 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
@@ -1252,24 +1607,12 @@
 
     </div> <script defer>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Initialize Lucide Icons ---
-            try {
-                if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-                else { console.warn('Lucide icons library not loaded yet.'); }
-            } catch (e) { console.error('Error creating Lucide icons:', e); }
+            // Initialize Lucide icons once
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
 
-            // --- Constants and State ---
-            const scrollRevealThreshold = 0.1;
-            const scrollRevealRootMargin = "0px 0px -50px 0px";
-            const navScrollThreshold = 0; // Threshold for nav highlighting
-            const navScrollRootMargin = "-20% 0px -70% 0px"; // Active area for nav highlighting
-            let toneJsStarted = false;
-            let synth, clickSynth;
-            let particleAnimationId = null;
-            let mouse = { x: null, y: null };
-            let currentActiveSectionId = 'about'; // Default for this page
-
-            // --- DOM Element References ---
+            // Constants and State
             const htmlEl = document.documentElement;
             const bodyEl = document.body;
             const mainHeader = document.getElementById('main-header');
@@ -1284,193 +1627,164 @@
             const scrollProgressBar = document.getElementById('scrollProgressBar');
             const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
             const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link');
-            // const sections = document.querySelectorAll('main section[id]'); // Use if local nav highlighting needed
             const mainContentContainer = document.getElementById('main-content-container');
             const particleCanvas = document.getElementById('particle-canvas');
             const backToTopButton = document.getElementById('back-to-top');
-            const interactiveElements = document.querySelectorAll('a[href], button, [role="button"], [role="link"], .interactive-element'); // Select interactive elements
 
-            // --- Initial Setup Functions ---
-            function setupToneJS() {
-                const startTone = () => {
-                    if (toneJsStarted || typeof Tone === 'undefined') return;
-                    try {
-                        Tone.start();
-                        synth = new Tone.Synth({ oscillator: { type: 'sine' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }, volume: -25 }).toDestination();
-                        clickSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }, volume: -20 }).toDestination();
-                        toneJsStarted = true;
-                        console.log("Tone.js AudioContext started.");
-                        ['click', 'keydown', 'touchstart'].forEach(evt => bodyEl.removeEventListener(evt, startTone));
-                    } catch (e) { console.error("Tone.js initialization failed:", e); toneJsStarted = false; }
-                };
-                ['click', 'keydown', 'touchstart'].forEach(evt => bodyEl.addEventListener(evt, startTone, { once: true, passive: true }));
+            // Set current year
+            if (currentYearEl) {
+                currentYearEl.textContent = new Date().getFullYear();
             }
 
-            function addSoundFeedback() {
-                interactiveElements.forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        if (toneJsStarted && synth) { try { synth.triggerAttackRelease('C5', '16n', Tone.now()); } catch(e) {} }
-                    });
-                    el.addEventListener('click', () => {
-                        if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease('E4', '16n', Tone.now()); } catch(e) {} }
-                    });
-                });
-            }
-
-            function setFooterYear() {
-                 if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
-            }
-
-            // --- Core Functionality ---
-             function updateThemeUI() {
-                if (!htmlEl || !bodyEl) return;
+            // Theme handling
+            function updateThemeUI() {
                 const isDark = htmlEl.classList.contains('dark');
                 if (themeIconSun && themeIconMoon) {
                     themeIconSun.classList.toggle('hidden', !isDark);
                     themeIconMoon.classList.toggle('hidden', isDark);
-                    try { lucide.createIcons(); } catch(e) {}
                 }
                 const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                 const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
                 bodyEl.style.backgroundImage = isDark ? noiseDark : noiseLight;
-                if (particleCanvas) initParticles(); // Re-init particles on theme change
             }
 
             function setTheme(theme) {
-                if (!htmlEl) return;
                 htmlEl.classList.toggle('dark', theme === 'dark');
                 localStorage.setItem('theme', theme);
                 updateThemeUI();
-                if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now()); } catch(e) {} }
             }
 
+            // Initialize theme
+            const storedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(storedTheme);
+
+            // Theme toggle event listener
+            if (themeToggleButton) {
+                themeToggleButton.addEventListener('click', () => {
+                    const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
+                    setTheme(newTheme);
+                });
+            }
+
+            // Mobile menu handling
             function toggleMobileMenu() {
-                 if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return;
-                 const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-                 mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-                 mobileMenu.classList.toggle('open');
-                 menuIconOpen.classList.toggle('hidden');
-                 menuIconClose.classList.toggle('hidden');
+                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('open');
+                menuIconOpen.classList.toggle('hidden');
+                menuIconClose.classList.toggle('hidden');
             }
 
-             function closeMobileMenu() {
-                if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return;
-                if (mobileMenuButton.getAttribute('aria-expanded') === 'true') {
-                    mobileMenuButton.setAttribute('aria-expanded', 'false');
-                    mobileMenu.classList.remove('open');
-                    menuIconOpen.classList.remove('hidden');
-                    menuIconClose.classList.add('hidden');
-                }
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', toggleMobileMenu);
             }
 
+            // Close mobile menu on link click
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('open')) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
+
+            // Scroll handling
             function handleScroll() {
-                if (!htmlEl || !scrollProgressBar || !mainHeader) return;
                 const scrollableHeight = htmlEl.scrollHeight - window.innerHeight;
                 const scrolled = window.scrollY;
                 const progress = scrollableHeight > 0 ? Math.min(1, scrolled / scrollableHeight) : 0;
-                scrollProgressBar.style.transform = `scaleX(${progress})`;
-                mainHeader.classList.toggle('scrolled', scrolled > 50);
-                if (backToTopButton) { backToTopButton.classList.toggle('visible', scrolled > 300); }
-            }
-
-            function setupScrollReveal() {
-                const revealObserverOptions = { threshold: scrollRevealThreshold, rootMargin: scrollRevealRootMargin };
-                const revealCallback = (entries, observer) => {
-                    entries.forEach((entry, index) => {
-                        if (entry.isIntersecting) {
-                            const delay = entry.target.dataset.revealDelay ? parseInt(entry.target.dataset.revealDelay) : (index * 100);
-                            entry.target.style.transitionDelay = `${delay}ms`;
-                            entry.target.classList.add('reveal-visible');
-                            if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
-                                entry.target.classList.add('slide-in');
-                            }
-                            // Animate statistics when the stats section is revealed
-                            if (entry.target.id === 'about-stats') {
-                                const statNumbers = entry.target.querySelectorAll('.stat-number');
-                                statNumbers.forEach(stat => {
-                                    const target = parseInt(stat.getAttribute('data-target'));
-                                    const suffix = stat.getAttribute('data-suffix') || '';
-                                    animateValue(stat, 0, target, 2000, suffix);
-                                });
-                            }
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                };
-                const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
-                document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right').forEach(el => revealObserver.observe(el));
-            }
-
-            function setupTimelineInteractions() {
-                const timelineItems = document.querySelectorAll('.timeline-item');
-                timelineItems.forEach(item => {
-                    item.addEventListener('click', () => {
-                        // Close all other items
-                        timelineItems.forEach(otherItem => {
-                            if (otherItem !== item) {
-                                otherItem.classList.remove('active');
-                            }
-                        });
-                        // Toggle current item
-                        item.classList.toggle('active');
-                        
-                        // Play sound effect if Tone.js is available
-                        if (toneJsStarted && clickSynth) {
-                            try {
-                                clickSynth.triggerAttackRelease('C4', '16n', Tone.now());
-                            } catch(e) {}
-                        }
-                    });
-
-                    // Add keyboard interaction
-                    item.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            item.click();
-                        }
-                    });
-                });
-            }
-
-            function setupProjectCards() {
-                const projectCards = document.querySelectorAll('.project-card');
                 
-                projectCards.forEach(card => {
-                    // Add tooltips to metrics
-                    const metrics = card.querySelectorAll('.metric-card');
-                    metrics.forEach(metric => {
-                        const value = metric.querySelector('.text-2xl').textContent;
-                        const label = metric.querySelector('.text-xs').textContent;
-                        metric.setAttribute('data-tooltip', `${value} ${label}`);
-                    });
+                if (scrollProgressBar) {
+                    scrollProgressBar.style.transform = `scaleX(${progress})`;
+                }
+                
+                if (mainHeader) {
+                    mainHeader.classList.toggle('scrolled', scrolled > 50);
+                }
+                
+                if (backToTopButton) {
+                    backToTopButton.classList.toggle('visible', scrolled > 300);
+                }
+            }
 
-                    // Add tooltips to tech badges
-                    const techBadges = card.querySelectorAll('.tech-badge');
-                    techBadges.forEach(badge => {
-                        const tech = badge.textContent;
-                        badge.setAttribute('data-tooltip', `Built with ${tech}`);
-                    });
+            window.addEventListener('scroll', handleScroll, { passive: true });
 
-                    // Add click sound effect
-                    card.addEventListener('click', () => {
-                        if (toneJsStarted && clickSynth) {
-                            try {
-                                clickSynth.triggerAttackRelease('C4', '16n', Tone.now());
-                            } catch(e) {}
-                        }
-                    });
-
-                    // Add hover sound effect
-                    card.addEventListener('mouseenter', () => {
-                        if (toneJsStarted && synth) {
-                            try {
-                                synth.triggerAttackRelease('E5', '16n', Tone.now());
-                            } catch(e) {}
-                        }
-                    });
+            // Back to top button
+            if (backToTopButton) {
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
 
+            // Scroll reveal
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Force immediate visibility
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.classList.add('reveal-visible');
+                        entry.target.classList.add('slide-in');
+                        
+                        // Animate statistics if it's the stats section
+                        if (entry.target.id === 'about-stats') {
+                            const stats = entry.target.querySelectorAll('.stat-number');
+                            stats.forEach(stat => {
+                                const target = parseInt(stat.getAttribute('data-target'));
+                                const suffix = stat.getAttribute('data-suffix') || '';
+                                animateValue(stat, 0, target, 2000, suffix);
+                            });
+                        }
+                        
+                        // Animate skill progress bars if it's the skills section
+                        if (entry.target.id === 'about-skills-progress') {
+                            const progressBars = entry.target.querySelectorAll('.skill-progress-bar');
+                            progressBars.forEach(bar => {
+                                bar.style.transform = 'scaleX(1)';
+                            });
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '-10% 0px -10% 0px' // More aggressive triggering
+            });
+
+            // Force reveal for debugging
+            document.addEventListener('DOMContentLoaded', () => {
+                const journeySection = document.getElementById('about-journey');
+                if (journeySection) {
+                    journeySection.style.opacity = '1';
+                    journeySection.style.transform = 'translateY(0)';
+                    journeySection.classList.add('reveal-visible');
+                }
+            });
+
+            document.querySelectorAll('.reveal-hidden').forEach(element => {
+                observer.observe(element);
+            });
+
+            // Timeline interactions
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    timelineItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    item.classList.toggle('active');
+                });
+
+                item.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        item.click();
+                    }
+                });
+            });
+
+            // Helper function for number animation
             function animateValue(element, start, end, duration, suffix) {
                 let startTimestamp = null;
                 const step = (timestamp) => {
@@ -1485,170 +1799,14 @@
                 window.requestAnimationFrame(step);
             }
 
-            function setupNavHighlighting() {
-                // Simplified for About page: Highlight the 'About' link
-                navLinks.forEach(link => {
-                    link.classList.toggle('nav-active', link.getAttribute('data-section') === 'about');
-                });
-                mobileNavLinks.forEach(link => {
-                    link.classList.toggle('nav-active', link.getAttribute('data-section') === 'about');
-                });
-                // If you add more sections *within* about.html and want local nav highlighting,
-                // you'd re-implement the IntersectionObserver logic from index.html here,
-                // observing the sections within this page's main element.
-            }
-
-            function setupTiltEffect() {
-                 if (!mainContentContainer) return;
-                 const handleOrientation = (event) => {
-                     if (event.beta === null || event.gamma === null) return;
-                     const beta = Math.max(-20, Math.min(20, event.beta));
-                     const gamma = Math.max(-20, Math.min(20, event.gamma));
-                     const maxTilt = 1.5;
-                     const tiltY = (beta / 20 * maxTilt).toFixed(2);
-                     const tiltX = (gamma / 20 * -maxTilt).toFixed(2);
-                     requestAnimationFrame(() => {
-                        mainContentContainer.style.transform = `perspective(1500px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`;
-                     });
-                 };
-                 if (window.DeviceOrientationEvent) { window.addEventListener('deviceorientation', handleOrientation, true); }
-                 else { console.log("DeviceOrientation not supported."); }
-            }
-
-            function setupBackToTop() {
-                if (backToTopButton) {
-                    backToTopButton.addEventListener('click', () => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    });
-                }
-            }
-
-            // --- Particle Background Logic (Copied from index.html) ---
-            let particles = [];
-            function initParticles() {
-                if (!particleCanvas) return;
-                const ctx = particleCanvas.getContext('2d');
-                if (!ctx) return;
-                if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
-                resizeCanvas();
-                particles.forEach(p => p.baseColor = null);
-                createParticles();
-                if (!document.hidden) { drawParticles(); }
-            }
-            function resizeCanvas() {
-                if (!particleCanvas) return;
-                particleCanvas.width = window.innerWidth;
-                particleCanvas.height = window.innerHeight;
-            }
-            function createParticles() {
-                if (!particleCanvas) return;
-                particles = [];
-                const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 18000);
-                for (let i = 0; i < particleCount; i++) {
-                    particles.push({
-                        x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height,
-                        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-                        radius: Math.random() * 1.8 + 0.8, baseRadius: Math.random() * 1.8 + 0.8,
-                        baseColor: null, drawColor: null,
-                    });
-                }
-            }
-            function drawParticles() {
-                if (!particleCanvas) return;
-                const ctx = particleCanvas.getContext('2d');
-                if (!ctx) return;
-                ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-                const isDark = htmlEl.classList.contains('dark');
-                const twConfig = tailwind.config.theme.extend.colors;
-                const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`, `${twConfig['tertiary-light']}60`];
-                const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`, `${twConfig['tertiary-dark']}60`];
-                const themeColors = isDark ? darkColors : lightColors;
-                const lineColor = isDark ? 'rgba(197, 198, 199, 0.05)' : 'rgba(74, 74, 74, 0.05)';
-                const particleInteractionRadius = 120;
-                const particleLineThreshold = 110;
-
-                particles.forEach((p, i) => {
-                    if (!p.baseColor) p.baseColor = themeColors[Math.floor(Math.random() * themeColors.length)];
-                    p.drawColor = p.baseColor; p.radius = p.baseRadius;
-                    if (mouse.x !== null && mouse.y !== null) {
-                        const dx = mouse.x - p.x; const dy = mouse.y - p.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < particleInteractionRadius) {
-                            const proximityFactor = 1 - (distance / particleInteractionRadius);
-                            const baseHex = p.baseColor.substring(0, 7);
-                            const currentAlphaHex = p.baseColor.substring(7, 9) || '80';
-                            const currentAlphaDec = parseInt(currentAlphaHex, 16);
-                            const targetAlphaDec = Math.min(255, Math.floor(currentAlphaDec + proximityFactor * 100));
-                            p.drawColor = `${baseHex}${targetAlphaDec.toString(16).padStart(2, '0')}`;
-                            p.radius = p.baseRadius + proximityFactor * 1.5;
-                            const force = proximityFactor; const pushStrength = 0.4;
-                            p.x -= (dx / distance) * force * pushStrength; p.y -= (dy / distance) * force * pushStrength;
-                        }
-                    }
-                    ctx.fillStyle = p.drawColor; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
-                    p.x += p.vx; p.y += p.vy;
-                    if (p.x < -p.radius) p.x = particleCanvas.width + p.radius; if (p.x > particleCanvas.width + p.radius) p.x = -p.radius;
-                    if (p.y < -p.radius) p.y = particleCanvas.height + p.radius; if (p.y > particleCanvas.height + p.radius) p.y = -p.radius;
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const p2 = particles[j]; const dx = p.x - p2.x; const dy = p.y - p2.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < particleLineThreshold) {
-                            ctx.strokeStyle = lineColor; ctx.lineWidth = 0.5 * (1 - distance / particleLineThreshold);
-                            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
-                        }
-                    }
-                });
-                particleAnimationId = requestAnimationFrame(drawParticles);
-            }
-            const updateMousePosition = (event) => {
-                if (!particleCanvas) return; const rect = particleCanvas.getBoundingClientRect();
-                const clientX = event.touches ? event.touches[0].clientX : event.clientX;
-                const clientY = event.touches ? event.touches[0].clientY : event.clientY;
-                mouse.x = clientX - rect.left; mouse.y = clientY - rect.top;
-            };
-            const resetMousePosition = () => { mouse.x = null; mouse.y = null; };
-            if (particleCanvas) {
-                particleCanvas.addEventListener('mousemove', updateMousePosition);
-                particleCanvas.addEventListener('touchmove', updateMousePosition, { passive: true });
-                particleCanvas.addEventListener('mouseleave', resetMousePosition);
-                particleCanvas.addEventListener('touchend', resetMousePosition);
-                let resizeTimeout;
-                window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(initParticles, 250); });
-                document.addEventListener('visibilitychange', () => {
-                    if (!particleCanvas) return;
-                    if (document.hidden) { if (particleAnimationId) { cancelAnimationFrame(particleAnimationId); particleAnimationId = null; } }
-                    else { if (!particleAnimationId) { drawParticles(); } }
-                });
-            }
-            // --- End Particle Logic ---
-
-
-            // --- Event Listeners & Initialization Call ---
-            if (themeToggleButton) {
-                themeToggleButton.addEventListener('click', () => {
-                    const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
-                    setTheme(newTheme);
-                });
-            }
-            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', toggleMobileMenu); }
-            mobileNavLinks.forEach(link => { link.addEventListener('click', closeMobileMenu); }); // Close mobile menu on link click
-            window.addEventListener('scroll', handleScroll, { passive: true });
-
-            // --- Initialize Everything ---
-            setupToneJS();
-            addSoundFeedback();
-            setFooterYear();
-            updateThemeUI(); // Set initial theme UI state
-            setupScrollReveal();
-            setupNavHighlighting(); // Set initial nav state
-            setupTiltEffect();
-            setupBackToTop();
-            if (particleCanvas) initParticles(); // Start particle animation
-            setupTimelineInteractions();
-            setupProjectCards();
-
-        }); // End DOMContentLoaded
+            // Initialize nav highlighting
+            navLinks.forEach(link => {
+                link.classList.toggle('nav-active', link.getAttribute('data-section') === 'about');
+            });
+            mobileNavLinks.forEach(link => {
+                link.classList.toggle('nav-active', link.getAttribute('data-section') === 'about');
+            });
+        });
     </script>
-
 </body>
 </html>
