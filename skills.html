@@ -8,15 +8,82 @@
     <link rel="shortcut icon" href="assets/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
+    <!-- Add required libraries in head -->
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    
+    <!-- Add Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Add Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Add Leaflet plugins -->
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'jet-black': '#0B0C10',
+                        'ghost-white': '#F7F7F7',
+                        'signal-cyan': '#66FCF1',
+                        'tech-purple': '#6C5CE7',
+                        'emerald-green': '#2ECC71',
+                        'red-coral': '#FF6B6B',
+                        'sandstone': '#E0C097',
+                        'whatsapp-green': '#25D366',
+                        'primary-bg': '#F7F7F7',
+                        'primary-text': '#0B0C10',
+                        'secondary-bg': '#E0C097',
+                        'secondary-text': '#4A4A4A',
+                        'accent': '#6C5CE7',
+                        'accent-secondary': '#FF6B6B',
+                        'dark-primary-bg': '#0B0C10',
+                        'dark-primary-text': '#F7F7F7',
+                        'dark-secondary-bg': '#1F2833',
+                        'dark-secondary-text': '#C5C6C7',
+                        'dark-accent': '#66FCF1',
+                        'dark-accent-secondary': '#45A29E',
+                        'tertiary-light': '#F5B041',
+                        'tertiary-dark': '#F39C12',
+                        'glass-light': 'rgba(225, 229, 255, 0.1)',
+                        'glass-dark': 'rgba(17, 24, 39, 0.2)',
+                        'glass-darker': 'rgba(17, 24, 39, 0.3)',
+                    },
+                    fontFamily: {
+                        heading: ['Satoshi', 'Space Grotesk', 'Neue Montreal', 'sans-serif'],
+                        body: ['Inter', 'IBM Plex Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Source Code Pro', 'monospace'],
+                    }
+                }
+            }
+        };
+
+        // CSS Variables for dynamic colors
+        document.documentElement.style.setProperty('--accent', '#6C5CE7');
+        document.documentElement.style.setProperty('--accent-secondary', '#FF6B6B');
+        document.documentElement.style.setProperty('--accent-rgb', '108, 92, 231');
+        document.documentElement.style.setProperty('--accent-secondary-rgb', '255, 107, 107');
+
+        // Dark mode variables
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.style.setProperty('--accent', '#66FCF1');
+            document.documentElement.style.setProperty('--accent-secondary', '#45A29E');
+            document.documentElement.style.setProperty('--accent-rgb', '102, 252, 241');
+            document.documentElement.style.setProperty('--accent-secondary-rgb', '69, 162, 158');
+        }
+    </script>
 
     <style>
         /* Base body styles (Consistent) */
@@ -92,7 +159,7 @@
             background: linear-gradient(45deg, transparent, theme('colors.dark-accent/5'), transparent);
         }
         @media (max-width: 768px) {
-            .timeline-item .w-5/12 {
+            .timeline-item .w-5\/12 {
                 width: 100%;
                 padding: 0 1rem;
                 text-align: center;
@@ -311,6 +378,257 @@
         html.dark *:focus-visible { outline-color: theme('colors.dark-accent'); }
         *:focus { outline: none; }
 
+        /* Timeline Item Styles */
+        .timeline-item {
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .timeline-item:hover {
+            transform: translateY(-2px);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, theme('colors.accent/20') 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+            z-index: -1;
+        }
+        .timeline-item:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        html.dark .timeline-item::before {
+            background: radial-gradient(circle, theme('colors.dark-accent/20') 0%, transparent 70%);
+        }
+        .skill-evolution-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .skill-evolution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, theme('colors.accent/5'), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .skill-evolution-card:hover::before {
+            transform: translateX(100%);
+        }
+        html.dark .skill-evolution-card::before {
+            background: linear-gradient(45deg, transparent, theme('colors.dark-accent/5'), transparent);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item .w-5\/12 {
+                width: 100%;
+                padding: 0 1rem;
+                text-align: center;
+            }
+            .timeline-item .flex {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .timeline-item .w-2 {
+                margin: 1rem 0;
+            }
+        }
+
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+
+        /* Add Chart.js for visitor trends */
+        .trend-chart-container {
+            position: relative;
+            height: 200px;
+            margin-top: 1rem;
+        }
+
+        /* Heatmap styles */
+        .heatmap-layer {
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .heatmap-layer:hover {
+            opacity: 0.9;
+        }
+
+        /* New visitor metrics styles */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .metric-card {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-secondary-rgb), 0.1));
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Tool category badges */
+        .tool-category {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+        .tool-icon-item:hover .tool-category {
+            transform: scale(1);
+        }
+
+        /* Skill connection lines */
+        .skill-connection {
+            position: absolute;
+            pointer-events: none;
+            stroke: var(--accent);
+            stroke-width: 1;
+            stroke-dasharray: 4;
+            animation: dash 20s linear infinite;
+        }
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 1000;
+            }
+        }
+
+        /* Interactive particles */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particle-float 3s ease-out infinite;
+        }
+        @keyframes particle-float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-50px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* 3D card effect */
+        .tool-icon-item {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .tool-icon-item:hover img {
+            transform: translateZ(20px) rotateX(10deg) rotateY(10deg);
+        }
+        .tool-icon-item img {
+            transition: transform 0.3s ease;
+        }
+
+        /* Skill level indicators */
+        .skill-level {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) var(--level), transparent var(--level));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .tool-icon-item:hover .skill-level {
+            opacity: 1;
+        }
+
+        /* Technical Skills Section */
+        #technical-skills {
+            @apply py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg;
+        }
+
+        .skill-category-card {
+            @apply bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg transition-all duration-300;
+        }
+
+        .skill-category-card:hover {
+            @apply transform -translate-y-2 scale-[1.02] shadow-xl dark:shadow-dark-accent/10;
+        }
+
+        .skill-category-icon {
+            @apply w-10 h-10 mr-4 text-accent dark:text-dark-accent transition-transform duration-300;
+        }
+
+        .skill-category-card:hover .skill-category-icon {
+            @apply transform scale-110 -rotate-6;
+        }
+
+        .skill-item {
+            @apply flex items-center p-2 rounded-md transition-all duration-200 relative overflow-hidden;
+        }
+
+        .skill-item:hover {
+            @apply bg-accent/10 dark:bg-dark-accent/10 transform scale-[1.03];
+        }
+
+        .skill-item::after {
+            content: '';
+            @apply absolute bottom-0 left-0 w-0 h-0.5 bg-accent dark:bg-dark-accent transition-all duration-300;
+        }
+
+        .skill-item:hover::after {
+            @apply w-full;
+        }
+
+        /* Glass effect */
+        .bg-glass-light {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark .bg-glass-dark {
+            background: rgba(17, 24, 39, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Reveal animation */
+        .reveal-hidden {
+            @apply opacity-0 transform translate-y-8 transition-all duration-700;
+        }
+
+        .reveal-visible {
+            @apply opacity-100 transform translate-y-0;
+        }
+
+        /* Grid layout */
+        @screen md {
+            .skill-category-grid {
+                @apply grid-cols-2 gap-10;
+            }
+        }
+
+        @screen lg {
+            .skill-category-grid {
+                @apply grid-cols-3;
+            }
+        }
     </style>
     <script>
       tailwind.config = {
@@ -354,7 +672,22 @@
             if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', applyBgNoise); } else { applyBgNoise(); }
         })();
     </script>
+    <!-- Add required libraries before the closing head tag -->
+    </style>
+    <!-- Add Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Add Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Add Leaflet plugins -->
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 </head>
+
 <body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
 
     <canvas id="particle-canvas"></canvas>
@@ -430,42 +763,34 @@
                     The Technical Arsenal
                 </h2>
                 <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <div class="skill-category-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0" style="transition-delay: 0ms;">
+                    <!-- Code & Data Wrangling -->
+                    <div class="skill-category-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0">
                         <div class="flex items-center mb-5">
-                            <i data-lucide="database" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                            <i data-lucide="database" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent"></i>
                             <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Code & Data Wrangling</h3>
                         </div>
                         <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-6 font-body leading-relaxed">
-                            The foundation of any data work. This is where I speak the languages of computers and convince data to reveal its secrets (sometimes it requires a bit of persuasion, aka 'debugging').
+                            The foundation of any data work. This is where I speak the languages of computers and convince data to reveal its secrets.
                         </p>
                         <ul class="space-y-3 text-sm text-primary-text dark:text-dark-primary-text font-body">
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="python" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                            <li class="skill-item flex items-center p-2" tabindex="0">
+                                <i data-lucide="python" class="w-5 h-5 mr-3 text-emerald-green"></i>
                                 <span>Python (Pandas, NumPy, Scikit-learn)</span>
-                                <span class="skill-tooltip" role="tooltip">Core language for analysis, ML, and automation.</span>
                             </li>
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="database-zap" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                            <li class="skill-item flex items-center p-2" tabindex="0">
+                                <i data-lucide="database-zap" class="w-5 h-5 mr-3 text-emerald-green"></i>
                                 <span>SQL & Database Management</span>
-                                <span class="skill-tooltip" role="tooltip">Querying, structuring, and managing relational data.</span>
                             </li>
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="wrench" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Data Wrangling & Cleaning</span>
-                                <span class="skill-tooltip" role="tooltip">The art of taming messy data into usable formats.</span>
-                            </li>
-                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="git-branch" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                            <li class="skill-item flex items-center p-2" tabindex="0">
+                                <i data-lucide="git-branch" class="w-5 h-5 mr-3 text-emerald-green"></i>
                                 <span>Git & Version Control</span>
-                                <span class="skill-tooltip" role="tooltip">Tracking changes and collaborating without chaos.</span>
-                            </li>
-                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="plug-zap" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>API Integration</span>
-                                <span class="skill-tooltip" role="tooltip">Connecting systems and fetching data programmatically.</span>
                             </li>
                         </ul>
                     </div>
+
+                    <!-- Machine Learning & AI -->
+                    <div class="skill-category-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0">
+                        <div class="flex items-center mb-5">
                     <div class="skill-category-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0" style="transition-delay: 100ms;">
                         <div class="flex items-center mb-5">
                             <i data-lucide="brain-circuit" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
@@ -730,6 +1055,28 @@
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VSCode" class="w-12 h-12">
                         <span class="tool-tooltip" role="tooltip">VSCode</span>
                     </div>
+                    <!-- Add more tools -->
+                    <!-- PyTorch -->
+                    <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" alt="PyTorch" class="w-12 h-12">
+                        <span class="tool-tooltip" role="tooltip">PyTorch</span>
+                        <span class="tool-category">ML</span>
+                        <div class="skill-level" style="--level: 75%"></div>
+                    </div>
+                    <!-- Apache Spark -->
+                    <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apache/apache-original.svg" alt="Apache Spark" class="w-12 h-12">
+                        <span class="tool-tooltip" role="tooltip">Apache Spark</span>
+                        <span class="tool-category">Big Data</span>
+                        <div class="skill-level" style="--level: 65%"></div>
+                    </div>
+                    <!-- Hadoop -->
+                    <div class="tool-icon-item interactive-element relative" tabindex="0">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/hadoop/hadoop-original.svg" alt="Hadoop" class="w-12 h-12">
+                        <span class="tool-tooltip" role="tooltip">Hadoop</span>
+                        <span class="tool-category">Big Data</span>
+                        <div class="skill-level" style="--level: 60%"></div>
+                    </div>
                 </div>
 
                 <!-- Enhanced Analytics Dashboard -->
@@ -854,68 +1201,64 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- New Visitor Trends Section -->
+                    <div class="mt-8">
+                        <h4 class="text-lg font-semibold mb-4 text-primary-text dark:text-dark-primary-text">Visitor Trends</h4>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Traffic Chart -->
+                            <div class="bg-white dark:bg-dark-secondary-bg rounded-lg p-6">
+                                <h5 class="text-md font-semibold mb-4">Traffic Overview</h5>
+                                <canvas id="trafficChart" class="trend-chart-container"></canvas>
+                            </div>
+                            <!-- Engagement Metrics -->
+                            <div class="bg-white dark:bg-dark-secondary-bg rounded-lg p-6">
+                                <h5 class="text-md font-semibold mb-4">Engagement</h5>
+                                <div class="metric-grid">
+                                    <div class="metric-card">
+                                        <span class="text-sm text-secondary-text">Avg. Time</span>
+                                        <p class="text-xl font-bold text-accent" id="avgTimeOnPage">2m 30s</p>
+                                    </div>
+                                    <div class="metric-card">
+                                        <span class="text-sm text-secondary-text">Bounce Rate</span>
+                                        <p class="text-xl font-bold text-accent" id="bounceRate">35%</p>
+                                    </div>
+                                    <div class="metric-card">
+                                        <span class="text-sm text-secondary-text">Return Rate</span>
+                                        <p class="text-xl font-bold text-accent" id="returnRate">45%</p>
+                                    </div>
+                                    <div class="metric-card">
+                                        <span class="text-sm text-secondary-text">Interactions</span>
+                                        <p class="text-xl font-bold text-accent" id="interactions">124</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Map Section -->
+                    <div class="mt-8">
+                        <h4 class="text-lg font-semibold mb-4">Global Reach</h4>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Map with Heatmap -->
+                            <div class="bg-white dark:bg-dark-secondary-bg rounded-lg p-6">
+                                <div id="visitorMap" class="h-64 rounded-lg"></div>
+                                <div class="flex justify-between mt-4">
+                                    <button class="text-sm text-accent" onclick="toggleHeatmap()">Toggle Heatmap</button>
+                                    <button class="text-sm text-accent" onclick="toggleClustering()">Toggle Clustering</button>
+                                </div>
+                            </div>
+                            <!-- Geographic Stats -->
+                            <div class="bg-white dark:bg-dark-secondary-bg rounded-lg p-6">
+                                <h5 class="text-md font-semibold mb-4">Top Locations</h5>
+                                <div class="space-y-4" id="locationStats">
+                                    <!-- Location stats will be populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
-
-            <!-- Add Leaflet CSS and JS -->
-            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-            <script>
-                // Analytics and Stats
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Performance Metrics
-                    const performanceData = {
-                        loadTime: window.performance.timing.loadEventEnd - window.performance.timing.navigationStart,
-                        memory: window.performance.memory ? Math.round(window.performance.memory.usedJSHeapSize / 1048576) : 'N/A'
-                    };
-                    document.getElementById('pageLoadTime').textContent = `${performanceData.loadTime}ms`;
-                    document.getElementById('memoryUsage').textContent = typeof performanceData.memory === 'number' ? `${performanceData.memory}MB` : 'N/A';
-
-                    // Visitor Information
-                    const visitorInfo = {
-                        browser: navigator.userAgent.match(/(chrome|safari|firefox|msie|trident)/i)?.[0] || 'Unknown',
-                        device: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
-                        screen: `${window.screen.width}x${window.screen.height}`
-                    };
-                    document.getElementById('visitorBrowser').textContent = visitorInfo.browser;
-                    document.getElementById('visitorDevice').textContent = visitorInfo.device;
-                    document.getElementById('visitorScreen').textContent = visitorInfo.screen;
-
-                    // Initialize Leaflet Map
-                    const map = L.map('visitorMap').setView([0, 0], 2);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap contributors'
-                    }).addTo(map);
-
-                    // Simulate visitor locations
-                    const visitorLocations = [
-                        { lat: -1.2921, lng: 36.8219, title: 'Nairobi' },
-                        { lat: 51.5074, lng: -0.1278, title: 'London' },
-                        { lat: 40.7128, lng: -74.0060, title: 'New York' }
-                    ];
-
-                    visitorLocations.forEach(loc => {
-                        L.marker([loc.lat, loc.lng])
-                            .bindPopup(loc.title)
-                            .addTo(map);
-                    });
-
-                    // Simulate real-time visitors
-                    let onlineCount = 1;
-                    let peakCount = 1;
-                    setInterval(() => {
-                        onlineCount = Math.floor(Math.random() * 3) + 1;
-                        peakCount = Math.max(peakCount, onlineCount);
-                        document.getElementById('onlineVisitors').textContent = onlineCount;
-                        document.getElementById('peakVisitors').textContent = peakCount;
-                    }, 5000);
-
-                    // Update GitHub stats
-                    fetchGitHubStats();
-                    setInterval(fetchGitHubStats, 300000);
-                });
-            </script>
 
             <section id="soft-skills" class="py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
                 <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
@@ -1103,198 +1446,116 @@
             <i data-lucide="arrow-up" class="h-5 w-5" aria-hidden="true"></i>
         </button>
 
-    </div> <script defer>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Initialize Lucide Icons ---
-            try {
-                if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-                else { console.warn('Lucide icons library not loaded yet.'); }
-            } catch (e) { console.error('Error creating Lucide icons:', e); }
+    </div>
 
-            // --- Constants and State ---
-            const scrollRevealThreshold = 0.1;
-            const scrollRevealRootMargin = "0px 0px -50px 0px";
-            let toneJsStarted = false;
-            let synth, clickSynth;
-            let particleAnimationId = null;
-            let mouse = { x: null, y: null };
-            let currentActiveSectionId = 'skills'; // Default active section for this page
-
-            // --- DOM Element References ---
-            const htmlEl = document.documentElement;
-            const bodyEl = document.body;
-            const mainHeader = document.getElementById('main-header');
-            const themeToggleButton = document.getElementById('theme-toggle');
-            const themeIconSun = document.getElementById('theme-icon-sun');
-            const themeIconMoon = document.getElementById('theme-icon-moon');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIconOpen = document.getElementById('menu-icon-open');
-            const menuIconClose = document.getElementById('menu-icon-close');
-            const currentYearEl = document.getElementById('currentYear');
-            const scrollProgressBar = document.getElementById('scrollProgressBar');
-            const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
-            const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link');
-            const mainContentContainer = document.getElementById('main-content-container');
-            const particleCanvas = document.getElementById('particle-canvas');
-            const backToTopButton = document.getElementById('back-to-top');
-            const interactiveElements = document.querySelectorAll('a[href], button, [role="button"], [role="link"], .interactive-element');
-            const proficiencyBars = document.querySelectorAll('.proficiency-bar');
-
-            // --- Initial Setup Functions ---
-            function setupToneJS() {
-                const startTone = () => {
-                    if (toneJsStarted || typeof Tone === 'undefined') return;
-                    try {
-                        Tone.start();
-                        synth = new Tone.Synth({ oscillator: { type: 'sine' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.1, release: 0.1 }, volume: -25 }).toDestination();
-                        clickSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.001, decay: 0.1, sustain: 0.05, release: 0.1 }, volume: -20 }).toDestination();
-                        toneJsStarted = true; console.log("Tone.js AudioContext started.");
-                        ['click', 'keydown', 'touchstart'].forEach(evt => bodyEl.removeEventListener(evt, startTone));
-                    } catch (e) { console.error("Tone.js initialization failed:", e); toneJsStarted = false; }
-                };
-                ['click', 'keydown', 'touchstart'].forEach(evt => bodyEl.addEventListener(evt, startTone, { once: true, passive: true }));
-            }
-            function addSoundFeedback() {
-                 interactiveElements.forEach(el => {
-                    el.addEventListener('mouseenter', () => { if (toneJsStarted && synth) { try { synth.triggerAttackRelease('C5', '16n', Tone.now()); } catch(e) {} } });
-                    el.addEventListener('click', () => { if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease('E4', '16n', Tone.now()); } catch(e) {} } });
-                });
-            }
-            function setFooterYear() {
-                if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+    <!-- Initialize everything -->
+    <script>
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
             }
 
-            // --- Core Functionality ---
-            function updateThemeUI() {
-                if (!htmlEl || !bodyEl) return; const isDark = htmlEl.classList.contains('dark');
-                if (themeIconSun && themeIconMoon) {
-                    themeIconSun.classList.toggle('hidden', !isDark); themeIconMoon.classList.toggle('hidden', isDark);
-                    try { lucide.createIcons(); } catch(e) {}
-                }
-                const noiseLight = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.10' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-                const noiseDark = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23C5C6C7' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")";
-                bodyEl.style.backgroundImage = isDark ? noiseDark : noiseLight;
-                if (particleCanvas) initParticles();
-            }
-            function setTheme(theme) {
-                if (!htmlEl) return; htmlEl.classList.toggle('dark', theme === 'dark'); localStorage.setItem('theme', theme); updateThemeUI();
-                if (toneJsStarted && clickSynth) { try { clickSynth.triggerAttackRelease(theme === 'dark' ? 'C3' : 'G3', '8n', Tone.now()); } catch(e) {} }
-            }
-            function toggleMobileMenu() {
-                 if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return; const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-                 mobileMenuButton.setAttribute('aria-expanded', !isExpanded); mobileMenu.classList.toggle('open');
-                 menuIconOpen.classList.toggle('hidden'); menuIconClose.classList.toggle('hidden');
-            }
-            function closeMobileMenu() {
-                if (!mobileMenuButton || !mobileMenu || !menuIconOpen || !menuIconClose) return;
-                if (mobileMenuButton.getAttribute('aria-expanded') === 'true') {
-                    mobileMenuButton.setAttribute('aria-expanded', 'false'); mobileMenu.classList.remove('open');
-                    menuIconOpen.classList.remove('hidden'); menuIconClose.classList.add('hidden');
-                }
-            }
-            function handleScroll() {
-                if (!htmlEl || !scrollProgressBar || !mainHeader) return; const scrollableHeight = htmlEl.scrollHeight - window.innerHeight; const scrolled = window.scrollY;
-                const progress = scrollableHeight > 0 ? Math.min(1, scrolled / scrollableHeight) : 0; scrollProgressBar.style.transform = `scaleX(${progress})`;
-                mainHeader.classList.toggle('scrolled', scrolled > 50); if (backToTopButton) { backToTopButton.classList.toggle('visible', scrolled > 300); }
-            }
-            function setupTiltEffect() {
-                 if (!mainContentContainer) return; const handleOrientation = (event) => { if (event.beta === null || event.gamma === null) return; const beta = Math.max(-20, Math.min(20, event.beta)); const gamma = Math.max(-20, Math.min(20, event.gamma)); const maxTilt = 1.5; const tiltY = (beta / 20 * maxTilt).toFixed(2); const tiltX = (gamma / 20 * -maxTilt).toFixed(2); requestAnimationFrame(() => { mainContentContainer.style.transform = `perspective(1000px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`; }); };
-                 if (window.DeviceOrientationEvent) { window.addEventListener('deviceorientation', handleOrientation, true); } else { console.log("DeviceOrientation not supported."); }
-            }
-            function setupBackToTop() {
-                if (backToTopButton) { backToTopButton.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
-            }
-
-            // --- Skills Page Specific Functionality ---
-            function setupScrollRevealAndProficiency() {
-                const revealObserverOptions = { threshold: scrollRevealThreshold, rootMargin: scrollRevealRootMargin };
-                const revealCallback = (entries, observer) => {
-                    entries.forEach((entry, index) => {
+            // Initialize scroll reveal
+            const scrollObserver = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            const delay = entry.target.dataset.revealDelay ? parseInt(entry.target.dataset.revealDelay) : (index * 50);
-                            entry.target.style.transitionDelay = `${delay}ms`;
                             entry.target.classList.add('reveal-visible');
-                            if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
-                                entry.target.classList.add('slide-in');
-                            }
-                            const barsInside = entry.target.querySelectorAll('.proficiency-bar');
-                            if (barsInside.length > 0) {
-                                barsInside.forEach(bar => {
-                                    const level = bar.getAttribute('data-level');
-                                    if (level) { bar.style.width = `${level}%`; }
-                                });
-                            } else if (entry.target.classList.contains('proficiency-item')) {
-                                const bar = entry.target.querySelector('.proficiency-bar');
-                                const level = bar?.getAttribute('data-level');
-                                if (bar && level) { bar.style.width = `${level}%`; }
-                             }
-                            observer.unobserve(entry.target);
+                            
+                            // Initialize proficiency bars when visible
+                            const bars = entry.target.querySelectorAll('.proficiency-bar');
+                            bars.forEach(bar => {
+                                const level = bar.getAttribute('data-level');
+                                if (level) {
+                                    setTimeout(() => {
+                                        bar.style.width = `${level}%`;
+                                    }, 200);
+                                }
+                            });
                         }
                     });
+                },
+                { threshold: 0.1 }
+            );
+
+            // Observe all reveal elements
+            document.querySelectorAll('.reveal-hidden').forEach(el => {
+                scrollObserver.observe(el);
+            });
+
+            // Initialize skill category cards
+            document.querySelectorAll('.skill-category-card').forEach(card => {
+                // Add hover effect
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'none';
+                });
+            });
+
+            // Initialize skill items
+            document.querySelectorAll('.skill-item').forEach(item => {
+                // Add hover effect
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'scale(1.03)';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'none';
+                });
+            });
+
+            // Initialize interactive particles
+            document.addEventListener('mousemove', (e) => {
+                if (Math.random() > 0.9) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = `${e.clientX}px`;
+                    particle.style.top = `${e.clientY}px`;
+                    particle.style.width = `${Math.random() * 10 + 5}px`;
+                    particle.style.height = particle.style.width;
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 3000);
+                }
+            });
+
+            // Initialize theme colors
+            function updateThemeColors() {
+                const isDark = document.documentElement.classList.contains('dark');
+                const colors = isDark ? {
+                    accent: '#66FCF1',
+                    accentSecondary: '#45A29E',
+                    accentRgb: '102, 252, 241',
+                    accentSecondaryRgb: '69, 162, 158'
+                } : {
+                    accent: '#6C5CE7',
+                    accentSecondary: '#FF6B6B',
+                    accentRgb: '108, 92, 231',
+                    accentSecondaryRgb: '255, 107, 107'
                 };
-                const revealObserver = new IntersectionObserver(revealCallback, revealObserverOptions);
-                document.querySelectorAll('.reveal-hidden, .reveal-slide-left, .reveal-slide-right, .proficiency-item').forEach(el => revealObserver.observe(el));
+
+                document.documentElement.style.setProperty('--accent', colors.accent);
+                document.documentElement.style.setProperty('--accent-secondary', colors.accentSecondary);
+                document.documentElement.style.setProperty('--accent-rgb', colors.accentRgb);
+                document.documentElement.style.setProperty('--accent-secondary-rgb', colors.accentSecondaryRgb);
             }
 
-            function setupNavHighlighting() {
-                // Set 'Skills' as active on this page load
-                navLinks.forEach(link => {
-                    link.classList.toggle('nav-active', link.getAttribute('data-section') === 'skills');
+            // Update colors initially and on theme change
+            updateThemeColors();
+            const themeObserver = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'class') {
+                        updateThemeColors();
+                    }
                 });
-                mobileNavLinks.forEach(link => {
-                    link.classList.toggle('nav-active', link.getAttribute('data-section') === 'skills');
-                });
-            }
-
-            // --- Particle Background Logic ---
-            let particles = [];
-            function initParticles() {
-                if (!particleCanvas) return; const ctx = particleCanvas.getContext('2d'); if (!ctx) return;
-                if (particleAnimationId) cancelAnimationFrame(particleAnimationId); resizeCanvas(); particles.forEach(p => p.baseColor = null); createParticles(); if (!document.hidden) { drawParticles(); }
-            }
-            function resizeCanvas() {
-                 if (!particleCanvas) return; particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight;
-            }
-            function createParticles() {
-                if (!particleCanvas) return; particles = []; const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 18000);
-                for (let i = 0; i < particleCount; i++) { particles.push({ x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, radius: Math.random() * 1.8 + 0.8, baseRadius: Math.random() * 1.8 + 0.8, baseColor: null, drawColor: null, }); }
-            }
-            function drawParticles() {
-                 if (!particleCanvas) return; const ctx = particleCanvas.getContext('2d'); if (!ctx) return; ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height); const isDark = htmlEl.classList.contains('dark'); const twConfig = tailwind.config.theme.extend.colors; const lightColors = [`${twConfig.accent}80`, `${twConfig['accent-secondary']}80`, `${twConfig['tertiary-light']}60`]; const darkColors = [`${twConfig['dark-accent']}80`, `${twConfig['dark-accent-secondary']}80`, `${twConfig['tertiary-dark']}60`]; const themeColors = isDark ? darkColors : lightColors; const lineColor = isDark ? 'rgba(197, 198, 199, 0.05)' : 'rgba(74, 74, 74, 0.05)'; const particleInteractionRadius = 120; const particleLineThreshold = 110;
-                 particles.forEach((p, i) => { if (!p.baseColor) p.baseColor = themeColors[Math.floor(Math.random() * themeColors.length)]; p.drawColor = p.baseColor; p.radius = p.baseRadius; if (mouse.x !== null && mouse.y !== null) { const dx = mouse.x - p.x; const dy = mouse.y - p.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < particleInteractionRadius) { const proximityFactor = 1 - (distance / particleInteractionRadius); const baseHex = p.baseColor.substring(0, 7); const currentAlphaHex = p.baseColor.substring(7, 9) || '80'; const currentAlphaDec = parseInt(currentAlphaHex, 16); const targetAlphaDec = Math.min(255, Math.floor(currentAlphaDec + proximityFactor * 100)); p.drawColor = `${baseHex}${targetAlphaDec.toString(16).padStart(2, '0')}`; p.radius = p.baseRadius + proximityFactor * 1.5; const force = proximityFactor; const pushStrength = 0.4; p.x -= (dx / distance) * force * pushStrength; p.y -= (dy / distance) * force * pushStrength; } } ctx.fillStyle = p.drawColor; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); p.x += p.vx; p.y += p.vy; if (p.x < -p.radius) p.x = particleCanvas.width + p.radius; if (p.x > particleCanvas.width + p.radius) p.x = -p.radius; if (p.y < -p.radius) p.y = particleCanvas.height + p.radius; if (p.y > particleCanvas.height + p.radius) p.y = -p.radius; for (let j = i + 1; j < particles.length; j++) { const p2 = particles[j]; const dx = p.x - p2.x; const dy = p.y - p2.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < particleLineThreshold) { ctx.strokeStyle = lineColor; ctx.lineWidth = 0.5 * (1 - distance / particleLineThreshold); ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke(); } } });
-                 particleAnimationId = requestAnimationFrame(drawParticles);
-            }
-            const updateMousePosition = (event) => {
-                if (!particleCanvas) return; const rect = particleCanvas.getBoundingClientRect(); const clientX = event.touches ? event.touches[0].clientX : event.clientX; const clientY = event.touches ? event.touches[0].clientY : event.clientY; mouse.x = clientX - rect.left; mouse.y = clientY - rect.top;
-            };
-            const resetMousePosition = () => { mouse.x = null; mouse.y = null; };
-            if (particleCanvas) {
-                particleCanvas.addEventListener('mousemove', updateMousePosition); particleCanvas.addEventListener('touchmove', updateMousePosition, { passive: true }); particleCanvas.addEventListener('mouseleave', resetMousePosition); particleCanvas.addEventListener('touchend', resetMousePosition);
-                let resizeTimeout; window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(initParticles, 250); });
-                document.addEventListener('visibilitychange', () => { if (!particleCanvas) return; if (document.hidden) { if (particleAnimationId) { cancelAnimationFrame(particleAnimationId); particleAnimationId = null; } } else { if (!particleAnimationId) { drawParticles(); } } });
-            }
-            // --- End Particle Logic ---
-
-            // --- Event Listeners & Initialization Call ---
-            if (themeToggleButton) { themeToggleButton.addEventListener('click', () => { const newTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark'; setTheme(newTheme); }); }
-            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', toggleMobileMenu); }
-            mobileNavLinks.forEach(link => { link.addEventListener('click', closeMobileMenu); });
-            window.addEventListener('scroll', handleScroll, { passive: true });
-
-            // --- Initialize Everything ---
-            setupToneJS();
-            addSoundFeedback();
-            setFooterYear();
-            updateThemeUI();
-            setupScrollRevealAndProficiency(); // Use the combined function
-            setupNavHighlighting(); // Set initial nav state for this page
-            setupTiltEffect();
-            setupBackToTop();
-            if (particleCanvas) initParticles();
-
-        }); // End DOMContentLoaded
+            });
+            themeObserver.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        });
     </script>
-
 </body>
 </html>
