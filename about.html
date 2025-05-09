@@ -445,6 +445,214 @@
             }
         }
 
+        /* --- Project Cards --- */
+        .project-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(108, 92, 231, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        html.dark .project-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent), var(--accent-secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .metric-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .tech-badge {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(108, 92, 231, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .tech-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-badge:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Tooltip styles */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+        }
+
+        [data-tooltip]::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-5px);
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            color: white;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        [data-tooltip]::after {
+            content: '';
+            position: absolute;
+            bottom: calc(100% - 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--accent) transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        [data-tooltip]:hover::before,
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Project card hover animations */
+        .project-card:hover .project-metrics {
+            transform: scale(1.02);
+        }
+
+        .project-card:hover .tech-badge {
+            transform: translateY(-2px);
+        }
+
+        .project-card:hover .tech-badge:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+
+        .project-card:hover .tech-badge:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+
+        .project-card:hover .tech-badge:nth-child(4) {
+            transition-delay: 0.3s;
+        }
+
+        /* Metric card number animation */
+        .metric-card .text-2xl {
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover .text-2xl {
+            transform: scale(1.1);
+            color: var(--accent);
+        }
+
+        /* Project link hover effect */
+        .project-card a {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .project-card a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .project-card a:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Dark mode adjustments */
+        html.dark .metric-card {
+            background: rgba(102, 252, 241, 0.05);
+        }
+
+        html.dark .tech-badge {
+            background: rgba(102, 252, 241, 0.1);
+        }
+
+        html.dark [data-tooltip]::before {
+            background: var(--dark-accent);
+        }
+
+        html.dark [data-tooltip]::after {
+            border-color: var(--dark-accent) transparent transparent transparent;
+        }
+
     </style>
     <script>
       tailwind.config = {
@@ -863,6 +1071,135 @@
                 </div>
             </section>
 
+            <section id="about-projects" class="py-16 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    Featured Projects & Impact
+                </h2>
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- InvestWise Predictor -->
+                        <div class="project-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 reveal-hidden" style="transition-delay: 100ms;">
+                            <div class="flex items-center mb-4">
+                                <i data-lucide="trending-up" class="w-8 h-8 mr-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                                <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">InvestWise Predictor</h3>
+                            </div>
+                            <p class="text-secondary-text dark:text-dark-secondary-text mb-4">
+                                An intelligent investment prediction system leveraging neural networks to forecast market trends and provide personalized investment recommendations.
+                            </p>
+                            <div class="project-metrics grid grid-cols-2 gap-4 mb-4">
+                                <div class="metric-card bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-accent dark:text-dark-accent">85%</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">Prediction Accuracy</div>
+                                </div>
+                                <div class="metric-card bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-accent dark:text-dark-accent">30%</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">ROI Improvement</div>
+                                </div>
+                            </div>
+                            <div class="project-tech-stack flex flex-wrap gap-2 mb-4">
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">Python</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">TensorFlow</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">LSTM</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">Streamlit</span>
+                            </div>
+                            <a href="https://github.com/MadScie254/InvestSmartAI" target="_blank" class="inline-flex items-center text-accent dark:text-dark-accent hover:opacity-80 transition-opacity">
+                                View Project <i data-lucide="external-link" class="w-4 h-4 ml-1" aria-hidden="true"></i>
+                            </a>
+                        </div>
+
+                        <!-- Plant Disease Detection -->
+                        <div class="project-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 reveal-hidden" style="transition-delay: 200ms;">
+                            <div class="flex items-center mb-4">
+                                <i data-lucide="leaf" class="w-8 h-8 mr-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                                <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Capstone-Lazarus</h3>
+                            </div>
+                            <p class="text-secondary-text dark:text-dark-secondary-text mb-4">
+                                Advanced plant disease detection system using computer vision and deep learning to help farmers identify and treat plant diseases early.
+                            </p>
+                            <div class="project-metrics grid grid-cols-2 gap-4 mb-4">
+                                <div class="metric-card bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-accent dark:text-dark-accent">92%</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">Detection Accuracy</div>
+                                </div>
+                                <div class="metric-card bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-accent dark:text-dark-accent">15+</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">Disease Types</div>
+                                </div>
+                            </div>
+                            <div class="project-tech-stack flex flex-wrap gap-2 mb-4">
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">CNN</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">OpenCV</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">PyTorch</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">FastAPI</span>
+                            </div>
+                            <a href="https://github.com/MadScie254/Capstone-Lazarus" target="_blank" class="inline-flex items-center text-accent dark:text-dark-accent hover:opacity-80 transition-opacity">
+                                View Project <i data-lucide="external-link" class="w-4 h-4 ml-1" aria-hidden="true"></i>
+                            </a>
+                        </div>
+
+                        <!-- Ad Click Predictor -->
+                        <div class="project-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 reveal-hidden" style="transition-delay: 300ms;">
+                            <div class="flex items-center mb-4">
+                                <i data-lucide="mouse-pointer-click" class="w-8 h-8 mr-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                                <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Ad Click Predictor</h3>
+                            </div>
+                            <p class="text-secondary-text dark:text-dark-secondary-text mb-4">
+                                Machine learning model to predict user click behavior on digital advertisements, optimizing ad placement and targeting.
+                            </p>
+                            <div class="project-metrics grid grid-cols-2 gap-4 mb-4">
+                                <div class="metric-card bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-accent dark:text-dark-accent">78%</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">Click Prediction</div>
+                                </div>
+                                <div class="metric-card bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-accent dark:text-dark-accent">40%</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">CTR Improvement</div>
+                                </div>
+                            </div>
+                            <div class="project-tech-stack flex flex-wrap gap-2 mb-4">
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">XGBoost</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">Scikit-learn</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">Pandas</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">Flask</span>
+                            </div>
+                            <a href="https://github.com/MadScie254/ad-click-predictor" target="_blank" class="inline-flex items-center text-accent dark:text-dark-accent hover:opacity-80 transition-opacity">
+                                View Project <i data-lucide="external-link" class="w-4 h-4 ml-1" aria-hidden="true"></i>
+                            </a>
+                        </div>
+
+                        <!-- GDP Forecast -->
+                        <div class="project-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 reveal-hidden" style="transition-delay: 400ms;">
+                            <div class="flex items-center mb-4">
+                                <i data-lucide="line-chart" class="w-8 h-8 mr-3 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                                <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Kenya GDP Forecast</h3>
+                            </div>
+                            <p class="text-secondary-text dark:text-dark-secondary-text mb-4">
+                                Time series analysis and forecasting model for Kenya's GDP, incorporating multiple economic indicators and external factors.
+                            </p>
+                            <div class="project-metrics grid grid-cols-2 gap-4 mb-4">
+                                <div class="metric-card bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-accent dark:text-dark-accent">88%</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">Forecast Accuracy</div>
+                                </div>
+                                <div class="metric-card bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-accent dark:text-dark-accent">12</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">Months Ahead</div>
+                                </div>
+                            </div>
+                            <div class="project-tech-stack flex flex-wrap gap-2 mb-4">
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">ARIMA</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">Prophet</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">Statsmodels</span>
+                                <span class="tech-badge px-2 py-1 text-xs rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent">Plotly</span>
+                            </div>
+                            <a href="https://github.com/MadScie254/gdp_forcast_sample" target="_blank" class="inline-flex items-center text-accent dark:text-dark-accent hover:opacity-80 transition-opacity">
+                                View Project <i data-lucide="external-link" class="w-4 h-4 ml-1" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="about-interests" class="py-16 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
                 <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">When I'm Not Analyzing Data...</h2>
                 <div class="max-w-4xl mx-auto text-center">
@@ -1095,6 +1432,45 @@
                 });
             }
 
+            function setupProjectCards() {
+                const projectCards = document.querySelectorAll('.project-card');
+                
+                projectCards.forEach(card => {
+                    // Add tooltips to metrics
+                    const metrics = card.querySelectorAll('.metric-card');
+                    metrics.forEach(metric => {
+                        const value = metric.querySelector('.text-2xl').textContent;
+                        const label = metric.querySelector('.text-xs').textContent;
+                        metric.setAttribute('data-tooltip', `${value} ${label}`);
+                    });
+
+                    // Add tooltips to tech badges
+                    const techBadges = card.querySelectorAll('.tech-badge');
+                    techBadges.forEach(badge => {
+                        const tech = badge.textContent;
+                        badge.setAttribute('data-tooltip', `Built with ${tech}`);
+                    });
+
+                    // Add click sound effect
+                    card.addEventListener('click', () => {
+                        if (toneJsStarted && clickSynth) {
+                            try {
+                                clickSynth.triggerAttackRelease('C4', '16n', Tone.now());
+                            } catch(e) {}
+                        }
+                    });
+
+                    // Add hover sound effect
+                    card.addEventListener('mouseenter', () => {
+                        if (toneJsStarted && synth) {
+                            try {
+                                synth.triggerAttackRelease('E5', '16n', Tone.now());
+                            } catch(e) {}
+                        }
+                    });
+                });
+            }
+
             function animateValue(element, start, end, duration, suffix) {
                 let startTimestamp = null;
                 const step = (timestamp) => {
@@ -1269,6 +1645,7 @@
             setupBackToTop();
             if (particleCanvas) initParticles(); // Start particle animation
             setupTimelineInteractions();
+            setupProjectCards();
 
         }); // End DOMContentLoaded
     </script>
