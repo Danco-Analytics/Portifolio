@@ -320,6 +320,131 @@
              outline: none;
         }
 
+        /* --- Expertise Cards --- */
+        .expertise-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .expertise-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(108, 92, 231, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .expertise-card:hover::before {
+            transform: translateX(100%);
+        }
+        .expertise-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        html.dark .expertise-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .expertise-icon-wrapper {
+            transition: transform 0.3s ease;
+        }
+        .expertise-card:hover .expertise-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+        .expertise-content {
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        .expertise-card:hover .expertise-content {
+            opacity: 1;
+        }
+        .expertise-card ul li {
+            transition: transform 0.3s ease;
+        }
+        .expertise-card:hover ul li {
+            transform: translateX(5px);
+        }
+        .expertise-card ul li i {
+            transition: transform 0.3s ease;
+        }
+        .expertise-card:hover ul li i {
+            transform: scale(1.2);
+        }
+
+        /* Methodology Section Styles */
+        .methodology-steps {
+            position: relative;
+        }
+
+        .methodology-steps::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                var(--accent) 0%,
+                var(--accent) 50%,
+                transparent 50%,
+                transparent 100%);
+            background-size: 100% 200%;
+            animation: gradientFlow 3s linear infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 200%; }
+        }
+
+        .methodology-step {
+            position: relative;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .methodology-step:hover {
+            transform: translateX(10px);
+        }
+
+        .methodology-number {
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                       0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .methodology-step:hover .methodology-number {
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                       0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .methodology-step ul li {
+            transition: transform 0.2s ease;
+        }
+
+        .methodology-step ul li:hover {
+            transform: translateX(5px);
+        }
+
+        .methodology-step ul li i {
+            transition: transform 0.2s ease;
+        }
+
+        .methodology-step ul li:hover i {
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .methodology-steps::before {
+                left: 20px;
+            }
+        }
+
     </style>
     <script>
       tailwind.config = {
@@ -623,6 +748,119 @@
                 <p class="text-center mt-8 text-sm text-secondary-text dark:text-dark-secondary-text font-body reveal-hidden">
                     (Hover over a skill to learn more)
                  </p>
+            </section>
+
+            <section id="about-methodology" class="py-16 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
+                    My Data Science Methodology
+                </h2>
+                <div class="max-w-4xl mx-auto">
+                    <div class="methodology-steps space-y-12">
+                        <div class="methodology-step reveal-hidden" style="transition-delay: 100ms;">
+                            <div class="flex items-start">
+                                <div class="methodology-number bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl mr-4 flex-shrink-0">1</div>
+                                <div>
+                                    <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">Problem Understanding & Context</h3>
+                                    <p class="text-secondary-text dark:text-dark-secondary-text leading-relaxed">
+                                        Every successful data science project begins with a deep understanding of the business context and problem space. I invest significant time in:
+                                    </p>
+                                    <ul class="mt-3 space-y-2 text-secondary-text dark:text-dark-secondary-text">
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Conducting stakeholder interviews to understand business objectives and constraints</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Analyzing existing processes and identifying pain points</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Defining clear, measurable success metrics aligned with business goals</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="methodology-step reveal-hidden" style="transition-delay: 200ms;">
+                            <div class="flex items-start">
+                                <div class="methodology-number bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl mr-4 flex-shrink-0">2</div>
+                                <div>
+                                    <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">Data Exploration & Preparation</h3>
+                                    <p class="text-secondary-text dark:text-dark-secondary-text leading-relaxed">
+                                        A thorough understanding of the data is crucial for building effective models. My approach includes:
+                                    </p>
+                                    <ul class="mt-3 space-y-2 text-secondary-text dark:text-dark-secondary-text">
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Comprehensive data quality assessment and cleaning</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Exploratory data analysis to identify patterns and relationships</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Feature engineering and selection based on domain knowledge</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="methodology-step reveal-hidden" style="transition-delay: 300ms;">
+                            <div class="flex items-start">
+                                <div class="methodology-number bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl mr-4 flex-shrink-0">3</div>
+                                <div>
+                                    <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">Model Development & Validation</h3>
+                                    <p class="text-secondary-text dark:text-dark-secondary-text leading-relaxed">
+                                        Building robust models requires a systematic approach to development and validation:
+                                    </p>
+                                    <ul class="mt-3 space-y-2 text-secondary-text dark:text-dark-secondary-text">
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Implementing cross-validation and robust evaluation metrics</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Ensuring model interpretability and explainability</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Addressing bias and ensuring ethical considerations</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="methodology-step reveal-hidden" style="transition-delay: 400ms;">
+                            <div class="flex items-start">
+                                <div class="methodology-number bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl mr-4 flex-shrink-0">4</div>
+                                <div>
+                                    <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">Deployment & Monitoring</h3>
+                                    <p class="text-secondary-text dark:text-dark-secondary-text leading-relaxed">
+                                        The final phase focuses on bringing models to production and ensuring their continued effectiveness:
+                                    </p>
+                                    <ul class="mt-3 space-y-2 text-secondary-text dark:text-dark-secondary-text">
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Implementing robust deployment pipelines and versioning</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Setting up comprehensive monitoring and alerting systems</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-accent dark:text-dark-accent mt-1" aria-hidden="true"></i>
+                                            <span>Establishing feedback loops for continuous improvement</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section id="about-interests" class="py-16 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
