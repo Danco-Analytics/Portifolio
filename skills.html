@@ -762,109 +762,125 @@
                 <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
                     The Technical Arsenal
                 </h2>
-                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 masonry-grid">
                     <!-- Code & Data Wrangling -->
-                    <div class="skill-category-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0">
+                    <div class="skill-category-card group bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden relative overflow-visible animate-fadeInUp" tabindex="0">
+                        <span class="absolute top-4 right-4 bg-gradient-to-r from-accent to-accent-secondary text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10">Expert</span>
                         <div class="flex items-center mb-5">
                             <i data-lucide="database" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent"></i>
                             <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Code & Data Wrangling</h3>
                         </div>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-6 font-body leading-relaxed">
-                            The foundation of any data work. This is where I speak the languages of computers and convince data to reveal its secrets.
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-4 font-body leading-relaxed">
+                            Fluent in Python, SQL, and data cleaning. I turn chaos into structured, actionable data.
                         </p>
-                        <ul class="space-y-3 text-sm text-primary-text dark:text-dark-primary-text font-body">
-                            <li class="skill-item flex items-center p-2" tabindex="0">
-                                <i data-lucide="python" class="w-5 h-5 mr-3 text-emerald-green"></i>
+                        <ul class="space-y-2 text-sm text-primary-text dark:text-dark-primary-text font-body">
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="python" class="w-5 h-5 mr-2 text-emerald-green"></i>
                                 <span>Python (Pandas, NumPy, Scikit-learn)</span>
+                                <span class="ml-2 text-xs text-accent font-mono">Pro</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">Used in all my data projects</span>
                             </li>
-                            <li class="skill-item flex items-center p-2" tabindex="0">
-                                <i data-lucide="database-zap" class="w-5 h-5 mr-3 text-emerald-green"></i>
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="database-zap" class="w-5 h-5 mr-2 text-emerald-green"></i>
                                 <span>SQL & Database Management</span>
+                                <span class="ml-2 text-xs text-accent-secondary font-mono">Advanced</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">Optimized queries for large datasets</span>
                             </li>
-                            <li class="skill-item flex items-center p-2" tabindex="0">
-                                <i data-lucide="git-branch" class="w-5 h-5 mr-3 text-emerald-green"></i>
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="git-branch" class="w-5 h-5 mr-2 text-emerald-green"></i>
                                 <span>Git & Version Control</span>
+                                <span class="ml-2 text-xs text-accent font-mono">Pro</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">Collaboration & code history</span>
                             </li>
                         </ul>
+                        <div class="mt-4">
+                            <button class="text-xs text-accent underline hover:text-accent-secondary transition" onclick="alert('Project: Automated Data Pipeline for Healthcare Analytics')">See Example Project</button>
+                        </div>
                     </div>
 
                     <!-- Machine Learning & AI -->
-                    <div class="skill-category-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0">
+                    <div class="skill-category-card group bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden relative overflow-visible animate-fadeInUp" tabindex="0">
+                        <span class="absolute top-4 right-4 bg-gradient-to-r from-accent to-accent-secondary text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10">Proficient</span>
                         <div class="flex items-center mb-5">
-                    <div class="skill-category-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0" style="transition-delay: 100ms;">
-                        <div class="flex items-center mb-5">
-                            <i data-lucide="brain-circuit" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
+                            <i data-lucide="brain-circuit" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent"></i>
                             <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Machine Learning & AI</h3>
                         </div>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-6 font-body leading-relaxed">
-                            Teaching machines to learn from data, make predictions, and find patterns humans might miss. It's like giving data a brain (a very specialized, mathematical one).
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-4 font-body leading-relaxed">
+                            Building predictive models, neural networks, and deploying ML solutions.
                         </p>
-                        <ul class="space-y-3 text-sm text-primary-text dark:text-dark-primary-text font-body">
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="trending-up" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Predictive Modeling (Regression, Classification)</span>
-                                <span class="skill-tooltip" role="tooltip">Forecasting outcomes and categorizing data points.</span>
+                        <ul class="space-y-2 text-sm text-primary-text dark:text-dark-primary-text font-body">
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="trending-up" class="w-5 h-5 mr-2 text-emerald-green"></i>
+                                <span>Predictive Modeling</span>
+                                <span class="ml-2 text-xs text-accent-secondary font-mono">Pro</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">Forecasting & classification</span>
                             </li>
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="area-chart" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Time Series Forecasting (ARIMA, Prophet)</span>
-                                <span class="skill-tooltip" role="tooltip">Predicting future values based on historical time data.</span>
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="network" class="w-5 h-5 mr-2 text-emerald-green"></i>
+                                <span>Neural Networks (TensorFlow/PyTorch)</span>
+                                <span class="ml-2 text-xs text-accent font-mono">Advanced</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">Deep learning & AI research</span>
                             </li>
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="network" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Neural Networks (TensorFlow/Keras, MLPs, RNNs, LSTMs)</span>
-                                <span class="skill-tooltip" role="tooltip">Building complex models inspired by the brain.</span>
-                            </li>
-                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="scan-face" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Computer Vision Basics (OpenCV)</span>
-                                <span class="skill-tooltip" role="tooltip">Enabling computers to "see" and interpret images.</span>
-                            </li>
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="rocket" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Model Deployment Basics (Flask/Streamlit)</span>
-                                <span class="skill-tooltip" role="tooltip">Taking models from notebooks to usable applications.</span>
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="brain" class="w-5 h-5 mr-2 text-emerald-green"></i>
+                                <span>Deep Learning</span>
+                                <span class="ml-2 text-xs text-accent font-mono">Learning</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">NLP, CV, and more</span>
                             </li>
                         </ul>
-                    </div>
-                    <div class="skill-category-card interactive-element bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden" tabindex="0" style="transition-delay: 200ms;">
-                        <div class="flex items-center mb-5">
-                            <i data-lucide="pie-chart" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent" aria-hidden="true"></i>
-                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Visualization & Tools</h3>
+                        <div class="mt-4">
+                            <button class="text-xs text-accent underline hover:text-accent-secondary transition" onclick="alert('Project: Time Series Forecasting for Central Bank of Kenya')">See Example Project</button>
                         </div>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-6 font-body leading-relaxed">
-                            Data is great, but insights are better! These are the tools I use to translate numbers into compelling stories and build the environments where data work happens. It's about making data understandable (and pretty!).
+                    </div>
+
+                    <!-- Data Visualization -->
+                    <div class="skill-category-card group bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-8 shadow-lg reveal-hidden relative overflow-visible animate-fadeInUp" tabindex="0">
+                        <span class="absolute top-4 right-4 bg-gradient-to-r from-accent to-accent-secondary text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10">Proficient</span>
+                        <div class="flex items-center mb-5">
+                            <i data-lucide="pie-chart" class="skill-category-icon w-10 h-10 mr-4 text-accent dark:text-dark-accent"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Data Visualization</h3>
+                        </div>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-4 font-body leading-relaxed">
+                            Transforming complex data into clear, actionable insights through compelling visualizations.
                         </p>
-                        <ul class="space-y-3 text-sm text-primary-text dark:text-dark-primary-text font-body">
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="bar-chart-horizontal" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
+                        <ul class="space-y-2 text-sm text-primary-text dark:text-dark-primary-text font-body">
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="bar-chart" class="w-5 h-5 mr-2 text-emerald-green"></i>
                                 <span>Matplotlib & Seaborn</span>
-                                <span class="skill-tooltip" role="tooltip">Creating static and informative plots in Python.</span>
+                                <span class="ml-2 text-xs text-accent font-mono">Pro</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">Beautiful static plots</span>
                             </li>
-                            <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="line-chart" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Plotly & Dash (Basic)</span>
-                                <span class="skill-tooltip" role="tooltip">Building interactive charts and web dashboards.</span>
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="line-chart" class="w-5 h-5 mr-2 text-emerald-green"></i>
+                                <span>Plotly & Dash</span>
+                                <span class="ml-2 text-xs text-accent-secondary font-mono">Advanced</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">Interactive dashboards</span>
                             </li>
-                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="notebook-tabs" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Jupyter Notebooks & Google Colab</span>
-                                <span class="skill-tooltip" role="tooltip">Interactive environments for coding and analysis.</span>
-                            </li>
-                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="cloud" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>Cloud Platforms (GCP/AWS Basics)</span>
-                                <span class="skill-tooltip" role="tooltip">Leveraging cloud resources for storage and compute.</span>
-                            </li>
-                             <li class="skill-item interactive-element flex items-center p-2" tabindex="0">
-                                <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3 text-emerald-green flex-shrink-0" aria-hidden="true"></i>
-                                <span>ERP Systems (Frappe/ERPNext)</span>
-                                <span class="skill-tooltip" role="tooltip">Integrating data solutions with business processes.</span>
+                            <li class="skill-item flex items-center p-2 relative group-hover:bg-accent/10 transition-all" tabindex="0">
+                                <i data-lucide="layout-dashboard" class="w-5 h-5 mr-2 text-emerald-green"></i>
+                                <span>Power BI & Tableau</span>
+                                <span class="ml-2 text-xs text-accent font-mono">Learning</span>
+                                <span class="skill-tooltip absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 bg-secondary-text dark:bg-dark-secondary-text text-primary-bg dark:text-dark-primary-bg px-2 py-1 rounded shadow-lg transition-all">Business reporting</span>
                             </li>
                         </ul>
+                        <div class="mt-4">
+                            <button class="text-xs text-accent underline hover:text-accent-secondary transition" onclick="alert('Project: Interactive Data Dashboard for Hospital Operations')">See Example Project</button>
+                        </div>
                     </div>
                 </div>
             </section>
+
+            <style>
+            /* Masonry grid animation */
+            .masonry-grid > * {
+                animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+            }
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(40px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fadeInUp { animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) both; }
+            </style>
 
             <section id="skill-proficiency" class="py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
                 <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-primary-text dark:text-dark-primary-text font-heading tracking-tight reveal-hidden">
