@@ -3,12 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* Fallback for unsupported browsers */
+        body {
+            background-color: #0B0C10;
+        }
+    </style>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Daniel Wanjala - Data Scientist / ML Engineer</title>
     <link rel="icon" href="assets/logo.png" type="image/png">
     <link rel="shortcut icon" href="assets/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Add mobile-specific styles -->
+    <style>
+        /* Mobile-first base styles */
+        html {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            overscroll-behavior-y: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile touch targets */
+        button, a, .interactive-element {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        /* Mobile menu improvements */
+        #mobile-menu {
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile-specific animations */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Enhanced touch feedback */
+        .touch-feedback {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .touch-feedback::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
+
+        .touch-feedback:active::after {
+            opacity: 1;
+            animation: touch-ripple 0.4s ease-out;
+        }
+
+        @keyframes touch-ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(100, 100);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile-optimized grid layouts */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            width: 100%;
+        }
+
+        /* Mobile-friendly spacing */
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .section {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.75rem; }
+            h3 { font-size: 1.5rem; }
+        }
+
+        /* Mobile-optimized music player */
+        #floating-music-player {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 50;
+        }
+
+        @media (max-width: 640px) {
+            #spotify-player {
+                width: calc(100vw - 2rem);
+                left: 1rem;
+                right: 1rem;
+                transform: translateY(100%);
+            }
+
+            #spotify-player.visible {
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile-friendly navigation */
+        @media (max-width: 768px) {
+            .nav-link {
+                padding: 0.75rem 1rem;
+            }
+
+            .mobile-nav-link {
+                padding: 1rem;
+                border-bottom: 1px solid rgba(156, 163, 175, 0.1);
+            }
+        }
+
+        /* Mobile scroll improvements */
+        .smooth-scroll {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile-optimized forms */
+        input, textarea, select {
+            font-size: 16px !important; /* Prevents iOS zoom on focus */
+        }
+
+        /* Mobile gesture handling */
+        .swipe-area {
+            touch-action: pan-y pinch-zoom;
+        }
+
+        /* Mobile-friendly cards */
+        .card {
+            height: auto !important;
+            min-height: 200px;
+        }
+
+        /* Improved mobile tooltips */
+        @media (max-width: 640px) {
+            .tooltip-text {
+                position: fixed;
+                bottom: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 2rem);
+                text-align: center;
+            }
+        }
+
+        /* Mobile-optimized images */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Mobile-friendly buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            touch-action: manipulation;
+        }
+
+        /* Mobile scroll snap */
+        .scroll-snap-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .scroll-snap-item {
+            scroll-snap-align: start;
+            height: 100vh;
+        }
+    </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +216,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
         /* Base body styles */
@@ -182,10 +383,14 @@
             }
         }
         /* Dark theme pulse override */
-        html.dark @keyframes pulse {
+        @keyframes pulse-dark {
              to {
                 box-shadow: 0 0 0 45px rgba(102, 252, 241, 0); /* Dark accent alpha 0 */
              }
+        }
+
+        html.dark .preloader-pulse {
+            animation-name: pulse-dark;
         }
         /* --- End Futuristic Preloader Styles --- */
 
@@ -322,6 +527,7 @@
             border: 2px solid transparent; border-radius: inherit;
             background: linear-gradient(to right, theme('colors.accent'), theme('colors.accent-secondary')) border-box;
             -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: destination-out; mask-composite: exclude;
             opacity: 0; transition: opacity 0.3s ease-in-out; z-index: -1;
             pointer-events: none; /* Prevent border from interfering */
@@ -395,7 +601,199 @@
             opacity: 1;
         }
 
+        /* 3D Cube Styles */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
 
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+
+        .cube-face {
+            @apply absolute w-48 h-48 flex items-center justify-center text-xl font-bold font-mono;
+            backface-visibility: hidden;
+            transition: transform 0.5s ease;
+        }
+
+        .front  { transform: translateZ(24px); }
+        .back   { transform: translateZ(-24px) rotateY(180deg); }
+        .right  { transform: translateX(24px) rotateY(90deg); }
+        .left   { transform: translateX(-24px) rotateY(-90deg); }
+        .top    { transform: translateY(-24px) rotateX(90deg); }
+        .bottom { transform: translateY(24px) rotateX(-90deg); }
+
+        #skill-cube {
+            animation: slow-spin 15s infinite linear;
+            transform: rotateX(-20deg) rotateY(-20deg);
+        }
+
+        #skill-cube:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes slow-spin {
+            from { transform: rotateX(-20deg) rotateY(0deg); }
+            to { transform: rotateX(-20deg) rotateY(360deg); }
+        }
+
+        /* Wave Background Styles */
+        .wave-background {
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        #waveCanvas {
+            filter: blur(2px);
+            transform: scale(1.1);
+            transition: opacity 0.3s ease;
+        }
+
+        /* AI Thought Bubble Styles */
+        @keyframes neuron-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        @keyframes synapse-flow {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: -100; }
+        }
+
+        .thought-bubble-visible {
+            opacity: 1 !important;
+        }
+
+        .thought-content-visible {
+            opacity: 1 !important;
+            transform: translate-y-0 !important;
+        }
+
+        /* Floating Music Player Styles */
+        #floating-music-player:hover #music-toggle {
+            @apply border-accent dark:border-dark-accent;
+        }
+
+        #spotify-player.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        @keyframes equalizer {
+            0% { height: 5px; }
+            50% { height: 15px; }
+            100% { height: 5px; }
+        }
+
+        .equalizer-bar {
+            width: 3px;
+            background: currentColor;
+            animation: equalizer 0.5s ease infinite;
+        }
+
+        .equalizer-bar:nth-child(2) { animation-delay: 0.1s; }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
+
+        /* Enhanced Floating Music Player Styles */
+        #floating-music-player {
+            animation: float-path 30s ease-in-out infinite;
+        }
+
+        @keyframes float-path {
+            0% { transform: translate(0, -30vh) rotate(-5deg); }
+            25% { transform: translate(-20px, -15vh) rotate(5deg); }
+            50% { transform: translate(0, 0) rotate(-5deg); }
+            75% { transform: translate(20px, 15vh) rotate(5deg); }
+            100% { transform: translate(0, 30vh) rotate(-5deg); }
+        }
+
+        #spotify-player.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .equalizer-bar {
+            width: 3px;
+            background: currentColor;
+            animation: equalizer 0.5s ease infinite;
+            transform-origin: bottom;
+        }
+
+        @keyframes equalizer {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+
+        .equalizer-bar:nth-child(1) { animation-delay: 0.0s; }
+        .equalizer-bar:nth-child(2) { animation-delay: 0.1s; }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-ticker {
+            animation: ticker 20s linear infinite;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 3s ease-in-out infinite;
+        }
+
+        /* Enhanced Ticker Animation */
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-ticker {
+            animation: ticker 30s linear infinite;
+            &:hover {
+                animation-play-state: paused;
+            }
+        }
+
+        /* Music Visualizer */
+        #music-visualizer {
+            background: linear-gradient(to right,
+                rgba(108, 92, 231, 0.1),
+                rgba(255, 107, 107, 0.1)
+            );
+            transition: transform 0.3s ease;
+        }
+
+        #music-visualizer:hover {
+            transform: scale(1.02);
+        }
+
+        /* Mood Button Animations */
+        .mood-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mood-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Toast Animation */
+        @keyframes slideUp {
+            0% { transform: translate(-50%, 100%); }
+            100% { transform: translate(-50%, 0); }
+        }
+
+        .toast-enter {
+            animation: slideUp 0.3s ease-out forwards;
+        }
     </style>
     <script>
       // Tailwind Config - Extended with new theme colors
@@ -508,6 +906,33 @@
              }
         })();
     </script>
+
+    <!-- Add Spotify SDK script in head -->
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
+    <!-- Add before closing head tag -->
+    <script>
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        const token = 'YOUR_ACCESS_TOKEN'; // We'll handle this with auth flow
+        const player = new Spotify.Player({
+            name: 'Daniel\'s Portfolio Player',
+            getOAuthToken: cb => { cb(token); },
+            volume: 0.5
+        });
+
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+        });
+
+        // Not Ready
+        player.addListener('not_ready', ({ device_id }) => {
+            console.log('Device ID has gone offline', device_id);
+        });
+
+        player.connect();
+    };
+    </script>
 </head>
 <body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
 
@@ -587,7 +1012,12 @@
     <div id="main-content-container">
         <main>
             <section id="hero" class="h-screen flex flex-col items-center justify-center text-center relative overflow-hidden px-4 pt-16">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg opacity-80 z-0 transition-colors duration-300" aria-hidden="true"></div>
+                <!-- Add animated wave background -->
+                <div class="wave-background absolute inset-0 z-0">
+                    <canvas id="waveCanvas" class="absolute inset-0 w-full h-full opacity-30 dark:opacity-20"></canvas>
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg opacity-80 z-0 transition-colors duration-300"></div>
+                </div>
+
                 <svg class="absolute bottom-0 left-0 w-full h-32 text-secondary-bg/30 dark:text-dark-secondary-bg/30 z-0 opacity-50 transition-colors duration-300" preserveAspectRatio="none" viewBox="0 0 1440 320" aria-hidden="true">
                     <path fill="currentColor" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,133.3C960,107,1056,85,1152,96C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
                 </svg>
@@ -614,10 +1044,315 @@
                     </div>
                 </div>
                 <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-                     <a href="#about" aria-label="Scroll down to about section" class="focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent rounded-full">
+                     <a href="#about" aria-label="Scroll down to about section" title="Scroll down to about section" class="focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent rounded-full">
                         <i data-lucide="chevron-down" class="w-6 h-6 text-accent-secondary dark:text-dark-accent-secondary" aria-hidden="true"></i>
                      </a>
                 </div>
+            </section>
+
+            <!-- Add new music section -->
+            <section id="music" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-primary-bg via-secondary-bg/50 to-primary-bg dark:from-dark-primary-bg dark:via-dark-secondary-bg/30 dark:to-dark-primary-bg reveal-hidden">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Hero Section with Animations -->
+                    <div class="flex flex-col md:flex-row items-center gap-6 mb-12">
+                        <div class="w-40 h-40">
+                            <lottie-player
+                                src="https://assets2.lottiefiles.com/packages/lf20_GpyDh0.json"
+                                background="transparent"
+                                speed="1"
+                                loop
+                                autoplay>
+                            </lottie-player>
+                        </div>
+                        <div class="flex-1 text-center md:text-left">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">
+                                🎵 Bytes & Beats: The Data Scientist's Mix 🧠
+                            </h2>
+                            <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
+                                Where algorithms dance to the rhythm of innovation! 🎧
+                            </p>
+                        </div>
+                        <div class="w-40 h-40">
+                            <lottie-player
+                                src="https://assets3.lottiefiles.com/packages/lf20_UJNc2t.json"
+                                background="transparent"
+                                speed="1"
+                                loop
+                                autoplay>
+                            </lottie-player>
+                        </div>
+                    </div>
+
+                    <!-- Fun Facts Ticker -->
+                    <div class="relative overflow-hidden mb-12 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl border border-accent/20 dark:border-dark-accent/20 p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8">
+                                <lottie-player
+                                    src="https://assets9.lottiefiles.com/packages/lf20_kkflmtur.json"
+                                    background="transparent"
+                                    speed="1"
+                                    loop
+                                    autoplay>
+                                </lottie-player>
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <div class="animate-ticker whitespace-nowrap text-secondary-text dark:text-dark-secondary-text font-mono">
+                                    Why do programmers prefer dark mode? Because light attracts bugs 🪲 |
+                                    I'd tell you a UDP joke, but you might not get it 🌐 |
+                                    Why do Python programmers wear glasses? Because they can't C 👓 |
+                                    What's a data scientist's favorite drink? Data-quila! 🍹 |
+                                    My code is like my music playlist - mostly copied from Stack Overflow 😅 |
+                                    Why did the ML model go to therapy? It had deep issues 🧠 |
+                                    How many programmers does it take to change a light bulb? None, that's a hardware problem 💡 |
+                                    I told my wife she was drawing her eyebrows too high. She looked surprised 😲 |
+                                    Why do programmers always mix up Halloween and Christmas? Because Oct 31 = Dec 25 🎃 |
+                                    What's a developer's favorite place? Foo Bar 🍺 |
+                                    Why did the database administrator leave his wife? She had too many relationships 💔 |
+                                    What do you call a developer who doesn't comment their code? A psychopath 🔪 |
+                                    Why do programmers hate nature? It has too many bugs 🐛
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content Grid -->
+                    <div class="grid md:grid-cols-2 gap-8 mb-12">
+                        <!-- Playlist Benefits Card -->
+                        <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-6 md:p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-16 h-16">
+                                    <lottie-player
+                                        src="https://assets5.lottiefiles.com/packages/lf20_2znxgjyt.json"
+                                        background="transparent"
+                                        speed="1"
+                                        loop
+                                        autoplay>
+                                    </lottie-player>
+                                </div>
+                                <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">ML Mood Booster</h3>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="relative overflow-hidden rounded-lg p-4 bg-accent/5 dark:bg-dark-accent/5 group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-2xl">🧠</span>
+                                        <div>
+                                            <h4 class="font-semibold text-accent dark:text-dark-accent mb-1">Neural Network Boost</h4>
+                                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Music increases neural connectivity by 42% (source: trust me, I'm a data scientist)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative overflow-hidden rounded-lg p-4 bg-accent/5 dark:bg-dark-accent/5 group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-2xl">⚡</span>
+                                        <div>
+                                            <h4 class="font-semibold text-accent dark:text-dark-accent mb-1">Code Acceleration</h4>
+                                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Typing speed increases proportionally to BPM (beats per minute)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative overflow-hidden rounded-lg p-4 bg-accent/5 dark:bg-dark-accent/5 group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                    <div class="flex items-start gap-3">
+                                        <span class="text-2xl">🎯</span>
+                                        <div>
+                                            <h4 class="font-semibold text-accent dark:text-dark-accent mb-1">Precision Enhancement</h4>
+                                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Reduces "It works on my machine" syndrome by 87%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Card -->
+                        <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-6 md:p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-16 h-16">
+                                    <lottie-player
+                                        src="https://assets10.lottiefiles.com/packages/lf20_vxpxmgr9.json"
+                                        background="transparent"
+                                        speed="1"
+                                        loop
+                                        autoplay>
+                                    </lottie-player>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">System Status</h3>
+                                    <div class="flex items-center gap-2 text-accent dark:text-dark-accent">
+                                        <div class="animate-pulse w-2 h-2 rounded-full bg-accent dark:bg-dark-accent"></div>
+                                        <span class="text-sm font-mono">Vibing in Production v2.0.24 🎵</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Terminal-style updates -->
+                            <div class="font-mono text-sm space-y-3">
+                                <div class="flex items-center gap-2 group-hover:translate-x-2 transition-transform duration-300">
+                                    <span class="text-accent dark:text-dark-accent">$</span>
+                                    <span class="text-secondary-text dark:text-dark-secondary-text">npm install good-vibes@latest</span>
+                                </div>
+                                <div class="flex items-center gap-2 group-hover:translate-x-2 transition-transform duration-300" style="transition-delay: 100ms">
+                                    <span class="text-accent dark:text-dark-accent">$</span>
+                                    <span class="text-secondary-text dark:text-dark-secondary-text">git commit -m "🎵 feat: add more dopamine"</span>
+                                </div>
+                                <div class="flex items-center gap-2 group-hover:translate-x-2 transition-transform duration-300" style="transition-delay: 200ms">
+                                    <span class="text-accent dark:text-dark-accent">$</span>
+                                    <span class="text-secondary-text dark:text-dark-secondary-text">python3 enhance_productivity.py --music=true</span>
+                                </div>
+                            </div>
+
+                            <!-- Stats -->
+                            <div class="mt-6 space-y-3">
+                                <div class="relative pt-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-semibold text-accent dark:text-dark-accent">Productivity</span>
+                                        <span class="text-xs font-semibold text-accent dark:text-dark-accent">95%</span>
+                                    </div>
+                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-accent/10 dark:bg-dark-accent/10">
+                                        <div class="animate-pulse-slow bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-500" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                                <div class="relative pt-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-semibold text-accent dark:text-dark-accent">Vibe Level</span>
+                                        <span class="text-xs font-semibold text-accent dark:text-dark-accent">100%</span>
+                                    </div>
+                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-accent/10 dark:bg-dark-accent/10">
+                                        <div class="animate-pulse-slow bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-500" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spotify Player -->
+                    <div class="max-w-3xl mx-auto reveal-hidden">
+                        <div class="relative group">
+                            <!-- Decorative corners -->
+                            <div class="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-accent dark:border-dark-accent rounded-tl-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
+                            <div class="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-accent dark:border-dark-accent rounded-tr-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
+                            <div class="absolute -bottom-4 -left-4 w-8 h-8 border-b-2 border-l-2 border-accent dark:border-dark-accent rounded-bl-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
+                            <div class="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-accent dark:border-dark-accent rounded-br-lg transition-all duration-300 group-hover:w-12 group-hover:h-12"></div>
+                            
+                            <iframe 
+                                title="Spotify Playlist Embed"
+                                src="https://open.spotify.com/embed/playlist/2fWLbh8Ssvp5tBaa72EbJw?utm_source=generator" 
+                                width="100%" 
+                                height="352" 
+                                frameBorder="0" 
+                                allowfullscreen="" 
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                                class="w-full shadow-2xl transition-transform duration-300 group-hover:scale-[1.02]"
+                                style="border-radius:12px;">
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- Footer Quote -->
+                    <div class="text-center mt-16 reveal-hidden">
+                        <div class="inline-flex items-center gap-3 px-6 py-3 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-full border border-accent/20 dark:border-dark-accent/20 shadow-lg group hover:border-accent dark:hover:border-dark-accent transition-all duration-300">
+                            <div class="w-8 h-8">
+                                <lottie-player
+                                    src="https://assets3.lottiefiles.com/packages/lf20_26c4bh4w.json"
+                                    background="transparent"
+                                    speed="1"
+                                    loop
+                                    autoplay>
+                                </lottie-player>
+                            </div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono italic group-hover:text-accent dark:group-hover:text-dark-accent transition-colors duration-300">
+                                "while(alive) { code.listenTo(music); brain.release(dopamine); }" 🎮
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Spotify Auth Button -->
+                <div class="mb-8 text-center">
+                    <button id="spotify-auth" class="px-6 py-3 bg-[#1DB954] hover:bg-[#1ed760] text-white rounded-full font-medium flex items-center justify-center gap-2 mx-auto transition-all duration-300 hover:scale-105">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.371-.721.49-1.101.24-3.021-1.85-6.821-2.27-11.292-1.24-.421.09-.842-.18-.932-.6-.09-.42.18-.84.601-.93 4.891-1.119 9.092-.62 12.452 1.42.431.249.55.729.301 1.1zm1.471-3.279c-.301.459-.921.62-1.381.32-3.452-2.13-8.723-2.76-12.804-1.51-.501.15-1.021-.15-1.171-.65-.15-.502.15-1.022.65-1.172 4.672-1.42 10.453-.721 14.435 1.77.46.301.619.92.319 1.38zm.129-3.34c-4.142-2.459-10.983-2.689-14.934-1.489-.601.18-1.231-.18-1.411-.779-.18-.601.18-1.231.78-1.411 4.562-1.38 12.133-1.111 16.894 1.729.57.34.749 1.08.409 1.65-.341.57-1.081.75-1.651.41z"/>
+                        </svg>
+                        Connect with Spotify
+                    </button>
+                </div>
+
+                <!-- Add Mood Selector with Spotify Integration -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Mood Selector Card -->
+                    <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 reveal-hidden">
+                        <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading mb-6">Coding Mood Selector</h3>
+                        <div class="grid grid-cols-2 gap-4" id="mood-selector">
+                            <button class="mood-btn flex flex-col items-center p-4 rounded-xl bg-accent/10 dark:bg-dark-accent/10 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all duration-300" data-playlist="37i9dQZF1DX5trt9i14X7j">
+                                <span class="text-2xl mb-2">🎯</span>
+                                <span class="text-sm font-medium text-accent dark:text-dark-accent">Deep Focus</span>
+                                <span class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Concentration mode</span>
+                            </button>
+                            <button class="mood-btn flex flex-col items-center p-4 rounded-xl bg-accent/10 dark:bg-dark-accent/10 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all duration-300" data-playlist="37i9dQZF1DX8dTWjpijlub">
+                                <span class="text-2xl mb-2">⚡</span>
+                                <span class="text-sm font-medium text-accent dark:text-dark-accent">High Energy</span>
+                                <span class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Maximum productivity</span>
+                            </button>
+                            <button class="mood-btn flex flex-col items-center p-4 rounded-xl bg-accent/10 dark:bg-dark-accent/10 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all duration-300" data-playlist="37i9dQZF1DX0jgyAiPl8Af">
+                                <span class="text-2xl mb-2">🌊</span>
+                                <span class="text-sm font-medium text-accent dark:text-dark-accent">Chill Vibes</span>
+                                <span class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Relaxed coding</span>
+                            </button>
+                            <button class="mood-btn flex flex-col items-center p-4 rounded-xl bg-accent/10 dark:bg-dark-accent/10 hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all duration-300" data-playlist="37i9dQZF1DX5trt9i14X7j">
+                                <span class="text-2xl mb-2">🐛</span>
+                                <span class="text-sm font-medium text-accent dark:text-dark-accent">Debug Mode</span>
+                                <span class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Problem solving</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Visualizer Card -->
+                    <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 reveal-hidden">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Live Visualizer</h3>
+                            <div class="flex items-center gap-3">
+                                <button id="toggle-visualizer-1" title="Toggle Visualizer" aria-label="Toggle Visualizer" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path d="M10 3a1 1 0 000 2h4a1 1 0 100-2h-4zM3 7a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1zM3 11a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <canvas id="music-visualizer" class="w-full h-40 rounded-lg bg-accent/5 dark:bg-dark-accent/5"></canvas>
+                    </div>
+                </div>
+
+                <!-- Add Now Playing Card -->
+                <div class="mb-8 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 reveal-hidden">
+                    <div class="flex items-center gap-6">
+                        <div id="now-playing-art" class="w-24 h-24 rounded-lg bg-accent/10 dark:bg-dark-accent/10 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-accent dark:text-dark-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 id="now-playing-title" class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Not Playing</h4>
+                            <p id="now-playing-artist" class="text-secondary-text dark:text-dark-secondary-text">Connect with Spotify to start</p>
+                            <div class="mt-4 flex items-center gap-4">
+                                <button id="prev-track" aria-label="Previous Track" title="Previous Track" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"/>
+                                    </svg>
+                                </button>
+                                <button id="play-pause-now-playing" aria-label="Play or Pause Track" title="Play or Pause Track" class="p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:scale-105 transition-transform">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                                <button id="next-track" aria-label="Next Track" title="Next Track" class="p-2 rounded-lg bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798L4.555 5.168z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Previous Spotify embed remains -->
             </section>
 
             <section id="about" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden pt-20">
@@ -676,6 +1411,31 @@
                      <canvas id="skill-constellation-canvas"></canvas>
                      <p class="text-center text-xs text-secondary-text dark:text-dark-secondary-text font-mono mt-[-1rem] opacity-70">Interactive Skill Constellation</p>
                  </div>
+
+                <!-- 3D Skill Cube -->
+                <div class="max-w-md mx-auto mb-16 reveal-hidden perspective-1000">
+                    <div id="skill-cube" class="relative w-48 h-48 mx-auto transform-style-3d transition-transform duration-1000 cursor-pointer hover:scale-110">
+                        <div class="cube-face front bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">Python</span>
+                        </div>
+                        <div class="cube-face back bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">ML/AI</span>
+                        </div>
+                        <div class="cube-face right bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">Data</span>
+                        </div>
+                        <div class="cube-face left bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">SQL</span>
+                        </div>
+                        <div class="cube-face top bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">Cloud</span>
+                        </div>
+                        <div class="cube-face bottom bg-gradient-to-br from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary">
+                            <span class="text-white dark:text-jet-black">APIs</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs text-secondary-text dark:text-dark-secondary-text font-mono mt-4 opacity-70">Interactive 3D Skill Cube (Click to rotate)</p>
+                </div>
 
                 <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="skill-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg reveal-hidden hover:shadow-xl transition-shadow duration-300 group">
@@ -768,7 +1528,7 @@
                          </div>
                          <span class="absolute left-10 -top-3 text-xs font-mono text-accent-secondary dark:text-dark-accent-secondary bg-secondary-bg dark:bg-dark-secondary-bg px-2 py-0.5 rounded">Graduated 2018</span>
                         <h3 class="text-xl md:text-2xl font-semibold mb-1 text-primary-text dark:text-dark-primary-text font-heading">Kenya Certificate of Secondary Education (KCSE)</h3>
-                        <p class="text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-2">St. Anthony’s Boys High School, Kitale</p>
+                        <p class="text-md font-medium text-secondary-text dark:text-dark-secondary-text mb-2">St. Anthony's Boys High School, Kitale</p>
                         <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-body leading-relaxed">
                             Completed with a focus on sciences and mathematics, building the analytical mindset that would later shape a career in data and technology. (Also Alumni and Tutorial Fellow - Part-Time Applicant).
                         </p>
@@ -894,7 +1654,7 @@
                 <div class="max-w-3xl mx-auto">
                     <article class="essay-card bg-glass-light dark:bg-glass-dark border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 mb-6 shadow-lg relative overflow-hidden group reveal-slide-left focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-accent dark:focus-within:ring-dark-accent">
                          <span class="absolute top-4 right-4 text-xs bg-accent-secondary/20 dark:bg-dark-accent-secondary/70 text-accent-secondary dark:text-sandstone px-2 py-1 rounded-full font-mono uppercase tracking-widest">Ethics</span>
-                         <a href="https://www.sciencedirect.com/science/article/pii/S0090261624000044#:~:text=Finally%2C%20algorithmic%20decision%2Dmaking%20can,and%20who%20can%20access%20it." target="_blank" rel="noopener noreferrer" class="interactive-element block focus:outline-none">
+                         <a href="https://www.sciencedirect.com/science/article/pii/S0090261624000044#:~:text=Finally%2C%20algorithmic%2Ddecision%2Dmaking%20can,and%20who%20can%20access%20it." target="_blank" rel="noopener noreferrer" class="interactive-element block focus:outline-none">
                             <h3 class="text-xl font-semibold mb-2 text-accent dark:text-dark-accent font-heading group-hover:underline">The Ethics of Algorithmic Decision Making</h3>
                          </a>
                         <p class="text-secondary-text dark:text-dark-secondary-text text-sm mb-3 font-body">Exploring the biases and societal impacts of automated decision systems.</p>
@@ -930,7 +1690,7 @@
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                     <a href="https://www.linkedin.com/pulse/logarithms-algorithms-invisible-engines-ai-data-science-wanjala-u9qgf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="0">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">Logarithms & Algorithms: The Invisible Engines of AI, Data Science, and Beyond</h3>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Ever wondered how Google finds exactly what you’re looking for in a fraction of a second? Or how does Spotify...</p>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Ever wondered how Google finds exactly what you're looking for in a fraction of a second? Or how does Spotify...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
                             <span>by Daniel Wanjala</span>
                             <span>~10 min read</span>
@@ -938,7 +1698,7 @@
                     </a>
                     <a href="https://www.linkedin.com/pulse/from-excel-neural-networks-my-journey-data-science-daniel-wanjala-s6vjf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="100">
                         <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">From Excel to Neural Networks: My Journey in Data Science</h3>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">First off, let me start by saying: that it’s been a while. My LinkedIn feed probably thought I disappeared into the data abyss...</p>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">First off, let me start by saying: that it's been a while. My LinkedIn feed probably thought I disappeared into the data abyss...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
                             <span>by Daniel Wanjala</span>
                             <span>~12 min read</span>
@@ -969,8 +1729,8 @@
                         </div>
                     </a>
                     <a href="https://www.linkedin.com/pulse/how-machine-learning-transportation-can-transform-africas-wanjala-163gf/?trackingId=nX28LhJOSLauFfN5YIOsHQ%3D%3D" target="_blank" rel="noopener noreferrer" class="interactive-element publication-card block bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-hidden" data-reveal-delay="200">
-                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">How Machine Learning in Transportation Can Transform Africa’s Transit Systems</h3>
-                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Highway Design Highway SafeBoda Twiga Foods Africa’s transportation sector is undergoing a radical transformation, thanks to the infusion of machine...</p>
+                        <h3 class="text-lg font-semibold mb-2 text-accent dark:text-dark-accent font-heading">How Machine Learning in Transportation Can Transform Africa's Transit Systems</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3 font-body line-clamp-2">Highway Design Highway SafeBoda Twiga Foods Africa's transportation sector is undergoing a radical transformation, thanks to the infusion of machine...</p>
                         <div class="text-xs text-secondary-text dark:text-dark-secondary-text/80 font-mono flex items-center justify-between">
                             <span>by Daniel Wanjala</span>
                             <span>~14 min read</span>
@@ -1040,6 +1800,160 @@
                 </div>
             </section>
 
+            <section id="wireframes" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden pt-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Mobile Experience</h2>
+                
+                <!-- Mobile Wireframes Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- Navigation Wireframe -->
+                    <div class="wireframe-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 shadow-lg group hover:border-accent dark:hover:border-dark-accent transition-all duration-300 reveal-hidden">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 dark:bg-dark-accent/10">
+                                <i data-lucide="smartphone" class="w-6 h-6 text-accent dark:text-dark-accent"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Mobile Navigation</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="aspect-[9/16] bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-4 relative overflow-hidden group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                <!-- Mobile Nav Wireframe -->
+                                <div class="absolute top-0 left-0 right-0 h-14 bg-accent/10 dark:bg-dark-accent/10 flex items-center justify-between px-4">
+                                    <div class="w-8 h-8 rounded-full bg-accent/20 dark:bg-dark-accent/20"></div>
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i data-lucide="menu" class="w-6 h-6 text-accent dark:text-dark-accent"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-16 space-y-2">
+                                    <div class="h-10 bg-accent/10 dark:bg-dark-accent/10 rounded-lg w-full"></div>
+                                    <div class="h-10 bg-accent/10 dark:bg-dark-accent/10 rounded-lg w-3/4"></div>
+                                    <div class="h-10 bg-accent/10 dark:bg-dark-accent/10 rounded-lg w-5/6"></div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Optimized navigation with collapsible menu and smooth transitions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Music Player Wireframe -->
+                    <div class="wireframe-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 shadow-lg group hover:border-accent dark:hover:border-dark-accent transition-all duration-300 reveal-hidden">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 dark:bg-dark-accent/10">
+                                <i data-lucide="music" class="w-6 h-6 text-accent dark:text-dark-accent"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Music Experience</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="aspect-[9/16] bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-4 relative overflow-hidden group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                <!-- Music Player Wireframe -->
+                                <div class="absolute bottom-4 left-4 right-4">
+                                    <div class="bg-accent/10 dark:bg-dark-accent/10 rounded-xl p-4 space-y-4">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-16 h-16 rounded-lg bg-accent/20 dark:bg-dark-accent/20"></div>
+                                            <div class="flex-1 space-y-2">
+                                                <div class="h-4 bg-accent/20 dark:bg-dark-accent/20 rounded w-3/4"></div>
+                                                <div class="h-3 bg-accent/20 dark:bg-dark-accent/20 rounded w-1/2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-center gap-4">
+                                            <div class="w-10 h-10 rounded-full bg-accent/20 dark:bg-dark-accent/20"></div>
+                                            <div class="w-12 h-12 rounded-full bg-accent dark:bg-dark-accent"></div>
+                                            <div class="w-10 h-10 rounded-full bg-accent/20 dark:bg-dark-accent/20"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Touch-optimized music controls and responsive player interface.</p>
+                        </div>
+                    </div>
+
+                    <!-- Content Wireframe -->
+                    <div class="wireframe-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20 shadow-lg group hover:border-accent dark:hover:border-dark-accent transition-all duration-300 reveal-hidden">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-accent/10 dark:bg-dark-accent/10">
+                                <i data-lucide="layout" class="w-6 h-6 text-accent dark:text-dark-accent"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Content Layout</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="aspect-[9/16] bg-accent/5 dark:bg-dark-accent/5 rounded-lg p-4 relative overflow-hidden group-hover:bg-accent/10 dark:group-hover:bg-dark-accent/10 transition-colors duration-300">
+                                <!-- Content Layout Wireframe -->
+                                <div class="space-y-4">
+                                    <div class="h-40 bg-accent/10 dark:bg-dark-accent/10 rounded-lg"></div>
+                                    <div class="space-y-2">
+                                        <div class="h-4 bg-accent/10 dark:bg-dark-accent/10 rounded w-3/4"></div>
+                                        <div class="h-4 bg-accent/10 dark:bg-dark-accent/10 rounded w-full"></div>
+                                        <div class="h-4 bg-accent/10 dark:bg-dark-accent/10 rounded w-5/6"></div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="h-20 bg-accent/10 dark:bg-dark-accent/10 rounded"></div>
+                                        <div class="h-20 bg-accent/10 dark:bg-dark-accent/10 rounded"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Responsive grid layouts and adaptive content presentation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Features List -->
+                <div class="mt-16 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 reveal-hidden">
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-semibold text-accent dark:text-dark-accent font-heading">Touch Optimized</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-green flex-shrink-0 mt-1"></i>
+                                <p class="text-secondary-text dark:text-dark-secondary-text">Larger touch targets for better interaction</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-green flex-shrink-0 mt-1"></i>
+                                <p class="text-secondary-text dark:text-dark-secondary-text">Swipe gestures for navigation and music control</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-green flex-shrink-0 mt-1"></i>
+                                <p class="text-secondary-text dark:text-dark-secondary-text">Haptic feedback for enhanced interaction</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-semibold text-accent dark:text-dark-accent font-heading">Performance</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-green flex-shrink-0 mt-1"></i>
+                                <p class="text-secondary-text dark:text-dark-secondary-text">Optimized image loading and caching</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-green flex-shrink-0 mt-1"></i>
+                                <p class="text-secondary-text dark:text-dark-secondary-text">Smooth animations and transitions</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-green flex-shrink-0 mt-1"></i>
+                                <p class="text-secondary-text dark:text-dark-secondary-text">Offline functionality for music playback</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mobile-First Stats -->
+                <div class="mt-16 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-8 border border-accent/20 dark:border-dark-accent/20 max-w-4xl mx-auto reveal-hidden">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent mb-2">90%</div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Mobile Users</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent mb-2">0.8s</div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Load Time</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent mb-2">95%</div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Satisfaction</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent mb-2">60fps</div>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Animation</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="contact" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden pt-20">
                  <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Contact: Let's Collaborate</h2>
                 <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -1060,10 +1974,11 @@
                                 <i data-lucide="mail" class="social-icon w-6 h-6 mr-4 text-accent dark:text-dark-accent transition-transform" aria-hidden="true"></i>
                                 <a href="mailto:dmwanjala254@gmail.com" class="font-medium font-body hover:text-accent dark:hover:text-dark-accent transition-colors break-all focus:outline-none">dmwanjala254@gmail.com</a>
                                 <button class="copy-btn ml-auto flex-shrink-0 p-1 rounded hover:bg-accent/20 dark:hover:bg-dark-accent/20 text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition-colors interactive-element focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-dark-accent" data-copy-text="dmwanjala254@gmail.com" aria-label="Copy email address">
-                                    <i data-lucide="copy" class="h-4 w-4" aria-hidden="true"></i>
+                                    <i data-lucide="copy" class="w-4 h-4" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="social-card interactive-element flex items-center p-4 bg-glass-light dark:bg-glass-dark backdrop-blur-sm border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-lg text-primary-text dark:text-dark-primary-text hover:bg-accent/10 dark:hover:bg-dark-accent/10 hover:border-accent dark:hover:border-dark-accent transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
+n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transition-delay: 0.3s;">
                                 <i data-lucide="message-circle" class="social-icon w-6 h-6 mr-4 text-accent dark:text-dark-accent transition-transform" aria-hidden="true"></i>
                                 <span class="font-medium font-body">WhatsApp</span>
                                 <i data-lucide="arrow-right" class="ml-auto h-5 w-5 text-secondary-text dark:text-dark-secondary-text group-hover:text-accent dark:group-hover:text-dark-accent group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
@@ -1079,11 +1994,9 @@
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.790618214888!2d36.78901261475408!3d-1.302246999051988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1a6bfd7f3d7f%3A0x7f4e9b0a5f9f0e5!2sMbagathi%20Way%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1678886000000!5m2!1sen!2ske"
                                     width="100%"
                                     height="300"
-                                    style="border:0;"
                                     allowfullscreen=""
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"
-                                    title="Google Map Location near Mbagathi Way">
+                                    title="Google Map Location near Mbagathi Way"
+                                    class="border-0">
                                 </iframe>
                                 </div>
                             <p class="text-xs text-center mt-2 text-secondary-text dark:text-dark-secondary-text font-body">
@@ -1096,7 +2009,6 @@
                          <iframe
                             id="tally-contact-form"
                             data-tally-src="https://tally.so/embed/mR2xJd?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                            loading="lazy"
                             width="100%"
                             height="410" /* Initial height, JS will adjust */
                             frameborder="0"
@@ -1141,6 +2053,174 @@
             <i data-lucide="arrow-up" class="h-5 w-5" aria-hidden="true"></i>
         </button>
 
+        <div id="ai-thought-bubble" class="fixed top-24 right-4 w-64 h-64 pointer-events-none z-30 opacity-0 transition-opacity duration-500">
+            <canvas id="neural-network" class="w-full h-full"></canvas>
+            <div id="thought-content" class="absolute bottom-full right-0 mb-2 p-3 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-lg border border-accent/20 dark:border-dark-accent/20 text-xs font-mono max-w-[200px] opacity-0 transform translate-y-2 transition-all duration-300">
+                <div class="flex items-center gap-2 mb-1">
+                    <div class="animate-pulse w-2 h-2 rounded-full bg-accent dark:bg-dark-accent"></div>
+                    <span class="text-accent dark:text-dark-accent">AI Processing...</span>
+                </div>
+                <p class="text-secondary-text dark:text-dark-secondary-text leading-relaxed"></p>
+            </div>
+        </div>
+
+        <div id="floating-music-player" class="fixed z-40 transition-all duration-1000 ease-in-out transform hover:scale-105" style="top: 50%; right: 2rem;">
+            <button id="music-toggle" class="interactive-element flex items-center gap-2 px-4 py-2 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-full border border-accent/20 dark:border-dark-accent/20 text-accent dark:text-dark-accent shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="flex items-end h-5 gap-[2px]">
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                </div>
+                <span class="text-sm font-medium">Ambient Vibes</span>
+            </button>
+            
+            <div id="spotify-player" class="absolute right-full top-0 mr-4 w-80 rounded-lg shadow-2xl opacity-0 pointer-events-none transform translate-x-4 transition-all duration-300">
+                <div class="relative bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-lg p-3">
+                    <button id="close-player" aria-label="Close music player" class="absolute -top-2 -right-2 p-1 bg-accent dark:bg-dark-accent text-white dark:text-jet-black rounded-full shadow-lg hover:scale-110 transition-transform duration-200 z-10">
+                        <i data-lucide="x" class="w-4 h-4" aria-hidden="true"></i>
+                    </button>
+                    <div class="flex gap-2 mb-2">
+                        <button id="playlist-1" class="px-3 py-1 rounded-full text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">Coding</button>
+                        <button id="playlist-2" class="px-3 py-1 rounded-full text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">Ambient</button>
+                    </div>
+                    <div id="playlist-container" class="relative">
+                        <iframe id="coding-playlist"
+                            title="Spotify Embed: Coding Playlist"
+                            src="https://open.spotify.com/embed/playlist/15hwbVhuzHziWcRl2bamTo?utm_source=generator&theme=0"
+                            width="100%"
+                            height="352"
+                            frameborder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            
+                            class="rounded-lg transition-opacity duration-300">
+                        </iframe>
+                        <iframe id="ambient-playlist"
+                            title="Spotify Embed: Ambient Playlist"
+                            src="https://open.spotify.com/embed/playlist/6mg2L5TF0ttmDbHsHgv2Ir?utm_source=generator&theme=0"
+                            width="100%"
+                            height="352"
+                            frameborder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            
+                            class="rounded-lg absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-300">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add interactive music visualizer -->
+        <div class="mt-8 mb-12 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 overflow-hidden reveal-hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Music Visualizer</h3>
+                <button id="toggle-visualizer" class="px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-colors">
+                    Toggle Animation
+                </button>
+            </div>
+            <canvas id="music-visualizer" class="w-full h-32 rounded-lg"></canvas>
+        </div>
+
+        <!-- Add interactive mood selector -->
+        <div class="mb-8 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 reveal-hidden">
+            <h3 class="text-xl font-semibold text-primary-text dark:text-dark-primary-text font-heading mb-4">Coding Mood Selector</h3>
+            <div class="flex flex-wrap gap-3" id="mood-selector">
+                <button class="mood-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all hover:scale-105" data-mood="focus">
+                    🎯 Deep Focus
+                </button>
+                <button class="mood-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all hover:scale-105" data-mood="energy">
+                    ⚡ High Energy
+                </button>
+                <button class="mood-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all hover:scale-105" data-mood="chill">
+                    🌊 Chill Vibes
+                </button>
+                <button class="mood-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all hover:scale-105" data-mood="debug">
+                    🐛 Debug Mode
+                </button>
+            </div>
+        </div>
+
+        <!-- Add after the music section title -->
+        <div class="max-w-4xl mx-auto mb-12">
+            <!-- Spotify Connect Button -->
+            <div class="text-center mb-8">
+                <button onclick="connectToSpotify()" class="interactive-element px-6 py-3 bg-[#1DB954] hover:bg-[#1ed760] text-white rounded-full font-medium flex items-center justify-center gap-2 mx-auto transition-all duration-300 hover:scale-105">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.371-.721.49-1.101.24-3.021-1.85-6.821-2.27-11.292-1.24-.421.09-.842-.18-.932-.6-.09-.42.18-.84.601-.93 4.891-1.119 9.092-.62 12.452 1.42.431.249.55.729.301 1.1zm1.471-3.279c-.301.459-.921.62-1.381.32-3.452-2.13-8.723-2.76-12.804-1.51-.501.15-1.021-.15-1.171-.65-.15-.502.15-1.022.65-1.172 4.672-1.42 10.453-.721 14.435 1.77.46.301.619.92.319 1.38zm.129-3.34c-4.142-2.459-10.983-2.689-14.934-1.489-.601.18-1.231-.18-1.411-.779-.18-.601.18-1.231.78-1.411 4.562-1.38 12.133-1.111 16.894 1.729.57.34.749 1.08.409 1.65-.341.57-1.081.75-1.651.41z"/>
+                    </svg>
+                    Connect with Spotify
+                </button>
+            </div>
+
+            <!-- Mood Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="mood-selector">
+                <button class="mood-btn group" data-playlist="37i9dQZF1DX5trt9i14X7j">
+                    <div class="relative overflow-hidden rounded-xl bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 p-6 transition-all duration-300 hover:border-accent dark:hover:border-dark-accent hover:shadow-lg group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/10 dark:from-dark-accent/10 dark:to-dark-accent-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <span class="text-3xl mb-3 block">🎯</span>
+                            <h4 class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Deep Focus</h4>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">For intense coding sessions</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="mood-btn group" data-playlist="37i9dQZF1DX8dTWjpijlub">
+                    <div class="relative overflow-hidden rounded-xl bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 p-6 transition-all duration-300 hover:border-accent dark:hover:border-dark-accent hover:shadow-lg group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/10 dark:from-dark-accent/10 dark:to-dark-accent-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <span class="text-3xl mb-3 block">⚡</span>
+                            <h4 class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">High Energy</h4>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Maximum productivity</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="mood-btn group" data-playlist="37i9dQZF1DX0jgyAiPl8Af">
+                    <div class="relative overflow-hidden rounded-xl bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 p-6 transition-all duration-300 hover:border-accent dark:hover:border-dark-accent hover:shadow-lg group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/10 dark:from-dark-accent/10 dark:to-dark-accent-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <span class="text-3xl mb-3 block">🌊</span>
+                            <h4 class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Chill Vibes</h4>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Relaxed coding flow</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="mood-btn group" data-playlist="37i9dQZF1DX5trt9i14X7j">
+                    <div class="relative overflow-hidden rounded-xl bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 p-6 transition-all duration-300 hover:border-accent dark:hover:border-dark-accent hover:shadow-lg group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/10 dark:from-dark-accent/10 dark:to-dark-accent-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                            <span class="text-3xl mb-3 block">🐛</span>
+                            <h4 class="text-lg font-semibold text-primary-text dark:text-dark-primary-text mb-1">Debug Mode</h4>
+                            <p class="text-sm text-secondary-text dark:text-dark-secondary-text">Problem solving time</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Add after the mood selector -->
+        <div class="mt-8 bg-glass-light dark:bg-glass-dark backdrop-blur-lg rounded-xl p-6 border border-accent/20 dark:border-dark-accent/20">
+            <div class="flex items-center gap-4">
+                <div id="now-playing-art" class="w-16 h-16 rounded-lg bg-accent/10 dark:bg-dark-accent/10 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-accent dark:text-dark-accent" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h4 id="now-playing-title" class="text-lg font-semibold text-primary-text dark:text-dark-primary-text">Not Playing</h4>
+                    <p id="now-playing-artist" class="text-secondary-text dark:text-dark-secondary-text">Connect to Spotify to start</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="play-pause" aria-label="Play or Pause music" class="p-3 rounded-full bg-accent dark:bg-dark-accent text-white dark:text-jet-black hover:scale-110 transition-transform duration-300">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div> <script defer>
         /**
          * Main JavaScript for Daniel Wanjala's Portfolio
@@ -1166,7 +2246,7 @@
             // Project data (ensure paths are correct)
             // Added placeholder image URLs for robustness
             const projectsData = [
-              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "assets/project1_main.png", altImageUrl: "assets/project1_alt.png", placeholderUrl: "https://placehold.co/600x400/6C5CE7/F7F7F7?text=GDP+Model", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
+              { id: 1, title: "GDP Growth Prediction Model", description: "Developed a machine learning model...", tags: ["Finance", "AI", "Python"], imageUrl: "assets/project1_main.png", altImageUrl: "assets/project1_alt.png", placeholderUrl: "https://placehold.co/600x400/0B0C10/F7F7F7?text=GDP+Model", problem: "Needed a reliable way to forecast...", dataUsed: "Exchange rates, inflation rates...", results: "Provided insights for policymakers...", techStack: ["Python", "Scikit-learn", "Pandas"], githubUrl: "https://github.com/MadScie254/Phase-3-Project-Modelling", liveDemoUrl: null, accentColor: "blue-500" },
               { id: 2, title: "AI-Driven Plant Disease Detection", description: "Collaboratively developed an advanced system...", tags: ["Health", "AI", "CV"], imageUrl: "assets/project2_main.png", altImageUrl: "assets/project2_alt.png", placeholderUrl: "https://placehold.co/600x400/2ECC71/F7F7F7?text=Plant+AI", problem: "Early and accurate detection is crucial...", dataUsed: "Image datasets of plants...", results: "Enhanced early detection...", techStack: ["Python", "TensorFlow", "OpenCV"], githubUrl: "https://github.com/MadScie254/Capstone-Lazarus", liveDemoUrl: null, accentColor: "emerald-green" },
               { id: 3, title: "Kenya's GDP Forecasting Tool", description: "Developed a forecasting tool...", tags: ["Finance", "TimeSeries", "Python"], imageUrl: "assets/project3_main.png", altImageUrl: "assets/project3_alt.png", placeholderUrl: "https://placehold.co/600x400/FF6B6B/F7F7F7?text=Kenya+GDP", problem: "Stakeholders needed fact-based analysis...", dataUsed: "Time-series data, economic indicators...", results: "Aided in strategic planning...", techStack: ["Python", "Statsmodels", "Pandas"], githubUrl: "https://github.com/MadScie254/GDP-Forecast-Sample", liveDemoUrl: null, accentColor: "red-coral" },
               { id: 4, title: "InvestWise Predictor", description: "Intelligent online tool using neural networks...", tags: ["Finance", "AI", "Web"], imageUrl: "assets/project4_main.png", altImageUrl: "assets/project4_alt.png", placeholderUrl: "https://placehold.co/600x400/6C5CE7/F7F7F7?text=InvestWise", problem: "Investors needed data-driven guidance...", dataUsed: "Economic indicators, trade data...", results: "Assisted investors in making informed decisions...", techStack: ["Python", "TensorFlow", "Flask (implied)"], githubUrl: "https://github.com/MadScie254/InvestWise-Predictor-Project", liveDemoUrl: null, accentColor: "tech-purple" },
@@ -1432,6 +2512,8 @@
                 }
             }
 
+
+
              /** Opens the project modal with details for the given project ID. */
             function openModal(projectId) {
                 const project = projectsData.find(p => p.id === parseInt(projectId));
@@ -1465,9 +2547,71 @@
                         <div class="flex flex-wrap gap-2 mb-6">${techStackHtml}</div>
                       </div>
                       <div id="github-stats-container" class="mt-6 pt-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/20 ${!project.githubUrl ? 'hidden' : ''}">
-                          <button id="fetch-stats-button" class="interactive-element text-sm text-accent dark:text-dark-accent hover:underline mb-2 focus:outline-none focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent rounded">Show GitHub Stats</button>
-                          <div id="github-stats-content" class="hidden text-sm space-y-1">
+                          <button id="fetch-stats-button" class="interactive-element text-sm text-accent dark:text-dark-accent hover:underline mb-2 focus:outline-none focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent rounded group">
+                              <span class="inline-flex items-center">
+                                  <i data-lucide="git-branch" class="w-4 h-4 mr-2 transition-transform duration-300 group-hover:rotate-45" aria-hidden="true"></i>
+                                  Show GitHub Stats
+                              </span>
+                          </button>
+                          <div id="github-stats-content" class="hidden">
+                              <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-md rounded-lg p-4 border border-accent/20 dark:border-dark-accent/20 shadow-lg relative overflow-hidden transition-all duration-300 ease-out transform hover:scale-[1.02] hover:shadow-xl">
+                                  <!-- Pulsing border effect -->
+                                  <div class="absolute inset-0 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary opacity-0 transition-opacity duration-500 stats-border-pulse"></div>
+                                  
+                                  <!-- Stats grid -->
+                                  <div class="grid grid-cols-3 gap-4">
+                                      <!-- Stars -->
+                                      <div class="stat-item text-center">
+                                          <div class="inline-flex items-center justify-center mb-2 relative group">
+                                              <i data-lucide="star" class="w-6 h-6 text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                                          </div>
+                                          <div class="font-mono text-lg font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent stat-value">0</div>
+                                          <div class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Stars</div>
+                                          <div class="h-1 w-full bg-secondary-text/10 dark:bg-dark-secondary-text/10 rounded-full mt-2 overflow-hidden">
+                                              <div class="stat-progress h-full w-0 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-1000"></div>
+                                          </div>
+                                      </div>
+                                      
+                                      <!-- Forks -->
+                                      <div class="stat-item text-center">
+                                          <div class="inline-flex items-center justify-center mb-2 relative group">
+                                              <i data-lucide="git-fork" class="w-6 h-6 text-transparent bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                                          </div>
+                                          <div class="font-mono text-lg font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent stat-value">0</div>
+                                          <div class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Forks</div>
+                                          <div class="h-1 w-full bg-secondary-text/10 dark:bg-dark-secondary-text/10 rounded-full mt-2 overflow-hidden">
+                                              <div class="stat-progress h-full w-0 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-1000"></div>
+                                          </div>
+                                      </div>
+                                      
+                                      <!-- Watchers -->
+                                      <div class="stat-item text-center">
+                                          <div class="inline-flex items-center justify-center mb-2 relative group">
+                                              <i data-lucide="eye" class="w-6 h-6 text-transparent bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text transition-transform duration-300 group-hover:scale-110" aria-hidden="true"></i>
+                                          </div>
+                                          <div class="font-mono text-lg font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent stat-value">0</div>
+                                          <div class="text-xs text-secondary-text dark:text-dark-secondary-text mt-1">Watchers</div>
+                                          <div class="h-1 w-full bg-secondary-text/10 dark:bg-dark-secondary-text/10 rounded-full mt-2 overflow-hidden">
+                                              <div class="stat-progress h-full w-0 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary rounded-full transition-all duration-1000"></div>
+                                          </div>
+                                      </div>
+                                  </div>
                               </div>
+                              
+                              <!-- Error state -->
+                              <div id="github-stats-error" class="hidden">
+                                  <div class="bg-red-coral/10 border border-red-coral/20 rounded-lg p-4 mt-4 animate-shake">
+                                      <p class="text-red-coral text-sm flex items-center">
+                                          <i data-lucide="alert-circle" class="w-4 h-4 mr-2" aria-hidden="true"></i>
+                                          <span class="error-message">Could not load stats.</span>
+                                      </p>
+                                      <button class="retry-button mt-2 text-xs text-accent dark:text-dark-accent hover:underline focus:outline-none focus:ring-1 focus:ring-accent dark:focus:ring-dark-accent rounded px-2 py-1 inline-flex items-center">
+                                          <i data-lucide="refresh-cw" class="w-3 h-3 mr-1" aria-hidden="true"></i>
+                                          Retry
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
                           <p class="text-xs text-secondary-text dark:text-dark-secondary-text mt-2">Note: Stats via public GitHub API. May be rate-limited.</p>
                       </div>
                       <div class="flex flex-wrap gap-4 mt-6">${githubButton}${demoButton}</div>
@@ -1997,5 +3141,818 @@
         var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w;s.onload=v;s.onerror=function(){console.error("Failed to load Tally embed script."); var formIframe=document.getElementById('tally-contact-form'); var fallbackMsg=document.getElementById('tally-fallback'); if(formIframe) formIframe.style.display='none'; if(fallbackMsg) fallbackMsg.classList.remove('hidden'); };d.body.appendChild(s);}
     </script>
 
+    <script>
+        // Skill Cube Interaction
+        document.addEventListener('DOMContentLoaded', () => {
+            const cube = document.getElementById('skill-cube');
+            if (!cube) return;
+
+            let isDragging = false;
+            let startX, startY;
+            let rotationX = -20;
+            let rotationY = -20;
+
+            cube.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                cube.style.animation = 'none';
+                startX = e.clientX;
+                startY = e.clientY;
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+                
+                rotationY += deltaX * 0.5;
+                rotationX -= deltaY * 0.5;
+                
+                cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+                
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                cube.style.animation = 'slow-spin 15s infinite linear';
+            });
+
+            // Add touch support
+            cube.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                cube.style.animation = 'none';
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                
+                const deltaX = e.touches[0].clientX - startX;
+                const deltaY = e.touches[0].clientY - startY;
+                
+                rotationY += deltaX * 0.5;
+                rotationX -= deltaY * 0.5;
+                
+                cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+                
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+                cube.style.animation = 'slow-spin 15s infinite linear';
+            });
+        });
+    </script>
+
+    <script>
+        // Wave Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('waveCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+            
+            const waves = [];
+            const numWaves = 3;
+            const colors = {
+                light: ['rgba(108, 92, 231, 0.2)', 'rgba(255, 107, 107, 0.2)', 'rgba(45, 152, 218, 0.2)'],
+                dark: ['rgba(102, 252, 241, 0.2)', 'rgba(69, 162, 158, 0.2)', 'rgba(98, 205, 199, 0.2)']
+            };
+
+            class Wave {
+                constructor(index) {
+                    this.index = index;
+                    this.reset();
+                }
+
+                reset() {
+                    this.amplitude = Math.random() * 20 + 10;
+                    this.period = Math.random() * 200 + 200;
+                    this.phase = Math.random() * Math.PI * 2;
+                    this.speed = (Math.random() * 0.1 + 0.1) * (Math.random() < 0.5 ? 1 : -1);
+                    this.colorIndex = Math.floor(Math.random() * colors.light.length);
+                }
+
+                update() {
+                    this.phase += this.speed;
+                    if (this.phase > Math.PI * 2) this.phase = 0;
+                }
+
+                draw(ctx, width, height, scrollProgress, mouseX) {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const currentColors = isDark ? colors.dark : colors.light;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, height);
+
+                    for (let x = 0; x <= width; x += 5) {
+                        const relativeX = (x / width) - 0.5;
+                        const distanceFromMouse = mouseX ? Math.abs(x - mouseX) / width : 1;
+                        const mouseInfluence = Math.max(0, 1 - distanceFromMouse * 2);
+                        
+                        const y = height * 0.5 + 
+                            this.amplitude * Math.sin((x / this.period) + this.phase) * (1 + scrollProgress * 0.5) +
+                            (mouseInfluence * 20 * Math.sin(x / 30 + Date.now() / 1000));
+                        
+                        ctx.lineTo(x, y);
+                    }
+
+                    ctx.lineTo(width, height);
+                    ctx.closePath();
+
+                    const gradient = ctx.createLinearGradient(0, 0, width, height);
+                    gradient.addColorStop(0, currentColors[this.colorIndex]);
+                    gradient.addColorStop(1, currentColors[(this.colorIndex + 1) % currentColors.length]);
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                }
+            }
+
+            // Initialize waves
+            for (let i = 0; i < numWaves; i++) {
+                waves.push(new Wave(i));
+            }
+
+            let mouseX = null;
+            let scrollProgress = 0;
+            let animationFrame;
+
+            // Animation loop
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                
+                waves.forEach(wave => {
+                    wave.update();
+                    wave.draw(ctx, width, height, scrollProgress, mouseX);
+                });
+
+                animationFrame = requestAnimationFrame(animate);
+            }
+
+            // Handle resize
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            // Handle mouse movement
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+            });
+
+            // Handle scroll
+            window.addEventListener('scroll', () => {
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                scrollProgress = Math.min(1, window.scrollY / maxScroll);
+            });
+
+            // Start animation
+            animate();
+
+            // Cleanup on page visibility change
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(animationFrame);
+                } else {
+                    animate();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // AI Thought Bubble Visualization
+        document.addEventListener('DOMContentLoaded', () => {
+            const bubble = document.getElementById('ai-thought-bubble');
+            const canvas = document.getElementById('neural-network');
+            const thoughtContent = document.getElementById('thought-content');
+            const thoughtText = thoughtContent.querySelector('p');
+            
+            if (!bubble || !canvas || !thoughtContent) return;
+
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = 256;
+            let height = canvas.height = 256;
+            
+            // Neural network structure
+            const layers = [4, 6, 8, 6, 4];
+            const neurons = [];
+            const synapses = [];
+            let activeNeurons = new Set();
+            let activeSynapses = new Set();
+            
+            // Initialize neurons
+            layers.forEach((count, layerIndex) => {
+                const layer = [];
+                const layerY = height * (layerIndex + 1) / (layers.length + 1);
+                
+                for (let i = 0; i < count; i++) {
+                    const neuron = {
+                        x: width * (i + 1) / (count + 1),
+                        y: layerY,
+                        radius: 3,
+                        activation: 0,
+                        layer: layerIndex
+                    };
+                    layer.push(neuron);
+                }
+                neurons.push(layer);
+            });
+            
+            // Create synapses
+            for (let i = 0; i < neurons.length - 1; i++) {
+                const currentLayer = neurons[i];
+                const nextLayer = neurons[i + 1];
+                
+                currentLayer.forEach(neuron1 => {
+                    nextLayer.forEach(neuron2 => {
+                        synapses.push({
+                            from: neuron1,
+                            to: neuron2,
+                            weight: Math.random(),
+                            signal: 0
+                        });
+                    });
+                });
+            }
+
+            function drawNetwork() {
+                ctx.clearRect(0, 0, width, height);
+                
+                // Draw synapses
+                synapses.forEach(synapse => {
+                    const active = activeSynapses.has(synapse);
+                    ctx.beginPath();
+                    ctx.moveTo(synapse.from.x, synapse.from.y);
+                    ctx.lineTo(synapse.to.x, synapse.to.y);
+                    
+                    const gradient = ctx.createLinearGradient(
+                        synapse.from.x, synapse.from.y,
+                        synapse.to.x, synapse.to.y
+                    );
+                    
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const baseColor = isDark ? 'rgba(102, 252, 241,' : 'rgba(108, 92, 231,';
+                    
+                    gradient.addColorStop(0, `${baseColor}${active ? '0.5' : '0.1'})`);
+                    gradient.addColorStop(1, `${baseColor}${active ? '0.1' : '0.1'})`);
+                    
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = active ? 2 : 1;
+                    ctx.stroke();
+                });
+                
+                // Draw neurons
+                neurons.flat().forEach(neuron => {
+                    const active = activeNeurons.has(neuron);
+                    ctx.beginPath();
+                    ctx.arc(neuron.x, neuron.y, neuron.radius * (active ? 1.5 : 1), 0, Math.PI * 2);
+                    
+                    const isDark = document.documentElement.classList.contains('dark');
+                    ctx.fillStyle = isDark ? 
+                        `rgba(102, 252, 241,${active ? '0.8' : '0.3'})` :
+                        `rgba(108, 92, 231,${active ? '0.8' : '0.3'})`;
+                    
+                    ctx.fill();
+                });
+            }
+
+            function propagateSignal() {
+                activeNeurons.clear();
+                activeSynapses.clear();
+                
+                // Activate random input neurons
+                const inputLayer = neurons[0];
+                const numActive = 1 + Math.floor(Math.random() * 2);
+                
+                for (let i = 0; i < numActive; i++) {
+                    const neuron = inputLayer[Math.floor(Math.random() * inputLayer.length)];
+                    activeNeurons.add(neuron);
+                }
+                
+                // Propagate through layers
+                for (let i = 0; i < neurons.length - 1; i++) {
+                    const nextActive = new Set();
+                    
+                    synapses.filter(s => s.from.layer === i).forEach(synapse => {
+                        if (activeNeurons.has(synapse.from) && Math.random() < 0.7) {
+                            nextActive.add(synapse.to);
+                            activeSynapses.add(synapse);
+                        }
+                    });
+                    
+                    activeNeurons = nextActive;
+                }
+            }
+
+            // Content analysis
+            const contentTypes = {
+                'hero': ['Analyzing portfolio introduction', 'Processing personal brand elements', 'Evaluating hero section impact'],
+                'about': ['Analyzing professional background', 'Processing experience patterns', 'Evaluating skill correlations'],
+                'skills': ['Mapping technical competencies', 'Analyzing skill relationships', 'Processing expertise clusters'],
+                'education': ['Analyzing academic progression', 'Processing learning patterns', 'Mapping knowledge acquisition'],
+                'projects': ['Analyzing project complexity', 'Processing technical implementations', 'Evaluating solution architectures'],
+                'publications': ['Analyzing research depth', 'Processing knowledge sharing patterns', 'Evaluating technical writing'],
+                'contact': ['Processing communication channels', 'Analyzing engagement options', 'Mapping connection points']
+            };
+
+            function getCurrentSection() {
+                const sections = document.querySelectorAll('section[id]');
+                let currentSection = 'hero';
+                
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                        currentSection = section.id;
+                    }
+                });
+                
+                return currentSection;
+            }
+
+            function updateThoughtContent() {
+                const section = getCurrentSection();
+                const thoughts = contentTypes[section] || contentTypes['hero'];
+                const thought = thoughts[Math.floor(Math.random() * thoughts.length)];
+                
+                thoughtText.textContent = thought;
+                thoughtContent.classList.add('thought-content-visible');
+                
+                setTimeout(() => {
+                    thoughtContent.classList.remove('thought-content-visible');
+                }, 3000);
+            }
+
+            let animationFrame;
+            let lastThoughtUpdate = 0;
+
+            function animate(timestamp) {
+                if (timestamp - lastThoughtUpdate > 3500) {
+                    propagateSignal();
+                    updateThoughtContent();
+                    lastThoughtUpdate = timestamp;
+                }
+                
+                drawNetwork();
+                animationFrame = requestAnimationFrame(animate);
+            }
+
+            // Show bubble when scrolling starts
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                bubble.classList.add('thought-bubble-visible');
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    bubble.classList.remove('thought-bubble-visible');
+                }, 1000);
+            });
+
+            // Start animation
+            animate(0);
+
+            // Cleanup
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(animationFrame);
+                } else {
+                    animate(0);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Music Player Controls
+        document.addEventListener('DOMContentLoaded', () => {
+            const musicToggle = document.getElementById('music-toggle');
+            const spotifyPlayer = document.getElementById('spotify-player');
+            const closePlayer = document.getElementById('close-player');
+            
+            if (!musicToggle || !spotifyPlayer || !closePlayer) return;
+
+            let isPlaying = false;
+
+            musicToggle.addEventListener('click', () => {
+                spotifyPlayer.classList.toggle('visible');
+                if (!isPlaying) {
+                    // Add equalizer animation to button
+                    const musicIcon = musicToggle.querySelector('[data-lucide="music"]');
+                    if (musicIcon) {
+                        musicIcon.outerHTML = `
+                            <div class="flex items-end h-5 gap-[2px]">
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                                <div class="equalizer-bar"></div>
+                            </div>
+                        `;
+                    }
+                    isPlaying = true;
+                }
+            });
+
+            closePlayer.addEventListener('click', (e) => {
+                e.stopPropagation();
+                spotifyPlayer.classList.remove('visible');
+            });
+
+            // Close player when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!spotifyPlayer.contains(e.target) && !musicToggle.contains(e.target)) {
+                    spotifyPlayer.classList.remove('visible');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Enhanced Music Player Controls
+        document.addEventListener('DOMContentLoaded', () => {
+            const musicPlayer = document.getElementById('floating-music-player');
+            const musicToggle = document.getElementById('music-toggle');
+            const spotifyPlayer = document.getElementById('spotify-player');
+            const closePlayer = document.getElementById('close-player');
+            const playlist1Btn = document.getElementById('playlist-1');
+            const playlist2Btn = document.getElementById('playlist-2');
+            const codingPlaylist = document.getElementById('coding-playlist');
+            const ambientPlaylist = document.getElementById('ambient-playlist');
+            
+            if (!musicPlayer || !musicToggle || !spotifyPlayer || !closePlayer) return;
+
+            let isPlaying = true; // Start with equalizer animation
+            let currentPlaylist = 'coding';
+
+            // Smooth section-based positioning
+            let lastScrollY = window.scrollY;
+            let scrollDirection = 'down';
+            let ticking = false;
+
+            const updatePlayerPosition = () => {
+                const sections = document.querySelectorAll('section[id]');
+                let nearestSection = null;
+                let minDistance = Infinity;
+                const viewportMiddle = window.innerHeight / 2;
+
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const distance = Math.abs(rect.top + rect.height / 2 - viewportMiddle);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nearestSection = section;
+                    }
+                });
+
+                if (nearestSection) {
+                    const rect = nearestSection.getBoundingClientRect();
+                    const sectionProgress = -rect.top / (rect.height - window.innerHeight);
+                    const baseY = rect.top + rect.height / 2;
+                    
+                    // Add some organic movement based on scroll direction
+                    const directionOffset = scrollDirection === 'down' ? 50 : -50;
+                    const targetY = baseY + directionOffset;
+                    
+                    // Apply smooth transition
+                    musicPlayer.style.transform = `translateY(${targetY}px) rotate(${Math.sin(sectionProgress * Math.PI) * 5}deg)`;
+                }
+            };
+
+            window.addEventListener('scroll', () => {
+                scrollDirection = window.scrollY > lastScrollY ? 'down' : 'up';
+                lastScrollY = window.scrollY;
+
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updatePlayerPosition();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // Toggle player visibility
+            musicToggle.addEventListener('click', () => {
+                spotifyPlayer.classList.toggle('visible');
+            });
+
+            // Switch playlists
+            playlist1Btn.addEventListener('click', () => {
+                if (currentPlaylist !== 'coding') {
+                    codingPlaylist.style.opacity = '1';
+                    codingPlaylist.style.pointerEvents = 'auto';
+                    ambientPlaylist.style.opacity = '0';
+                    ambientPlaylist.style.pointerEvents = 'none';
+                    currentPlaylist = 'coding';
+                    playlist1Btn.classList.add('bg-accent/20', 'dark:bg-dark-accent/20');
+                    playlist2Btn.classList.remove('bg-accent/20', 'dark:bg-dark-accent/20');
+                }
+            });
+
+            playlist2Btn.addEventListener('click', () => {
+                if (currentPlaylist !== 'ambient') {
+                    ambientPlaylist.style.opacity = '1';
+                    ambientPlaylist.style.pointerEvents = 'auto';
+                    codingPlaylist.style.opacity = '0';
+                    codingPlaylist.style.pointerEvents = 'none';
+                    currentPlaylist = 'ambient';
+                    playlist2Btn.classList.add('bg-accent/20', 'dark:bg-dark-accent/20');
+                    playlist1Btn.classList.remove('bg-accent/20', 'dark:bg-dark-accent/20');
+                }
+            });
+
+            closePlayer.addEventListener('click', (e) => {
+                e.stopPropagation();
+                spotifyPlayer.classList.remove('visible');
+            });
+
+            // Close player when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!spotifyPlayer.contains(e.target) && !musicToggle.contains(e.target)) {
+                    spotifyPlayer.classList.remove('visible');
+                }
+            });
+
+            // Initial position update
+            updatePlayerPosition();
+        });
+    </script>
+
+    <script>
+        // Music Visualizer
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('music-visualizer');
+            const ctx = canvas.getContext('2d');
+            let animationId;
+            let isPlaying = true;
+
+            function resizeCanvas() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            function drawVisualizer() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const barCount = 30;
+                const barWidth = canvas.width / barCount;
+                const maxHeight = canvas.height * 0.8;
+
+                for (let i = 0; i < barCount; i++) {
+                    const height = Math.random() * maxHeight;
+                    const hue = (i / barCount) * 360;
+                    
+                    ctx.fillStyle = `hsla(${hue}, 70%, 60%, 0.8)`;
+                    ctx.fillRect(
+                        i * barWidth,
+                        canvas.height - height,
+                        barWidth - 2,
+                        height
+                    );
+                }
+
+                if (isPlaying) {
+                    animationId = requestAnimationFrame(drawVisualizer);
+                }
+            }
+
+            document.getElementById('toggle-visualizer').addEventListener('click', () => {
+                isPlaying = !isPlaying;
+                if (isPlaying) {
+                    drawVisualizer();
+                } else {
+                    cancelAnimationFrame(animationId);
+                }
+            });
+
+            drawVisualizer();
+        });
+
+        // Mood Selector
+        const moodButtons = document.querySelectorAll('.mood-btn');
+        moodButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active state from all buttons
+                moodButtons.forEach(b => b.classList.remove('bg-accent', 'dark:bg-dark-accent', 'text-white', 'dark:text-jet-black'));
+                // Add active state to clicked button
+                btn.classList.add('bg-accent', 'dark:bg-dark-accent', 'text-white', 'dark:text-jet-black');
+                
+                // Add a fun animation
+                btn.style.transform = 'scale(1.1)';
+                setTimeout(() => btn.style.transform = 'scale(1)', 200);
+
+                // Show a toast notification
+                showToast(`Mood set to: ${btn.textContent.trim()}`);
+            });
+        });
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg bg-accent dark:bg-dark-accent text-white dark:text-jet-black text-sm font-medium shadow-lg z-50 opacity-0 transition-opacity duration-300';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // Fade in
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+            });
+            
+            // Fade out and remove
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+    </script>
+
+    <!-- Add to script section -->
+    <script>
+    // Spotify Authentication
+    const clientId = '573805aedac64955829435745536cf78';
+    const redirectUri = 'https://danco-analytics.github.io/Portifolio/';
+    let accessToken = null;
+
+    document.getElementById('spotify-auth').addEventListener('click', () => {
+        const scope = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state';
+        const authUrl = `https://accounts.spotify.com/authorize?client_id=${'573805aedac64955829435745536cf78'}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+        window.location.href = authUrl;
+    });
+
+    // Check for access token in URL after auth
+    window.addEventListener('load', () => {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        accessToken = params.get('access_token');
+        
+        if (accessToken) {
+            // Initialize player with token
+            initializePlayer(accessToken);
+            // Remove token from URL
+            window.location.hash = '';
+        }
+    });
+
+    // Initialize Spotify Player
+    function initializePlayer(token) {
+        const player = new Spotify.Player({
+            name: 'Portfolio Music Player',
+            getOAuthToken: cb => { cb(token); }
+        });
+
+        // Error handling
+        player.addListener('initialization_error', ({ message }) => { console.error(message); });
+        player.addListener('authentication_error', ({ message }) => { console.error(message); });
+        player.addListener('account_error', ({ message }) => { console.error(message); });
+        player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+        // Playback status updates
+        player.addListener('player_state_changed', state => {
+            if (state) {
+                updateNowPlaying(state);
+                updateVisualizer(state);
+            }
+        });
+
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+            // Enable controls
+            setupControls(player);
+        });
+
+        player.connect();
+    }
+
+    // Update Now Playing
+    function updateNowPlaying(state) {
+        const titleEl = document.getElementById('now-playing-title');
+        const artistEl = document.getElementById('now-playing-artist');
+        const artEl = document.getElementById('now-playing-art');
+
+        if (state.track_window.current_track) {
+            const track = state.track_window.current_track;
+            titleEl.textContent = track.name;
+            artistEl.textContent = track.artists[0].name;
+            artEl.style.backgroundImage = 'url("' + track.album.images[0].url + '")';
+        }
+    }
+
+    // Update Visualizer
+    function updateVisualizer(state) {
+        // Implement visualizer update logic based on Spotify state
+        console.log('Spotify player state:', state);
+    }
+
+    // Setup controls
+    function setupControls(player) {
+        player.addListener('player_state_changed', state => {
+            updateNowPlaying(state);
+            updateVisualizer(state);
+        });
+    }
+    </script>
+
+    <script>
+    const SPOTIFY_CLIENT_ID = '573805aedac64955829435745536cf78';
+    const SPOTIFY_REDIRECT_URI = 'https://danco-analytics.github.io/Portifolio/';
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        const token = localStorage.getItem('spotify_token');
+        if (token) {
+            initializePlayer(token);
+        }
+    };
+
+    // Check for access token in URL after auth
+    window.addEventListener('load', () => {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get('access_token');
+        
+        if (accessToken) {
+            localStorage.setItem('spotify_token', accessToken);
+            initializePlayer(accessToken);
+            window.location.hash = '';
+        }
+    });
+    </script>
+
+    <script>
+    function initializePlayer(token) {
+        const player = new Spotify.Player({
+            name: 'Portfolio Music Player',
+            getOAuthToken: cb => { cb(token); }
+        });
+
+        // Error handling
+        player.addListener('initialization_error', ({ message }) => { showToast('Failed to initialize player: ' + message); });
+        player.addListener('authentication_error', ({ message }) => { showToast('Authentication failed: ' + message); });
+        player.addListener('account_error', ({ message }) => { showToast('Account error: ' + message); });
+        player.addListener('playback_error', ({ message }) => { showToast('Playback error: ' + message); });
+
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+            localStorage.setItem('spotify_device_id', device_id);
+            showToast('Connected to Spotify! 🎵');
+        });
+
+        player.connect();
+    }
+
+    function connectToSpotify() {
+        const scope = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state';
+        const authUrl = `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(SPOTIFY_REDIRECT_URI)}&scope=${encodeURIComponent(scope)}`;
+        window.location.href = authUrl;
+    }
+    </script>
+
+    <script>
+    function updateNowPlaying(track) {
+        const titleEl = document.getElementById('now-playing-title');
+        const artistEl = document.getElementById('now-playing-artist');
+        const artEl = document.getElementById('now-playing-art');
+        
+        if (track) {
+            titleEl.textContent = track.name;
+            artistEl.textContent = track.artists.map(a => a.name).join(', ');
+            if (track.album.images[0]) {
+                artEl.innerHTML = `<img src="${track.album.images[0].url}" alt="Album Art" class="w-full h-full object-cover rounded-lg">`;
+            }
+        }
+    }
+
+    // Update the player initialization
+    function initializePlayer(token) {
+        const player = new Spotify.Player({
+            name: 'Portfolio Player',
+            getOAuthToken: cb => { cb(token); }
+        });
+
+        player.addListener('player_state_changed', state => {
+            if (state && state.track_window.current_track) {
+                updateNowPlaying(state.track_window.current_track);
+            }
+        });
+
+        const playPauseBtn = document.getElementById('play-pause');
+        playPauseBtn.addEventListener('click', () => {
+            player.togglePlay();
+        });
+
+        player.connect();
+    }
+    </script>
 </body>
 </html>
