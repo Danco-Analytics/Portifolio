@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>D&H Collective – Data & Design Freelance Agency</title>
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', 'Space Grotesk', sans-serif; }
+        .font-heading { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
+    <!-- WhatsApp Floating Chat Button -->
+    <a id="floating-whatsapp" href="https://wa.me/254742007277" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="interactive-element p-3 rounded-full bg-whatsapp-green text-white shadow-lg hover:bg-whatsapp-green/90 fixed bottom-20 right-6 z-50">
+        <i data-lucide="message-circle" class="h-6 w-6" aria-hidden="true"></i>
+    </a>
+    <!-- ... preloader, canvas, etc ... -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-glass-light dark:bg-glass-dark border-b border-secondary-text/10 dark:border-dark-secondary-text/10 h-16">
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 transition-all duration-300">
+                <a href="#hero" class="flex items-center space-x-2 group" aria-label="D&H Collective - Home">
+                     <img src="assets/dh-logo.png" alt="D&H Collective Logo" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-5deg]" aria-hidden="true" onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<span class=\'text-xl font-bold text-accent dark:text-dark-accent\'>D&H</span>');">
+                     <span class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading group-hover:opacity-80 transition-opacity duration-300">
+                        D&H Collective
+                    </span>
+                </a>
+                <nav class="hidden md:flex space-x-6" id="desktop-nav" aria-label="Main navigation">
+                     <a href="#about" data-section="about" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">About Us <span class="active-underline"></span></a>
+                     <a href="#services" data-section="services" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Services <span class="active-underline"></span></a>
+                     <a href="#projects" data-section="projects" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Projects <span class="active-underline"></span></a>
+                     <a href="#founders" data-section="founders" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Meet the Founders <span class="active-underline"></span></a>
+                     <a href="#testimonials" data-section="testimonials" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Testimonials <span class="active-underline"></span></a>
+                     <a href="#pricing" data-section="pricing" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Pricing <span class="active-underline"></span></a>
+                     <a href="#blog" data-section="blog" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Blog <span class="active-underline"></span></a>
+                     <a href="#contact" data-section="contact" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 relative text-secondary-text dark:text-dark-secondary-text hover:text-primary-text dark:hover:text-dark-primary-text">Contact <span class="active-underline"></span></a>
+                </nav>
+                <div class="flex items-center space-x-2">
+                    <a href="https://wa.me/254742007277" target="_blank" rel="noopener" class="hidden md:inline-flex items-center px-4 py-2 bg-whatsapp-green text-white rounded-full font-medium shadow hover:bg-whatsapp-green/90 transition-all duration-200"><i data-lucide="message-circle" class="w-5 h-5 mr-2"></i>Chat Now</a>
+                    <!-- ... theme toggle and mobile menu ... -->
+                </div>
+            </div>
+        </div>
+        <!-- ... mobile menu ... -->
+    </header>
+    <div id="main-content-container">
+        <main>
+            <section id="hero" class="h-screen flex flex-col items-center justify-center text-center relative overflow-hidden px-4 pt-16">
+                <!-- ... wave background ... -->
+                <div class="relative z-10 reveal-hidden">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-primary-text dark:text-dark-primary-text font-heading leading-tight tracking-tight">
+                        Where Data Meets Design.<br class="hidden md:block" />
+                        <span class="text-accent dark:text-dark-accent">D&H Collective</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text mb-8 max-w-2xl mx-auto font-body leading-relaxed">
+                        Welcome to D&H Collective, your trusted partner in the world of digital transformation. We are not just another agency—we are your strategic allies, your creative technologists, and your relentless problem-solvers. From the first spark of an idea to the final line of code, we walk with you every step of the way, ensuring your business not only keeps up with the times, but sets the pace. Our Nairobi-based team blends deep technical expertise with a passion for design, delivering solutions that are as beautiful as they are powerful. Ready to build something extraordinary? Let's talk.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+                        <a href="#contact" class="interactive-element group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black font-semibold rounded-lg shadow-lg hover:shadow-accent/30 dark:hover:shadow-dark-accent/30 transition-all duration-300 ease-out overflow-hidden transform hover:-translate-y-1 hover:scale-103 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent">Request a Quote<i data-lucide="arrow-right" class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true"></i></a>
+                        <a href="#projects" class="interactive-element group relative inline-flex items-center justify-center px-8 py-3 bg-transparent border-2 border-accent-secondary dark:border-dark-accent-secondary text-secondary-text dark:text-dark-secondary-text font-semibold rounded-lg shadow-md hover:shadow-accent-secondary/20 dark:hover:shadow-dark-accent-secondary/20 hover:bg-accent-secondary/10 dark:hover:bg-dark-accent-secondary/20 hover:text-primary-text dark:hover:text-dark-primary-text transition-all duration-300 ease-out overflow-hidden transform hover:-translate-y-1 hover:scale-103 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-secondary dark:focus:ring-dark-accent-secondary">View Our Work<i data-lucide="eye" class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true"></i></a>
+                        <a href="https://wa.me/254742007277" target="_blank" rel="noopener" class="interactive-element group relative inline-flex items-center justify-center px-8 py-3 bg-whatsapp-green text-white font-semibold rounded-lg shadow-md hover:bg-whatsapp-green/90 transition-all duration-300 ease-out overflow-hidden transform hover:-translate-y-1 hover:scale-103 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-whatsapp-green">Chat on WhatsApp<i data-lucide="message-circle" class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <span class="text-xs text-secondary-text dark:text-dark-secondary-text font-mono">Nairobi, Kenya • Serving clients worldwide</span>
+                    </div>
+                </div>
+                <!-- ... chevron down ... -->
+            </section>
+            <!-- Animated Counters/Stats Section -->
+            <section id="stats" class="w-full py-16 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden">
+                <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <div class="text-4xl md:text-5xl font-bold text-accent dark:text-dark-accent mb-2 counter" data-target="120">0</div>
+                        <div class="text-sm text-secondary-text dark:text-dark-secondary-text">Projects Delivered</div>
+                        <p class="text-xs text-secondary-text dark:text-dark-secondary-text mt-2">From complex data platforms to stunning web apps, our portfolio is a testament to our relentless pursuit of excellence and our clients' trust in our expertise.</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl md:text-5xl font-bold text-accent-secondary dark:text-dark-accent-secondary mb-2 counter" data-target="8">0</div>
+                        <div class="text-sm text-secondary-text dark:text-dark-secondary-text">Years Experience</div>
+                        <p class="text-xs text-secondary-text dark:text-dark-secondary-text mt-2">With nearly a decade of hands-on experience, we bring a wealth of knowledge and a proven track record to every project we undertake.</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl md:text-5xl font-bold text-emerald-green mb-2 counter" data-target="99">0</div>
+                        <div class="text-sm text-secondary-text dark:text-dark-secondary-text">Client Satisfaction (%)</div>
+                        <p class="text-xs text-secondary-text dark:text-dark-secondary-text mt-2">Our clients' happiness is our north star. We pride ourselves on delivering not just results, but remarkable experiences and lasting partnerships.</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl md:text-5xl font-bold text-sandstone mb-2 counter" data-target="500">0</div>
+                        <div class="text-sm text-secondary-text dark:text-dark-secondary-text">Cups of Coffee</div>
+                        <p class="text-xs text-secondary-text dark:text-dark-secondary-text mt-2">Fueling late-night sprints and early-morning brainstorms, coffee is the unsung hero behind our most creative solutions.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Services Grid Section -->
+            <section id="services" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden pt-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Our Services: Solutions That Move You Forward</h2>
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Data Science & AI -->
+                    <div class="service-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300 cursor-pointer" tabindex="0" role="button" aria-haspopup="dialog" data-service="ai">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i data-lucide="brain-circuit" class="w-10 h-10 text-accent dark:text-dark-accent"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Data Science & AI</h3>
+                        </div>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4">From predictive modeling in finance and agriculture to custom dashboards and machine learning pipelines, we turn raw data into actionable intelligence. Our solutions are designed to empower your business with clarity, foresight, and a competitive edge.</p>
+                        <button class="request-service-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all">Request Service</button>
+                    </div>
+                    <!-- Web & Software Development -->
+                    <div class="service-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300 cursor-pointer" tabindex="0" role="button" aria-haspopup="dialog" data-service="webdev">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i data-lucide="code-2" class="w-10 h-10 text-accent-secondary dark:text-dark-accent-secondary"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Web & Software Development</h3>
+                        </div>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4">We build robust, scalable, and visually stunning web applications, business platforms, and custom APIs. Whether you need a new website, a complex dashboard, or a full-stack solution, our code is clean, secure, and future-proof.</p>
+                        <button class="request-service-btn px-4 py-2 rounded-full bg-accent-secondary/10 dark:bg-dark-accent-secondary/10 text-accent-secondary dark:text-dark-accent-secondary text-sm font-medium hover:bg-accent-secondary/20 dark:hover:bg-dark-accent-secondary/20 transition-all">Request Service</button>
+                    </div>
+                    <!-- Strategy & Digital Consulting -->
+                    <div class="service-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300 cursor-pointer" tabindex="0" role="button" aria-haspopup="dialog" data-service="consulting">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i data-lucide="lightbulb" class="w-10 h-10 text-emerald-green"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Strategy & Digital Consulting</h3>
+                        </div>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4">Our consulting services help you make the right technology choices, plan MVPs, validate business models, and prepare for investment. We bring clarity to complexity, ensuring your digital journey is smooth and successful.</p>
+                        <button class="request-service-btn px-4 py-2 rounded-full bg-emerald-green/10 text-emerald-green text-sm font-medium hover:bg-emerald-green/20 transition-all">Request Service</button>
+                    </div>
+                    <!-- UI/UX & Systems Design -->
+                    <div class="service-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300 cursor-pointer" tabindex="0" role="button" aria-haspopup="dialog" data-service="uiux">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i data-lucide="layout" class="w-10 h-10 text-sandstone"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">UI/UX & Systems Design</h3>
+                        </div>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4">Led by Khadija, our design team crafts intuitive, beautiful, and conversion-focused user experiences. From wireframes to onboarding flows, we ensure every interaction is purposeful and delightful.</p>
+                        <button class="request-service-btn px-4 py-2 rounded-full bg-sandstone/10 text-sandstone text-sm font-medium hover:bg-sandstone/20 transition-all">Request Service</button>
+                    </div>
+                    <!-- Freelance Support & Collaboration -->
+                    <div class="service-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300 cursor-pointer" tabindex="0" role="button" aria-haspopup="dialog" data-service="freelance">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i data-lucide="handshake" class="w-10 h-10 text-accent"></i>
+                            <h3 class="text-2xl font-semibold text-primary-text dark:text-dark-primary-text font-heading">Freelance Support & Collaboration</h3>
+                        </div>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4">Need a reliable partner for your next big project? We offer contract-based delivery, long-term tech support, and agile handoff for teams that want to move fast and stay flexible.</p>
+                        <button class="request-service-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all">Request Service</button>
+                    </div>
+                </div>
+                <!-- Service Modals (hidden by default, shown on click) -->
+                <div id="service-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+                    <div class="bg-glass-light dark:bg-glass-dark rounded-xl shadow-2xl max-w-lg w-full p-8 relative">
+                        <button id="close-service-modal" class="absolute top-3 right-3 p-2 rounded-full bg-accent text-white hover:bg-accent-secondary transition-colors"><i data-lucide="x"></i></button>
+                        <div id="service-modal-content"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- Projects/Case Studies Section -->
+            <section id="projects" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden pt-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Case Studies & Projects</h2>
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <button class="project-filter-btn px-4 py-2 rounded-full bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent text-sm font-medium hover:bg-accent/20 dark:hover:bg-dark-accent/20 transition-all active" data-filter="all">All</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-full bg-accent-secondary/10 dark:bg-dark-accent-secondary/10 text-accent-secondary dark:text-dark-accent-secondary text-sm font-medium hover:bg-accent-secondary/20 dark:hover:bg-dark-accent-secondary/20 transition-all" data-filter="web">Web</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-full bg-emerald-green/10 text-emerald-green text-sm font-medium hover:bg-emerald-green/20 transition-all" data-filter="ai">AI</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-full bg-sandstone/10 text-sandstone text-sm font-medium hover:bg-sandstone/20 transition-all" data-filter="design">Design</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="project-cards-container">
+                    <!-- Example Project Card -->
+                    <div class="project-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg reveal-hidden group hover:border-accent dark:hover:border-dark-accent transition-all duration-300" data-category="ai web">
+                        <div class="flex items-center gap-4 mb-4">
+                            <img src="assets/investwise.png" alt="InvestWise Predictor" class="w-16 h-16 rounded-lg object-cover">
+                            <div>
+                                <h3 class="text-xl font-bold text-accent dark:text-dark-accent font-heading mb-1">InvestWise Predictor</h3>
+                                <div class="flex gap-2 text-xs font-mono">
+                                    <span class="bg-accent/10 text-accent px-2 py-1 rounded-full">AI</span>
+                                    <span class="bg-accent-secondary/10 text-accent-secondary px-2 py-1 rounded-full">Web</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-2 text-secondary-text dark:text-dark-secondary-text font-body">A neural network-powered investment advisory engine that analyzes economic data to deliver actionable insights for investors. Built for reliability, scalability, and real-world impact.</p>
+                        <ul class="mb-2 text-xs text-secondary-text dark:text-dark-secondary-text font-mono list-disc list-inside">
+                            <li><strong>Problem:</strong> Investors needed data-driven, unbiased guidance in a volatile market.</li>
+                            <li><strong>Solution:</strong> Custom ML models, real-time data pipelines, and a user-friendly dashboard.</li>
+                            <li><strong>Impact:</strong> Improved decision-making, increased user trust, and measurable ROI for clients.</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="bg-accent/10 text-accent px-2 py-1 rounded-full text-xs font-mono">Python</span>
+                            <span class="bg-accent-secondary/10 text-accent-secondary px-2 py-1 rounded-full text-xs font-mono">TensorFlow</span>
+                            <span class="bg-emerald-green/10 text-emerald-green px-2 py-1 rounded-full text-xs font-mono">React</span>
+                        </div>
+                        <a href="#" class="text-accent dark:text-dark-accent hover:underline font-mono text-sm">View Case Study</a>
+                    </div>
+                    <!-- Add more project cards as needed, with different categories -->
+                    <div class="project-card bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent-secondary/20 dark:border-dark-accent-secondary/20 rounded-xl p-8 shadow-lg reveal-hidden group hover:border-accent-secondary dark:hover:border-dark-accent-secondary transition-all duration-300" data-category="web design">
+                        <div class="flex items-center gap-4 mb-4">
+                            <img src="assets/metcom.png" alt="Metcom Platform" class="w-16 h-16 rounded-lg object-cover">
+                            <div>
+                                <h3 class="text-xl font-bold text-accent-secondary dark:text-dark-accent-secondary font-heading mb-1">Metcom Platform</h3>
+                                <div class="flex gap-2 text-xs font-mono">
+                                    <span class="bg-accent-secondary/10 text-accent-secondary px-2 py-1 rounded-full">Web</span>
+                                    <span class="bg-sandstone/10 text-sandstone px-2 py-1 rounded-full">Design</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-2 text-secondary-text dark:text-dark-secondary-text font-body">A comprehensive business management platform for cooperatives, featuring custom CMS, secure authentication, and a beautiful, intuitive UI designed for real users.</p>
+                        <ul class="mb-2 text-xs text-secondary-text dark:text-dark-secondary-text font-mono list-disc list-inside">
+                            <li><strong>Problem:</strong> Cooperatives needed a digital solution to streamline operations and improve transparency.</li>
+                            <li><strong>Solution:</strong> Modular web app with role-based dashboards, reporting, and seamless onboarding.</li>
+                            <li><strong>Impact:</strong> Increased efficiency, reduced paperwork, and happier stakeholders.</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="bg-accent-secondary/10 text-accent-secondary px-2 py-1 rounded-full text-xs font-mono">Django</span>
+                            <span class="bg-sandstone/10 text-sandstone px-2 py-1 rounded-full text-xs font-mono">Tailwind</span>
+                            <span class="bg-emerald-green/10 text-emerald-green px-2 py-1 rounded-full text-xs font-mono">PostgreSQL</span>
+                        </div>
+                        <a href="#" class="text-accent-secondary dark:text-dark-accent-secondary hover:underline font-mono text-sm">View Case Study</a>
+                    </div>
+                    <!-- More projects can be added here -->
+                </div>
+            </section>
+            <!-- Client Logos/Partners Bar -->
+            <section id="clients" class="w-full py-12 px-4 md:px-8 lg:px-16 bg-glass-light dark:bg-glass-dark backdrop-blur-lg border-t border-b border-accent/10 dark:border-dark-accent/10 reveal-hidden">
+                <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-8">
+                    <img src="assets/client1.png" alt="Client 1" class="h-12 grayscale opacity-70 hover:opacity-100 transition-all duration-200">
+                    <img src="assets/client2.png" alt="Client 2" class="h-12 grayscale opacity-70 hover:opacity-100 transition-all duration-200">
+                    <img src="assets/client3.png" alt="Client 3" class="h-12 grayscale opacity-70 hover:opacity-100 transition-all duration-200">
+                    <img src="assets/client4.png" alt="Client 4" class="h-12 grayscale opacity-70 hover:opacity-100 transition-all duration-200">
+                    <img src="assets/client5.png" alt="Client 5" class="h-12 grayscale opacity-70 hover:opacity-100 transition-all duration-200">
+                </div>
+            </section>
+
+            <!-- About/Founders Section with Video Placeholders -->
+            <section id="about" class="min-h-screen w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden pt-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">About Us: Meet the Minds Behind D&H</h2>
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                    <!-- Daniel -->
+                    <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg reveal-hidden flex flex-col items-center">
+                        <div class="w-32 h-32 mb-4 rounded-full overflow-hidden border-4 border-accent dark:border-dark-accent flex items-center justify-center bg-accent/10 dark:bg-dark-accent/10">
+                            <!-- Video Placeholder -->
+                            <video width="100%" height="100%" controls poster="assets/daniel.jpg" class="rounded-full object-cover">
+                                <source src="assets/daniel-intro.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <h3 class="text-2xl font-bold text-accent dark:text-dark-accent font-heading mb-1">Daniel Wanjala</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono mb-2">Lead Developer / Machine Learning Engineer</p>
+                        <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">Daniel is a certified data scientist and full-stack developer, known for his ability to architect scalable software and intelligent predictive models. He's the creator behind InvestWise Predictor, a sophisticated investment advisory engine powered by neural networks and economic data. Daniel's portfolio includes several production-ready platforms such as metcom.ke and marda.co.ke, and he brings years of experience in both backend engineering and ML workflows. His technical toolkit includes Python, Django, React, TensorFlow, PostgreSQL, and advanced deployment tools like Docker and Redis. With a background in both software development and data science, Daniel builds with both logic and foresight—ensuring every solution is ready for the real world.</p>
+                        <blockquote class="italic text-accent dark:text-dark-accent border-l-4 border-accent dark:border-dark-accent pl-4 mb-4">“I don't just build systems. I build things people can rely on.”</blockquote>
+                        <div class="flex gap-4 mt-2">
+                            <a href="https://github.com/MadScie254" target="_blank" rel="noopener" class="text-accent dark:text-dark-accent hover:underline font-mono">GitHub</a>
+                            <a href="https://www.linkedin.com/in/daniel-wanjala-912b8b17b/" target="_blank" rel="noopener" class="text-accent dark:text-dark-accent hover:underline font-mono">LinkedIn</a>
+                            <a href="mailto:dmwanjala254@gmail.com" class="text-accent dark:text-dark-accent hover:underline font-mono">Email</a>
+                        </div>
+                    </div>
+                    <!-- Khadija -->
+                    <div class="bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-accent-secondary/20 dark:border-dark-accent-secondary/20 rounded-xl p-8 shadow-lg reveal-hidden flex flex-col items-center">
+                        <div class="w-32 h-32 mb-4 rounded-full overflow-hidden border-4 border-accent-secondary dark:border-dark-accent-secondary flex items-center justify-center bg-accent-secondary/10 dark:bg-dark-accent-secondary/10">
+                            <!-- Video Placeholder -->
+                            <video width="100%" height="100%" controls poster="assets/khadija.jpg" class="rounded-full object-cover">
+                                <source src="assets/khadija-intro.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <h3 class="text-2xl font-bold text-accent-secondary dark:text-dark-accent-secondary font-heading mb-1">Khadija Khalid</h3>
+                        <p class="text-sm text-secondary-text dark:text-dark-secondary-text font-mono mb-2">UI/UX & Strategy Lead</p>
+                        <p class="mb-4 text-secondary-text dark:text-dark-secondary-text font-body">Khadija is a strategic thinker with a passion for transforming ideas into actionable systems. Her expertise lies in research-driven business strategy, digital storytelling, and product lifecycle mapping. At D&H, she focuses on helping clients align their digital goals with structured delivery—balancing design, clarity, and measurable outcomes. With an eye for detail and a background in operations and communication, Khadija helps bring projects from abstract to executable. She is the voice behind the user-first mindset in all our work—ensuring every product speaks clearly to its intended audience.</p>
+                        <blockquote class="italic text-accent-secondary dark:text-dark-accent-secondary border-l-4 border-accent-secondary dark:border-dark-accent-secondary pl-4 mb-4">“If a solution isn't clear, it won't last. My job is to keep it clear and keep it moving.”</blockquote>
+                        <div class="flex gap-4 mt-2">
+                            <a href="#" class="text-accent-secondary dark:text-dark-accent-secondary hover:underline font-mono">LinkedIn</a>
+                            <a href="mailto:khadija@email.com" class="text-accent-secondary dark:text-dark-accent-secondary hover:underline font-mono">Email</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Carousel -->
+            <section id="testimonials" class="w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden pt-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">What Our Clients Say</h2>
+                <div class="max-w-4xl mx-auto relative">
+                    <div class="testimonial-carousel flex overflow-x-auto gap-8 pb-4 snap-x snap-mandatory">
+                        <!-- Testimonial 1 -->
+                        <div class="testimonial-card min-w-[320px] max-w-md bg-glass-light dark:bg-glass-dark border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg snap-center">
+                            <p class="text-lg text-primary-text dark:text-dark-primary-text font-body mb-4">"D&H Collective took our scattered data and turned it into a powerful dashboard that changed how we make decisions. Their attention to detail and commitment to our success was unmatched."</p>
+                            <div class="flex items-center gap-4 mt-4">
+                                <img src="assets/client1.png" alt="Client 1" class="w-12 h-12 rounded-full object-cover">
+                                <div>
+                                    <div class="font-bold text-accent dark:text-dark-accent">Jane Mwangi</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">COO, AgriTech Solutions</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Testimonial 2 -->
+                        <div class="testimonial-card min-w-[320px] max-w-md bg-glass-light dark:bg-glass-dark border border-accent-secondary/20 dark:border-dark-accent-secondary/20 rounded-xl p-8 shadow-lg snap-center">
+                            <p class="text-lg text-primary-text dark:text-dark-primary-text font-body mb-4">"We needed a website that could handle complex workflows and look great on any device. Daniel and Khadija delivered beyond our expectations. The process was smooth, transparent, and even fun!"</p>
+                            <div class="flex items-center gap-4 mt-4">
+                                <img src="assets/client2.png" alt="Client 2" class="w-12 h-12 rounded-full object-cover">
+                                <div>
+                                    <div class="font-bold text-accent-secondary dark:text-dark-accent-secondary">Samuel Otieno</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">Founder, Metcom Cooperative</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Testimonial 3 -->
+                        <div class="testimonial-card min-w-[320px] max-w-md bg-glass-light dark:bg-glass-dark border border-emerald-green/20 rounded-xl p-8 shadow-lg snap-center">
+                            <p class="text-lg text-primary-text dark:text-dark-primary-text font-body mb-4">"The D&H team brought our vision to life with a custom app that's both beautiful and robust. Their expertise in both design and data is rare—and invaluable."</p>
+                            <div class="flex items-center gap-4 mt-4">
+                                <img src="assets/client3.png" alt="Client 3" class="w-12 h-12 rounded-full object-cover">
+                                <div>
+                                    <div class="font-bold text-emerald-green">Fatima Noor</div>
+                                    <div class="text-xs text-secondary-text dark:text-dark-secondary-text">Product Manager, Marda Digital</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Table/Packages -->
+            <section id="pricing" class="w-full py-20 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden pt-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Flexible Packages for Every Ambition</h2>
+                <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Starter -->
+                    <div class="pricing-card bg-glass-light dark:bg-glass-dark border border-accent/20 dark:border-dark-accent/20 rounded-xl p-8 shadow-lg flex flex-col items-center">
+                        <h3 class="text-xl font-bold text-accent dark:text-dark-accent mb-2">Starter</h3>
+                        <div class="text-3xl font-bold mb-4">$499</div>
+                        <ul class="mb-6 text-secondary-text dark:text-dark-secondary-text text-sm list-disc list-inside">
+                            <li>1 custom landing page or dashboard</li>
+                            <li>Basic analytics setup</li>
+                            <li>Email support</li>
+                            <li>2 rounds of revisions</li>
+                        </ul>
+                        <a href="#contact" class="px-6 py-2 rounded-full bg-accent text-white font-medium hover:bg-accent-secondary transition-all">Get Started</a>
+                    </div>
+                    <!-- Growth -->
+                    <div class="pricing-card bg-glass-light dark:bg-glass-dark border border-accent-secondary/20 dark:border-dark-accent-secondary/20 rounded-xl p-8 shadow-lg flex flex-col items-center scale-105">
+                        <h3 class="text-xl font-bold text-accent-secondary dark:text-dark-accent-secondary mb-2">Growth</h3>
+                        <div class="text-3xl font-bold mb-4">$1,499</div>
+                        <ul class="mb-6 text-secondary-text dark:text-dark-secondary-text text-sm list-disc list-inside">
+                            <li>Up to 5 custom pages or dashboards</li>
+                            <li>Advanced analytics & reporting</li>
+                            <li>Priority email & chat support</li>
+                            <li>Branding & UI/UX review</li>
+                            <li>4 rounds of revisions</li>
+                        </ul>
+                        <a href="#contact" class="px-6 py-2 rounded-full bg-accent-secondary text-white font-medium hover:bg-accent transition-all">Choose Growth</a>
+                    </div>
+                    <!-- Enterprise -->
+                    <div class="pricing-card bg-glass-light dark:bg-glass-dark border border-emerald-green/20 rounded-xl p-8 shadow-lg flex flex-col items-center">
+                        <h3 class="text-xl font-bold text-emerald-green mb-2">Enterprise</h3>
+                        <div class="text-3xl font-bold mb-4">Custom</div>
+                        <ul class="mb-6 text-secondary-text dark:text-dark-secondary-text text-sm list-disc list-inside">
+                            <li>Unlimited pages, dashboards, or apps</li>
+                            <li>Full-stack development & AI integration</li>
+                            <li>Dedicated project manager</li>
+                            <li>On-site or virtual workshops</li>
+                            <li>Unlimited revisions</li>
+                        </ul>
+                        <a href="#contact" class="px-6 py-2 rounded-full bg-emerald-green text-white font-medium hover:bg-accent transition-all">Request Quote</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Accordion -->
+            <section id="faq" class="w-full py-20 px-4 md:px-8 lg:px-16 bg-primary-bg dark:bg-dark-primary-bg reveal-hidden pt-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading tracking-tight reveal-hidden">Frequently Asked Questions</h2>
+                <div class="max-w-3xl mx-auto">
+                    <div class="faq-item border-b border-accent/10 dark:border-dark-accent/10 py-6">
+                        <button class="faq-question w-full text-left flex justify-between items-center text-lg font-semibold text-primary-text dark:text-dark-primary-text focus:outline-none">
+                            What types of businesses do you work with?
+                            <span class="ml-2"><i data-lucide="chevron-down"></i></span>
+                        </button>
+                        <div class="faq-answer mt-2 text-secondary-text dark:text-dark-secondary-text hidden">We work with startups, SMEs, non-profits, and established enterprises across a wide range of industries. If you have a digital challenge, we're ready to help.</div>
+                    </div>
+                    <div class="faq-item border-b border-accent/10 dark:border-dark-accent/10 py-6">
+                        <button class="faq-question w-full text-left flex justify-between items-center text-lg font-semibold text-primary-text dark:text-dark-primary-text focus:outline-none">
+                            How long does a typical project take?
+                            <span class="ml-2"><i data-lucide="chevron-down"></i></span>
+                        </button>
+                        <div class="faq-answer mt-2 text-secondary-text dark:text-dark-secondary-text hidden">Project timelines vary based on complexity and scope. A simple landing page might take 2 weeks, while a full platform could take 2-3 months. We always provide a clear timeline before starting.</div>
+                    </div>
+                    <div class="faq-item border-b border-accent/10 dark:border-dark-accent/10 py-6">
+                        <button class="faq-question w-full text-left flex justify-between items-center text-lg font-semibold text-primary-text dark:text-dark-primary-text focus:outline-none">
+                            Do you offer ongoing support?
+                            <span class="ml-2"><i data-lucide="chevron-down"></i></span>
+                        </button>
+                        <div class="faq-answer mt-2 text-secondary-text dark:text-dark-secondary-text hidden">Absolutely! We offer maintenance, updates, and long-term support packages to keep your digital assets running smoothly.</div>
+                    </div>
+                    <div class="faq-item border-b border-accent/10 dark:border-dark-accent/10 py-6">
+                        <button class="faq-question w-full text-left flex justify-between items-center text-lg font-semibold text-primary-text dark:text-dark-primary-text focus:outline-none">
+                            Can you help with both design and development?
+                            <span class="ml-2"><i data-lucide="chevron-down"></i></span>
+                        </button>
+                        <div class="faq-answer mt-2 text-secondary-text dark:text-dark-secondary-text hidden">Yes! Our team covers the full spectrum from UI/UX design to backend engineering and AI. You get a seamless, end-to-end solution.</div>
+                    </div>
+                    <div class="faq-item border-b border-accent/10 dark:border-dark-accent/10 py-6">
+                        <button class="faq-question w-full text-left flex justify-between items-center text-lg font-semibold text-primary-text dark:text-dark-primary-text focus:outline-none">
+                            How do I get started?
+                            <span class="ml-2"><i data-lucide="chevron-down"></i></span>
+                        </button>
+                        <div class="faq-answer mt-2 text-secondary-text dark:text-dark-secondary-text hidden">Just <a href="#contact" class="text-accent dark:text-dark-accent underline">contact us</a> with your idea or challenge. We'll schedule a free consultation to discuss your needs and map out the next steps.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html> 
