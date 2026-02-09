@@ -934,33 +934,6 @@
              }
         })();
     </script>
-
-    <!-- Add Spotify SDK script in head -->
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-
-    <!-- Add before closing head tag -->
-    <script>
-    window.onSpotifyWebPlaybackSDKReady = () => {
-        const token = 'YOUR_ACCESS_TOKEN'; // We'll handle this with auth flow
-        const player = new Spotify.Player({
-            name: 'Daniel\'s Portfolio Player',
-            getOAuthToken: cb => { cb(token); },
-            volume: 0.5
-        });
-
-        // Ready
-        player.addListener('ready', ({ device_id }) => {
-            console.log('Ready with Device ID', device_id);
-        });
-
-        // Not Ready
-        player.addListener('not_ready', ({ device_id }) => {
-            console.log('Device ID has gone offline', device_id);
-        });
-
-        player.connect();
-    };
-    </script>
 </head>
 <body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
 
