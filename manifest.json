@@ -1,0 +1,28 @@
+{
+  "name": "Daniel Wanjala - Data Scientist & ML Engineer",
+  "short_name": "DW Portfolio",
+  "description": "Portfolio showcasing data science and machine learning projects by Daniel Wanjala",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0C10",
+  "theme_color": "#2ECC71",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["portfolio", "technology", "data science"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}

@@ -4029,5 +4029,45 @@ n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transiti
         player.connect();
     }
     </script>
+
+    <!-- Lazy Loading for Iframes -->
+    <script>
+    (function() {
+        // Intersection Observer for lazy loading iframes
+        const iframeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const iframe = entry.target;
+                    if (iframe.dataset.src) {
+                        iframe.src = iframe.dataset.src;
+                        iframe.removeAttribute('data-src');
+                        iframeObserver.unobserve(iframe);
+                    }
+                }
+            });
+        }, { 
+            rootMargin: '100px',
+            threshold: 0.1
+        });
+
+        // Observe all lazy iframes
+        document.querySelectorAll('iframe.lazy-iframe[data-src]').forEach(iframe => {
+            iframeObserver.observe(iframe);
+        });
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    })();
+    </script>
 </body>
 </html>
