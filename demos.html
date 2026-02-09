@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Demos - Daniel Wanjala</title>
+    <meta name="description" content="Interactive demos and live showcases of data science and machine learning projects by Daniel Wanjala.">
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="shortcut icon" href="assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', 'IBM Plex Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-heading { font-family: 'Satoshi', 'Space Grotesk', sans-serif; }
+        .font-body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        html { scroll-behavior: smooth; }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out; opacity: 0;
+        }
+        #mobile-menu.open { max-height: 500px; opacity: 1; }
+
+        /* Scroll Reveal */
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navbar */
+        .nav-link {
+            @apply relative text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition-colors duration-200 font-medium;
+        }
+        .nav-link.nav-active {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
+        }
+        .mobile-nav-link {
+            @apply block px-3 py-2 rounded-md text-base font-medium text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200;
+        }
+        .mobile-nav-link.nav-active {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
+        }
+
+        /* Demo Card */
+        .demo-card {
+            @apply bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl overflow-hidden transition-all duration-300;
+        }
+        .demo-card:hover {
+            @apply border-accent dark:border-dark-accent shadow-xl transform -translate-y-2;
+        }
+        .demo-card .demo-preview {
+            @apply relative aspect-video bg-secondary-bg dark:bg-dark-secondary-bg overflow-hidden;
+        }
+        .demo-card .demo-preview img {
+            @apply w-full h-full object-cover transition-transform duration-500;
+        }
+        .demo-card:hover .demo-preview img {
+            @apply scale-105;
+        }
+        .demo-card .demo-overlay {
+            @apply absolute inset-0 bg-gradient-to-t from-primary-text/80 to-transparent opacity-0 transition-opacity duration-300 flex items-end justify-center pb-6;
+        }
+        .demo-card:hover .demo-overlay {
+            @apply opacity-100;
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-bg': '#F7F7F7',
+                        'secondary-bg': '#E8E8E8',
+                        'primary-text': '#1A1A2E',
+                        'secondary-text': '#4A4A68',
+                        'accent': '#6C5CE7',
+                        'accent-secondary': '#FF6B6B',
+                        'sandstone': '#D4C5B0',
+                        'dark-primary-bg': '#0B0C10',
+                        'dark-secondary-bg': '#1F2833',
+                        'dark-primary-text': '#F7F7F7',
+                        'dark-secondary-text': '#C5C6C7',
+                        'dark-accent': '#66FCF1',
+                        'dark-accent-secondary': '#45A29E',
+                        'jet-black': '#0B0C10',
+                        'glass-light': 'rgba(247, 247, 247, 0.7)',
+                        'glass-dark': 'rgba(31, 40, 51, 0.7)',
+                    },
+                    fontFamily: {
+                        'heading': ['Satoshi', 'Space Grotesk', 'sans-serif'],
+                        'body': ['Inter', 'IBM Plex Sans', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+    <!-- Progress Bar -->
+    <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary origin-left z-50" style="transform: scaleX(0);"></div>
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-glass-light dark:bg-glass-dark border-b border-secondary-text/10 dark:border-dark-secondary-text/10 h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center space-x-2 group" aria-label="Daniel Wanjala - Home">
+                    <img src="assets/logo.png" alt="" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
+                    <span class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">
+                        Daniel Wanjala.
+                    </span>
+                </a>
+                <nav class="hidden md:flex space-x-6" aria-label="Main navigation">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="skills.html" class="nav-link">Skills</a>
+                    <a href="projects.html" class="nav-link">Projects</a>
+                    <a href="demos.html" class="nav-link nav-active">Demos</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </nav>
+                <div class="flex items-center space-x-2">
+                    <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="p-2 rounded-full text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200">
+                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden" aria-hidden="true"></i>
+                        <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5" aria-hidden="true"></i>
+                    </button>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="p-2 rounded-md text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open menu</span>
+                            <svg id="menu-icon-open" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                            <svg id="menu-icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden bg-glass-light dark:bg-glass-dark border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="mobile-nav-link">Home</a>
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="skills.html" class="mobile-nav-link">Skills</a>
+                <a href="projects.html" class="mobile-nav-link">Projects</a>
+                <a href="demos.html" class="mobile-nav-link nav-active">Demos</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-16">
+        <!-- Hero Section -->
+        <section class="py-16 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">
+                    Live Demos
+                </h1>
+                <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text leading-relaxed">
+                    Interactive demonstrations of machine learning models, data visualizations, and applications. Try them out!
+                </p>
+            </div>
+        </section>
+
+        <!-- Demos Grid -->
+        <section class="py-16 px-4 md:px-8 lg:px-16">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Demo 1 -->
+                    <article class="demo-card reveal-hidden" style="transition-delay: 100ms;">
+                        <div class="demo-preview">
+                            <div class="w-full h-full bg-gradient-to-br from-accent/20 to-accent-secondary/20 dark:from-dark-accent/20 dark:to-dark-accent-secondary/20 flex items-center justify-center">
+                                <i data-lucide="brain" class="h-20 w-20 text-accent dark:text-dark-accent opacity-50"></i>
+                            </div>
+                            <div class="demo-overlay">
+                                <a href="#" class="px-6 py-2 bg-white dark:bg-jet-black text-primary-text dark:text-dark-primary-text font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                                    Launch Demo
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">TensorFlow</span>
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">Python</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                                Sentiment Analysis Tool
+                            </h3>
+                            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                                Analyze the sentiment of any text input using a fine-tuned BERT model. Real-time inference with confidence scores.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Demo 2 -->
+                    <article class="demo-card reveal-hidden" style="transition-delay: 200ms;">
+                        <div class="demo-preview">
+                            <div class="w-full h-full bg-gradient-to-br from-green-500/20 to-blue-500/20 flex items-center justify-center">
+                                <i data-lucide="bar-chart-3" class="h-20 w-20 text-green-500 opacity-50"></i>
+                            </div>
+                            <div class="demo-overlay">
+                                <a href="#" class="px-6 py-2 bg-white dark:bg-jet-black text-primary-text dark:text-dark-primary-text font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                                    Launch Demo
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">D3.js</span>
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">React</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                                COVID-19 Data Explorer
+                            </h3>
+                            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                                Interactive visualization of global COVID-19 statistics with time-series analysis and regional comparisons.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Demo 3 -->
+                    <article class="demo-card reveal-hidden" style="transition-delay: 300ms;">
+                        <div class="demo-preview">
+                            <div class="w-full h-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                                <i data-lucide="image" class="h-20 w-20 text-purple-500 opacity-50"></i>
+                            </div>
+                            <div class="demo-overlay">
+                                <a href="#" class="px-6 py-2 bg-white dark:bg-jet-black text-primary-text dark:text-dark-primary-text font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                                    Launch Demo
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">PyTorch</span>
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">FastAPI</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                                Image Classification API
+                            </h3>
+                            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                                Upload an image and get instant classification using a ResNet model. Supports 1000+ object categories.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Demo 4 -->
+                    <article class="demo-card reveal-hidden" style="transition-delay: 400ms;">
+                        <div class="demo-preview">
+                            <div class="w-full h-full bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center">
+                                <i data-lucide="trending-up" class="h-20 w-20 text-orange-500 opacity-50"></i>
+                            </div>
+                            <div class="demo-overlay">
+                                <a href="#" class="px-6 py-2 bg-white dark:bg-jet-black text-primary-text dark:text-dark-primary-text font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                                    Launch Demo
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">Scikit-learn</span>
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">Streamlit</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                                Stock Price Predictor
+                            </h3>
+                            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                                Time-series forecasting demo using LSTM networks. Enter a stock ticker to see historical data and predictions.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Demo 5 -->
+                    <article class="demo-card reveal-hidden" style="transition-delay: 500ms;">
+                        <div class="demo-preview">
+                            <div class="w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
+                                <i data-lucide="message-square" class="h-20 w-20 text-cyan-500 opacity-50"></i>
+                            </div>
+                            <div class="demo-overlay">
+                                <a href="#" class="px-6 py-2 bg-white dark:bg-jet-black text-primary-text dark:text-dark-primary-text font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                                    Launch Demo
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">LangChain</span>
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">OpenAI</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                                Document Q&A Bot
+                            </h3>
+                            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                                RAG-powered chatbot that answers questions about uploaded PDFs. Powered by vector embeddings and GPT.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Demo 6 -->
+                    <article class="demo-card reveal-hidden" style="transition-delay: 600ms;">
+                        <div class="demo-preview">
+                            <div class="w-full h-full bg-gradient-to-br from-yellow-500/20 to-green-500/20 flex items-center justify-center">
+                                <i data-lucide="map-pin" class="h-20 w-20 text-yellow-600 opacity-50"></i>
+                            </div>
+                            <div class="demo-overlay">
+                                <a href="#" class="px-6 py-2 bg-white dark:bg-jet-black text-primary-text dark:text-dark-primary-text font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                                    Launch Demo
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">Mapbox</span>
+                                <span class="px-2 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded">GeoPandas</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                                Kenya Healthcare Facilities Map
+                            </h3>
+                            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                                Interactive geospatial visualization of healthcare facilities across Kenya with accessibility analysis.
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Coming Soon Section -->
+        <section class="py-12 px-4 md:px-8 lg:px-16 reveal-hidden">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="p-8 bg-secondary-bg/50 dark:bg-dark-secondary-bg/50 rounded-2xl border border-secondary-text/10 dark:border-dark-secondary-text/10">
+                    <i data-lucide="rocket" class="h-12 w-12 mx-auto mb-4 text-accent dark:text-dark-accent"></i>
+                    <h3 class="text-2xl font-semibold mb-3 font-heading">More Demos Coming Soon</h3>
+                    <p class="text-secondary-text dark:text-dark-secondary-text">
+                        I'm actively working on new interactive demos. Check back soon for more machine learning experiments!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Back to Home -->
+        <section class="py-8 px-4 text-center">
+            <a href="index.html" class="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black font-semibold rounded-lg shadow-lg hover:shadow-accent/30 dark:hover:shadow-dark-accent/30 transition-all duration-300 hover:-translate-y-1">
+                <i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i>
+                Back to Home
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/10 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                &copy; <span id="current-year"></span> Daniel Wanjala. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-icon-sun');
+        const moonIcon = document.getElementById('theme-icon-moon');
+        
+        function setTheme(dark) {
+            document.documentElement.classList.toggle('dark', dark);
+            sunIcon.classList.toggle('hidden', !dark);
+            moonIcon.classList.toggle('hidden', dark);
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+        }
+        
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(savedTheme === 'dark' || (!savedTheme && prefersDark));
+        
+        themeToggle.addEventListener('click', () => {
+            setTheme(!document.documentElement.classList.contains('dark'));
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            menuIconOpen.classList.toggle('hidden', isOpen);
+            menuIconClose.classList.toggle('hidden', !isOpen);
+            mobileMenuButton.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = scrollTop / scrollHeight;
+            document.getElementById('scrollProgressBar').style.transform = `scaleX(${scrollProgress})`;
+        }, { passive: true });
+
+        // Reveal animation
+        const revealElements = document.querySelectorAll('.reveal-hidden');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
