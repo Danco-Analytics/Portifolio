@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications & Research - Daniel Wanjala</title>
+    <meta name="description" content="Academic publications, research papers, and technical reports by Daniel Wanjala in data science and machine learning.">
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="shortcut icon" href="assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', 'IBM Plex Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-heading { font-family: 'Satoshi', 'Space Grotesk', sans-serif; }
+        .font-body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        html { scroll-behavior: smooth; }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out; opacity: 0;
+        }
+        #mobile-menu.open { max-height: 500px; opacity: 1; }
+
+        /* Scroll Reveal */
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navbar */
+        .nav-link {
+            @apply relative text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition-colors duration-200 font-medium;
+        }
+        .nav-link.nav-active {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
+        }
+        .mobile-nav-link {
+            @apply block px-3 py-2 rounded-md text-base font-medium text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200;
+        }
+        .mobile-nav-link.nav-active {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
+        }
+
+        /* Publication Card */
+        .publication-card {
+            @apply bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 transition-all duration-300;
+        }
+        .publication-card:hover {
+            @apply border-accent dark:border-dark-accent shadow-lg;
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-bg': '#F7F7F7',
+                        'secondary-bg': '#E8E8E8',
+                        'primary-text': '#1A1A2E',
+                        'secondary-text': '#4A4A68',
+                        'accent': '#6C5CE7',
+                        'accent-secondary': '#FF6B6B',
+                        'sandstone': '#D4C5B0',
+                        'dark-primary-bg': '#0B0C10',
+                        'dark-secondary-bg': '#1F2833',
+                        'dark-primary-text': '#F7F7F7',
+                        'dark-secondary-text': '#C5C6C7',
+                        'dark-accent': '#66FCF1',
+                        'dark-accent-secondary': '#45A29E',
+                        'jet-black': '#0B0C10',
+                        'glass-light': 'rgba(247, 247, 247, 0.7)',
+                        'glass-dark': 'rgba(31, 40, 51, 0.7)',
+                    },
+                    fontFamily: {
+                        'heading': ['Satoshi', 'Space Grotesk', 'sans-serif'],
+                        'body': ['Inter', 'IBM Plex Sans', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+    <!-- Progress Bar -->
+    <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary origin-left z-50" style="transform: scaleX(0);"></div>
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-glass-light dark:bg-glass-dark border-b border-secondary-text/10 dark:border-dark-secondary-text/10 h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center space-x-2 group" aria-label="Daniel Wanjala - Home">
+                    <img src="assets/logo.png" alt="" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
+                    <span class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">
+                        Daniel Wanjala.
+                    </span>
+                </a>
+                <nav class="hidden md:flex space-x-6" aria-label="Main navigation">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="skills.html" class="nav-link">Skills</a>
+                    <a href="projects.html" class="nav-link">Projects</a>
+                    <a href="publications.html" class="nav-link nav-active">Publications</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </nav>
+                <div class="flex items-center space-x-2">
+                    <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="p-2 rounded-full text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200">
+                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden" aria-hidden="true"></i>
+                        <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5" aria-hidden="true"></i>
+                    </button>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="p-2 rounded-md text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open menu</span>
+                            <svg id="menu-icon-open" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                            <svg id="menu-icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden bg-glass-light dark:bg-glass-dark border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="mobile-nav-link">Home</a>
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="skills.html" class="mobile-nav-link">Skills</a>
+                <a href="projects.html" class="mobile-nav-link">Projects</a>
+                <a href="publications.html" class="mobile-nav-link nav-active">Publications</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-16">
+        <!-- Hero Section -->
+        <section class="py-16 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">
+                    Publications & Research
+                </h1>
+                <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text leading-relaxed">
+                    Academic papers, technical reports, and research contributions in data science, machine learning, and healthcare analytics.
+                </p>
+            </div>
+        </section>
+
+        <!-- Publications List -->
+        <section class="py-16 px-4 md:px-8 lg:px-16">
+            <div class="max-w-4xl mx-auto space-y-8">
+                
+                <!-- Publication 1 -->
+                <article class="publication-card reveal-hidden" style="transition-delay: 100ms;">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="px-3 py-1 text-xs font-medium bg-green-500/10 text-green-600 dark:text-green-400 rounded-full">Journal Article</span>
+                        <span class="text-sm text-secondary-text dark:text-dark-secondary-text">2024</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                        Machine Learning Approaches for Hospital Readmission Prediction: A Comparative Study
+                    </h3>
+                    <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3">
+                        <span class="font-medium">D. Wanjala</span>, J. Smith, K. Omondi
+                    </p>
+                    <p class="text-secondary-text dark:text-dark-secondary-text mb-4">
+                        A comprehensive comparison of ensemble methods and deep learning architectures for predicting 30-day hospital readmissions using electronic health records.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium text-sm">
+                            <i data-lucide="file-text" class="mr-1 h-4 w-4"></i>
+                            PDF
+                        </a>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium text-sm">
+                            <i data-lucide="github" class="mr-1 h-4 w-4"></i>
+                            Code
+                        </a>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium text-sm">
+                            <i data-lucide="quote" class="mr-1 h-4 w-4"></i>
+                            Cite
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Publication 2 -->
+                <article class="publication-card reveal-hidden" style="transition-delay: 200ms;">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="px-3 py-1 text-xs font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full">Conference Paper</span>
+                        <span class="text-sm text-secondary-text dark:text-dark-secondary-text">2023</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                        Real-time Anomaly Detection in IoT Networks Using Federated Learning
+                    </h3>
+                    <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3">
+                        <span class="font-medium">D. Wanjala</span>, M. Kamau
+                    </p>
+                    <p class="text-secondary-text dark:text-dark-secondary-text mb-4">
+                        Presented at International Conference on Machine Learning and Applications. Introduces a privacy-preserving approach to network intrusion detection.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium text-sm">
+                            <i data-lucide="file-text" class="mr-1 h-4 w-4"></i>
+                            PDF
+                        </a>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium text-sm">
+                            <i data-lucide="presentation" class="mr-1 h-4 w-4"></i>
+                            Slides
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Publication 3 -->
+                <article class="publication-card reveal-hidden" style="transition-delay: 300ms;">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="px-3 py-1 text-xs font-medium bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-full">Technical Report</span>
+                        <span class="text-sm text-secondary-text dark:text-dark-secondary-text">2023</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                        Optimizing Database Query Performance Using Machine Learning: A Case Study
+                    </h3>
+                    <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3">
+                        <span class="font-medium">D. Wanjala</span>
+                    </p>
+                    <p class="text-secondary-text dark:text-dark-secondary-text mb-4">
+                        Technical deep-dive into using gradient boosting models to predict and optimize SQL query execution plans, resulting in 40% performance improvement.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium text-sm">
+                            <i data-lucide="file-text" class="mr-1 h-4 w-4"></i>
+                            PDF
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Publication 4 -->
+                <article class="publication-card reveal-hidden" style="transition-delay: 400ms;">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="px-3 py-1 text-xs font-medium bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded-full">Preprint</span>
+                        <span class="text-sm text-secondary-text dark:text-dark-secondary-text">2024</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-primary-text dark:text-dark-primary-text font-heading">
+                        Transfer Learning for Low-Resource Language NLP: Applications in Swahili Text Classification
+                    </h3>
+                    <p class="text-sm text-secondary-text dark:text-dark-secondary-text mb-3">
+                        <span class="font-medium">D. Wanjala</span>, A. Mwangi, P. Otieno
+                    </p>
+                    <p class="text-secondary-text dark:text-dark-secondary-text mb-4">
+                        Exploring multilingual transformer fine-tuning techniques to improve sentiment analysis and topic classification for Swahili language content.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium text-sm">
+                            <i data-lucide="external-link" class="mr-1 h-4 w-4"></i>
+                            arXiv
+                        </a>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium text-sm">
+                            <i data-lucide="github" class="mr-1 h-4 w-4"></i>
+                            Code
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Back to Home -->
+        <section class="py-8 px-4 text-center">
+            <a href="index.html" class="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black font-semibold rounded-lg shadow-lg hover:shadow-accent/30 dark:hover:shadow-dark-accent/30 transition-all duration-300 hover:-translate-y-1">
+                <i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i>
+                Back to Home
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/10 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                &copy; <span id="current-year"></span> Daniel Wanjala. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-icon-sun');
+        const moonIcon = document.getElementById('theme-icon-moon');
+        
+        function setTheme(dark) {
+            document.documentElement.classList.toggle('dark', dark);
+            sunIcon.classList.toggle('hidden', !dark);
+            moonIcon.classList.toggle('hidden', dark);
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+        }
+        
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(savedTheme === 'dark' || (!savedTheme && prefersDark));
+        
+        themeToggle.addEventListener('click', () => {
+            setTheme(!document.documentElement.classList.contains('dark'));
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            menuIconOpen.classList.toggle('hidden', isOpen);
+            menuIconClose.classList.toggle('hidden', !isOpen);
+            mobileMenuButton.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = scrollTop / scrollHeight;
+            document.getElementById('scrollProgressBar').style.transform = `scaleX(${scrollProgress})`;
+        }, { passive: true });
+
+        // Reveal animation
+        const revealElements = document.querySelectorAll('.reveal-hidden');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
