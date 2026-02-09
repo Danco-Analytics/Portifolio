@@ -174,37 +174,41 @@
             touch-action: manipulation;
         }
 
-        /* Mobile scroll snap */
+        /* Mobile scroll - smooth and stable */
         .scroll-snap-container {
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
+            scroll-snap-type: y proximity; /* proximity instead of mandatory for smoother feel */
+            overflow-y: auto;
             height: 100vh;
             height: calc(var(--vh, 1vh) * 100); /* Fix for mobile address bar */
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
         }
 
         .scroll-snap-item {
             scroll-snap-align: start;
-            height: 100vh;
-            height: calc(var(--vh, 1vh) * 100);
+            min-height: 100vh;
+            min-height: calc(var(--vh, 1vh) * 100);
         }
 
-        /* Mobile performance optimizations - hide heavy features */
-        .is-mobile #particle-canvas,
-        .is-mobile #neural-network,
-        .is-mobile #ai-thought-bubble,
-        .is-mobile #waveCanvas,
-        .is-mobile #skill-constellation-canvas {
-            display: none !important;
+        /* Mobile performance optimizations - graceful degradation */
+        @media (max-width: 768px) {
+            #particle-canvas,
+            #neural-network,
+            #ai-thought-bubble,
+            #waveCanvas,
+            #skill-constellation-canvas {
+                opacity: 0.3;
+                pointer-events: none;
+            }
+            lottie-player {
+                display: none !important;
+            }
         }
 
+        /* Ultra low-end device fallback via JS class */
         .is-low-end #particle-canvas,
-        .is-low-end #neural-network {
-            display: none !important;
-        }
-
-        /* Reduce Lottie animations on mobile */
-        .is-mobile lottie-player {
+        .is-low-end #neural-network,
+        .is-low-end #waveCanvas {
             display: none !important;
         }
     </style>
@@ -308,12 +312,38 @@
         }
         .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
 
-        /* Scroll Reveal Animation Base */
-        .reveal-hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .reveal-visible { opacity: 1; transform: translateY(0); }
-        .reveal-slide-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .reveal-slide-right { opacity: 0; transform: translateX(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .reveal-visible.slide-in { opacity: 1; transform: translateX(0); }
+        /* Scroll Reveal Animation Base - Stable Mobile Patterns */
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+            /* Fallbacks for mobile stability */
+            visibility: visible !important;
+            min-height: 50px;
+            position: relative;
+            z-index: 1;
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-slide-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .reveal-slide-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .reveal-visible.slide-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
         /* Staggering delay added via JS */
 
         /* Navbar Underline */
