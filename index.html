@@ -410,47 +410,17 @@
         }
         #copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
 
-        /* --- Know More Button Style --- Enhanced --- */
+        /* --- Know More Button Style --- Enhanced to match View My Work --- */
         .know-more-button {
-            @apply relative inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg shadow-md transition-all duration-300 ease-out transform hover:-translate-y-1.5 hover:scale-105 overflow-hidden; /* Increased padding/size, added overflow */
-            @apply bg-gradient-to-r from-accent/80 to-accent-secondary/80 dark:from-dark-accent/80 dark:to-dark-accent-secondary/80 text-white dark:text-jet-black;
-            @apply hover:from-accent hover:to-accent-secondary dark:hover:from-dark-accent dark:hover:to-dark-accent-secondary hover:shadow-xl; /* Enhanced hover shadow */
-            /* Ensure focus state is visible */
-            @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent focus:ring-offset-primary-bg dark:focus:ring-offset-dark-primary-bg; /* Added offset color */
-            animation: subtle-pulse 2.5s infinite ease-in-out; /* Added pulse animation */
+            @apply relative inline-flex items-center justify-center px-8 py-3 text-base font-semibold rounded-lg shadow-lg transition-all duration-300 ease-out transform hover:-translate-y-1 overflow-hidden;
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black;
+            @apply hover:shadow-accent/30 dark:hover:shadow-dark-accent/30;
+            @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent dark:focus:ring-dark-accent;
         }
 
         .know-more-button i {
-            @apply ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover:scale-110; /* Enhanced icon animation */
+            @apply ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1;
         }
-
-        /* Keyframe animation for the button pulse */
-        @keyframes subtle-pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Tailwind md shadow */
-            }
-            50% {
-                transform: scale(1.02); /* Slightly larger */
-                box-shadow: 0 10px 15px -3px rgba(108, 92, 231, 0.2), 0 4px 6px -2px rgba(108, 92, 231, 0.1); /* Accent shadow - light mode */
-            }
-        }
-        /* Dark mode pulse shadow override */
-        @keyframes subtle-pulse-dark {
-             0%, 100% {
-                 transform: scale(1);
-                 /* Adjust dark shadow if needed, using same as light for now */
-                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-             }
-             50% {
-                 transform: scale(1.02);
-                 box-shadow: 0 10px 15px -3px rgba(102, 252, 241, 0.15), 0 4px 6px -2px rgba(102, 252, 241, 0.1); /* Dark Accent shadow */
-             }
-         }
-         /* Apply dark mode animation */
-         html.dark .know-more-button {
-             animation-name: subtle-pulse-dark;
-         }
         /* --- End Know More Button Style --- */
 
 
