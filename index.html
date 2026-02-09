@@ -2227,6 +2227,44 @@ n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transiti
          * Handles interactivity, animations, theme switching, modals, etc.
          * Includes Particle Background and Skill Constellation animations.
          */
+
+        // --- Mobile Device Detection & Performance Config ---
+        (function() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+            const isLowEndDevice = navigator.hardwareConcurrency <= 4 || navigator.deviceMemory <= 4;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            window.PERFORMANCE_CONFIG = {
+                isMobile: isMobile,
+                isLowEnd: isLowEndDevice,
+                reducedMotion: prefersReducedMotion,
+                particleDensity: isMobile ? 35000 : 18000,
+                maxParticles: isMobile ? 20 : 100,
+                enableParticles: !isMobile && !prefersReducedMotion,
+                enableConstellation: !isMobile && !prefersReducedMotion,
+                enableWaveAnimation: !isMobile && !prefersReducedMotion,
+                enableNeuralNetwork: !isMobile && !prefersReducedMotion,
+                enableToneJS: !isMobile,
+                enableLottie: !isMobile
+            };
+
+            // Add mobile class to HTML for CSS targeting
+            if (isMobile) {
+                document.documentElement.classList.add('is-mobile');
+            }
+            if (isLowEndDevice) {
+                document.documentElement.classList.add('is-low-end');
+            }
+
+            // Fix viewport height for mobile browsers (address bar issue)
+            function setVH() {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
+            setVH();
+            window.addEventListener('resize', setVH, { passive: true });
+        })();
+
         document.addEventListener('DOMContentLoaded', () => {
             // --- Initialize Lucide Icons ---
             try {
@@ -2823,8 +2861,14 @@ n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transiti
             /** Creates the initial set of particles. */
             function createParticles() {
                 if (!particleCanvas) return;
+                // Skip if particles disabled on mobile
+                if (window.PERFORMANCE_CONFIG && !window.PERFORMANCE_CONFIG.enableParticles) {
+                    return;
+                }
                 particles = [];
-                const particleCount = Math.floor((particleCanvas.width * particleCanvas.height) / 18000);
+                const config = window.PERFORMANCE_CONFIG || { particleDensity: 18000, maxParticles: 100 };
+                const calculatedCount = Math.floor((particleCanvas.width * particleCanvas.height) / config.particleDensity);
+                const particleCount = Math.min(calculatedCount, config.maxParticles);
                 for (let i = 0; i < particleCount; i++) {
                     particles.push({
                         x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height,
@@ -3314,10 +3358,12 @@ n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transiti
             window.addEventListener('scroll', () => {
                 const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
                 scrollProgress = Math.min(1, window.scrollY / maxScroll);
-            });
+            }, { passive: true });
 
-            // Start animation
-            animate();
+            // Start animation - only if enabled
+            if (!window.PERFORMANCE_CONFIG || window.PERFORMANCE_CONFIG.enableWaveAnimation) {
+                animate();
+            }
 
             // Cleanup on page visibility change
             document.addEventListener('visibilitychange', () => {
@@ -3515,7 +3561,7 @@ n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transiti
                 scrollTimeout = setTimeout(() => {
                     bubble.classList.remove('thought-bubble-visible');
                 }, 1000);
-            });
+            }, { passive: true });
 
             // Start animation
             animate(0);
@@ -3637,7 +3683,7 @@ n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transiti
                     });
                     ticking = true;
                 }
-            });
+            }, { passive: true });
 
             // Toggle player visibility
             musicToggle.addEventListener('click', () => {
