@@ -200,24 +200,52 @@
             scroll-snap-type: y mandatory;
             overflow-y: scroll;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100); /* Fix for mobile address bar */
             -webkit-overflow-scrolling: touch;
         }
 
         .scroll-snap-item {
             scroll-snap-align: start;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+        }
+
+        /* Mobile performance optimizations - hide heavy features */
+        .is-mobile #particle-canvas,
+        .is-mobile #neural-network,
+        .is-mobile #ai-thought-bubble,
+        .is-mobile #waveCanvas,
+        .is-mobile #skill-constellation-canvas {
+            display: none !important;
+        }
+
+        .is-low-end #particle-canvas,
+        .is-low-end #neural-network {
+            display: none !important;
+        }
+
+        /* Reduce Lottie animations on mobile */
+        .is-mobile lottie-player {
+            display: none !important;
         }
     </style>
 
+    <!-- Resource hints for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://open.spotify.com">
+    <link rel="dns-prefetch" href="https://sdk.scdn.co">
+    <link rel="preload" href="assets/logo.png" as="image">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js" defer></script>
 
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
 
     <style>
         /* Base body styles */
