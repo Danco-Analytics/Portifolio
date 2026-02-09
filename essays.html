@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essays & Articles - Daniel Wanjala</title>
+    <meta name="description" content="Technical essays and articles on data science, machine learning, and technology by Daniel Wanjala.">
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="shortcut icon" href="assets/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Satoshi:wght@400;500;700&family=Inter:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', 'IBM Plex Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-heading { font-family: 'Satoshi', 'Space Grotesk', sans-serif; }
+        .font-body { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        html { scroll-behavior: smooth; }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out; opacity: 0;
+        }
+        #mobile-menu.open { max-height: 500px; opacity: 1; }
+
+        /* Scroll Reveal */
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navbar */
+        .nav-link {
+            @apply relative text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent transition-colors duration-200 font-medium;
+        }
+        .nav-link.nav-active {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
+        }
+        .mobile-nav-link {
+            @apply block px-3 py-2 rounded-md text-base font-medium text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200;
+        }
+        .mobile-nav-link.nav-active {
+            @apply bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent;
+        }
+
+        /* Essay Card */
+        .essay-card {
+            @apply bg-glass-light dark:bg-glass-dark backdrop-blur-lg border border-secondary-text/10 dark:border-dark-secondary-text/20 rounded-xl p-6 transition-all duration-300;
+        }
+        .essay-card:hover {
+            @apply border-accent dark:border-dark-accent shadow-lg transform -translate-y-1;
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-bg': '#F7F7F7',
+                        'secondary-bg': '#E8E8E8',
+                        'primary-text': '#1A1A2E',
+                        'secondary-text': '#4A4A68',
+                        'accent': '#6C5CE7',
+                        'accent-secondary': '#FF6B6B',
+                        'sandstone': '#D4C5B0',
+                        'dark-primary-bg': '#0B0C10',
+                        'dark-secondary-bg': '#1F2833',
+                        'dark-primary-text': '#F7F7F7',
+                        'dark-secondary-text': '#C5C6C7',
+                        'dark-accent': '#66FCF1',
+                        'dark-accent-secondary': '#45A29E',
+                        'jet-black': '#0B0C10',
+                        'glass-light': 'rgba(247, 247, 247, 0.7)',
+                        'glass-dark': 'rgba(31, 40, 51, 0.7)',
+                    },
+                    fontFamily: {
+                        'heading': ['Satoshi', 'Space Grotesk', 'sans-serif'],
+                        'body': ['Inter', 'IBM Plex Sans', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body bg-primary-bg text-primary-text dark:bg-dark-primary-bg dark:text-dark-primary-text min-h-screen relative overflow-x-hidden transition-colors duration-300">
+
+    <!-- Progress Bar -->
+    <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary origin-left z-50" style="transform: scaleX(0);"></div>
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md bg-glass-light dark:bg-glass-dark border-b border-secondary-text/10 dark:border-dark-secondary-text/10 h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center space-x-2 group" aria-label="Daniel Wanjala - Home">
+                    <img src="assets/logo.png" alt="" class="h-8 w-auto transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
+                    <span class="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">
+                        Daniel Wanjala.
+                    </span>
+                </a>
+                <nav class="hidden md:flex space-x-6" aria-label="Main navigation">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="skills.html" class="nav-link">Skills</a>
+                    <a href="projects.html" class="nav-link">Projects</a>
+                    <a href="essays.html" class="nav-link nav-active">Essays</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </nav>
+                <div class="flex items-center space-x-2">
+                    <button id="theme-toggle" aria-label="Toggle Dark/Light Mode" class="p-2 rounded-full text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent hover:bg-secondary-text/10 dark:hover:bg-dark-secondary-text/10 transition-colors duration-200">
+                        <i id="theme-icon-sun" data-lucide="sun" class="h-5 w-5 hidden" aria-hidden="true"></i>
+                        <i id="theme-icon-moon" data-lucide="moon" class="h-5 w-5" aria-hidden="true"></i>
+                    </button>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="p-2 rounded-md text-secondary-text dark:text-dark-secondary-text hover:text-accent dark:hover:text-dark-accent" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open menu</span>
+                            <svg id="menu-icon-open" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                            <svg id="menu-icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden bg-glass-light dark:bg-glass-dark border-t border-secondary-text/10 dark:border-dark-secondary-text/10" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="mobile-nav-link">Home</a>
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="skills.html" class="mobile-nav-link">Skills</a>
+                <a href="projects.html" class="mobile-nav-link">Projects</a>
+                <a href="essays.html" class="mobile-nav-link nav-active">Essays</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-16">
+        <!-- Hero Section -->
+        <section class="py-16 px-4 md:px-8 lg:px-16 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30 reveal-hidden">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary bg-clip-text text-transparent font-heading">
+                    Essays & Articles
+                </h1>
+                <p class="text-lg md:text-xl text-secondary-text dark:text-dark-secondary-text leading-relaxed">
+                    Exploring the intersection of data science, machine learning, and real-world applications through in-depth technical writing.
+                </p>
+            </div>
+        </section>
+
+        <!-- Essays Grid -->
+        <section class="py-16 px-4 md:px-8 lg:px-16">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Essay 1 -->
+                    <article class="essay-card reveal-hidden" style="transition-delay: 100ms;">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-3 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full">Machine Learning</span>
+                            <span class="text-xs text-secondary-text dark:text-dark-secondary-text">10 min read</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">
+                            The Art of Feature Engineering
+                        </h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4 line-clamp-3">
+                            How thoughtful feature engineering can dramatically improve model performance. Exploring techniques from domain knowledge to automated feature generation.
+                        </p>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium">
+                            Read Article
+                            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <!-- Essay 2 -->
+                    <article class="essay-card reveal-hidden" style="transition-delay: 200ms;">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-3 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full">Search Algorithms</span>
+                            <span class="text-xs text-secondary-text dark:text-dark-secondary-text">15 min read</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">
+                            How Search Engines Actually Work
+                        </h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4 line-clamp-3">
+                            Ever wondered how Google finds exactly what you're looking for in a fraction of a second? A deep dive into indexing, ranking, and retrieval systems.
+                        </p>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium">
+                            Read Article
+                            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <!-- Essay 3 -->
+                    <article class="essay-card reveal-hidden" style="transition-delay: 300ms;">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-3 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full">Healthcare AI</span>
+                            <span class="text-xs text-secondary-text dark:text-dark-secondary-text">12 min read</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">
+                            Predictive Analytics in Healthcare
+                        </h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4 line-clamp-3">
+                            Real-world applications of machine learning in hospital operations, from patient flow prediction to resource optimization.
+                        </p>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium">
+                            Read Article
+                            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <!-- Essay 4 -->
+                    <article class="essay-card reveal-hidden" style="transition-delay: 400ms;">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-3 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full">Deep Learning</span>
+                            <span class="text-xs text-secondary-text dark:text-dark-secondary-text">20 min read</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">
+                            Transformers Explained Simply
+                        </h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4 line-clamp-3">
+                            Breaking down the architecture that powers ChatGPT, BERT, and modern NLP. Understanding attention mechanisms without the jargon.
+                        </p>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium">
+                            Read Article
+                            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <!-- Essay 5 -->
+                    <article class="essay-card reveal-hidden" style="transition-delay: 500ms;">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-3 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full">Data Engineering</span>
+                            <span class="text-xs text-secondary-text dark:text-dark-secondary-text">8 min read</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">
+                            Building Reliable Data Pipelines
+                        </h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4 line-clamp-3">
+                            Best practices for ETL processes, data validation, and ensuring data quality across your machine learning workflows.
+                        </p>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium">
+                            Read Article
+                            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <!-- Essay 6 -->
+                    <article class="essay-card reveal-hidden" style="transition-delay: 600ms;">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-3 py-1 text-xs font-medium bg-accent/10 dark:bg-dark-accent/10 text-accent dark:text-dark-accent rounded-full">Career</span>
+                            <span class="text-xs text-secondary-text dark:text-dark-secondary-text">6 min read</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-primary-text dark:text-dark-primary-text font-heading">
+                            From IT to Data Science
+                        </h3>
+                        <p class="text-secondary-text dark:text-dark-secondary-text mb-4 line-clamp-3">
+                            My personal journey transitioning from IT management to machine learning engineering. Lessons learned and advice for aspiring data scientists.
+                        </p>
+                        <a href="#" class="inline-flex items-center text-accent dark:text-dark-accent hover:underline font-medium">
+                            Read Article
+                            <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Back to Home -->
+        <section class="py-8 px-4 text-center">
+            <a href="index.html" class="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-accent to-accent-secondary dark:from-dark-accent dark:to-dark-accent-secondary text-white dark:text-jet-black font-semibold rounded-lg shadow-lg hover:shadow-accent/30 dark:hover:shadow-dark-accent/30 transition-all duration-300 hover:-translate-y-1">
+                <i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i>
+                Back to Home
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-secondary-text/10 dark:border-dark-secondary-text/10 bg-secondary-bg/30 dark:bg-dark-secondary-bg/30">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-secondary-text dark:text-dark-secondary-text text-sm">
+                &copy; <span id="current-year"></span> Daniel Wanjala. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-icon-sun');
+        const moonIcon = document.getElementById('theme-icon-moon');
+        
+        function setTheme(dark) {
+            document.documentElement.classList.toggle('dark', dark);
+            sunIcon.classList.toggle('hidden', !dark);
+            moonIcon.classList.toggle('hidden', dark);
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+        }
+        
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(savedTheme === 'dark' || (!savedTheme && prefersDark));
+        
+        themeToggle.addEventListener('click', () => {
+            setTheme(!document.documentElement.classList.contains('dark'));
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            menuIconOpen.classList.toggle('hidden', isOpen);
+            menuIconClose.classList.toggle('hidden', !isOpen);
+            mobileMenuButton.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = scrollTop / scrollHeight;
+            document.getElementById('scrollProgressBar').style.transform = `scaleX(${scrollProgress})`;
+        }, { passive: true });
+
+        // Reveal animation
+        const revealElements = document.querySelectorAll('.reveal-hidden');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
