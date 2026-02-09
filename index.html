@@ -2163,8 +2163,12 @@ n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transiti
                         if (entry.isIntersecting) {
                             const delay = entry.target.dataset.revealDelay ? parseInt(entry.target.dataset.revealDelay) : (index * 100);
                             entry.target.style.transitionDelay = `${delay}ms`;
+                            // Force immediate visibility with inline styles for mobile stability
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
                             entry.target.classList.add('reveal-visible');
                             if (entry.target.classList.contains('reveal-slide-left') || entry.target.classList.contains('reveal-slide-right')) {
+                                entry.target.style.transform = 'translateX(0)';
                                 entry.target.classList.add('slide-in');
                             }
                             if (entry.target.classList.contains('education-item')) {
@@ -2606,6 +2610,28 @@ n-all duration-300 group hover:-translate-y-0.5 hover:shadow-lg" style="transiti
             setupTiltEffect();
             setupBackToTop();
             // Initial calls to init canvases are handled by updateThemeUI now
+
+            // Mobile Fallback: Force critical sections visible after timeout
+            // Safety net for when IntersectionObserver doesn't trigger on mobile Chrome
+            setTimeout(() => {
+                const criticalSections = ['hero', 'about', 'skills'];
+                criticalSections.forEach(sectionId => {
+                    const section = document.getElementById(sectionId);
+                    if (section && !section.classList.contains('reveal-visible')) {
+                        section.style.opacity = '1';
+                        section.style.transform = 'translateY(0)';
+                        section.classList.add('reveal-visible');
+                    }
+                });
+                // Also reveal immediate children with reveal-hidden
+                document.querySelectorAll('.reveal-hidden').forEach(el => {
+                    if (el.getBoundingClientRect().top < window.innerHeight * 1.5) {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                        el.classList.add('reveal-visible');
+                    }
+                });
+            }, 1500);
 
         }); // End DOMContentLoaded
     </script>
